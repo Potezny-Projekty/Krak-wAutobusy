@@ -20,8 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/map2"
@@ -31,7 +30,29 @@
 
 
 
+    <com.arlib.floatingsearchview.FloatingSearchView
+        android:id="@+id/floating_search_view"
+        app:floatingSearch_hintTextColor="#808080"
+        app:floatingSearch_menu="@menu/bottom_nav_menu"
 
+        app:showAsAction="always"
+        app:floatingSearch_searchInputTextSize="5sp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:floatingSearch_clearBtnColor="@color/greenmain"
+        app:floatingSearch_close_search_on_keyboard_dismiss="true"
+        app:floatingSearch_leftActionColor="@color/greenmain"
+        app:floatingSearch_leftActionMode="showHamburger"
+        app:floatingSearch_searchBarMarginLeft="10dp"
+        app:floatingSearch_searchBarMarginRight="10dp"
+
+        app:floatingSearch_searchBarMarginTop="10dp"
+        app:floatingSearch_searchHint="WYSZUKAJ LINIE"
+        app:floatingSearch_showSearchKey="false"
+        app:floatingSearch_suggestionsListAnimDuration="250"
+
+
+        app:layout_anchorGravity="center" />
 
 
 
@@ -43,12 +64,12 @@
 
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/extended_fab2f"
+        android:id="@+id/Map_showAllVehiclesOrFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         app:borderWidth="0dp"
-        android:contentDescription="sadasd"
+        android:contentDescription="@string/showAllRoadsOrFavorite"
 
 
 
@@ -59,19 +80,19 @@
         android:textColorHint="@color/greenmain"
         android:textSize="6sp"
         app:backgroundTint="#fff"
-        app:icon="@drawable/map_icon"
+        app:icon="@drawable/bus_icon"
 
         app:iconTint="@color/greenmain"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
 
         android:layout_marginBottom="11dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="15dp"
 
 
         app:layout_constraintEnd_toEndOf="parent"
 
         app:layout_constraintBottom_toTopOf="@id/extended_fab2"
-        />
+        tools:ignore="SmallSp" />
 
 
 
@@ -87,7 +108,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         app:borderWidth="0dp"
-        android:contentDescription="sadasd"
+        android:contentDescription="@string/yourLocation"
 
 
 
@@ -96,7 +117,7 @@
         android:textAlignment="center"
 
         android:textColorHint="@color/greenmain"
-        android:textSize="6sp"
+
         app:backgroundTint="#fff"
         app:icon="@drawable/location_icon"
 
@@ -104,7 +125,7 @@
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
 
         android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="15dp"
 
 
         app:layout_constraintEnd_toEndOf="parent"

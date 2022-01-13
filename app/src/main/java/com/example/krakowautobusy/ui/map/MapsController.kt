@@ -21,7 +21,11 @@ internal class MapsController :  OnMapReadyCallback {
 
 
 
+    private fun disableNavigationToButtonGoogle(){
+        mMap.uiSettings.isMapToolbarEnabled = false
+        mMap.uiSettings.isZoomControlsEnabled = false
 
+    }
 
 
     /**
@@ -34,11 +38,11 @@ internal class MapsController :  OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
-        Log.e("aka","ss")
+
         mMap = googleMap
 
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
+        val sydney = LatLng(52.237049, 21.017532)
         mMap.addMarker(MarkerOptions()
             .position(sydney)
             .title("Marker in Sydney"))
@@ -46,8 +50,6 @@ internal class MapsController :  OnMapReadyCallback {
 
 
 
-        mMap.uiSettings.isMapToolbarEnabled = false
-        mMap.uiSettings.isZoomControlsEnabled = false
-
+       disableNavigationToButtonGoogle()
     }
 }

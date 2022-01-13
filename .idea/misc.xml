@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/konra/AndroidStudioProjects/KrakowAutobusy/app/src/main/res/drawable/map_icon.xml" value="0.2609375" />
+        <entry key="..\:/Users/konra/AndroidStudioProjects/KrakowAutobusy/app/src/main/res/drawable/squere_small_radius.xml" value="0.2609375" />
         <entry key="..\:/Users/konra/AndroidStudioProjects/KrakowAutobusy/app/src/main/res/drawable/squere_styl_button.xml" value="0.44166666666666665" />
         <entry key="..\:/Users/konra/AndroidStudioProjects/KrakowAutobusy/app/src/main/res/layout/activity_main.xml" value="0.2069402228976697" />
         <entry key="..\:/Users/konra/AndroidStudioProjects/KrakowAutobusy/app/src/main/res/layout/activity_maps.xml" value="0.24479166666666666" />
@@ -10,6 +12,7 @@
         <entry key="..\:/Users/konra/AndroidStudioProjects/KrakowAutobusy/app/src/main/res/layout/fragment_favorite.xml" value="0.24479166666666666" />
         <entry key="..\:/Users/konra/AndroidStudioProjects/KrakowAutobusy/app/src/main/res/layout/fragment_home.xml" value="0.296195652173913" />
         <entry key="..\:/Users/konra/AndroidStudioProjects/KrakowAutobusy/app/src/main/res/layout/fragment_map.xml" value="0.4180253623188406" />
+        <entry key="..\:/Users/konra/AndroidStudioProjects/KrakowAutobusy/app/src/main/res/layout/tost_show_allvehivles_orone.xml" value="0.24479166666666666" />
         <entry key="..\:/Users/konra/AndroidStudioProjects/KrakowAutobusy/app/src/main/res/menu/bottom_nav_menu.xml" value="0.42552083333333335" />
       </map>
     </option>

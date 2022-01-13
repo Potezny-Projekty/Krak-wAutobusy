@@ -2,5 +2,11 @@
     <string name="app_name">KrakowAutobusy</string>
     <string name="title_map">Mapa</string>
     <string name="title_favorite">Ulubione</string>
+    <string name="showAllRoadsOrFavorite">Pokaż ulubione/wszystkie pojazdy</string>
+    <string name="yourLocation">Twoja lokalizacja</string>
+
+    <string name="show_all_vehicles">Pokaż wszystkie pojazdy</string>
+    <string name="show_favorite_vehicles">Pokaż ulubione pojazdy</string>
+
 
 </resources>
