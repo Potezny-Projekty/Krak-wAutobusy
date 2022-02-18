@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:background="@drawable/squere_small_radius"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:textColor="#32CD32"
+        android:id="@+id/Tost_text"
+        android:text="@string/tost_text_show_one_ore_all_vehicles"
+        android:textAlignment="center"
+        android:padding="22dp"
+        android:layout_height="match_parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

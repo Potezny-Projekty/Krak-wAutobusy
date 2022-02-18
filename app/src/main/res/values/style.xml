@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="FloatingButton" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">#00FF00</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="borderWidth">0dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColorHint">@color/main_green</item>
+        <item name="android:textSize">6sp</item>
+        <item name="backgroundTint">#fff</item>
+        <item name="iconTint">@color/main_green</item>
+        <item name="layout_behavior">com.google.android.material.bottomsheet.BottomSheetBehavior</item>
+        <item name="android:layout_marginBottom">11dp</item>
+        <item name="android:layout_marginEnd">15dp</item>
+
+    </style>
+</resources>
+
+ 
+
+
+
+
+
+
+
+
+
+
