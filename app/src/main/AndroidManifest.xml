@@ -9,13 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KrakowAutobusy">
-        <activity
-            android:name=".ui.map.MapsController"
-            android:exported="false" />
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
+
+            android:value="AIzaSyCvsbA80fN_Rhs2SAi4Mh4wRsYd3Of-AfM" />
+
 
         <activity
             android:name=".MainActivity"

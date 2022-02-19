@@ -1,4 +1,4 @@
-package com.example.krakowautobusy.ui.favorite
+package com.example.krakowautobusy.ui.favourite
 
 import android.os.Bundle
 import android.view.LayoutInflater
