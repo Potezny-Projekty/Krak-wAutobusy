@@ -1,13 +1,5 @@
 package com.example.krakowautobusy.ui.map
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.RelativeLayout
-import com.example.krakowautobusy.R
-
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -26,7 +18,6 @@ internal class MapsController :  OnMapReadyCallback {
         mMap.uiSettings.isZoomControlsEnabled = false
 
     }
-
 
     /**
      * Manipulates the map once available.
@@ -47,8 +38,6 @@ internal class MapsController :  OnMapReadyCallback {
             .position(sydney)
             .title("Marker in Sydney"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-
-
 
        disableNavigationToButtonGoogle()
     }

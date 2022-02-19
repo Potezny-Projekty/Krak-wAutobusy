@@ -8,4 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="greenmain">#32CD32</color>
+    <color name="busBackground">#CCCCFF</color>
+    <color name="search_resuld_field_bus_background_color">#FEFEFE</color>
+    <color name="currentlyFollowing_last_bus_stop_color">#E92518</color>
+    <color name="currentlyFollowing_first_bus_stop_color">#28C05C</color>
 </resources>
