@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.krakowautobusy.databinding.FragmentMapBinding
 import com.google.android.gms.maps.SupportMapFragment
 
@@ -22,14 +23,15 @@ class MapFragment : Fragment() {
         ALL,FAVORITE
     }
 
-
     private lateinit var mapViewModel: MapViewModel
     private var _binding: FragmentMapBinding? = null
 
 
 
 
+
     private var showVehiclesOnMap=HowShowVehicles.ALL
+
 
 
 
@@ -51,6 +53,7 @@ class MapFragment : Fragment() {
         showOnMapOneOrAllVehiclesToast.show()
     }
     private fun addCallbackClickShowAllOrOneVehicles(){
+
         binding.MapShowAllVehiclesOrFavorite.setOnClickListener {
             showVehiclesOnMap = if(showVehiclesOnMap==HowShowVehicles.ALL){
                 showToast(getString(R.string.show_favorite_vehicles))
@@ -60,8 +63,13 @@ class MapFragment : Fragment() {
                 HowShowVehicles.ALL
             }
 
+
+        //do usunięcia
+        binding.extendedFab2.setOnClickListener { view: View ->
+            view.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment)
+
         }
-    }
+    }}
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -83,23 +91,21 @@ class MapFragment : Fragment() {
         })
 
 
-
-
         addControllerToMap()
         addCallbackClickShowAllOrOneVehicles()
 
         return root
     }
 
-
     override fun onStart() {
         super.onStart()
 
     }
 
-
     private fun addControllerToMap(){
+
         val mapFragment=  childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
+
         mapFragment.getMapAsync(MapsController())
     }
 
@@ -107,8 +113,4 @@ class MapFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
-
-
 }

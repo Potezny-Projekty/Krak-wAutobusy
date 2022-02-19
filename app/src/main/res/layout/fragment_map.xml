@@ -23,7 +23,9 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:id="@+id/mapFragment"
+
         tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
 
@@ -54,6 +56,7 @@
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/Map_showAllVehiclesOrFavorite"
         android:contentDescription="@string/showAllRoadsOrFavorite"
+
         app:shapeAppearanceOverlay="@drawable/bus_icon"
         app:icon="@drawable/bus_icon"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,10 +64,13 @@
         style="@style/FloatingButton"
         tools:ignore="SmallSp" />
 
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/extended_fab2"
         android:contentDescription="@string/yourLocation"
+
         app:shapeAppearanceOverlay="@drawable/location_icon"
+
         app:icon="@drawable/location_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
