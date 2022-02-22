@@ -4,19 +4,25 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-    <TextView
-            android:id="@+id/text_dashboard"
+    <com.arlib.floatingsearchview.FloatingSearchView
+            android:id="@+id/floating_search_view"
+            app:floatingSearch_hintTextColor="#808080"
+            app:floatingSearch_menu="@menu/bottom_nav_menu"
+            app:showAsAction="always"
+            app:floatingSearch_searchInputTextSize="5sp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            app:floatingSearch_clearBtnColor="@color/main_green"
+            app:floatingSearch_close_search_on_keyboard_dismiss="true"
+            app:floatingSearch_leftActionColor="@color/main_green"
+            app:floatingSearch_leftActionMode="showHamburger"
+            app:floatingSearch_searchBarMarginLeft="10dp"
+            app:floatingSearch_searchBarMarginRight="10dp"
+            app:floatingSearch_searchBarMarginTop="10dp"
+            app:floatingSearch_searchHint="@string/find_favourite_line"
+            app:floatingSearch_showSearchKey="false"
+            app:floatingSearch_suggestionsListAnimDuration="250"
+            app:layout_anchorGravity="center" />
 
+    <include layout="@layout/favourite_with_content"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

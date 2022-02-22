@@ -13,9 +13,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-
-            android:value="AIzaSyCvsbA80fN_Rhs2SAi4Mh4wRsYd3Of-AfM" />
-
+            android:value ="${MAPS_API_KEY}" />
 
         <activity
             android:name=".MainActivity"
@@ -23,7 +21,6 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

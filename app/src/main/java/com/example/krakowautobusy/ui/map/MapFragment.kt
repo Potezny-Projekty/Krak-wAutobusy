@@ -20,56 +20,55 @@ import com.example.krakowautobusy.R
 class MapFragment : Fragment() {
 
     enum class HowShowVehicles {
-        ALL,FAVORITE
+        ALL, FAVORITE
     }
 
     private lateinit var mapViewModel: MapViewModel
     private var _binding: FragmentMapBinding? = null
 
 
+    private var showVehiclesOnMap = HowShowVehicles.ALL
 
 
+    private fun showToast(message: String) {
 
-    private var showVehiclesOnMap=HowShowVehicles.ALL
-
-
-
-
-
-
-
-    private fun showToast(message:String){
-
-        val x_offset_position= resources.getInteger(R.integer.toast_x_offset_position)
-        val y_offset_position= resources.getInteger(R.integer.toast_y_offset_position)
+        val x_offset_position = resources.getInteger(R.integer.toast_x_offset_position)
+        val y_offset_position = resources.getInteger(R.integer.toast_y_offset_position)
         val myInflater = LayoutInflater.from(context)
         val view = myInflater!!.inflate(R.layout.tost_show_allvehivles_orone, null)
-        val toastText=view.findViewById(R.id.Tost_text) as TextView
-        toastText.text=message
+        val toastText = view.findViewById(R.id.Tost_text) as TextView
+        toastText.text = message
         val showOnMapOneOrAllVehiclesToast = Toast(context)
         showOnMapOneOrAllVehiclesToast.view = view
         showOnMapOneOrAllVehiclesToast.duration = Toast.LENGTH_LONG
-        showOnMapOneOrAllVehiclesToast.setGravity(Gravity.BOTTOM or Gravity.CENTER, x_offset_position, y_offset_position)
+        showOnMapOneOrAllVehiclesToast.setGravity(Gravity.BOTTOM or Gravity.CENTER,
+            x_offset_position,
+            y_offset_position)
         showOnMapOneOrAllVehiclesToast.show()
     }
-    private fun addCallbackClickShowAllOrOneVehicles(){
 
-        binding.MapShowAllVehiclesOrFavorite.setOnClickListener {
-            showVehiclesOnMap = if(showVehiclesOnMap==HowShowVehicles.ALL){
-                showToast(getString(R.string.show_favorite_vehicles))
-                HowShowVehicles.FAVORITE
-            }else{
-                showToast(getString(R.string.show_all_vehicles))
-                HowShowVehicles.ALL
-            }
-
-
-        //do usunięcia
-        binding.extendedFab2.setOnClickListener { view: View ->
-            view.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment)
-
+    private fun addCallbackClickShowAllOrOneVehicles() {
+        //właściwa zawartość metody, wszystko pozostałe do usunięcia
+//        binding.MapShowAllVehiclesOrFavorite.setOnClickListener {
+//            showVehiclesOnMap = if (showVehiclesOnMap == HowShowVehicles.ALL) {
+//                showToast(getString(R.string.show_favorite_vehicles))
+//                HowShowVehicles.FAVORITE
+//            } else {
+//                showToast(getString(R.string.show_all_vehicles))
+//                HowShowVehicles.ALL
+//            }
+//        }
+        binding.MapShowAllVehiclesOrFavorite.setOnClickListener { view: View ->
+            view.findNavController().navigate(R.id.action_navigation_map_to_navigation_details)
         }
-    }}
+//        binding.extendedFab2.setOnClickListener { view: View ->
+//            view.findNavController().navigate(R.id.action_navigation_map_to_navigation_no_internet)
+//        }
+        binding.extendedFab2.setOnClickListener { view: View ->
+            view.findNavController().navigate(R.id.action_navigation_map_to_navigation_loading_page)
+        }
+    }
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -77,7 +76,7 @@ class MapFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         mapViewModel =
             ViewModelProvider(this).get(MapViewModel::class.java)
@@ -102,9 +101,10 @@ class MapFragment : Fragment() {
 
     }
 
-    private fun addControllerToMap(){
+    private fun addControllerToMap() {
 
-        val mapFragment=  childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
+        val mapFragment =
+            childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
 
         mapFragment.getMapAsync(MapsController())
     }

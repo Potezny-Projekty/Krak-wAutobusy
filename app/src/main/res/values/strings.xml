@@ -1,4 +1,5 @@
 <resources>
+    <!--app_name do zmiany? -->
     <string name="app_name">KrakowAutobusy</string>
     <string name="title_map">Mapa</string>
     <string name="title_favorite">Ulubione</string>
@@ -16,7 +17,6 @@
     <string name="last_bus_stop_description">Witkowice</string>
     <string name="red_circle_desc">red circular icon</string>
     <string name="green_circle_desc">green circular icon</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="line_info">Linia 544</string>
     <string name="currently_following">Aktualnie śledzisz</string>
@@ -26,7 +26,14 @@
     <string name="bus_stop_number">21.</string>
     <string name="bus_stop_name">Os. Willowe</string>
     <string name="arrival_time">13.21</string>
-
-
+    <string name="no_internet_icon_desc">Brak połączenia z internetem</string>
+    <string name="no_internet_text">Brak dostępu do internetu, sprawdź swoje połączenie</string>
+    <string name="refresh">Odśwież</string>
+    <string name="app_name_loading_page"><font color='#32CD32'>G</font><font color='#000000'>dz</font><font color='#32CD32'>i</font><font color='#000000'>e a</font><font color='#32CD32'>u</font><font color='#000000'>to</font><font color='#32CD32'>b</font><font color='#000000'>us</font><font color='#32CD32'>?</font>
+    </string>
+    <string name="find_favourite_line">Znajdź linię aby dodać ją do ulubionych</string>
+    <string name="favourite_empty_hint">Aktualnie nie masz żadnej ulubionej linii, znajdź ją aby dodać ją do ulubionych</string>
+    <string name="empty_favourite_icon">Empty favourite icon</string>
+    <string name="favourite"><u>Ulubione</u></string>
 
 </resources>

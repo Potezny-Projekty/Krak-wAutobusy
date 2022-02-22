@@ -13,7 +13,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/upper_bar">
+            android:id="@+id/upper_bar"
+            android:layout_marginBottom="8dp">
 
         <TextView
                 android:layout_width="wrap_content"
@@ -46,7 +47,7 @@
 
     <fragment
             android:layout_width="match_parent"
-            android:layout_height="360dp"
+            android:layout_height="320dp"
             android:id="@+id/details_view_map"
             tools:context=".MapsActivity"
             android:name="com.google.android.gms.maps.SupportMapFragment"

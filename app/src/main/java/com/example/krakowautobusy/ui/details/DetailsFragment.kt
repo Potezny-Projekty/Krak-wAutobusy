@@ -5,9 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.FragmentDetailsBinding
-import com.example.krakowautobusy.databinding.FragmentFavoriteBinding
 
 class DetailsFragment : Fragment() {
 
@@ -17,12 +15,11 @@ class DetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
 
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
-        return root
+        return binding.root
     }
 
 }

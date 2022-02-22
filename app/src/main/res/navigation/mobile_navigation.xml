@@ -14,8 +14,14 @@
                 android:id="@+id/action_navigation_map_to_navigation_favorite"
                 app:destination="@id/navigation_favorite" />
         <action
-                android:id="@+id/action_navigation_map_to_detailsFragment"
+                android:id="@+id/action_navigation_map_to_navigation_loading_page"
+                app:destination="@id/navigation_loading_page" />
+        <action
+                android:id="@+id/action_navigation_map_to_navigation_details"
                 app:destination="@id/navigation_details" />
+        <action
+                android:id="@+id/action_navigation_map_to_navigation_no_internet"
+                app:destination="@id/navigation_no_internet" />
     </fragment>
 
     <fragment
@@ -26,6 +32,17 @@
     <fragment
             android:id="@+id/navigation_details"
             android:name="com.example.krakowautobusy.ui.details.DetailsFragment"
-            android:label="DetailsFragment" />
+            android:label="DetailsFragment"
+            tools:layout="@layout/fragment_details"/>
+    <fragment
+            android:id="@+id/navigation_no_internet"
+            android:name="com.example.krakowautobusy.ui.noInternet.NoInternetFragment"
+            android:label="fragment_no_internet"
+            tools:layout="@layout/fragment_no_internet" />
+    <fragment
+            android:id="@+id/navigation_loading_page"
+            android:name="com.example.krakowautobusy.ui.loadingPage.LoadingPageFragment"
+            android:label="fragment_loading_page"
+            tools:layout="@layout/fragment_loading_page" />
 
 </navigation>
