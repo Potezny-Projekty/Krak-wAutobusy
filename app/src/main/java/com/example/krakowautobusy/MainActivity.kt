@@ -1,6 +1,7 @@
 package com.example.krakowautobusy
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.krakowautobusy.databinding.ActivityMainBinding
+import example.javatpoint.com.kotlinsqlitecrud.DatabaseHandler
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, nd: NavDestination, _ ->
             if (nd.id == R.id.navigation_no_internet || nd.id == R.id.navigation_loading_page) {
                 navView.visibility = View.GONE
-            }else{
+            } else {
                 navView.visibility = View.VISIBLE
             }
         }
@@ -48,11 +50,13 @@ class MainActivity : AppCompatActivity() {
 
         hideAppTitleBar()
 
-    }
+        val a = DatabaseHandler(this)
+        Log.i("MainActivity", a.addLine().toString())
+        Log.i("MainActivity", a.addBusStop().toString())
 
+    }
 
     private fun hideAppTitleBar() {
         supportActionBar?.hide()
-
     }
 }
