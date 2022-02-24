@@ -29,9 +29,6 @@
         tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
 
-
-
-
     <com.arlib.floatingsearchview.FloatingSearchView
         android:id="@+id/floating_search_view"
         app:floatingSearch_hintTextColor="#808080"

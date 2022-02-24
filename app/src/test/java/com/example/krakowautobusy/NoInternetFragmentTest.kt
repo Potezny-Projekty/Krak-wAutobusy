@@ -1,4 +1,4 @@
-package com.example.krakowautobusy.ui.noInternet
+package com.example.krakowautobusy
 
 import org.junit.Test
 

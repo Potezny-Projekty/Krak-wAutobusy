@@ -12,7 +12,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.krakowautobusy.databinding.ActivityMainBinding
-import example.javatpoint.com.kotlinsqlitecrud.DatabaseHandler
+import com.example.krakowautobusy.database.Database
+import com.example.krakowautobusy.database.DatabaseInterface
 
 class MainActivity : AppCompatActivity() {
 
@@ -50,9 +51,10 @@ class MainActivity : AppCompatActivity() {
 
         hideAppTitleBar()
 
-        val a = DatabaseHandler(this)
-        Log.i("MainActivity", a.addLine().toString())
-        Log.i("MainActivity", a.addBusStop().toString())
+        val databaseInterface = DatabaseInterface(Database.getInstance(this))
+
+        Log.i("MainActivity", databaseInterface.addLine("Przystanek TEST1", "Przystanek TEST2", 20).toString())
+        Log.i("MainActivity", databaseInterface.addBusStop().toString())
 
     }
 
