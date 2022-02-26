@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">KrakowAutobusy</string>
+    <string name="title_map">Mapa</string>
+    <string name="title_favorite">Ulubione</string>
+    <string name="showAllRoadsOrFavorite">Pokaż ulubione/wszystkie pojazdy</string>
+    <string name="yourLocation">Twoja lokalizacja</string>
+
+    <string name="show_all_vehicles">Pokaż wszystkie pojazdy</string>
+    <string name="show_favorite_vehicles">Pokaż ulubione pojazdy</string>
+
+    <string name="find_line">WYSZUKAJ LINIE</string>
+    <string name="tost_text_show_one_ore_all_vehicles">Pokazano wszystkie autobusy</string>
+
+    <string name="line_number">544</string>
+    <string name="first_bus_stop_description">Dworzec główny wschód</string>
+    <string name="last_bus_stop_description">Witkowice</string>
+    <string name="red_circle_desc">red circular icon</string>
+    <string name="green_circle_desc">green circular icon</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="line_info">Linia 544</string>
+    <string name="currently_following">Aktualnie śledzisz</string>
+    <string name="first_bus_stop">Przystanek początkowy</string>
+    <string name="last_bus_stop">Przystanek końcowy</string>
+    <string name="change_direction_button">Zmień kierunek</string>
+    <string name="bus_stop_number">21.</string>
+    <string name="bus_stop_name">Os. Willowe</string>
+    <string name="arrival_time">13.21</string>
+
+
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/drawable-v24/round_rect_shape_currently_following.xml" value="0.1325" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/drawable/bacground_gray_small_radius.xml" value="0.1325" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/drawable/round_rect_shape_bus.xml" value="0.1325" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/drawable/squere_small_radius.xml" value="0.1275" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/drawable/squere_styl_button.xml" value="0.1325" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/drawable/squre_small_radius_thin.xml" value="0.1275" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/activity_main.xml" value="0.19746376811594202" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/bus_stop_arrival_box.xml" value="0.2069402228976697" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/fragment_details.xml" value="0.20462962962962963" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/fragment_favorite.xml" value="0.21195652173913043" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/fragment_map.xml" value="0.1" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/fragment_search_view.xml" value="0.21195652173913043" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/line_info_with_directions_bar.xml" value="0.21195652173913043" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/search_result_field_bus.xml" value="0.2069402228976697" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/tost_show_allvehivles_orone.xml" value="0.21195652173913043" />
+      </map>
+    </option>
+  </component>
+</project>

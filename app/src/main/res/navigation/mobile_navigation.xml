@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_map">
+
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.example.krakowautobusy.ui.map.MapFragment"
+        android:label="@string/title_map"
+        tools:layout="@layout/fragment_map" >
+        <action
+                android:id="@+id/action_navigation_map_to_navigation_favorite"
+                app:destination="@id/navigation_favorite" />
+        <action
+                android:id="@+id/action_navigation_map_to_detailsFragment"
+                app:destination="@id/navigation_details" />
+
+        <action
+            android:id="@+id/action_navigation_map_to_searchview"
+            app:destination="@id/search_view" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_favorite"
+        android:name="com.example.krakowautobusy.ui.favourite.FavoriteFragment"
+        android:label="@string/title_favorite"
+        tools:layout="@layout/fragment_favorite" />
+    <fragment
+            android:id="@+id/navigation_details"
+            android:name="com.example.krakowautobusy.ui.details.DetailsFragment"
+            android:label="DetailsFragment" />
+
+
+    <fragment
+        android:id="@+id/search_view"
+        android:name="com.example.krakowautobusy.ui.SearchViewFragment"
+        android:label="SearchView" />
+
+</navigation>
