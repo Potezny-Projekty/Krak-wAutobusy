@@ -70,7 +70,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/currentlyFollowing_first_bus_stop"
                 android:text="@string/first_bus_stop"
-                android:textSize="7sp"
+
+                android:textSize="@dimen/directions_bar_font_size"
+
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="4dp"
                 android:textColor="@color/currentlyFollowing_first_bus_stop_color" />
@@ -80,7 +82,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/currentlyFollowing_first_bus_stop_data"
-                android:textSize="7sp"
+
+                android:textSize="@dimen/directions_bar_font_size"
+
                 android:textColor="@color/black"
                 android:layout_marginTop="8dp"
                 android:layout_column="2"
@@ -107,7 +111,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/currentlyFollowing_last_bus_stop"
-                android:textSize="7sp"
+
+                android:textSize="@dimen/directions_bar_font_size"
+
                 android:layout_marginTop="4dp"
                 android:layout_marginStart="4dp"
                 android:textColor="@color/currentlyFollowing_last_bus_stop_color"
@@ -120,7 +126,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/currentlyFollowing_last_bus_stop_data"
                 android:layout_weight="0"
-                android:textSize="7sp"
+
+                android:textSize="@dimen/directions_bar_font_size"
+
                 android:textColor="@color/black"
                 android:layout_marginTop="4dp"
                 android:layout_column="2"
@@ -128,7 +136,10 @@
                 android:layout_marginStart="8dp" />
 
         <View
-                android:layout_width="165dp"
+
+                android:layout_gravity="fill_horizontal"
+                android:layout_width="1dp"
+
                 android:layout_height="0.5dp"
                 android:background="#AAAAAA"
                 android:id="@+id/view"
@@ -155,7 +166,9 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginEnd="16dp"
             android:textAllCaps="false"
-            />
+
+            android:backgroundTint="@color/greenmain"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

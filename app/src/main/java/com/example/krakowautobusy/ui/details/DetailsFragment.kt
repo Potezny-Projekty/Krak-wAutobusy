@@ -1,14 +1,17 @@
 package com.example.krakowautobusy.ui.details
 
+import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.FragmentDetailsBinding
-import com.example.krakowautobusy.databinding.FragmentFavoriteBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
+
 
 class DetailsFragment : Fragment() {
 
@@ -18,6 +21,7 @@ class DetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
+
     ): View? {
 
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
@@ -32,6 +36,7 @@ class DetailsFragment : Fragment() {
         val xd=requireActivity().findViewById<View>(R.id.nav_view)
     }
 
+
      fun uncheckedAllNavMenuOption(){
         val navView:BottomNavigationView=requireActivity().findViewById(R.id.nav_view)
         navView.menu.setGroupCheckable(0,true,false)
@@ -39,6 +44,7 @@ class DetailsFragment : Fragment() {
             navView.menu.getItem(i).isChecked=false
         }
          navView.menu.setGroupCheckable(0,true,true)
+
     }
 
 }

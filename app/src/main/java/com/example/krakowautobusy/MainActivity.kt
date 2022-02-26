@@ -3,16 +3,26 @@ package com.example.krakowautobusy
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+
 import android.view.ViewTreeObserver
 import android.view.Window
 import android.widget.EditText
+
+
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.navigation.NavDestination
+
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.krakowautobusy.databinding.ActivityMainBinding
+
+import com.example.krakowautobusy.database.Database
+import com.example.krakowautobusy.database.DatabaseInterface
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,13 +31,27 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.main_fragment)
-        // Passing each menu ID as a set of Ids because each
+
+        //removes navBar from noInternetFragment and loadingPageFragment
+     /*   navController.addOnDestinationChangedListener { _, nd: NavDestination, _ ->
+            if (nd.id == R.id.navigation_no_internet || nd.id == R.id.navigation_loading_page) {
+                navView.visibility = View.GONE
+            } else {
+                navView.visibility = View.VISIBLE
+            }
+        }*/
+
+
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -39,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         hideAppTitleBar()
+
 xD()
     }
 
@@ -75,5 +100,14 @@ xD()
     private fun hideAppTitleBar(){
         supportActionBar?.hide()
 
+
+
+       // val databaseInterface = DatabaseInterface(Database.getInstance(this))
+
+      //  Log.i("MainActivity", databaseInterface.addLine("Przystanek TEST1", "Przystanek TEST2", 20).toString())
+      //  Log.i("MainActivity", databaseInterface.addBusStop().toString())
+
     }
+
+
 }

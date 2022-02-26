@@ -11,14 +11,20 @@
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/drawable/squre_small_radius_thin.xml" value="0.1275" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/activity_main.xml" value="0.19746376811594202" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/bus_stop_arrival_box.xml" value="0.2069402228976697" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/favourite_empty.xml" value="0.24166666666666667" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/favourite_with_content.xml" value="0.11752786220871327" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/fragment_details.xml" value="0.20462962962962963" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/fragment_favorite.xml" value="0.21195652173913043" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/fragment_loading_page.xml" value="0.24682971014492755" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/fragment_map.xml" value="0.1" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/fragment_no_internet.xml" value="0.24682971014492755" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/fragment_search_view.xml" value="0.21195652173913043" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/line_info_with_directions_bar.xml" value="0.21195652173913043" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/search_result_field_bus.xml" value="0.2069402228976697" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/layout/tost_show_allvehivles_orone.xml" value="0.21195652173913043" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-main/Krak-wAutobusy-main/app/src/main/res/menu/bottom_nav_menu.xml" value="0.13697916666666668" />
       </map>
     </option>
   </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>

@@ -31,6 +31,7 @@
 
 
 
+
     <fragment
         android:id="@+id/detailFragment"
         android:layout_width="0dp"
@@ -42,6 +43,8 @@
         class="com.example.krakowautobusy.ui.SearchViewFragment"
         tools:layout="@layout/fragment_search_view">
     </fragment>
+
+
 
 
 
