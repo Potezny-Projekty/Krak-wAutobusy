@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.krakowautobusy.databinding.FragmentMapBinding
 import com.google.android.gms.maps.SupportMapFragment
@@ -68,6 +69,7 @@ class MapFragment : Fragment() {
 //        }
         binding.MapShowAllVehiclesOrFavorite.setOnClickListener { view: View ->
             view.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment)
+            //Navigation.findNavController(view).navigate(R.id.action_navigation_map_to_searchview);
         }
 //        binding.extendedFab2.setOnClickListener { view: View ->
 //            view.findNavController().navigate(R.id.action_navigation_map_to_navigation_no_internet)
