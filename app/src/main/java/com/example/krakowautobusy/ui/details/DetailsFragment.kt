@@ -37,6 +37,8 @@ class DetailsFragment : Fragment() {
     }
 
 
+
+
      fun uncheckedAllNavMenuOption(){
         val navView:BottomNavigationView=requireActivity().findViewById(R.id.nav_view)
         navView.menu.setGroupCheckable(0,true,false)

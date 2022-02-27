@@ -12,6 +12,7 @@ import android.widget.EditText
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavDestination
 
 import androidx.navigation.findNavController
@@ -22,11 +23,13 @@ import com.example.krakowautobusy.databinding.ActivityMainBinding
 
 import com.example.krakowautobusy.database.Database
 import com.example.krakowautobusy.database.DatabaseInterface
+import com.example.krakowautobusy.ui.SearchViewFragment
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,21 +38,14 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+       binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.main_fragment)
 
-        //removes navBar from noInternetFragment and loadingPageFragment
-     /*   navController.addOnDestinationChangedListener { _, nd: NavDestination, _ ->
-            if (nd.id == R.id.navigation_no_internet || nd.id == R.id.navigation_loading_page) {
-                navView.visibility = View.GONE
-            } else {
-                navView.visibility = View.VISIBLE
-            }
-        }*/
+
 
 
         // menu should be considered as top level destinations.
@@ -64,10 +60,13 @@ class MainActivity : AppCompatActivity() {
 
         hideAppTitleBar()
 
-xD()
-    }
+//xD()
 
-    private var mLastContentHeight = 0
+
+
+    }
+/*
+   private var mLastContentHeight = 0
     val keyboardLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
         val currentContentHeight: Int =
             findViewById<View>(Window.ID_ANDROID_CONTENT).getHeight()
@@ -95,7 +94,7 @@ xD()
 
     }
 
-
+*/
 
     private fun hideAppTitleBar(){
         supportActionBar?.hide()

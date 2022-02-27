@@ -4,21 +4,18 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Context
-import android.content.res.Configuration
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.annotation.RequiresApi
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.RelativeLayout
 import androidx.core.animation.doOnEnd
 import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.FragmentSearchViewBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -61,6 +58,9 @@ class SearchViewFragment : Fragment() {
 
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
+
+
+
         return root
     }
 
@@ -68,8 +68,52 @@ class SearchViewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         addAnimIconSearchWhenUserFocusSearchBar()
         closeSearchAfterClickIcon()
-       // xD()//odkomentuj
+
+
+
+
+
+
     }
+
+
+    private fun hideBottomNavigationView(view: BottomNavigationView) {
+    //    view.animate().translationY(view.height.toFloat())
+    }
+
+    private fun showBottomNavigationView(view: BottomNavigationView) {
+      //  view.animate().translationY(0f)
+    }
+
+
+    fun hideApplicationBar(){
+        val navBar=requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+hideBottomNavigationView(navBar)
+
+
+        val container=requireActivity().findViewById<View>(R.id.main_fragment)
+        val lp = RelativeLayout.LayoutParams(container.getLayoutParams())
+     //   lp.setMargins(0,0, 0, 50)
+       container.setLayoutParams(lp)
+      //  val navBar=requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+        navBar?.visibility=View.GONE
+    }
+
+    fun showApplicationBar(){
+        val navBar=requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+        showBottomNavigationView(navBar)
+        navBar?.visibility=View.VISIBLE
+        val container=requireActivity().findViewById<View>(R.id.main_fragment)
+        val lp = RelativeLayout.LayoutParams(container.getLayoutParams())
+      //  lp.setMargins(0,0, 0, 0)
+       // container.setLayoutParams(lp)
+
+
+    }
+
+
+
+
 
     fun Fragment.hideKeyboard() {
         view?.let { activity?.hideKeyboard(it) }
@@ -80,18 +124,7 @@ class SearchViewFragment : Fragment() {
     }
 
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        if (newConfig.hardKeyboardHidden === Configuration.HARDKEYBOARDHIDDEN_NO) {
-            Log.e("animacje","keyboard no")
-           // binding.searchEditText.clearFocus()
-          //  (activity as SherlockFragmentActivity?).getSupportActionBar().hide()
-        } else if (newConfig.hardKeyboardHidden === Configuration.HARDKEYBOARDHIDDEN_YES) {
-            Log.e("animacje","keyboard yes")
-          //  binding.searchEditText.clearFocus()
-         //   (activity as SherlockFragmentActivity?).getSupportActionBar().show()
-        }
-    }
+
     /*odkomentuj
     private var mLastContentHeight = 0
 
@@ -163,6 +196,41 @@ class SearchViewFragment : Fragment() {
     }
 
 
+    override fun onStart() {
+        super.onStart()
+        xD()
+    }
+
+    private var mLastContentHeight = 0
+    val keyboardLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+        val currentContentHeight: Int =
+            requireActivity().findViewById<View>(Window.ID_ANDROID_CONTENT).getHeight()
+        if (mLastContentHeight > currentContentHeight + 100) {
+            Log.e("animacje", "onGlobalLayout: Keyboard is open")
+            mLastContentHeight = currentContentHeight
+        } else if (currentContentHeight > mLastContentHeight + 100) {
+            Log.e("animacje", "close")
+            mLastContentHeight = currentContentHeight
+
+
+            val editTxt=requireActivity().findViewById<EditText>(R.id.search_edit_text)
+            if(editTxt !=null){
+                editTxt.clearFocus()
+            }else{
+                Log.e("czy","null")
+            }
+
+        }
+    }
+    fun xD(){
+
+
+        requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).getViewTreeObserver().addOnGlobalLayoutListener(keyboardLayoutListener);
+
+    }
+
+
+
     fun addAnimIconSearchWhenUserFocusSearchBar(){
         var searchIcon=binding.searchIcon
         var searchEditText=binding.searchEditText
@@ -171,7 +239,7 @@ class SearchViewFragment : Fragment() {
         searchEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
 
-
+                hideApplicationBar()
 
                 binding.root.setBackgroundColor(Color.GRAY)
                 binding.root.background.alpha=40
@@ -223,7 +291,7 @@ class SearchViewFragment : Fragment() {
             } else {
 
 
-
+showApplicationBar()
                 val searchIcon=binding.searchIcon
 
                 val ANIM_DURATION_MS=800L
