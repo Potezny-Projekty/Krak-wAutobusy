@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    }
+
 /*
    private var mLastContentHeight = 0
     val keyboardLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
