@@ -46,6 +46,14 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.main_fragment)
 
 
+        //removes navBar from noInternetFragment and loadingPageFragment
+        navController.addOnDestinationChangedListener { _, nd: NavDestination, _ ->
+            if (nd.id == R.id.navigation_no_internet || nd.id == R.id.navigation_loading_page) {
+                navView.visibility = View.GONE
+            } else {
+                navView.visibility = View.VISIBLE
+            }
+        }
 
 
         // menu should be considered as top level destinations.
@@ -60,7 +68,18 @@ class MainActivity : AppCompatActivity() {
 
         hideAppTitleBar()
 
+
+        val databaseInterface = DatabaseInterface(Database.getInstance(this))
+
+//        Log.i("MainActivity",databaseInterface.addLine("TEST1","TEST2",20).toString())
+//        Log.i("MainActivity",databaseInterface.getLine("1"))
+//        Log.i("MainActivity",databaseInterface.updateLine(1,"TEST1","TEST2",20).toString())
+//        Log.i("MainActivity",databaseInterface.addLine("TEST1XDDD","TEST2XDDD",20).toString())
+//        Log.i("MainActivity",databaseInterface.deleteLine(2).toString())
+
 //xD()
+    }
+
 
 
 

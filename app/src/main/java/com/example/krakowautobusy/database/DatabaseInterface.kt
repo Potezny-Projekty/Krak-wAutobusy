@@ -17,27 +17,43 @@ class DatabaseInterface(private var instance: Database) {
         contentValues.put(instance.KEY_NUMBER_LINE, numberLine.toString())
 
         val success = db.insert(instance.TABLE_LINE, null, contentValues)
-        db.close()
+        //db.close()
         return success
     }
 
-    fun updateLine(id: Int,firstBusStop: String, lastBusStop: String, numberLine: Int){
-
-    }
-    fun removeLine(id: Int){
-
-    }
-    fun getLine(id: Int){
-
-    }
-    fun addBusStop(): Long {
+    fun updateLine(id: Int, firstBusStop: String, lastBusStop: String, numberLine: Int): Int {
         db = instance.writableDatabase
         val contentValues = ContentValues()
 
-        contentValues.put(instance.KEY_NAME_BUS_STOP, "XDDDDDD")
+        contentValues.put(instance.KEY_FIRST_BUS_STOP, firstBusStop)
+        contentValues.put(instance.KEY_LAST_BUS_STOP, lastBusStop)
+        contentValues.put(instance.KEY_NUMBER_LINE, numberLine)
 
-        val success = db.insert(instance.TABLE_BUS_STOP, null, contentValues)
-        db.close()
+        val success = db.update(instance.TABLE_LINE, contentValues, instance.KEY_ID + "= $id", null)
+        //db.close()
         return success
+    }
+
+    fun deleteLine(id: Int): Int {
+        db = instance.writableDatabase
+        val success = db.delete(instance.TABLE_LINE, instance.KEY_ID + "= $id", null)
+        //db.close()
+        return success
+    }
+
+    fun getLine(id: String): String {
+        db = instance.readableDatabase
+        var line = ""
+        val query =
+                "SELECT ${instance.KEY_NUMBER_LINE} FROM ${instance.TABLE_LINE} WHERE ${instance.KEY_ID} == $id"
+        val cursor = db.rawQuery(query, null)
+        if (cursor!!.moveToFirst()) {
+            do {
+                line = cursor.getString(0)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        //db.close()
+        return line
     }
 }
