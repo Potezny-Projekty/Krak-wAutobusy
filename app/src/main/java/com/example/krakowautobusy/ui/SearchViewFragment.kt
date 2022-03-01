@@ -9,8 +9,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.RelativeLayout
 import androidx.core.animation.doOnEnd
 import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.R
@@ -35,7 +33,8 @@ class SearchViewFragment : Fragment() {
     private var param2: String? = null
     private var _binding: FragmentSearchViewBinding? = null
     private var isShowKeyboard=false
-
+    private  var bottomNavView:BottomNavigationView?=null
+    val ANIM_DURATION_MS=800L
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -57,7 +56,7 @@ class SearchViewFragment : Fragment() {
         val root: View = binding.root
 
 
-        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
 
 
 
@@ -66,12 +65,19 @@ class SearchViewFragment : Fragment() {
     }
 
 
+    fun allowAccessKeyboard(){
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+    }
+
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         addAnimIconSearchWhenUserFocusSearchBar()
-        closeSearchAfterClickIcon()
+        actionWhenSearchPanelClickIcon()
+        allowAccessKeyboard()
+        initialiseAnimation()
 
 
 
@@ -81,41 +87,23 @@ class SearchViewFragment : Fragment() {
     }
 
 
-    private fun hideBottomNavigationView(view: BottomNavigationView) {
-    //    view.animate().translationY(view.height.toFloat())
+
+
+    private fun getAccessToNavView(){
+        if(bottomNavView == null){
+            bottomNavView=requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+        }
+
     }
 
-    private fun showBottomNavigationView(view: BottomNavigationView) {
-      //  view.animate().translationY(0f)
+    private fun hideApplicationNavBar(){
+        getAccessToNavView()
+        bottomNavView?.visibility=View.GONE
     }
 
-
-    fun hideApplicationBar(){
-        val navBar=requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
-hideBottomNavigationView(navBar)
-isShowKeyboard=false
-
-     //   val container=requireActivity().findViewById<View>(R.id.main_fragment)
-    //    val lp = RelativeLayout.LayoutParams(container.getLayoutParams())
-     //   lp.setMargins(0,0, 0, 50)
-      // container.setLayoutParams(lp)
-      //  val navBar=requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
-     //   navBar?.visibility=View.GONE
-
-
-        navBar?.visibility=View.GONE
-    }
-
-    fun showApplicationBar(){
-        val navBar=requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
-        showBottomNavigationView(navBar)
-        navBar?.visibility=View.VISIBLE
-        isShowKeyboard=true
-      //  val container=requireActivity().findViewById<View>(R.id.main_fragment)
-      //  val lp = RelativeLayout.LayoutParams(container.getLayoutParams())
-      //  lp.setMargins(0,0, 0, 0)
-       // container.setLayoutParams(lp)
-
+    private fun showApplicationNavBar(){
+        getAccessToNavView()
+        bottomNavView?.visibility=View.VISIBLE
 
     }
 
@@ -123,97 +111,125 @@ isShowKeyboard=false
 
 
 
-    fun Fragment.hideKeyboard() {
+    private fun Fragment.hideKeyboard() {
         view?.let { activity?.hideKeyboard(it) }
     }
-    fun Context.hideKeyboard(view: View) {
+    private fun Context.hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun Fragment.showKeyboard() {
+    private fun Fragment.showKeyboard() {
         view?.let { activity?.showKeyboard(it) }
     }
-    fun Context.showKeyboard(view: View) {
+    private fun Context.showKeyboard(view: View) {
         val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-      //  inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
     }
 
 
-    /*odkomentuj
-    private var mLastContentHeight = 0
-
-    fun xD(){
-        val keyboardLayoutListener = OnGlobalLayoutListener {
-            val currentContentHeight: Int = requireActivity().findViewById<View>(Window.ID_ANDROID_CONTENT).getHeight()
-            if (mLastContentHeight > currentContentHeight + 100) {
-                Log.e("animacje","onGlobalLayout: Keyboard is open")
-                mLastContentHeight = currentContentHeight
-            } else if (currentContentHeight > mLastContentHeight + 100) {
-                Log.e("animacje","close")
-                mLastContentHeight = currentContentHeight
 
 
-                binding.searchEditText.clearFocus()
-            }
+
+    fun changeSearchIconToActiveSearchIcon(){
+        var searchIcon=binding.searchIcon
+        searchIcon.setImageResource(R.drawable.back_icon_green)
+    }
+
+    fun changeSearchIconToNoActiveSearchIcon(){
+        var searchIcon=binding.searchIcon
+        searchIcon.setImageResource(R.drawable.ic_baseline_menu_24)
+    }
+
+
+
+    fun initialiseAnimation(){
+        prepareRotateIconSearchAnimation()
+        prepareResizeIconSearchAnimation()
+    }
+
+    private lateinit var rotateAnimation:ObjectAnimator
+    private lateinit var rotateAnimationReverse:ObjectAnimator
+    private fun prepareRotateIconSearchAnimation(){
+        val searchIcon=binding.searchIcon
+        val animatorRotateIcon = ObjectAnimator.ofFloat(searchIcon, View.ROTATION, -180f, 0f)
+        animatorRotateIcon.duration = ANIM_DURATION_MS
+        rotateAnimation=animatorRotateIcon
+
+
+
+        val animatorRotateIconReverse = ObjectAnimator.ofFloat(searchIcon, View.ROTATION, 180f, 0f)
+        animatorRotateIconReverse.duration = ANIM_DURATION_MS
+        rotateAnimationReverse=animatorRotateIconReverse
+
+
+    }
+
+    private lateinit var scaleXAnimationScaleUo:ObjectAnimator
+    private lateinit var scaleYAnimationScaleUp:ObjectAnimator
+
+    private lateinit var scaleXAnimationScaleDown:ObjectAnimator
+    private lateinit var scaleYAnimationScaleDown:ObjectAnimator
+    private fun prepareResizeIconSearchAnimation(){
+        val searchIcon=binding.searchIcon
+        val scaleY = ObjectAnimator.ofFloat(searchIcon, "scaleY", 0f, 1.0f)
+        val scaleX = ObjectAnimator.ofFloat(searchIcon, "scaleX", 0f, 1.0f)
+        scaleX.duration=ANIM_DURATION_MS
+        scaleY.duration=ANIM_DURATION_MS
+
+        scaleXAnimationScaleUo=scaleX
+        scaleYAnimationScaleUp=scaleY
+
+
+        val scaleYDown = ObjectAnimator.ofFloat(searchIcon, "scaleY", 1f, 0f)
+        val scaleXDown = ObjectAnimator.ofFloat(searchIcon, "scaleX", 1f, 0f)
+        scaleXDown.duration=ANIM_DURATION_MS
+        scaleYDown.duration=ANIM_DURATION_MS
+        scaleXAnimationScaleDown=scaleXDown
+        scaleYAnimationScaleDown=scaleYDown
+
+
+    }
+
+    private fun runOpenSearchPanelAnimation(){
+
+        val ALFA_BACGROUND_WHEN_SHOW_SEARCH_VIEW_PERCENTAGE=40
+
+        hideApplicationNavBar()
+
+        binding.root.setBackgroundColor(Color.GRAY)
+        binding.root.background.alpha=ALFA_BACGROUND_WHEN_SHOW_SEARCH_VIEW_PERCENTAGE
+
+
+
+        rotateAnimation.doOnEnd {
+
+            changeSearchIconToActiveSearchIcon()
+            var animationSet=AnimatorSet()
+            animationSet.playTogether(scaleXAnimationScaleUo,scaleYAnimationScaleUp)
+            animationSet.start()
+
         }
 
-        binding.root.getViewTreeObserver().addOnGlobalLayoutListener(keyboardLayoutListener);
+        val animationSet = AnimatorSet()
+        animationSet.playTogether(scaleYAnimationScaleDown, scaleXAnimationScaleDown,rotateAnimation)
+        animationSet.start()
+    }
 
-    }*/
-    fun closeSearchAfterClickIcon(){
+    private fun actionWhenSearchPanelClickIcon(){
         val searchIcon=binding.searchIcon
 
-        val ANIM_DURATION_MS=800L
+
         searchIcon.setOnClickListener {
 
-Log.e("klaw",isShowKeyboard.toString())
             if(isShowKeyboard){
             hideKeyboard()
             binding.searchEditText.clearFocus()
-            searchIcon.setImageResource(R.drawable.back_icon_green)
-            val animationSet2 = AnimatorSet()
-            val scaleY = ObjectAnimator.ofFloat(searchIcon, "scaleY", 1.5f, 0f)
-            val scaleX = ObjectAnimator.ofFloat(searchIcon, "scaleX", 1.5f, 0f)
+            changeSearchIconToActiveSearchIcon()
 
-
-
-            scaleX.duration=ANIM_DURATION_MS
-            scaleY.duration=ANIM_DURATION_MS
-
-
-            animationSet2.playTogether(scaleX, scaleY)
-            animationSet2.start()
-
-
-
-
-
-            scaleX.doOnEnd {
-
-                val animationSet2 = AnimatorSet()
-                val scaleY = ObjectAnimator.ofFloat(searchIcon, "scaleY", 0f, 1f)
-                val scaleX = ObjectAnimator.ofFloat(searchIcon, "scaleX", 0f, 1f)
-
-
-
-                scaleX.duration=ANIM_DURATION_MS
-                scaleY.duration=ANIM_DURATION_MS
-
-
-                animationSet2.playTogether(scaleX, scaleY)
-                animationSet2.start()
-
-
-                searchIcon.setImageResource(R.drawable.ic_baseline_menu_24)
-                val animatorRotateIcon = ObjectAnimator.ofFloat(searchIcon, View.ROTATION, 180f, 0f)
-                animatorRotateIcon.duration = ANIM_DURATION_MS
-                animatorRotateIcon.start()
-            }
         }else{
             binding.searchEditText.requestFocus()
-                showKeyboard()
+            showKeyboard()
 
         }}
     }
@@ -221,31 +237,30 @@ Log.e("klaw",isShowKeyboard.toString())
 
     override fun onStart() {
         super.onStart()
-        xD()
+        addListenerToKeyboard()
+
     }
 
     private var mLastContentHeight = 0
-    val keyboardLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
-
+    private val keyboardLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+    val KEYBOARD_EXPECT_AREA=100
 
         try{//to jest kurna zajebiste :D
 
             val currentContentHeight: Int =
-                requireActivity().findViewById<View>(Window.ID_ANDROID_CONTENT).getHeight()
-            if (mLastContentHeight > currentContentHeight + 100) {
-                Log.e("animacje", "onGlobalLayout: Keyboard is open")
+                requireActivity().findViewById<View>(Window.ID_ANDROID_CONTENT).height
+            if (mLastContentHeight > currentContentHeight + KEYBOARD_EXPECT_AREA) {
                 isShowKeyboard=true
                 mLastContentHeight = currentContentHeight
-            } else if (currentContentHeight > mLastContentHeight + 100) {
-                Log.e("animacje", "close")
+            } else if (currentContentHeight > mLastContentHeight + KEYBOARD_EXPECT_AREA) {
                 mLastContentHeight = currentContentHeight
+                isShowKeyboard=false
 
-isShowKeyboard=false
-                val editTxt=requireActivity().findViewById<EditText>(R.id.search_edit_text)
+
+
+                val editTxt=binding.searchEditText
                 if(editTxt !=null){
                     editTxt.clearFocus()
-                }else{
-                    Log.e("czy","null")
                 }
 
             }
@@ -257,137 +272,54 @@ isShowKeyboard=false
 
 
     }
-    fun xD(){
-
-
-
-        requireActivity()?.findViewById<BottomNavigationView>(R.id.nav_view).getViewTreeObserver().addOnGlobalLayoutListener(keyboardLayoutListener);
+    private fun addListenerToKeyboard(){
+        requireActivity()?.findViewById<BottomNavigationView>(R.id.nav_view).viewTreeObserver.addOnGlobalLayoutListener(keyboardLayoutListener);
 
     }
 
 
 
+    private fun runCloseSearchPanelAnimation(){
+        showApplicationNavBar()
+        hideKeyboard()
+        binding.searchEditText.clearFocus()
+        changeSearchIconToActiveSearchIcon()
+
+
+        val animationSet = AnimatorSet()
+        animationSet.playTogether(scaleYAnimationScaleDown, scaleXAnimationScaleDown)
+        animationSet.start()
+
+
+        scaleYAnimationScaleDown.doOnEnd {
+
+            var animationSet=AnimatorSet()
+            animationSet.playTogether(scaleXAnimationScaleUo,scaleYAnimationScaleUp)
+            animationSet.start()
+            changeSearchIconToNoActiveSearchIcon()
+            rotateAnimationReverse.start()
+        }
+
+    }
+
+
     fun addAnimIconSearchWhenUserFocusSearchBar(){
-        var searchIcon=binding.searchIcon
+
         var searchEditText=binding.searchEditText
 
-        val ANIM_DURATION_MS=800L
+
         searchEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
 
-                hideApplicationBar()
-
-                binding.root.setBackgroundColor(Color.GRAY)
-                binding.root.background.alpha=40
-
-                val animatorRotateIcon = ObjectAnimator.ofFloat(searchIcon, View.ROTATION, -180f, 0f)
-                animatorRotateIcon.duration = ANIM_DURATION_MS
-
-
-                animatorRotateIcon.doOnEnd {
-                    searchIcon.scaleX=1.0f
-                    searchIcon.scaleY=1f
-
-                    searchIcon.setImageResource(R.drawable.back_icon_green)
-                    val animationSet = AnimatorSet()
-                    val scaleY = ObjectAnimator.ofFloat(searchIcon, "scaleY", 0f, 1.5f)
-                    val scaleX = ObjectAnimator.ofFloat(searchIcon, "scaleX", 0f, 1.5f)
-
-
-
-                    scaleX.duration=ANIM_DURATION_MS
-                    scaleY.duration=ANIM_DURATION_MS
-
-
-
-
-
-                    animationSet.playTogether(scaleX, scaleY)
-                    animationSet.start()
-
-
-                }
-
-
-
-                val animationSet = AnimatorSet()
-
-                val animScaleY = ObjectAnimator.ofFloat(searchIcon, "scaleY", 1f, 0f)
-                val animScaleX = ObjectAnimator.ofFloat(searchIcon, "scaleX", 1f, 0f)
-
-
-
-                animScaleX.duration=ANIM_DURATION_MS
-                animScaleY.duration=ANIM_DURATION_MS
-                animationSet.playTogether(animScaleX, animScaleY,animatorRotateIcon)
-                animationSet.start()
-
-
+                runOpenSearchPanelAnimation()
 
             } else {
 
-
-showApplicationBar()
-                val searchIcon=binding.searchIcon
-
-                val ANIM_DURATION_MS=800L
-
-                    hideKeyboard()
-                    binding.searchEditText.clearFocus()
-                    searchIcon.setImageResource(R.drawable.back_icon_green)
-                    val animationSet2 = AnimatorSet()
-                    val scaleY = ObjectAnimator.ofFloat(searchIcon, "scaleY", 1.5f, 0f)
-                    val scaleX = ObjectAnimator.ofFloat(searchIcon, "scaleX", 1.5f, 0f)
-
-
-
-                    scaleX.duration=ANIM_DURATION_MS
-                    scaleY.duration=ANIM_DURATION_MS
-
-
-                    animationSet2.playTogether(scaleX, scaleY)
-                    animationSet2.start()
-
-
-
-
-
-                    scaleX.doOnEnd {
-
-                        val animationSet2 = AnimatorSet()
-                        val scaleY = ObjectAnimator.ofFloat(searchIcon, "scaleY", 0f, 1f)
-                        val scaleX = ObjectAnimator.ofFloat(searchIcon, "scaleX", 0f, 1f)
-
-
-
-                        scaleX.duration=ANIM_DURATION_MS
-                        scaleY.duration=ANIM_DURATION_MS
-
-
-                        animationSet2.playTogether(scaleX, scaleY)
-                        animationSet2.start()
-
-
-                        searchIcon.setImageResource(R.drawable.ic_baseline_menu_24)
-                        val animatorRotateIcon = ObjectAnimator.ofFloat(searchIcon, View.ROTATION, 180f, 0f)
-                        animatorRotateIcon.duration = ANIM_DURATION_MS
-                        animatorRotateIcon.start()
-                    }
-
-
-
-
-
-
+                runCloseSearchPanelAnimation()
 
             }
         }
 
-
-        searchIcon.setOnClickListener {
-
-
-        }
 
 
     }
