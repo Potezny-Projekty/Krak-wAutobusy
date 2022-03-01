@@ -1,16 +1,20 @@
 package com.example.krakowautobusy.ui
 
+import AdapterListSearchPanel
+import LineBusData
+import Vehicle
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.core.animation.doOnEnd
 import androidx.fragment.app.Fragment
+
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.FragmentSearchViewBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -65,7 +69,7 @@ class SearchViewFragment : Fragment() {
     }
 
 
-    fun allowAccessKeyboard(){
+    private fun allowAccessKeyboard(){
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
     }
 
@@ -84,6 +88,18 @@ class SearchViewFragment : Fragment() {
 
 
 
+    }
+
+
+
+    @SuppressLint("SuspiciousIndentation")
+    fun addDataToSearchView(){
+      var  dataModels = ArrayList<LineBusData>()
+        dataModels.add(LineBusData(1,Vehicle.BUS,136,"start","stop",true))
+
+      val  adapter = AdapterListSearchPanel(dataModels,requireContext())
+
+        binding.searchList  .setAdapter(adapter)
     }
 
 
@@ -124,26 +140,26 @@ class SearchViewFragment : Fragment() {
     }
     private fun Context.showKeyboard(view: View) {
         val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED,0)
     }
 
 
 
 
 
-    fun changeSearchIconToActiveSearchIcon(){
-        var searchIcon=binding.searchIcon
+    private fun changeSearchIconToActiveSearchIcon(){
+        val searchIcon=binding.searchIcon
         searchIcon.setImageResource(R.drawable.back_icon_green)
     }
 
-    fun changeSearchIconToNoActiveSearchIcon(){
-        var searchIcon=binding.searchIcon
+    private fun changeSearchIconToNoActiveSearchIcon(){
+        val searchIcon=binding.searchIcon
         searchIcon.setImageResource(R.drawable.ic_baseline_menu_24)
     }
 
 
 
-    fun initialiseAnimation(){
+    private fun initialiseAnimation(){
         prepareRotateIconSearchAnimation()
         prepareResizeIconSearchAnimation()
     }
@@ -205,7 +221,7 @@ class SearchViewFragment : Fragment() {
         rotateAnimation.doOnEnd {
 
             changeSearchIconToActiveSearchIcon()
-            var animationSet=AnimatorSet()
+            val animationSet=AnimatorSet()
             animationSet.playTogether(scaleXAnimationScaleUo,scaleYAnimationScaleUp)
             animationSet.start()
 
@@ -225,7 +241,7 @@ class SearchViewFragment : Fragment() {
             if(isShowKeyboard){
             hideKeyboard()
             binding.searchEditText.clearFocus()
-            changeSearchIconToActiveSearchIcon()
+          //  changeSearchIconToActiveSearchIcon()
 
         }else{
             binding.searchEditText.requestFocus()
@@ -293,9 +309,9 @@ class SearchViewFragment : Fragment() {
 
         scaleYAnimationScaleDown.doOnEnd {
 
-            var animationSet=AnimatorSet()
-            animationSet.playTogether(scaleXAnimationScaleUo,scaleYAnimationScaleUp)
-            animationSet.start()
+            val animationSetEnd=AnimatorSet()
+            animationSetEnd.playTogether(scaleXAnimationScaleUo,scaleYAnimationScaleUp)
+            animationSetEnd.start()
             changeSearchIconToNoActiveSearchIcon()
             rotateAnimationReverse.start()
         }
@@ -303,15 +319,16 @@ class SearchViewFragment : Fragment() {
     }
 
 
-    fun addAnimIconSearchWhenUserFocusSearchBar(){
+    private fun addAnimIconSearchWhenUserFocusSearchBar(){
 
-        var searchEditText=binding.searchEditText
+        val searchEditText=binding.searchEditText
 
 
         searchEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
 
                 runOpenSearchPanelAnimation()
+                addDataToSearchView()//skasuj to xD
 
             } else {
 
