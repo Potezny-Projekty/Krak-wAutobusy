@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+android:orientation="vertical"
+    android:layout_gravity="bottom"
+    tools:context=".ui.SearchViewFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:background="@drawable/squre_small_radius_thin"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_alignParentTop="true"
+    android:id="@+id/search_bar4"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="10"
+
+        android:padding="13dp"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_weight="2"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:id="@+id/search_icon"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_baseline_menu_24"
+            android:layout_height="wrap_content"></ImageView>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:hint="Znajdź linię"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/search_edit_text"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_weight="6"
+
+            android:background="@android:color/transparent"
+            android:layout_height="wrap_content"></EditText>
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="0dp"
+        android:id="@+id/all"
+        android:layout_below="@+id/search_bar4"
+        android:background="@drawable/squre_small_radius_thin"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
+
+
+</RelativeLayout>

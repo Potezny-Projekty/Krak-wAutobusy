@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_map">
+
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.example.krakowautobusy.ui.map.MapFragment"
+        android:label="@string/title_map"
+        tools:layout="@layout/fragment_map" >
+        <action
+                android:id="@+id/action_navigation_map_to_navigation_favorite"
+                app:destination="@id/navigation_favorite" />
+        <action
+
+                android:id="@+id/action_navigation_map_to_detailsFragment"
+                app:destination="@id/navigation_details" />
+
+        <action
+            android:id="@+id/action_navigation_map_to_searchview"
+            app:destination="@id/search_view" />
+<action
+                android:id="@+id/action_navigation_map_to_navigation_loading_page"
+                app:destination="@id/navigation_loading_page" />
+
+        <action
+                android:id="@+id/action_navigation_map_to_navigation_no_internet"
+                app:destination="@id/navigation_no_internet" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_favorite"
+        android:name="com.example.krakowautobusy.ui.favourite.FavoriteFragment"
+        android:label="@string/title_favorite"
+        tools:layout="@layout/fragment_favorite" />
+    <fragment
+            android:id="@+id/navigation_details"
+            android:name="com.example.krakowautobusy.ui.details.DetailsFragment"
+
+            android:label="DetailsFragment" />
+
+
+    <fragment
+        android:id="@+id/search_view"
+        android:name="com.example.krakowautobusy.ui.SearchViewFragment"
+        android:label="SearchView" />
+
+    <fragment
+            android:id="@+id/navigation_no_internet"
+            android:name="com.example.krakowautobusy.ui.noInternet.NoInternetFragment"
+            android:label="fragment_no_internet"
+            tools:layout="@layout/fragment_no_internet" />
+    <fragment
+            android:id="@+id/navigation_loading_page"
+            android:name="com.example.krakowautobusy.ui.loadingPage.LoadingPageFragment"
+            android:label="fragment_loading_page"
+            tools:layout="@layout/fragment_loading_page" />
+
+
+</navigation>

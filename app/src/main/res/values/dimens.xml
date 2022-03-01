@@ -1,0 +1,11 @@
+<resources>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="directions_bar_font_size">7sp</dimen>
+    <dimen name="search_result_field_font_size">16sp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+
+    <integer name="toast_x_offset_position">0</integer>
+    <integer name="toast_y_offset_position">285</integer>
+</resources>
