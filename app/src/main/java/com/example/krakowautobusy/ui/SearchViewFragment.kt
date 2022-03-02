@@ -1,11 +1,10 @@
 package com.example.krakowautobusy.ui
 
-import AdapterListSearchPanel
+
 import LineBusData
 import Vehicle
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
@@ -16,6 +15,7 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.core.animation.doOnEnd
 import androidx.fragment.app.Fragment
+import com.example.krakowautobusy.AdapterListSearchPanel
 
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.FragmentSearchViewBinding
@@ -55,7 +55,7 @@ class SearchViewFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentSearchViewBinding.inflate(inflater, container, false)
 
@@ -99,23 +99,23 @@ class SearchViewFragment : Fragment() {
 
 
 
-    @SuppressLint("SuspiciousIndentation")
-    fun addDataToSearchView(){
-      var  dataModels = ArrayList<LineBusData>()
-        dataModels.add(LineBusData(1,Vehicle.BUS,537,"Witkowice","Dworzec Główny Wschód",true))
-        dataModels.add(LineBusData(2,Vehicle.BUS,112,"Os,Podwawelskie","Tyniec Kamieniołom",false))
-        dataModels.add(LineBusData(3,Vehicle.TRAM,5,"Wzgórze Krzesłowickie","Krowodrza Górka",true))
-        dataModels.add(LineBusData(4,Vehicle.TRAM,17,"Czerwone Maki P+R","Dworzec Towarowy",false))
+
+    private fun addDataToSearchView(){
+      val dataModels = ArrayList<LineBusData>()
+      dataModels.add(LineBusData(1,Vehicle.BUS,537,"Witkowice","Dworzec Główny Wschód",true))
+      dataModels.add(LineBusData(2,Vehicle.BUS,112,"Os,Podwawelskie","Tyniec Kamieniołom",false))
+      dataModels.add(LineBusData(3,Vehicle.TRAM,5,"Wzgórze Krzesłowickie","Krowodrza Górka",true))
+      dataModels.add(LineBusData(4,Vehicle.TRAM,17,"Czerwone Maki P+R","Dworzec Towarowy",false))
 
       val  adapter = AdapterListSearchPanel(dataModels,requireContext())
 
-        binding.searchList  .setAdapter(adapter)
+        binding.searchList.adapter = adapter
     }
 
 
 
 
-    private fun getAccessToNavView(){
+    private fun getAccessToViewFromOtherFragmentOrActivity(){
         if(bottomNavView == null){
             bottomNavView=requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
             findMyLocationOnMap_FAB=requireActivity().findViewById<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>(R.id.extended_fab2)
@@ -125,16 +125,15 @@ class SearchViewFragment : Fragment() {
     }
 
     private fun hideApplicationNavBar(){
-        getAccessToNavView()
+        getAccessToViewFromOtherFragmentOrActivity()
         bottomNavView?.visibility=View.GONE
         findMyLocationOnMap_FAB?.visibility=View.GONE
         showAllOrFavoriteBusOnMap_FAB?.visibility=View.GONE
     }
 
     private fun showApplicationNavBar(){
-        getAccessToNavView()
+        getAccessToViewFromOtherFragmentOrActivity()
         bottomNavView?.visibility=View.VISIBLE
-
         findMyLocationOnMap_FAB?.visibility=View.VISIBLE
         showAllOrFavoriteBusOnMap_FAB?.visibility=View.VISIBLE
 
@@ -308,7 +307,7 @@ class SearchViewFragment : Fragment() {
 
     }
     private fun addListenerToKeyboard(){
-        requireActivity()?.findViewById<BottomNavigationView>(R.id.nav_view).viewTreeObserver.addOnGlobalLayoutListener(keyboardLayoutListener);
+        requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).viewTreeObserver.addOnGlobalLayoutListener(keyboardLayoutListener);
 
     }
 
