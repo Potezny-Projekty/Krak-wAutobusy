@@ -5,6 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:id="@+id/search_result_field"
 
        >
@@ -57,7 +58,8 @@
 
         <LinearLayout
                 android:id="@+id/lineNumberBox"
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
+            android:gravity="center"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_rect_shape_bus"
                 android:orientation="vertical"

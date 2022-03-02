@@ -10,6 +10,8 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.core.animation.doOnEnd
@@ -38,6 +40,9 @@ class SearchViewFragment : Fragment() {
     private var _binding: FragmentSearchViewBinding? = null
     private var isShowKeyboard=false
     private  var bottomNavView:BottomNavigationView?=null
+
+    private var showAllOrFavoriteBusOnMap_FAB:com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton?=null
+    private var findMyLocationOnMap_FAB:com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton?=null
     val ANIM_DURATION_MS=800L
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +89,9 @@ class SearchViewFragment : Fragment() {
         initialiseAnimation()
 
 
-
+        hideListOption()
+        addWatchListenerToSearch()
+        addCallbackToDeleteIconDeleteText()
 
 
 
@@ -95,7 +102,10 @@ class SearchViewFragment : Fragment() {
     @SuppressLint("SuspiciousIndentation")
     fun addDataToSearchView(){
       var  dataModels = ArrayList<LineBusData>()
-        dataModels.add(LineBusData(1,Vehicle.BUS,136,"start","stop",true))
+        dataModels.add(LineBusData(1,Vehicle.BUS,537,"Witkowice","Dworzec Główny Wschód",true))
+        dataModels.add(LineBusData(2,Vehicle.BUS,112,"Os,Podwawelskie","Tyniec Kamieniołom",false))
+        dataModels.add(LineBusData(3,Vehicle.TRAM,5,"Wzgórze Krzesłowickie","Krowodrza Górka",true))
+        dataModels.add(LineBusData(4,Vehicle.TRAM,17,"Czerwone Maki P+R","Dworzec Towarowy",false))
 
       val  adapter = AdapterListSearchPanel(dataModels,requireContext())
 
@@ -108,6 +118,8 @@ class SearchViewFragment : Fragment() {
     private fun getAccessToNavView(){
         if(bottomNavView == null){
             bottomNavView=requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+            findMyLocationOnMap_FAB=requireActivity().findViewById<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>(R.id.extended_fab2)
+            showAllOrFavoriteBusOnMap_FAB=requireActivity().findViewById<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>(R.id.Map_showAllVehiclesOrFavorite)
         }
 
     }
@@ -115,11 +127,16 @@ class SearchViewFragment : Fragment() {
     private fun hideApplicationNavBar(){
         getAccessToNavView()
         bottomNavView?.visibility=View.GONE
+        findMyLocationOnMap_FAB?.visibility=View.GONE
+        showAllOrFavoriteBusOnMap_FAB?.visibility=View.GONE
     }
 
     private fun showApplicationNavBar(){
         getAccessToNavView()
         bottomNavView?.visibility=View.VISIBLE
+
+        findMyLocationOnMap_FAB?.visibility=View.VISIBLE
+        showAllOrFavoriteBusOnMap_FAB?.visibility=View.VISIBLE
 
     }
 
@@ -188,8 +205,8 @@ class SearchViewFragment : Fragment() {
     private lateinit var scaleYAnimationScaleDown:ObjectAnimator
     private fun prepareResizeIconSearchAnimation(){
         val searchIcon=binding.searchIcon
-        val scaleY = ObjectAnimator.ofFloat(searchIcon, "scaleY", 0f, 1.0f)
-        val scaleX = ObjectAnimator.ofFloat(searchIcon, "scaleX", 0f, 1.0f)
+        val scaleY = ObjectAnimator.ofFloat(searchIcon, "scaleY", 0f, 1.5f)
+        val scaleX = ObjectAnimator.ofFloat(searchIcon, "scaleX", 0f, 1.5f)
         scaleX.duration=ANIM_DURATION_MS
         scaleY.duration=ANIM_DURATION_MS
 
@@ -197,8 +214,8 @@ class SearchViewFragment : Fragment() {
         scaleYAnimationScaleUp=scaleY
 
 
-        val scaleYDown = ObjectAnimator.ofFloat(searchIcon, "scaleY", 1f, 0f)
-        val scaleXDown = ObjectAnimator.ofFloat(searchIcon, "scaleX", 1f, 0f)
+        val scaleYDown = ObjectAnimator.ofFloat(searchIcon, "scaleY", 1.5f, 0f)
+        val scaleXDown = ObjectAnimator.ofFloat(searchIcon, "scaleX", 1.5f, 0f)
         scaleXDown.duration=ANIM_DURATION_MS
         scaleYDown.duration=ANIM_DURATION_MS
         scaleXAnimationScaleDown=scaleXDown
@@ -241,11 +258,13 @@ class SearchViewFragment : Fragment() {
             if(isShowKeyboard){
             hideKeyboard()
             binding.searchEditText.clearFocus()
+
           //  changeSearchIconToActiveSearchIcon()
 
         }else{
             binding.searchEditText.requestFocus()
             showKeyboard()
+
 
         }}
     }
@@ -295,9 +314,19 @@ class SearchViewFragment : Fragment() {
 
 
 
+    private fun hideListOption(){
+        binding.allSearchPane.visibility=View.GONE
+    }
+
+    private fun showListOption(){
+        binding.allSearchPane.visibility=View.VISIBLE
+    }
+
+
     private fun runCloseSearchPanelAnimation(){
         showApplicationNavBar()
         hideKeyboard()
+
         binding.searchEditText.clearFocus()
         changeSearchIconToActiveSearchIcon()
 
@@ -319,20 +348,66 @@ class SearchViewFragment : Fragment() {
     }
 
 
+
+    private fun showDeleteTextIconWhenCharAboveOrHide(){
+        val deleteIcon=binding.deleteUserWriteTextIcon
+        if(binding.searchEditText.text.toString().length>0){
+
+            deleteIcon.visibility=View.VISIBLE
+        }else{
+            deleteIcon.visibility=View.INVISIBLE
+        }
+
+
+    }
+
+    private fun addWatchListenerToSearch(){
+        val searchEditText=binding.searchEditText
+        searchEditText.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {}
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+                showDeleteTextIconWhenCharAboveOrHide()
+            }
+        })
+    }
+
+
+    private fun addCallbackToDeleteIconDeleteText(){
+        val deleteIcon=binding.deleteUserWriteTextIcon
+        val searchEditText=binding.searchEditText
+        deleteIcon.setOnClickListener {
+            searchEditText.setText(  "")
+        }
+    }
+
+
     private fun addAnimIconSearchWhenUserFocusSearchBar(){
 
         val searchEditText=binding.searchEditText
 
 
         searchEditText.setOnFocusChangeListener { _, hasFocus ->
+
+
             if (hasFocus) {
 
                 runOpenSearchPanelAnimation()
                 addDataToSearchView()//skasuj to xD
+                showListOption()
+
+
 
             } else {
 
                 runCloseSearchPanelAnimation()
+                hideListOption()
 
             }
         }
