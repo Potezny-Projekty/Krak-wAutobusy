@@ -27,6 +27,7 @@ class AdapterListSearchPanel(data: ArrayList<LineBusData>, context: Context) :
         var stopBusStation:TextView?=null
         var lineNumberBox:LinearLayout?=null
         var isFavouriteIcon:ImageView?=null
+        var idLine:Int?=null
 
     }
 
@@ -72,6 +73,7 @@ class AdapterListSearchPanel(data: ArrayList<LineBusData>, context: Context) :
 
         viewHolder.startBusStation!!.text= dataModel.startBusStop
         viewHolder.stopBusStation!!.text= dataModel.endBusStop
+        viewHolder.idLine=dataModel.numberLine
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

@@ -23,6 +23,8 @@ import com.example.krakowautobusy.databinding.ActivityMainBinding
 
 import com.example.krakowautobusy.database.Database
 import com.example.krakowautobusy.database.DatabaseInterface
+import com.example.krakowautobusy.database.StaticDatabaseVehicleType
+import com.example.krakowautobusy.database.StaticFillDatabase
 import com.example.krakowautobusy.ui.SearchViewFragment
 
 
@@ -68,8 +70,12 @@ class MainActivity : AppCompatActivity() {
 
         hideAppTitleBar()
 
+        val x=Database.getInstance(this)
+        val aa=StaticFillDatabase(x,StaticDatabaseVehicleType())
+        aa.fill_VehicleTypeTable()
+        Log.e("coś","zaczynam")
 
-        val databaseInterface = DatabaseInterface(Database.getInstance(this))
+     //  val databaseInterface = DatabaseInterface(Database.getInstance(this))//bylo
 
 //        Log.i("MainActivity",databaseInterface.addLine("TEST1","TEST2",20).toString())
 //        Log.i("MainActivity",databaseInterface.getLine("1"))

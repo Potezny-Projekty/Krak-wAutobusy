@@ -47,6 +47,7 @@ class Database(context: Context) :
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
+        Log.e("coś","tworze")
 
         val createVehicleTypeTable = ("""CREATE TABLE  $TABLE_VEHICLE_TYPE (
                 $KEY_ID_VEHICLE_TYPE INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -96,6 +97,14 @@ class Database(context: Context) :
                 FOREIGN KEY($KEY_ID_BUS_STOP)
                 REFERENCES $TABLE_BUS_STOP($KEY_ID_BUS_STOP))""")
         db?.execSQL(createLineBusStopListTable)
+
+
+
+     //   val fill:FillDatabase=StaticFillDatabase(instance!!,StaticDatabaseVehicleType())
+     //   fill.fill_VehicleTypeTable()
+     //   Log.e("coś","x")
+
+
 
     }
 

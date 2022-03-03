@@ -3,8 +3,7 @@ package com.example.krakowautobusy.ui
 
 import LineBusData
 import Vehicle
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
+import android.animation.*
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
@@ -12,11 +11,11 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import androidx.core.animation.doOnEnd
 import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.AdapterListSearchPanel
-
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.FragmentSearchViewBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -80,6 +79,61 @@ class SearchViewFragment : Fragment() {
 
 
 
+    private fun showListSearchViewAnimation(){
+        val view=binding.allSearchPane
+
+        view.pivotX = 0f;
+        view.pivotY = 0f
+
+        view.animate()
+            .scaleY(1f)
+            .setInterpolator(AccelerateDecelerateInterpolator()).duration = ANIM_DURATION_MS/2
+   /*     searchList!!.visibility = View.VISIBLE
+
+        val anim = ValueAnimator.ofInt(searchList.getMeasuredHeight(), -100)
+        anim.addUpdateListener { valueAnimator ->
+            val `val` = valueAnimator.animatedValue as Int
+            val layoutParams: ViewGroup.LayoutParams = searchList.getLayoutParams()
+            layoutParams.height = `val`
+            searchList.setLayoutParams(layoutParams)
+        }
+        anim.duration = 800
+        anim.start()
+
+*/
+
+     //   searchList!!.visibility = View.VISIBLE
+      //  searchList.setAlpha(0.0f);
+
+
+      //  searchList.animate()
+     //       .translationY(searchList.getHeight().toFloat())
+     //       .alpha(1.0f)
+     //       .start()
+    }
+
+    private fun hideListSearchViewAnimation(){
+        val view=binding.allSearchPane
+        view.pivotX = 0f;
+        view.pivotY = 0f
+
+        view.animate()
+            .scaleY(0f)
+            .setInterpolator(AccelerateDecelerateInterpolator()).duration = ANIM_DURATION_MS/2
+
+/*
+        val view=binding.allSearchPane
+        view!!.animate()
+            .translationY(0f)
+            .alpha(0.0f)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    super.onAnimationEnd(animation)
+                    view!!.visibility = View.GONE
+                }
+            })*/
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -136,6 +190,8 @@ class SearchViewFragment : Fragment() {
         bottomNavView?.visibility=View.VISIBLE
         findMyLocationOnMap_FAB?.visibility=View.VISIBLE
         showAllOrFavoriteBusOnMap_FAB?.visibility=View.VISIBLE
+
+
 
     }
 
@@ -314,11 +370,13 @@ class SearchViewFragment : Fragment() {
 
 
     private fun hideListOption(){
-        binding.allSearchPane.visibility=View.GONE
+    hideListSearchViewAnimation()
+    //  binding.allSearchPane.visibility=View.GONE
     }
 
     private fun showListOption(){
-        binding.allSearchPane.visibility=View.VISIBLE
+      //  binding.allSearchPane.visibility=View.VISIBLE
+        showListSearchViewAnimation()
     }
 
 
