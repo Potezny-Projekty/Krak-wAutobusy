@@ -82,7 +82,7 @@ class SearchViewFragment : Fragment() {
     private fun showListSearchViewAnimation(){
         val view=binding.allSearchPane
 
-        view.pivotX = 0f;
+        view.pivotX = 0f
         view.pivotY = 0f
 
         view.animate()
