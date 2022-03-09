@@ -4,28 +4,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 
-import android.view.ViewTreeObserver
-import android.view.Window
-import android.widget.EditText
-
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavDestination
 
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.krakowautobusy.database.*
 import com.example.krakowautobusy.databinding.ActivityMainBinding
-
-import com.example.krakowautobusy.database.Database
-import com.example.krakowautobusy.database.DatabaseInterface
-import com.example.krakowautobusy.database.StaticDatabaseVehicleType
-import com.example.krakowautobusy.database.StaticFillDatabase
-import com.example.krakowautobusy.ui.SearchViewFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -71,8 +61,10 @@ class MainActivity : AppCompatActivity() {
         hideAppTitleBar()
 
         val x=Database.getInstance(this)
-        val aa=StaticFillDatabase(x,StaticDatabaseVehicleType())
+        val aa=StaticFillDatabaseData(x,StaticInsert_db_VehicleType(),StaticInsert_db_BusStop(),StaticInsert_db_Line())
         aa.fill_VehicleTypeTable()
+        aa.fill_BusStopTable()
+        aa.fill_LineTable()
         Log.e("coś","zaczynam")
 
      //  val databaseInterface = DatabaseInterface(Database.getInstance(this))//bylo

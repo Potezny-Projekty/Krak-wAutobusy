@@ -30,6 +30,10 @@ class Database(context: Context) :
     val KEY_LONGTITUDE = "longtitude"
     val KEY_CONSECUTIVE_NUMBER = "consecutiveNumber"
     val KEY_VEHICLE_TYPE = "vehicleType"
+    val KEY_KIND_OF_BUS_STOP="kinOfBusStop"
+
+    val KEY_BUS_STOP_OTHERID="api_id"
+    val KEY_BUS_STOP_SHORT_NAME="api_short_name"
 
     companion object {
 
@@ -57,8 +61,13 @@ class Database(context: Context) :
         val createBusStopTable = ("""CREATE TABLE  $TABLE_BUS_STOP  (
                 $KEY_ID_BUS_STOP  INTEGER PRIMARY KEY AUTOINCREMENT, 
                 $KEY_NAME_BUS_STOP TEXT NOT NULL,
-                $KEY_LONGTITUDE TEXT NOT NULL,
-                $KEY_LATTITUDE TEXT NOT NULL)""")
+                $KEY_LONGTITUDE INT NOT NULL,
+                $KEY_LATTITUDE INT NOT NULL,
+                $KEY_BUS_STOP_SHORT_NAME TEXT NOT NULL,
+                $KEY_KIND_OF_BUS_STOP INT NOT NULL,
+                 FOREIGN KEY($KEY_KIND_OF_BUS_STOP)
+                REFERENCES $TABLE_VEHICLE_TYPE($KEY_ID_VEHICLE_TYPE)
+                )""")
         Log.i("Database", createBusStopTable)
         db?.execSQL(createBusStopTable)
 
