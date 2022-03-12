@@ -14,7 +14,9 @@ import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.MapActivityBinding
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
@@ -36,19 +38,39 @@ class CreateMapFragment : Fragment() {
 
 
         val mapController = map.controller
-        mapController.setZoom(18.0)
-        mapController.setZoom(18.0)
-        val geoPoint = GeoPoint( 50.05988121664015, 19.932250964885597);
-        val startPoint = geoPoint
-        val point2 = GeoPoint(50.06989620072897, 19.85916484905047)
+        // ukrycie przycisków + - zoomujących mapę
+        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
 
-        Log.i("Mapa", geoPoint.altitude.toString())
-        Log.i("Mapa", geoPoint.latitude.toString())
-        Log.i("Mapa", geoPoint.longitude.toString())
-        mapController.setCenter(startPoint);
+        // odblokowanie zoomowania
+        map.setMultiTouchControls(true)
+
+        // ograniczenie zakresu do którego można przesunąć mapę
+        val startingPoint2 = GeoPoint(50.13271431317449, 19.709937084370207);
+        val startingPoint3 = GeoPoint(49.93777520783109, 19.760309614486303);
+        val startingPoint4 = GeoPoint(50.10687584147389, 20.167067795173768);
+        val startingPoint5 = GeoPoint(49.99690671441174, 20.12047320481638);
+
+
+        val arrayList: ArrayList<GeoPoint> = ArrayList()
+        arrayList.add(startingPoint2)
+        arrayList.add(startingPoint3)
+        arrayList.add(startingPoint4)
+        arrayList.add(startingPoint5)
+
+        val boundingBox =  BoundingBox.fromGeoPoints(arrayList)
+
+        map.setScrollableAreaLimitDouble(boundingBox)
+        map.minZoomLevel = 13.5
+
+        mapController.setZoom(14.0)
+
+        val startingPoint = GeoPoint(50.06173293019267, 19.937894523426294);
+
+        mapController.setCenter(startingPoint);
         val geoPoints = ArrayList<GeoPoint>()
         val line = Polyline()
         line.outlinePaint.setColor(Color.CYAN)
+
         geoPoints.add(GeoPoint(50.05276388888889, 19.91520388888889))
         geoPoints.add(GeoPoint(50.05275805555555, 19.915088055555557))
         geoPoints.add(GeoPoint(50.05274611111111, 19.91496))
@@ -316,7 +338,7 @@ class CreateMapFragment : Fragment() {
         map.overlays.add(line2);
         map.invalidate()
         val marker = Marker(map)
-        marker.position = geoPoint
+        marker.position = startingPoint
         marker.icon = context?.let { ContextCompat.getDrawable(it, R.drawable.bus_icon) }
         marker.title = "Test Marker"
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
