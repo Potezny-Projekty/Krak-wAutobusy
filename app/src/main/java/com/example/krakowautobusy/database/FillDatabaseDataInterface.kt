@@ -6,6 +6,7 @@ interface FillDatabaseDataInterface {
     var insertVehicleDatabase:Insert_db_VehicleTypeInterface
     var insertBusStopDatabase:Insert_db_BusStopInterface
     var insertLineDatabase:Insert_db_LineInterface
+    var insertLineBusStopList:Insert_db_LineBusStopList
 
 
     fun fill_VehicleTypeTable(){

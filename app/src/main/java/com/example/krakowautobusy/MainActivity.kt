@@ -61,11 +61,16 @@ class MainActivity : AppCompatActivity() {
         hideAppTitleBar()
 
         val x=Database.getInstance(this)
-        val aa=StaticFillDatabaseData(x,StaticInsert_db_VehicleType(),StaticInsert_db_BusStop(),StaticInsert_db_Line())
+        val aa=StaticFillDatabaseData(x,StaticInsert_db_VehicleType(),StaticInsert_db_BusStop(),StaticInsert_db_Line(),StaticInsert_db_LineBusStopList())
         aa.fill_VehicleTypeTable()
         aa.fill_BusStopTable()
-        aa.fill_LineTable()
+    //    aa.fill_LineTable()
+    //    aa.fill_LineBusStop()
         Log.e("coś","zaczynam")
+
+        val vv=Select_db_BusStop()
+       val xx= vv.selectBusStop(x.readableDatabase,8095258289119440510L)
+        Log.e("Cotoma",xx[0].id.toString())
 
      //  val databaseInterface = DatabaseInterface(Database.getInstance(this))//bylo
 

@@ -14,5 +14,6 @@ interface Insert_db_BusStopInterface {
         val latitude:Int,
         val longitude:Int,
         val name:String,
+        val stopPointNumber:String,
         val shortName:String)
 }

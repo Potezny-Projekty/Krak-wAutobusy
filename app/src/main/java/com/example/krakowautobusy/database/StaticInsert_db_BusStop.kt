@@ -11,8 +11,10 @@ class StaticInsert_db_BusStop:Insert_db_BusStopInterface {
     val KEY_ID_BUS_STOP = "idBusStop"
     val TABLE_BUS_STOP = "busStopTable"
     val KEY_BUS_STOP_OTHERID="api_id"
-    val KEY_BUS_STOP_SHORT_NAME="api_short_name"
+
+    val KEY_BUS_STOP_SHORT_NAME="IdShortBusStop"
     val KEY_KIND_OF_BUS_STOP="kinOfBusStop"
+    val KEY_STOP_POINT_NUMBER="stopPoint"
 
     override fun insertRow(db: SQLiteDatabase, row: Insert_db_BusStopInterface.BusStopRow):Long{
         val contentValues = ContentValues()
@@ -21,6 +23,7 @@ class StaticInsert_db_BusStop:Insert_db_BusStopInterface {
         contentValues.put(KEY_LONGTITUDE,row.longitude )
         contentValues.put(KEY_ID_BUS_STOP,row.otherid )
         contentValues.put(KEY_BUS_STOP_SHORT_NAME,row.shortName )
+        contentValues.put(KEY_STOP_POINT_NUMBER,row.stopPointNumber)
 
         if(row.category==Insert_db_VehicleTypeInterface.Vehicle.BUS){
             contentValues.put(KEY_KIND_OF_BUS_STOP,1 )

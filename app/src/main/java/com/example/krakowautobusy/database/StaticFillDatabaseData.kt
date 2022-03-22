@@ -5,7 +5,8 @@ import android.database.sqlite.SQLiteDatabase
 class StaticFillDatabaseData(override var instance: Database,
                              override var insertVehicleDatabase: Insert_db_VehicleTypeInterface,
                              override var insertBusStopDatabase: Insert_db_BusStopInterface,
-                             override var insertLineDatabase: Insert_db_LineInterface
+                             override var insertLineDatabase: Insert_db_LineInterface,
+                             override var insertLineBusStopList: Insert_db_LineBusStopList
 ) :FillDatabaseDataInterface {
     private var db: SQLiteDatabase = instance.writableDatabase
 
@@ -17,11 +18,28 @@ class StaticFillDatabaseData(override var instance: Database,
         this.insertVehicleDatabase=StaticInsert_db_VehicleType()
         this.insertBusStopDatabase=StaticInsert_db_BusStop()
         this.insertLineDatabase=StaticInsert_db_Line()
+        this.insertLineBusStopList=StaticInsert_db_LineBusStopList()
 
     }
 
+    override fun fill_FavouriteTable() {
+        super.fill_FavouriteTable()
+    }
 
     override fun fill_LineBusStop() {
+
+        val listLineStop=ArrayList<Insert_db_LineBusStopList.LineRow>()
+        listLineStop.add(Insert_db_LineBusStopList.LineRow("708",922,1))
+        listLineStop.add(Insert_db_LineBusStopList.LineRow("708",922,2))
+        listLineStop.add(Insert_db_LineBusStopList.LineRow("708",2821,3))
+        listLineStop.add(Insert_db_LineBusStopList.LineRow("708",746,4))
+        listLineStop.add(Insert_db_LineBusStopList.LineRow("708",747,5))
+
+
+
+        insertLineBusStopList.insertRow(instance.writableDatabase,listLineStop[0])
+
+
         super.fill_LineBusStop()
     }
 
@@ -260,3401 +278,1304 @@ class StaticFillDatabaseData(override var instance: Database,
     }
 
 
+
+
+    fun fillBusStopTable2(){
+        val listOfBusStops=ArrayList<Insert_db_BusStopInterface.BusStopRow>()
+        
+        for (busStop in listOfBusStops){
+            insertBusStopDatabase.insertRow(instance.writableDatabase,busStop)
+        }
+    }
+
     override fun fill_BusStopTable() {
         super.fill_BusStopTable()
 
+        fillBusStopTable2()
+
         val listOfBusStops=ArrayList<Insert_db_BusStopInterface.BusStopRow>()
 
-
-
-
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242506,180355211,71525357,"Pasternik (nż)","15"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242665,180307038,71310417,"Balice Autostrada (nż)","221"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242857,180355770,72641363,"Resztówka","502"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243079,180353573,71605010,"Jasnogórska (nż)","832"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244269,180355788,72333072,"Grzegorza z Sanoka (nż)","3186"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244301,180357480,71907156,"Reduta (nż)","3192"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243331,179834882,71282750,"Rzozów Skotnica (nż)","1179"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243266,179802360,71040600,"Krzęcin Kapliczka (nż)","1098"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244598,179812594,71029293,"Krzęcin Szczęsna (nż)","3332"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244596,179648900,71166074,"Wola Radziszowska Pętla","3330"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243292,179670262,71237902,"Wola Radziszowska Centrum","1127"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243294,179653546,71191853,"Wola Radziszowska Chorzyny (nż)","1129"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243290,179665896,71296908,"Wola Radziszowska Most (nż)","1125"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243455,179674414,71251527,"Wola Radziszowska Podgaźle (nż)","1336"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243291,179676914,71272176,"Wola Radziszowska Lipki (nż)","1126"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243262,179775666,71157072,"Polanka Hallera Dwór","1093"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243263,179759880,71105400,"Grabie Polanka (nż)","1094"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243495,179740080,71061480,"Grabie Kuźnia (nż)","2492"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244599,179733348,71042652,"Grabie Pętla","3333"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244906,179758742,71165729,"Polanka Hallera Centrum","3482"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243324,179798324,71082473,"Krzęcin Cmentarz (nż)","1169"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243267,179797680,71060400,"Krzęcin Szkoła","1099"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243265,179796960,71068680,"Krzęcin Kościół","1096"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243264,179790660,71100468,"Krzęcin Sklep","1095"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243260,179795520,71200800,"Gołuchowice Jurczyce","1091"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243261,179785985,71176390,"Gołuchowice Sklep (nż)","1092"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243491,179778243,71210204,"Jurczyce Dom Ludowy","2488"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243492,179779760,71229227,"Jurczyce Szkoła (nż)","2489"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243259,179806129,71224366,"Gołuchowice","1090"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243494,179778600,71283960,"Radziszów Za Mogiłką (nż)","2491"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243493,179779533,71246289,"Jurczyce Podole (nż)","2490"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243258,179828614,71257315,"Rzozów Szkoła","1089"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243332,179803714,71294391,"Rzozów PKP (nż)","1180"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243333,179816393,71284113,"Rzozów Zagonnie (nż)","1181"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244508,180053896,70512273,"Kamień Szkoła","3279"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244691,180033649,70502245,"Kamień Remiza (nż)","3404"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244594,179880517,70663696,"Brzeźnica Dworzec","3328"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243276,179872889,70701792,"Brzeźnica Pasieka (nż)","1108"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244595,179866655,70737187,"Brzezinka Kuźnia (nż)","3329"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243393,180009138,70526531,"Rusocice Jałowce (nż)","1260"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244571,180017645,70517847,"Rusocice Stacja Paliw (nż)","3307"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244692,180017645,70517847,"Rusocice Granica (nż)","3405"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244572,179999170,70567077,"Rusocice Na Brzegu (nż)","3308"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243371,179980864,70583337,"Rusocice Skład (nż)","1229"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243367,179983289,70625918,"Rusocice Łęg (nż)","1225"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243394,179992992,70618802,"Rusocice Załęg (nż)","1261"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243372,180004068,70606764,"Rusocice Wieś","1230"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244573,179986500,70674516,"Kłokoczyn Machaczki (nż)","3309"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244570,179982560,70700457,"Kłokoczyn Szkoła (nż)","3306"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243740,179989156,70741393,"Czernichów Ratanice (nż)","2892"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243739,179983032,70766592,"Czernichów Ratanice Most (nż)","2891"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244693,180020629,70778708,"Przeginia Narodowa Bunar (nż)","3406"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244687,180042457,70767459,"Przeginia Narodowa Dwór (nż)","3400"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244694,180070480,70751343,"Przeginia Duchowna Kościół (nż)","3407"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244686,180080939,70746870,"Przeginia Duchowna Remiza","3399"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243349,180086163,70759531,"Przeginia Duchowna Szkoła (nż)","1198"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243359,180158906,70695748,"Rybna Dół (nż)","1213"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243457,180117978,70685780,"Rybna Zagórze (nż)","1341"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243467,180142911,70682925,"Rybna Dolna","1367"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243360,180123759,70721497,"Przeginia Duchowna (nż)","1214"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244811,180136716,70715172,"Rybna Ośrodek Zdrowia (nż)","3463"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244810,180149067,70715944,"Rybna Pawilon (nż)","3462"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244564,180177782,70728811,"Rybna Kościół","3299"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243733,180194597,70746492,"Rybna Szkoła (nż)","2885"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243732,180211813,70757619,"Rybna Nowy Świat Góra (nż)","2884"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243356,180221673,70764104,"Rybna Nowy Świat","1208"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244060,180233041,70771436,"Rybna Droga do Sanki (nż)","3103"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242710,180142511,71043535,"Kaszów Tyrałówka (nż)","284"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244684,179959318,71017021,"Wołowice Remiza (nż)","3397"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244984,179856237,70799198,"Jaśkowice Remiza (nż)","3535"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243279,179858384,70828594,"Jaśkowice PKP (nż)","1111"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243280,179858432,70874887,"Wielkie Drogi Trzebol (nż)","1112"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243375,179858613,70902860,"Wielkie Drogi Szkoła (nż)","1233"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244681,179953841,70835643,"Czernichów Rynek","3394"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243374,179853299,70923396,"Wielkie Drogi Ośrodek Zdrowia (nż)","1232"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243281,179847908,70961526,"Wielkie Drogi PKP (nż)","1113"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243774,179831144,71026911,"Krzęcin Pętla","2928"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244985,179851839,71000012,"Facimiech Pod Kolebą (nż)","3536"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244690,179958642,70928706,"Wołowice Niwka (nż)","3403"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243755,179959094,70968602,"Wołowice Pichonówka (nż)","2907"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243129,179951536,71020592,"Wołowice Kapliczka","909"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243738,179975699,70799501,"Czernichów Zakamycze (nż)","2890"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243368,179999991,70803528,"Czernichów Bór (nż)","1226"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244689,179971488,70866965,"Czernichów Studzienki (nż)","3402"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243352,179971447,70878679,"Czernichów Stacja Paliw (nż)","1203"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244569,179998365,70905961,"Zagacie Górka (nż)","3305"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243737,180015271,70928278,"Zagacie Witkówki (nż)","2889"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243354,179962179,70996372,"Wołowice Sklep (nż)","1205"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243116,179977361,71031664,"Wołowice Szkoła","893"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243734,180055827,70986522,"Kaszów Wyźrał (nż)","2886"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244567,180078384,71023043,"Kaszów Szkoła nr 2 (nż)","3303"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243451,179880120,71070120,"Ochodza Dom Ludowy (nż)","1329"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243452,179892360,71085600,"Ochodza Staw (nż)","1330"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244597,179872920,71075520,"Ochodza Dwór","3331"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243325,179852314,71080488,"Zelczyna Szkoła (nż)","1170"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244986,179857533,71092216,"Zelczyna PKP","3537"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244987,179864889,71129507,"Zelczyna (nż)","3538"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243453,179920080,71102160,"Ochodza Odwiśle","1331"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244390,179934178,71082088,"Wołowice Zawierzbie (nż)","3229"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243777,179917990,71147281,"Kopanka Pętla","2931"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244388,179944332,71116776,"Wołowice Grotowa Skrzyżowanie (nż)","3227"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244392,179941497,71132245,"Wołowice Grotowa (nż)","3231"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244389,179933789,71159968,"Jeziorzany Górskie Domy (nż)","3228"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244988,179873786,71177425,"Borek Szlachecki Kościół (nż)","3539"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244989,179876760,71199745,"Borek Szlachecki (nż)","3540"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243275,179886600,71226720,"Skawina Podbory (nż)","1107"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243256,179862899,71300233,"Rzozów Baseny (nż)","1087"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243257,179848354,71283849,"Rzozów I (nż)","1088"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243778,179927634,71186924,"Kopanka Druga (nż)","2932"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244797,179916609,71224213,"Kopanka Ofiar Katynia","3451"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243752,179953710,71202715,"Jeziorzany Pętla","2904"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243487,179935306,71209794,"Kopanka Kapliczka (nż)","2484"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243271,179899804,71269683,"Skawina Piłsudskiego","1103"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243716,179923782,71246089,"Skawina Pileckiego","2867"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243272,179902483,71294929,"Skawina Elektrownia (nż)","1104"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243488,179941261,71243633,"Kopanka Szkoła","2485"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243698,179938123,71262420,"Kopanka Kościół (nż)","2813"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243489,179933595,71284819,"Skawina Robotnicza","2486"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244602,179954532,71302176,"Skawina Piastowska (nż)","3336"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244600,179953092,71293032,"Skawina Żwirowa (nż)","3334"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243130,179994831,71104918,"Dąbrowa Szlachecka Krzyż (nż)","910"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244688,179983351,71042609,"Wołowice Skrzyżowanie (nż)","3401"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243127,179985494,71077379,"Dąbrowa Szlachecka Figurka (nż)","907"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243379,179997587,71060899,"Dąbrowa Szlachecka Krzemiennik","1237"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242723,180004940,71119497,"Rączna Osiedle (nż)","306"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243750,180012677,71160206,"Rączna Boisko (nż)","2902"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243362,180049331,71081525,"Rączna Podlas (nż)","1216"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244568,180090609,71050339,"Kaszów Wielka Droga (nż)","3304"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243363,180062748,71085920,"Rączna Dzikowiec (nż)","1217"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243469,180039731,71124502,"Rączna Kościół (nż)","1370"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244683,180028976,71163017,"Rączna Remiza (nż)","3396"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242718,180055019,71168786,"Rączna Kapliczka (nż)","296"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243751,179978823,71195749,"Jeziorzany Rondo (nż)","2903"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243384,180008650,71202016,"Ściejowice Na Bagnach (nż)","1246"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244386,180021024,71204357,"Ściejowice Remiza (nż)","3225"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244387,179996105,71207274,"Ściejowice Kościel (nż)","3226"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244682,180040678,71190745,"Rączna Bażanty (nż)","3395"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244695,180059580,71193399,"Rączna Gołębiec (nż)","3408"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243100,180065721,71235411,"Piekary Górne","868"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243341,180073635,71257319,"Piekary Pałac (nż)","1189"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244676,180083184,71261693,"Piekary Centrum","3389"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244677,180092998,70884138,"Nowa Wieś Szlachecka Pętla","3390"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244685,180096005,70852224,"Nowa Wieś Szlachecka Jesionka (nż)","3398"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243361,180137995,70861537,"Czułówek (nż)","1215"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243465,180152287,70847820,"Czułówek Kapliczka","1365"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243727,180219463,70898830,"Czułów Szkoła","2879"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244678,180097857,70910321,"Nowa Wieś Szlachecka Kościół (nż)","3391"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244679,180111016,70935694,"Nowa Wieś Szlachecka Sklep (nż)","3392"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244680,180122376,70960922,"Nowa Wieś Szlachecka Kapliczka (nż)","3393"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242709,180141500,71012149,"Kaszów","283"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242708,180139955,70995178,"Kaszów II (nż)","282"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244907,180129686,70978751,"Kaszów Na Górce (nż)","3483"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244559,180214813,70933358,"Czułów Sklep (nż)","3294"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244560,180214022,70963398,"Czułów Granica (nż)","3295"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244561,180215583,70998932,"Mników Remiza (nż)","3296"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244562,180215604,71016156,"Mników Sklep (nż)","3297"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244152,180248040,70946856,"Mników Skały","2715"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244151,180229140,70995852,"Mników Pańska Góra (nż)","2714"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244153,180238392,70989336,"Mników Zarynnie (nż)","3104"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242671,180286610,70996305,"Chrosna Sklep (nż)","229"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242672,180286816,71028981,"Chrosna Kapliczka (nż)","230"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243759,180295841,70954490,"Chrosna Pętla","2911"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244339,180323280,70930476,"Brzoskwinia Pętla","3201"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242681,180335710,70956466,"Brzoskwinia Kamyk (nż)","240"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242670,180292822,70977672,"Chrosna Studnia (nż)","228"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244957,180344072,70986526,"Brzoskwinia Remiza","3521"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243633,180338147,71024192,"Brzoskwinia Góra (nż)","2695"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243852,180226834,71294325,"Balice Olszanica Bory","3013"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243735,180111597,71097616,"Liszki Wołowska Droga (nż)","2887"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242711,180134129,71081123,"Kaszów Łysa Góra (nż)","285"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242712,180127225,71133047,"Liszki Krzyżówka","286"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242713,180138648,71165832,"Liszki UG","287"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243922,180215325,71071899,"Cholerzyn Granica (nż)","3056"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243921,180209936,71116547,"Cholerzyn Zagórze (nż)","3055"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242686,180208506,71143121,"Cholerzyn Skrzyżowanie (nż)","252"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242687,180213012,71167995,"Cholerzyn Sklep (nż)","253"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242689,180152748,71239752,"Kryspinów Sanka (nż)","257"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243747,180124543,71184987,"Liszki Tyniecka (nż)","2899"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243746,180102510,71232046,"Piekary Borki (nż)","2898"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243748,180112587,71210557,"Piekary Dół (nż)","2900"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242714,180140013,71186771,"Liszki I (nż)","289"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242690,180157212,71260056,"Kryspinów","258"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242697,180094113,71270904,"Piekary Sklep (nż)","269"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243745,180104760,71284073,"Piekary Korea (nż)","2897"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244812,180188609,71220505,"Cholerzyn Chałupki (nż)","3464"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244563,180209838,71191586,"Cholerzyn Skwer (nż)","3298"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243684,180171004,71250327,"Budzyń Plaża Główna (nż)","2780"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243683,180179107,71278509,"Budzyń Zalew na Piaskach (nż)","2779"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242622,180222583,71301372,"Olszanica Bory","161"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244154,180251532,71091468,"Morawica Rudki (nż)","3105"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244393,180232524,71056584,"Mników Granica (nż)","3232"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244673,180270547,71111938,"Morawica Centrum","3386"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244674,180288730,71118138,"Morawica Szkoła (nż)","3387"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242673,180297877,71059974,"Morawica Mostek (nż)","231"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242674,180289863,71098950,"Morawica Krzyżówka","232"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242679,180326019,71046736,"Brzoskwinia Koziary (nż)","238"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244675,180292350,71151085,"Aleksandrowice Centrum","3388"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242678,180293771,71169073,"Aleksandrowice Osiedle (nż)","236"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243761,180342918,71169594,"Burów Centrum","2913"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243711,180259164,71284248,"Kraków Airport","2861"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243851,180245393,71283475,"Balice Medweckiego (nż)","3012"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243760,180297711,71199005,"Balice Winna Góra (nż)","2912"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244699,180336471,71188338,"Burów Balica (nż)","3414"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243603,180327281,71214883,"Balice Grzybów (nż)","2635"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243604,180323768,71232139,"Balice Leśna (nż)","2636"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242666,180301325,71245144,"Balice Szkoła","222"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244672,180301869,71240191,"Balice Instytut Zootechniki (nż)","3385"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244700,180312130,71248435,"Balice Remiza (nż)","3415"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242664,180334261,71294027,"Szczyglice","220"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242663,180353497,71299200,"Skała Kmity (nż)","219"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242521,180335649,71831378,"Bociana","34"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242592,180234167,71823937,"Lubicz","126"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242593,180244109,71831630,"Uniwersytet Ekonomiczny","127"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243095,179830879,71907069,"Ochojno Skrzyżowanie","860"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244835,180296101,71825994,"UR al. 29 Listopada","3469"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243289,179664326,71334040,"Wola Radziszowska Mała Ostra Góra (nż)","1124"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244397,179681616,71359740,"Radziszów Podlesie Las (nż)","3233"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243057,179698721,71346856,"Radziszów Leśniczówka (nż)","797"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244629,179654976,71372484,"Wola Radziszowska Kapelanka (nż)","3362"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244037,179663724,71402184,"Radziszów Szpital","3075"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243482,179673966,71379246,"Radziszów Stare Sanatorium (nż)","2477"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243337,179717207,71306982,"Radziszów Zawodzie (nż)","1185"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243338,179706148,71309817,"Radziszów PKP","1186"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243058,179709945,71357560,"Radziszów Podlesie (nż)","798"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243336,179738373,71309352,"Radziszów Podwale (nż)","1184"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243048,179749659,71354380,"Radziszów Włosanka (nż)","786"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243049,179772572,71335149,"Radziszów Zadworze (nż)","787"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243335,179766276,71314110,"Radziszów Zacisze (nż)","1183"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243050,179780762,71313791,"Radziszów Centrum","788"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243334,179785284,71307849,"Radziszów Kładka (nż)","1182"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243679,179788680,71303400,"Radziszów Cmentarz (nż)","2774"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243051,179808685,71320431,"Radziszów Kamionna (nż)","789"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243109,179807782,71430713,"Buków Klin (nż)","882"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243110,179807301,71447816,"Buków Szkoła (nż)","883"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243111,179803116,71473143,"Kulerzów (nż)","884"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243112,179802379,71504111,"Kulerzów Wąwóz (nż)","885"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243797,179799142,71530396,"Mogilany Kopce (nż)","2953"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244588,179818602,71530011,"Chorowice Pętla","3324"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244578,179688960,71650440,"Włosań Centrum","3314"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244577,179760892,71662651,"Mogilany Krótka (nż)","3313"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243888,179688996,71650872,"Włosań Dział Wschodni (nż)","3053"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243064,179704800,71691840,"Włosań Krzyżówka (nż)","808"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244576,179760427,71695800,"Konary Królowej Polski (nż)","3312"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243054,179793439,71587289,"Mogilany Rynek","792"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243055,179790337,71614577,"Mogilany Ośrodek Zdrowia (nż)","793"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243056,179771350,71628096,"Mogilany Wiadukt (nż)","794"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243501,179776811,71615172,"Mogilany Cicha (nż)","2499"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243114,179801393,71581030,"Mogilany Cmentarz (nż)","888"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243065,179724960,71712000,"Włosań Kopań (nż)","809"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243887,179749296,71702928,"Konary Pod Sosenką (nż)","3052"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244582,179763415,71808266,"Świątniki Górne Urząd Miasta i Gminy","3318"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244632,179799811,71716662,"Konary Pętla","3364"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243459,179767559,71739022,"Konary Sęk (nż)","1347"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243788,179794701,71798601,"Wrząsowice Zielona (nż)","2944"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244589,179779498,71793970,"Świątniki Górne Krakowska (nż)","3325"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244584,179766795,71764231,"Świątniki Górne Buk (nż)","3320"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244711,179811983,71809423,"Wrząsowice Bonifraterska (nż)","3426"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243089,179763816,71834396,"Świątniki Centrum","847"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244581,179763816,71834396,"Świątniki Górne Centrum","3317"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244579,179763261,71882422,"Świątniki Górne Skrzyżowanie (nż)","3315"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243880,179755052,71905784,"Świątniki Górne Piasna Górka (nż)","3051"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243087,179753616,71933457,"Rzeszotary Zalesie (nż)","842"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244580,179766477,71864087,"Świątniki Górne Bielowicza Szkoła","3316"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243682,179778371,71884203,"Rzeszotary Pod Dębiną (nż)","2778"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243092,179777200,71901100,"Rzeszotary Szkoła (nż)","857"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243091,179781288,71941230,"Rzeszotary Trafo (nż)","856"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244586,179804588,71902948,"Rzeszotary Remiza (nż)","3322"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243093,179803109,71930936,"Rzeszotary Polanki (nż)","858"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243784,179756141,71979872,"Rzeszotary Panciawa (nż)","2940"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243783,179765562,71997660,"Rzeszotary Panciawa Pętla","2939"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243656,179789578,71960535,"Rzeszotary Tempo (nż)","2732"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244585,179796796,71976292,"Rzeszotary Dworska","3321"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242924,180068244,71433264,"Kostrze","601"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243478,179896715,71385285,"Skawina Ajka","2473"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244930,179864507,71340033,"Skawina Os. Radziszowskie (nż)","3502"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245058,179859366,71337968,"Skawina Groble (nż)","3598"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243497,179835054,71334706,"Skawina Nad Potokiem (nż)","2494"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243477,179889918,71361844,"Skawina Radziszowska (nż)","2472"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244587,179832994,71406365,"Buków Pętla","3323"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243706,179863079,71409986,"Skawina Bukowska (nż)","2854"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243045,179886686,71387386,"Skawina","779"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243255,179905696,71330460,"Skawina Koncentraty","1086"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243273,179902800,71303582,"Skawina Zachodnia (nż)","1105"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243847,179908552,71312068,"Skawina Energetyków Przejazd PKP (nż)","3008"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243200,179913231,71344016,"Skawina Sąd","1008"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243199,179912101,71362548,"Skawina Szkoła","1007"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243483,179920921,71352172,"Skawina Tyniecka Osiedle","2478"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244756,179915364,71357652,"Skawina SCK","3441"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244601,179936604,71306244,"Skawina Żwirownia (nż)","3335"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243490,179934510,71316625,"Skawina Energetyków (nż)","2487"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243201,179952577,71331280,"Skawina Wojska Polskiego","1011"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243485,179959863,71319723,"Skawina Samborek Most","2480"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243484,179945301,71337346,"Skawina Tyniecka","2479"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243479,179907068,71390403,"Skawina Popiełuszki","2474"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243480,179910734,71391974,"Skawina Cmentarz","2475"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243713,179896365,71372207,"Skawina Centrum Sportowe","2863"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243046,179910790,71380566,"Skawina Rynek","781"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243298,179897218,71419128,"Skawina Starostwo Powiatowe","1134"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243270,179907120,71412840,"Skawina Korabnicka Szkoła (nż)","1102"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243297,179902526,71404110,"Skawina 29 Listopada","1133"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243047,179937865,71414011,"Skawina Rzepnik","785"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243776,179878131,71460422,"Skawina Kopernika (nż)","2930"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243775,179885801,71438836,"Skawina Ogrody (nż)","2929"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243299,179883900,71470296,"Skawina Cmentarz Komunalny","1137"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243269,179907120,71451360,"Skawina Korabnicka (nż)","1101"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243703,179899535,71474773,"Skawina Wyspiańskiego Szkoła (nż)","2820"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243268,179908200,71483400,"Skawina Wyspiańskiego","1100"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243486,179909247,71490162,"Skawina Korabniki","2481"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243481,179958889,71440557,"Skawina Podlipki","2476"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243644,179901360,71528760,"Brzyczyna","2708"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243705,179915858,71501153,"Skawina Graniczna (nż)","2853"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243771,179897868,71554647,"Libertów Droga do Sidziny (nż)","2925"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243680,179929444,71543125,"Nałkowskiej","2775"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243681,179934593,71565171,"Petrażyckiego (nż)","2776"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243044,179958542,71539257,"Sidzina","772"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244231,179967686,71327517,"Skawina Tyniecka Rzepnik (nż)","3173"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244593,179988263,71347343,"Skawina Podgórki","3327"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243241,179998384,71344355,"Janasówka (nż)","1062"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242918,180030000,71332086,"Tyniec Kamieniołom","591"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242919,180037020,71323191,"Bogucianka","592"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242920,180055023,71312392,"Tyniec","593"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243541,180066006,71342140,"Bolesława Śmiałego","2561"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243543,180088436,71398547,"Kolna (nż)","2563"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243545,180035209,71428450,"Bagienna","2565"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243542,180078987,71379596,"Tyniecka Autostrada (nż)","2562"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242925,180022977,71440069,"Podgórki Tynieckie","603"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243575,179982099,71465289,"Wrony","2598"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244027,180021931,71491399,"Kozienicka","3063"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243576,179964951,71494278,"Warchałowskiego","2599"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244169,179965786,71511023,"Sapalskiego (nż)","3152"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244028,180020677,71512738,"Orszy-Broniewskiego","3064"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243253,180012644,71530046,"Baczyńskiego (nż)","1083"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243041,180024215,71539698,"Skotniki","766"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242923,180083950,71450515,"Dąbrowa","600"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243586,180092503,71464174,"Ślaskiego (nż)","2610"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242926,180058886,71551839,"Skotniki Szkoła","604"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243040,180043136,71552894,"Brücknera","765"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244250,180031680,71548200,"Skotniki Kościół","3181"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243470,180081110,71519062,"Fort Winnica (nż)","1371"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243471,180072253,71536075,"Winnicka (nż)","1372"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243707,179848639,71687113,"Gaj Kwiatowa (nż)","2856"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243708,179842131,71652102,"Gaj Rudawa (nż)","2857"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243709,179840399,71629920,"Gaj Zgody (nż)","2858"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243053,179838505,71602243,"Gaj Zadziele","791"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243052,179858367,71604105,"Gaj Szkoła","790"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243645,179898127,71581360,"Libertów Krzyżówka","2710"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243646,179899884,71607949,"Libertów Działy (nż)","2711"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243081,179938479,71586131,"Żyzna (nż)","834"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244033,179940859,71603133,"Libertowska (nż)","3071"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244032,179943520,71626798,"Petrażyckiego Osiedle (nż)","3070"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243642,179904521,71664391,"Libertów","2706"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243643,179901047,71633865,"Libertów Szkoła","2707"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243678,179920440,71673120,"Libertów Zgodna (nż)","2772"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243606,179926795,71678971,"Libertów Dolny (nż)","2638"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243068,179949498,71649297,"Podgaje","812"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243607,179941600,71686106,"Ważewskiego","2639"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244228,179951983,71673466,"Taklińskiego (nż)","3172"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243039,179951302,71690274,"Opatkowice","761"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244036,179954339,71687672,"Kłuszyńska","3074"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243194,179860500,71704845,"Lusina Pętla","1000"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243060,179838720,71747208,"Lusina Górka (nż)","801"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244646,179838720,71747208,"Libertów Świetlista","3373"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243779,179832900,71760954,"Lusina Zielona","2935"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243780,179852448,71745167,"Lusina Dobrzyczany (nż)","2936"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243347,179867262,71722176,"Lusina Łany (nż)","1196"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243195,179882868,71746876,"Lusina Szkoła","1001"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243196,179894292,71750004,"Lusina Spacerowa","1002"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243376,179835531,71804178,"Wrząsowice Kowaleca (nż)","1234"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243791,179846391,71806736,"Wrząsowice Pileckiego (nż)","2947"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243790,179856421,71799333,"Wrząsowice Centrum","2946"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243781,179870212,71765869,"Lusina Kraśnik (nż)","2937"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243782,179889321,71769931,"Lusina Zagrody (nż)","2938"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243789,179869224,71804958,"Wrząsowice Wrzosowa (nż)","2945"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245144,179889183,71806157,"Wrząsowice Spacerowa (nż)","3197"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244591,179912296,71722932,"Lusina Krakowska (nż)","3326"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243197,179905075,71740512,"Lusina Dwór","1003"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243004,179905145,71760759,"Lusina Dolna (nż)","722"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244566,179922546,71756126,"Lusina Krakówka (nż)","3301"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243071,179933309,71711597,"Smoleńskiego","816"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243080,179953182,71700779,"Poronińska (nż)","833"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243602,179946589,71709998,"Opatkowice Zadworze","2634"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244696,179912808,71804808,"Ukraina (nż)","723"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243003,179901894,71810976,"Zbydniowice","721"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244161,179926129,71799842,"Wróblowice","3148"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244163,179926705,71817046,"Aleksandrowicza (nż)","3150"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243008,179939264,71772982,"Chałubińskiego (nż)","728"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243010,179949577,71784439,"Pytlasińskiego","730"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243009,179942688,71800668,"Wróblowice Szkoła","729"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243042,180027072,71571857,"Babińskiego","767"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243150,179995184,71629765,"Pod Fortem","944"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243043,180025785,71610575,"Kobierzyn","768"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243078,180026053,71626876,"Komuny Paryskiej","830"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243033,180003746,71661746,"Forteczna","754"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243034,179998872,71682987,"Zawiszy","755"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243035,180001936,71685606,"Os. Kliny","756"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244926,179983476,71681832,"Kliny Poranne","3498"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244927,179994528,71692092,"Zagaje (nż)","3499"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244928,179983044,71691948,"Chorzowska (nż)","3500"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243141,180004493,71641194,"Kliny Zacisze","935"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243030,180023354,71643195,"Zawiła (nż)","751"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243032,180016329,71660899,"Borkowska","753"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243458,180045819,71581987,"Bunscha (nż)","1346"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243632,180059776,71573370,"Mochnaniec (nż)","2694"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243858,180065950,71601095,"Czerwone Maki P+R","3038"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243143,180055259,71649349,"Lubostroń (nż)","937"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243031,180040445,71634148,"Skośna","752"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243581,180047017,71688238,"Łuczyńskiego (nż)","2604"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243160,180039710,71672918,"Polana Żywiecka (nż)","956"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243029,180028810,71663722,"Las Borkowski","750"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244147,180034355,71689049,"Cmentarz Borek Fałęcki (nż)","3139"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243630,180088849,71648999,"Kampus UJ","2690"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243631,180074981,71635343,"Chmieleniec","2691"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243142,180068343,71662874,"Torfowa","936"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242917,180083217,71676924,"Zachodnia","590"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243028,180026788,71730950,"Góra Borkowska (nż)","749"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243037,179991266,71711531,"Kąpielowa (nż)","759"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243038,179980050,71706040,"Opatkowice Wiadukt (nż)","760"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243016,179982400,71749269,"Wilga (nż)","737"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243691,180003145,71700527,"Judyma Szkoła","2792"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243036,180005166,71718621,"Judyma","758"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243021,180027009,71750524,"Jugowicka","742"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243019,180020334,71803331,"Myślenicka (nż)","740"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244142,179995766,71804974,"Warszewicza (nż)","3131"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244162,179975261,71765513,"Park Zdrojowy","3149"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243012,179965218,71789122,"Swoszowice Poczta","732"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244141,179974983,71780188,"Merkuriusza Polskiego","3130"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244139,179962571,71803463,"Sawiczewskich","3128"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244140,179978647,71808177,"Swoszowice Szkoła","3129"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243018,180002221,71792329,"Swoszowice Autostrada (nż)","739"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243020,180020953,71811624,"Halszki","741"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242931,180064239,71727416,"Rynek Fałęcki","616"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243025,180060156,71748900,"Solvay","746"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243027,180056568,71710839,"Żywiecka","748"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243026,180040675,71735839,"Borek Fałęcki","747"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243475,180044650,71773927,"Centrum JP II","2453"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244367,180036072,71800992,"Herberta (nż)","931"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243022,180035894,71814517,"Bujaka","743"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243024,180051626,71802942,"Przykopy (nż)","745"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244245,180049281,71822298,"Kurdwanów P+R","3176"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242932,180077414,71793636,"Fredry","617"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244558,180088344,71762472,"Łagiewniki ZUS","2821"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242933,180087107,71791707,"Sucha","618"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243193,180069553,71799910,"Turowicza (nż)","999"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243137,180066267,71825663,"Beskidzka","923"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243744,180106548,71306443,"Piekary Na Brzegu (nż)","2896"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244644,180119775,71339162,"Kryspinów Stopień Wodny (nż)","3371"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244059,180150588,71322660,"Bielany Obwodnica (nż)","3102"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242691,180154842,71349492,"Bielany","260"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243166,180116739,71384725,"Tor Kajakowy","966"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242696,180132777,71374032,"Bielańska (nż)","265"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242695,180140003,71393762,"Skalna (nż)","264"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242693,180155994,71392690,"Bielany Klasztor (nż)","262"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242694,180148130,71424057,"Wodociągi (nż)","263"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242692,180159516,71378604,"Bielany Szkoła","261"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244145,180171756,71375076,"Cmentarz Bielany (nż)","3137"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242618,180209999,71384900,"Zakamycze","155"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244030,180192240,71376588,"Obserwatorium (nż)","3068"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242619,180220399,71391603,"Kosmowskiej (nż)","156"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242921,180096881,71441123,"Kostrze Kapliczka (nż)","597"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243544,180098963,71450201,"Wały Wiślane (nż)","2564"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242922,180103273,71467714,"Kostrze OSP","599"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242927,180104784,71477456,"Kostrze Szkoła","605"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243546,180113523,71514068,"Fort Bodzów (nż)","2566"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243547,180122081,71552616,"Górka Pychowicka (nż)","2567"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244657,180148572,71539488,"Bodzów","3381"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244658,180134640,71558640,"Widłakowa (nż)","3382"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242609,180198311,71479418,"ZOO","146"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242699,180158820,71465278,"Bielańskie Skały (nż)","272"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242700,180162628,71498269,"Na Krępaku (nż)","273"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242701,180168503,71516263,"Zaskale (nż)","274"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244251,180166284,71537328,"Przegorzały Obwodnica (nż)","3182"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242702,180168417,71535462,"Przegorzały","275"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242608,180213114,71504560,"Baba Jaga (nż)","145"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242607,180223682,71535971,"Stara Wola","144"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242669,180275344,71309021,"Balice I (nż)","226"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243521,180231801,71346627,"Olszanica Ogródki Działkowe (nż)","2534"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243854,180243554,71366216,"Cmentarz Olszanica (nż)","3034"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242621,180245204,71381891,"Olszanica Kapliczka (nż)","158"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242620,180245540,71396916,"Leśmiana","157"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242616,180224244,71408470,"Rzepichy (nż)","153"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242615,180230094,71428025,"Chełmska (nż)","152"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242617,180247881,71413833,"Raczkiewicza (nż)","154"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242668,180315605,71344580,"Szczyglice Most (nż)","224"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243103,180338340,71310052,"Szczyglice Dom Kultury","871"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243865,180334446,71336236,"Szczyglice Autostrada","3045"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245010,180315348,71426869,"Cmentarz Mydlniki (nż)","3565"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244914,180329796,71382319,"Rząska Podkamycze","3487"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245008,180327245,71424855,"Mydlniki Wapiennik P+R","3560"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243512,180324969,71413247,"Mydlniki Granica Miasta (nż)","2525"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242611,180237418,71498678,"Kopalina (nż)","148"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243511,180290845,71539275,"Lindego (nż)","2524"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242614,180243202,71447900,"Chełm","151"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242612,180240385,71480663,"Zielony Dół","149"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244605,180250970,71493343,"Grabowa","3339"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242610,180234816,71515292,"Kasztanowa","147"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243163,180246625,71513161,"Panieńskich Skał","963"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242606,180241453,71529742,"Park Decjusza","143"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242605,180235005,71558745,"Sielanka","142"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242500,180299079,71459427,"Zakliki (nż)","7"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245009,180304585,71441670,"Wierzyńskiego","3564"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243757,180296434,71472344,"Godlewskiego","2909"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243756,180293067,71489961,"Młynówka SKA (nż)","2908"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242642,180348526,71443904,"Rząska UR (nż)","194"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242499,180291426,71514270,"UR Balicka","5"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245033,180293907,71552392,"Giełda Balicka (nż)","3588"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244119,180344284,71543391,"Cmentarz Bronowice (nż)","3108"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242556,180267743,71696440,"Biprostal","84"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242558,180226849,71653216,"Cichy Kącik","87"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242726,180191592,71700768,"Salwator","311"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243548,180126562,71588571,"Rodzinna","2568"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243549,180132602,71622402,"Pychowice","2569"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242916,180097588,71663761,"Ruczaj","589"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243628,180106513,71683450,"Norymberska","2688"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243629,180100503,71691277,"Rostworowskiego","2689"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243540,180137176,71636348,"Park 'Skały Twardowskiego' (nż)","2560"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242703,180169611,71580647,"Glinnik (nż)","276"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243510,180171340,71603122,"Benedyktowicza (nż)","2518"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244126,180173093,71629959,"Wodociągowa (nż)","3115"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242602,180218808,71609328,"Tondosa (nż)","139"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242603,180223583,71598223,"Lajkonika (nż)","140"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242683,180199148,71613776,"Kopiec Kościuszki","242"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244822,180215223,71620039,"Owcy-Orwicza","3465"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242725,180179392,71650952,"Malczewskiego (nż)","310"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244656,180191088,71641980,"Cmentarz Salwator","3107"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242914,180164579,71671798,"Os. Robotnicze","582"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242913,180167063,71683045,"Zielińskiego (nż)","581"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244823,180212823,71638348,"Piastowska","3466"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243593,180191762,71631135,"Aleja Waszyngtona (nż)","2625"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242730,180203084,71656493,"Przegon","316"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242731,180207941,71689795,"Instytut Reumatologii","317"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242905,180158724,71808116,"Korona","571"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242908,180164361,71720828,"Kapelanka","576"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243626,180110437,71729433,"Lipińskiego","2686"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243627,180114742,71711679,"Grota-Roweckiego","2687"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242930,180109261,71745241,"Borsucza","612"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242915,180122672,71733038,"Kobierzyńska","584"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243650,180110520,71753040,"TR","2724"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242909,180146782,71727980,"Słomiana","577"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242929,180117808,71778042,"Rzemieślnicza","611"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243136,180103248,71770176,"Łagiewniki","922"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243134,180105750,71802896,"Tischnera","919"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243386,180097765,71814615,"Puszkarska","1253"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242934,180111787,71817375,"Kamieńskiego Wiadukt (nż)","619"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242928,180131411,71785703,"Rondo Matecznego","610"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243696,180155183,71765353,"Ludwinów","2808"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242906,180149768,71795890,"Smolki","572"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242912,180178953,71713763,"Praska (nż)","580"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242736,180190131,71745339,"Konopnickiej","326"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244604,180173958,71746788,"Rondo Grunwaldzkie","3338"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242907,180168196,71731076,"Szwedzka","575"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243697,180165803,71758435,"Os. Podwawelskie","2812"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242910,180178763,71733414,"Bałuckiego (nż)","578"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242911,180187059,71737036,"Rynek Dębnicki","579"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242727,180192283,71718480,"Komorowskiego","313"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243503,180209300,71721900,"Cracovia Stadion","2501"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243502,180212188,71719373,"Cracovia Błonia","2500"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242733,180201816,71736433,"Jubilat","319"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244150,180211405,71730588,"Muzeum Narodowe","3141"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242735,180209520,71760888,"Filharmonia","322"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242734,180217284,71753529,"Uniwersytet Jagielloński","321"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242758,180185152,71789257,"Stradom","359"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242759,180172578,71796260,"Plac Wolnica","360"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244837,180185094,71822984,"św. Wawrzyńca","3471"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243463,180212760,71775360,"Plac Wszystkich Świętych","1360"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242756,180218232,71798472,"Poczta Główna","357"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242757,180206413,71806145,"Starowiślna","358"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242760,180194002,71813384,"Miodowa","362"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242761,180211324,71816415,"Hala Targowa","363"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244415,180283944,71632366,"Wesele","133"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242604,180229149,71582167,"Strzelnica","141"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243520,180258117,71607911,"Armii Krajowej","2533"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242601,180275840,71599104,"Zarzecze","137"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242557,180250920,71653324,"Miasteczko Studenckie AGH","85"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242560,180280440,71642592,"Bronowice","89"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244590,180271656,71662248,"Głowackiego","1049"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243517,180255923,71631135,"Przybyszewskiego","2530"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242554,180247684,71690076,"Kawiory","82"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242559,180266616,71677109,"Uniwersytet Pedagogiczny","88"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242599,180291708,71570304,"Bronowice Małe","135"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243472,180307692,71628645,"Fiszera","1375"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243473,180310754,71618395,"Radzikowskiego Osiedle","1376"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244805,180291250,71606335,"Bronowice SKA","3459"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242503,180315578,71606910,"Rondo Ofiar Katynia","12"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242504,180326550,71575807,"Katowicka","13"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242507,180339200,71577033,"Ojcowska Dworek","16"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242508,180352139,71580380,"Ojcowska Wągroda","17"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243690,180336360,71616527,"Stawowa","2791"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244113,180336816,71630604,"Chełmońskiego Pętla","3072"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244038,180329930,71649248,"Chełmońskiego Osiedle","3073"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244120,180322480,71685302,"Mehoffera","3109"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244246,180344880,71628840,"Piaskowa (nż)","3177"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243242,180302297,71648840,"Czerwieńskiego","1063"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243833,180300661,71661575,"Gnieźnieńska (nż)","2993"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243076,180318762,71633776,"Conrada","822"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242597,180299942,71672800,"Radzikowskiego","132"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242532,180311436,71672241,"Azory","54"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242533,180319712,71675798,"Różyckiego","55"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243590,180341431,71694212,"Jordanowska (nż)","2617"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242526,180354963,71683373,"Chabrowa","40"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242539,180299485,71762297,"Bratysławska","61"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243726,180243183,71702415,"Chopina","2878"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242553,180239668,71719756,"Czarnowiejska","81"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244122,180225592,71723469,"AGH / UR","3111"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242550,180241283,71743812,"Batorego","78"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242549,180229500,71757108,"Teatr Bagatela","77"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242551,180247251,71733117,"Plac Inwalidów","79"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242555,180263952,71711748,"Urzędnicza","83"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242561,180280361,71704037,"Mazowiecka","90"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242544,180283885,71720150,"Urząd Marszałkowski","67"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242548,180258805,71749580,"Grottgera","76"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245112,180258415,71747892,"Radio Kraków","3638"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244982,180271772,71752740,"Friedleina","3534"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242545,180278184,71734330,"Wrocławska","68"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243203,180257899,71815725,"Muzeum Armii Krajowej (nż)","1015"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243853,180238576,71784784,"Stary Kleparz","3032"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244181,180250842,71775131,"Pędzichów","72"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243240,180246648,71817575,"Dworzec Główny Wschód","1060"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242596,180232570,71803421,"Dworzec Główny","131"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244417,180232594,71804259,"Teatr Słowackiego","3242"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243585,180244278,71802763,"Dworzec Główny Zachód","2608"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242547,180256622,71798853,"Politechnika","73"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242546,180267208,71770508,"Nowy Kleparz","71"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243518,180274176,71808336,"Cmentarz Rakowicki Zachód (nż)","2531"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242588,180280850,71815209,"Biskupa Prandoty","122"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242530,180329516,71737622,"Opolska Kładka","48"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243513,180342640,71752863,"Pachońskiego","2526"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243514,180346936,71749712,"Prądnik Biały","2527"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243516,180347848,71753681,"Piaszczysta","2529"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244031,180296496,71698644,"Łobzów SKA","3069"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242535,180305793,71698793,"Stachiewicza","57"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242534,180315529,71702530,"Makowskiego","56"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244121,180310683,71722309,"Władysława Łokietka","3110"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243515,180319846,71724229,"Batalionu 'Skała' AK","2528"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242538,180301663,71735085,"Wybickiego","60"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243578,180305806,71750475,"Krowodrza Urzędy Skarbowe","2601"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242540,180320009,71734475,"Krowoderskich Zuchów","62"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242541,180318323,71752889,"Krowodrza Górka","63"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242527,180333105,71701951,"Skrajna (nż)","42"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245103,180325584,71712158,"Park Krowoderski","3636"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243102,180338887,71729031,"Prądnik Biały Zachód","870"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242528,180333596,71719889,"Wyki","43"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242543,180311308,71777895,"Lekarska","65"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244349,180318166,71779068,"Szpital Jana Pawła II","3203"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243855,180300745,71772782,"Pielęgniarek","3035"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243856,180290870,71773201,"Szpital Narutowicza","3036"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242525,180317823,71809959,"Imbramowska","38"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242529,180330686,71765762,"Pleszowska","47"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243401,180344358,71765123,"Białoprądnicka","1271"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242520,180345516,71811368,"Siewna Wiadukt","33"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242523,180335542,71801458,"Clepardia","36"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242524,180322619,71798500,"Mackiewicza","37"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243583,180353670,71826124,"Natansona","2606"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242890,180214788,72089353,"Na Załęczu","550"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242941,180095468,71855045,"Sławka (nż)","628"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243098,180200415,72088152,"Wiklinowa (nż)","866"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243796,179862484,71835259,"Wrząsowice Pod Skałą (nż)","2952"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243795,179853877,71868263,"Ochojno Dąbrówki","2951"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243794,179882212,71832365,"Wrząsowice Nad Wilgą","2950"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243096,179835077,71905566,"Ochojno Remiza","861"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243097,179845838,71897760,"Ochojno Kamieniec","863"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244160,179904677,71859820,"Zbydniowicka","3147"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244143,179927405,71837201,"Cmentarz Wróblowice","3133"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244159,179905672,71879999,"Golkowice Pętla","3146"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243151,179935212,71855432,"Kenara (nż)","945"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243565,179960940,71842788,"Fort Swoszowice (nż)","2587"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242987,179958348,71864172,"Landaua","694"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242988,179951400,71890848,"Rajsko","695"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244156,179901465,71927213,"Golkowice Kościół","3059"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243202,179911415,71952057,"Pod Lipą (nż)","1014"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243566,179947174,71919468,"Geologów (nż)","2588"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243567,179943074,71938847,"Malinowskiego (nż)","2589"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244968,179850503,71991742,"Podstolice Centrum","3529"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244969,179872161,71999435,"Podstolice Zamłynie (nż)","3530"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244158,179905538,72002083,"Grabówki Pętla","3145"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244157,179902816,71959681,"Golkowice Sklep","3144"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242989,179926727,71964210,"Soboniowice","699"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243568,179936500,71961700,"Drużbackiej","2590"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242990,179940759,71984681,"Krzemieniecka (nż)","702"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243569,179958244,72000810,"Żelazowskiego (nż)","2592"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242991,179945849,72008935,"Barycz (nż)","703"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243343,179951645,72087157,"Krzyszkowice Kasztanowa I (nż)","1192"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242998,180055077,71892147,"Piaski Nowe","716"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242994,180016920,71852400,"Os. Kurdwanów","710"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242995,180019030,71836575,"Stojałowskiego","711"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242993,180018542,71875689,"Kurdwanów Szkoła","709"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243572,180025593,71901783,"Cechowa (nż)","2595"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243831,180010307,71949773,"Hala Sportowa Piaski Wielkie (nż)","2991"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242985,180022188,71935716,"Piaski Wielkie","687"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242942,180072955,71840054,"Wola Duchacka","629"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243000,180046234,71839973,"Witosa","718"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243392,180028974,71833710,"Wysłouchów","1259"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242997,180050569,71879868,"Nowosądecka","715"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242999,180058763,71868413,"Karpińskiego","717"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243391,180028843,71860331,"Bojki","1258"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242996,180047473,71881550,"Tuchowska","714"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245075,180087887,71841888,"TW Hałas","3610"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245092,180072914,71839288,"Pszenna","3620"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243073,180086868,71852760,"PW","818"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243387,180085882,71850860,"Zajezdnia Wola Duchacka","1254"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245072,180088452,71851986,"TW Brama","3607"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245076,180091771,71847281,"TW Hala NB","3611"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243107,180079325,71872167,"Malborska Szkoła","880"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243551,180084706,71887577,"Sułkowskiego","2571"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242943,180082172,71935238,"Bieżanowska","630"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243573,180028774,71907353,"Łużycka (nż)","2596"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243574,180036859,71896059,"Bochenka (nż)","2597"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242944,180066635,71918451,"Dauna","632"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242946,180068763,71958227,"Wlotowa","634"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243570,179975380,71986702,"Szczegów","2593"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242992,179978990,71961109,"Kosocice","706"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243571,179996680,71959305,"Niebieska Autostrada (nż)","2594"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243125,180014563,71958627,"Przy Kuźni (nż)","904"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243561,180013451,71976603,"Hallera (nż)","2583"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243562,180013160,72013983,"Słona Woda","2584"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243344,179964827,72086694,"Krzyszkowice Kasztanowa II (nż)","1193"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243345,180150588,71322660,"Krzyszkowice Modrzewiowa (nż)","1194"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243563,180015585,72039003,"Kosocicka (nż)","2585"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243864,180022526,72040177,"Rżąka","3044"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243346,179994773,72087635,"Krzyszkowice Różana (nż)","1195"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244138,180024294,72063930,"Węzeł Wielicki (nż)","3127"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243666,180085424,71987663,"Prokocim Rynek","2746"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242981,180042734,71975328,"Wydział Farmaceutyczny UJ","683"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242982,180037324,71973070,"Prokocim UJ","684"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244670,180036576,72000973,"Szpital Uniwersytecki / Instytut Pediatr","3383"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244671,180033737,72013759,"Miejskie Centrum Opieki","3384"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242980,180051646,71992237,"Prokocim Szpital","682"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242979,180059654,72022863,"Teligi","681"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242945,180090403,71973084,"Prosta","633"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242947,180082368,72007020,"Młodzieży (nż)","636"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243135,180029769,72036114,"Czerwiakowskiego","920"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243564,180038243,72028848,"Jerzmanowskiego","2586"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243559,180046800,72056880,"Nowy Bieżanów Południe","2581"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243560,180057371,72042476,"Nowy Prokocim","2582"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242978,180057826,72067986,"Ćwiklińskiej","679"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243288,180029938,72066348,"Aleksandry","1122"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244137,180041461,72088075,"Cmentarz Bieżanów","3126"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244244,180053885,72084846,"Nowy Bieżanów P+R","3175"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243832,180078598,72025828,"Cmentarz Prokocim","2992"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242966,180075788,72062064,"Bieżanów Trafo","662"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242967,180067523,72089173,"Bieżanów Szkoła","663"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243704,179944771,72215373,"Wieliczka Goliana","2852"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243342,179956792,72121136,"Krzyszkowice Kościół (nż)","1191"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244931,179959301,72134199,"Krzyszkowice Os. Szymanowskiego (nż)","3503"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243700,179930552,72178014,"Wieliczka Sąd","2815"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243701,179947153,72166228,"Wieliczka Solne Miasto","2816"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243504,179952903,72181756,"Wieliczka Park","2503"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243322,179939338,72203091,"Wieliczka Kopalnia Soli","1167"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245098,179946252,72205272,"Wieliczka Centrum","3380"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243699,179932150,72202595,"Wieliczka Klaśnieńska (nż)","2814"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244729,179959320,72192855,"Wieliczka Klasztor","3430"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244430,179933544,72253476,"Wieliczka Gdowska","3246"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244728,179950931,72269776,"Wieliczka Miasto","3429"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244431,179928000,72280620,"Wieliczka Polna (nż)","3247"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244730,179943027,72232556,"Wieliczka Mediateka","3431"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244932,179938118,72251702,"Wieliczka Os. Asnyka","3504"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243121,179954487,72234352,"Wieliczka Cmentarz","898"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244421,179921808,72312372,"Lednica Górna Chorągwica (nż)","3216"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244422,179918028,72331992,"Lednica Górna (nż)","3217"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242970,180064256,72158378,"Sucharskiego (nż)","666"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244175,180078377,72155184,"Agatowa (nż)","1328"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243702,179963909,72113449,"Krzyszkowice Krzyszkowicka","2817"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244402,179976209,72152505,"Wieliczka Stacja Paliw","3235"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243649,179997074,72097138,"Wielicka Granica Miasta","2722"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245102,179991617,72212291,"Wieliczka Wygoda Kapliczka (nż)","3633"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245100,180009326,72199100,"Wieliczka Zbożowa (nż)","3631"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242969,180064944,72125352,"Bieżanów Pomnik","665"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242976,180036627,72098418,"Ks.Łaczka (nż)","675"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243582,180037700,72117027,"Świdzińskiego (nż)","2605"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245028,180053185,72101955,"Madejówka (nż)","3577"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245032,180055440,72102564,"Korepty (nż)","3581"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243083,180054397,72134058,"Lipowskiego (nż)","837"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243124,180034524,72150191,"Ślósarczyka","903"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243587,180042855,72145640,"Drożdżowa","2614"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244261,180041477,72132471,"Bieżanów Drożdżownia SKA","3183"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243082,180055013,72145977,"Dwór Czeczów","836"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244401,180053388,72151452,"Jędrzejczyka (nż)","3234"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244136,180064873,72102043,"Duża Góra (nż)","3125"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244134,180091871,72138166,"Magazynowa (nż)","3123"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242973,180029102,72190493,"Bieżanów Potrzask","670"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242975,180029157,72162085,"Bieżanów Kaim","672"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243556,180046647,72155144,"Weigla","2578"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242974,180049310,72175929,"Pruszyńskiego","671"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243555,180058024,72184172,"Złocieniowa","2577"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243067,180080316,72180576,"Złocień","811"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242972,180061295,72205794,"Jasieńskiego (nż)","668"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245101,179965797,72230217,"Wieliczka Czarnochowska Cmentarz (nż)","3632"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245099,179977394,72237664,"Wieliczka Orzechowa (nż)","3630"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245011,179972280,72308880,"Wieliczka Niepołomska Granica (nż)","3566"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245012,179973360,72311760,"Zabawa Granica (nż)","3567"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243498,179979111,72323201,"Zabawa (nż)","2495"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242971,180063132,72245724,"Bieżanów","667"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243651,180039141,72234328,"Bieżanów Granica Miasta","2725"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245029,180044073,72266256,"Czarnochowice Kokotowska (nż)","3578"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243314,180044125,72300316,"Kokotów I (nż)","1158"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243317,180049934,72341628,"Kokotów II (nż)","1162"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242575,180322352,71958855,"Os. Oświecenia","108"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244839,180230515,71953144,"TAURON Arena Kraków al. Pokoju","3473"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242937,180119952,71896464,"Dworcowa","623"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244227,180150716,71865197,"Podgórze SKA","3158"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245074,180093456,71839228,"TW Pantograf","3609"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243388,180107400,71832166,"Bonarka","1255"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245073,180094237,71853707,"TW Parking","3608"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242935,180104520,71846811,"Kamieńskiego","620"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242940,180098455,71877401,"Makowa","626"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242936,180142517,71868715,"Cmentarz Podgórski","621"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242939,180093775,71909475,"Malborska","625"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244870,180124232,71904985,"Dworzec Płaszów","820"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242938,180098984,71914330,"Kabel","624"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243722,180156110,71915776,"Strycharska","2874"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242896,180146866,71917250,"Gromadzka","560"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242897,180145956,71942571,"Lipska","561"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242904,180168066,71837323,"Plac Bohaterów Getta","570"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243152,180176828,71883950,"Klimeckiego","946"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243380,180183805,71864053,"Most Kotlarski (nż)","1239"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242762,180210312,71853984,"Rondo Grzegórzeckie","365"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242763,180216425,71880094,"Francesco Nullo","367"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242765,180219225,71925014,"Dąbie","370"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242902,180161915,71899587,"Kuklińskiego","567"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243721,180160981,71917525,"Płaszowska","2873"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242894,180174406,71935953,"Stoczniowców","558"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242895,180159775,71940897,"Saska","559"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242764,180214751,71917999,"Ofiar Dąbia","369"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242965,180131283,72022777,"Płk. Dąbka","660"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243715,180122690,71982922,"Bagry","2865"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244990,180124801,72000058,"Bagry Tężnia","3541"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242899,180140415,71974130,"Łanowa","563"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242900,180133973,71970489,"Płaszów Szkoła","564"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242901,180134875,71989530,"Motyla","565"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244967,180143150,71988228,"Węglarska","3532"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242898,180152436,71967662,"Szczecińska","562"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243395,180146451,71967260,"Rzebika","1262"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243550,180140441,72019359,"Surzyckiego","2570"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244574,180144730,72003196,"Mały Płaszów P+R","3310"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245078,180132260,72034553,"TP OC","3613"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245079,180132188,72026687,"TP ALB","3614"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243074,180129790,72041220,"PP","819"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243554,180126961,72042008,"Zajezdnia Płaszów","2576"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245077,180128254,72040518,"TP Brama","3612"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243553,180130649,72048493,"Biskupińska (nż)","2574"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243552,180135181,72070501,"Albatrosów","2573"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243084,180184264,72014580,"EC Łęg","838"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243539,180188876,71960059,"Koszykarska","2559"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242766,180202848,72000863,"Elektrociepłownia Kraków","374"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243101,180181310,72032185,"Szafrańska","869"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243085,180184709,72052963,"Zatyka (nż)","839"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243536,180204731,72053688,"Siwka (nż)","2556"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243086,180198704,72077200,"Isep (nż)","840"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243509,180212552,72087236,"Mobilis","2516"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244603,180211939,72074903,"Archiwum UMK (nż)","3337"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242570,180319052,71886463,"Olszecka","102"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242571,180307552,71893253,"Olsza II","103"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242572,180300126,71893901,"Miechowity","104"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242584,180287911,71907702,"Rondo Młyńskie","118"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242585,180280415,71892915,"Pilotów","119"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242591,180236319,71847244,"Rondo Mogilskie","125"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243320,180248708,71860070,"Brodowicza","1165"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242590,180265288,71852045,"Cmentarz Rakowicki","124"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242589,180286874,71853801,"Brogi","123"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242586,180271065,71875424,"Łukasiewicza","120"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242587,180265140,71877801,"Narzymskiego","121"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243860,180256082,71937842,"TAURON Arena Kraków Wieczysta","3040"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242594,180239246,71898731,"Cystersów","129"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242595,180243835,71918136,"Białucha","130"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243319,180282933,71915790,"Pszona","1164"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242581,180280642,71940367,"Ugorek","115"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243192,180269116,71926647,"Meissnera","995"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242582,180289058,71931178,"Spadochroniarzy","116"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242567,180352776,71859198,"Kuźnicy Kołłątajowskiej","98"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244124,180319127,71852482,"Dobrego Pasterza","3113"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242562,180305360,71832593,"Opolska Estakada","92"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243508,180296366,71833755,"Wileńska","2515"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242564,180306868,71862840,"Lublańska","94"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243519,180296491,71867270,"Bosaków","2532"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242565,180318367,71875463,"Majora","96"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242522,180334415,71842812,"Górka Narodowa","35"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243584,180353873,71847239,"Słomczyńskiego","2607"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243579,180331347,71872432,"Sudolska","2602"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242566,180336400,71871346,"Powstańców","97"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243311,180341797,71883047,"Powstańców Garaże","1155"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243066,180308900,71930500,"Bora-Komorowskiego","810"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243245,180322743,71905883,"Rondo Barei","1066"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244146,180322188,71915876,"Słoneckiego","3138"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242583,180293706,71919191,"Akacjowa","117"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244285,180312336,71950932,"Jurczaka (nż)","3190"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242569,180335817,71912013,"Strzelców","101"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242568,180345255,71907572,"Prądnik Czerwony","100"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243198,180324278,71936141,"Park Wodny","1004"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243295,180335678,71956404,"Marchołta","1130"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243861,180244335,72025221,"Rondo 308. Dywizjonu","3041"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242580,180266423,71991107,"AWF","113"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244838,180236164,71986554,"M1 al. Pokoju","3472"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243720,180244941,71959501,"TAURON Arena Kraków","2872"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243658,180230823,72014483,"M1 Nowohucka","2736"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242579,180265151,72012244,"Stella-Sawickiego","112"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243528,180231030,72051289,"Sołtysowska Zakłady","2545"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242794,180250478,72045366,"Centralna","409"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243527,180240850,72044066,"Sołtysowska (nż)","2544"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243529,180231217,72068396,"Sołtysowska Osiedle","2546"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243321,180227224,72079929,"Sikorki","1166"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242792,180265659,72044923,"Czyżyny","407"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243165,180269378,72053483,"Czyżyny Dworzec","965"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242791,180274664,72026288,"Medweckiego","406"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244128,180281232,72053604,"Dąbrowskiej","3117"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242793,180265716,72059400,"Rondo Czyżyńskie","408"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243099,180275163,72077706,"Bieńczycka","867"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244125,180314139,71982206,"Os. Akademickie PK","3114"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242578,180305532,71998596,"Os. Dywizjonu 303","111"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242577,180317690,72005455,"Wiślicka","110"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244144,180342719,71964007,"Kurzei","3136"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242767,180345289,71986404,"Mistrzejowice","375"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242768,180338339,72016713,"Os. Złotego Wieku","377"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242776,180324850,72015411,"Cedyńska","385"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242775,180334553,72023281,"Łęczycka","384"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243522,180339851,72002071,"Miśnieńska","2538"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242778,180343422,72062946,"Kupały","387"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242779,180326443,72060268,"Dunikowskiego","388"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242780,180311365,72033949,"Os. Strusia","390"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242781,180311854,72049875,"Os. Na Lotnisku","391"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242782,180308769,72069944,"DH Wanda","392"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244795,180297485,72060224,"Os. Kościuszkowskie","3445"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242777,180329141,72036324,"Os. Kalinowe","386"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242774,180339109,72040386,"Rondo Piastowskie","383"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242770,180352624,72047149,"Piasta Kołodzieja","379"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242773,180346248,72051213,"Kleeberga","382"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243077,180333636,72077828,"Szpital Rydygiera","827"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243523,180327283,72078653,"Rondo Hipokratesa","2539"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242772,180350899,72069300,"Kruszwicka","381"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243659,180341808,72076851,"Os. Mistrzejowice Nowe","2737"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242960,180160200,72165925,"Szparagowa","651"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244135,180137664,72156240,"Półłanki","3124"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244133,180102298,72142008,"Danalówka (nż)","3122"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244132,180121808,72152286,"Bazarowa","3121"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242964,180138362,72096602,"Jeżowa","655"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242963,180149778,72103305,"Rybitwy Sklep (nż)","654"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242962,180154279,72128405,"Rybitwy Dom Kultury","653"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244348,180136656,72192276,"Śliwiaka Zakłady","2517"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244710,180118872,72183924,"Domagały Magazyny (nż)","3412"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242955,180118434,72184313,"Domagały (nż)","646"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242954,180116606,72204603,"Nad Drwiną","645"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244347,180135036,72214164,"Śliwiaka (nż)","1374"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243661,180154114,72188758,"Ks.Targosza (nż)","2739"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243689,180189225,72136288,"Lasek Łęgowski (nż)","2790"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242891,180206990,72111249,"Habina (nż)","552"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242892,180194509,72126722,"Odmętowa","553"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242953,180170789,72218150,"Podwierzbie","644"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242961,180165791,72157810,"Rybitwy Rozjazd (nż)","652"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244654,180165528,72171216,"Cmentarz Półłanki","2956"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242893,180194482,72163162,"Lesisko","554"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243537,180195453,72178199,"Lasek Mogilski","2557"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243538,180214366,72180867,"Stare Wiślisko","2558"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244185,180160485,72238403,"Husarska (nż)","3157"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242951,180148817,72224384,"Przewóz","641"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242950,180145858,72263961,"Łutnia","640"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244575,180113293,72341995,"Brzegi Pętla","3311"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244934,180119891,72338574,"Brzegi Grobla","3509"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244606,180125708,72314827,"Brzegi Użytek Ekologiczny (nż)","3340"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244247,180213912,72285192,"Giedroycia ZTPO (nż)","3178"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244248,180191311,72221891,"Zakarnie (nż)","3179"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244249,180204480,72244800,"Kępa (nż)","3180"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242952,180171162,72238840,"Wrobela","643"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243525,180321687,72151564,"Makuszyńskiego (nż)","2542"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243665,180284702,72094532,"Rondo Kocmyrzowskie im. Ks. Gorzelanego","2745"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242796,180271339,72124531,"Aleja Przyjaźni","415"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243664,180263243,72130673,"Plac Centralny im. R.Reagana","2744"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242795,180260959,72102189,"Os. Kolorowe","413"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242799,180277986,72110415,"Os. Zgody","418"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242797,180270978,72138307,"Aleja Róż","416"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242798,180280935,72141196,"Żeromskiego","417"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242811,180274106,72186046,"Bulwarowa (nż)","432"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242805,180239530,72167563,"Szpital Żeromskiego","425"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242806,180231082,72187845,"Klasztor Cystersów","427"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243530,180238039,72185172,"Sieroszewskiego (nż)","2547"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242804,180250400,72166910,"Os. Na Skarpie","424"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242807,180249823,72175024,"Os. Wandy","428"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242808,180247779,72181122,"Klasztorna","429"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243580,180255972,72192535,"Bulwarowa Ogródki Działkowe (nż)","2603"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245053,180243018,72211991,"Suche Stawy","2548"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242803,180269283,72171523,"Struga","423"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242810,180263854,72180747,"Orkana","431"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242802,180286053,72165586,"Os. Zielone","422"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242809,180261921,72192205,"Os. Willowe","430"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244167,180287795,72204752,"Krzesławice Młyn (nż)","3134"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242784,180336208,72117489,"Nowolipki (nż)","395"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242800,180291991,72122218,"Teatr Ludowy","420"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242788,180302688,72107412,"Arka","403"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242787,180316072,72099962,"Os. Jagiellońskie","402"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243524,180321542,72144722,"Nad Dłubnią","2541"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242801,180291953,72148696,"Os. Górali","421"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243857,180307836,72141056,"Cienista","3037"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244127,180336170,72097938,"Fatimska (nż)","3116"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243072,180327730,72114120,"PB","817"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245081,180331549,72119383,"TB Parking","3616"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245082,180334933,72117767,"TB Hala NB","3617"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245083,180334742,72111283,"TB Solaris","3618"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245084,180332356,72113735,"TB Magazyn","3619"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245080,180329634,72115463,"TB Brama","3615"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242786,180328517,72118202,"Zajezdnia Bieńczyce","397"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244281,180339028,72127806,"Petőfiego (nż)","3191"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244129,180342074,72144431,"Władysława Jagiełły","3118"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243526,180311774,72170460,"Wańkowicza","2543"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243872,180307411,72176767,"Krasnowolskiego (nż)","998"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244168,180303211,72195425,"PCK","3135"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242812,180317171,72201629,"Wiadukty (nż)","434"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243594,180341825,72169224,"Jana Kazimierza","2626"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243145,180352358,72180643,"Os. Na Stoku","939"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243591,180344949,72182849,"Leszka Białego","2619"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242814,180335497,72202985,"Os. Na Stoku Szkoła","436"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242813,180325670,72213883,"Darwina","435"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242815,180350565,72196679,"Architektów","437"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243235,180235255,72252974,"Fort Mogiła","1051"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245052,180243357,72227648,"Bardosa (nż)","449"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242830,180284760,72235080,"Kombinat","459"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244243,180230832,72293508,"Giedroycia (nż)","3174"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242825,180244429,72327211,"Brama nr 5 (nż)","453"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242833,180328356,72260604,"Lubocza PKP (nż)","467"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242831,180316692,72225252,"Elektromontaż (nż)","464"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242832,180303426,72236610,"Zajezdnia Nowa Huta","465"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244111,180315648,72286128,"Agencja Kraków Wschód (nż)","462"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244112,180322884,72301572,"Walcownia","463"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244109,180302580,72258372,"Mrozowa (nż)","460"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244110,180306648,72267444,"Blokowa (nż)","461"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243830,180324753,72231397,"Cmentarz Grębałów Południe (nż)","2989"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242821,180327830,72252893,"Cmentarz Grębałów","448"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242817,180343577,72232675,"Wzgórza Krzesławickie","442"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242834,180331470,72266468,"Lubocza Bugaj (nż)","468"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242835,180341366,72300942,"Lubocza Przychodnia","469"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242836,180346356,72336888,"Lubocza Szkoła","470"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244426,179887968,72479520,"Biskupice II (nż)","3221"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244423,179913060,72357048,"Tomaszkowice","3218"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244424,179904060,72400896,"Przebieczany","3219"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244425,179900928,72445968,"Biskupice I (nż)","3220"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244429,179846316,72529452,"Trąbki P+R","3245"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244428,179848728,72527652,"Trąbki OSP","3223"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244427,179867376,72512064,"Trąbki I (nż)","3222"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243439,180012209,72458957,"Ochmanów Oknoplast (nż)","1313"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243652,180008844,72447705,"Ochmanów Otaczarnia (nż)","2727"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244484,180053640,72414720,"Węgrzce Wielkie Pętla","3270"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245030,180053640,72398520,"Węgrzce Wielkie OSP (nż)","3579"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245031,180052920,72381240,"Węgrzce Wielkie Gościniec (nż)","3580"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243499,179995637,72367271,"Mała Wieś (nż)","2496"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243500,179997450,72396649,"Sułków (nż)","2497"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243437,180048385,72592403,"Podłęże Straż (nż)","1310"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243653,180048599,72582566,"Podłęże Przedszkole (nż)","2728"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243432,180035050,72525829,"Zakrzów (nż)","1305"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243438,180039224,72547746,"Podłęże Balachówka (nż)","1311"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244963,180083509,72840956,"Niepołomice Puszcza","3526"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243433,180084240,72715320,"Niepołomice Boryczów (nż)","1306"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243434,180069840,72692280,"Niepołomice Wielicka (nż)","1307"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243435,180056744,72638573,"Staniątki Wiadukt (nż)","1308"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243436,180051489,72617096,"Podłęże Centrum (nż)","1309"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244935,180132808,72367392,"Brzegi Dom Kultury (nż)","3510"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244936,180138074,72390740,"Brzegi Granica (nż)","3511"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243420,180139368,72402364,"Grabie Szczurów (nż)","1292"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243421,180143562,72480916,"Grabie Dom Kultury (nż)","1293"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242887,180173362,72360411,"Kujawy","544"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243623,180190033,72366407,"Oczyszczalnia Ścieków 'Kujawy' (nż)","2655"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243625,180210462,72368387,"Dymarek (nż)","2657"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242888,180217640,72388935,"Karowa (nż)","546"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242873,180176374,72439381,"Chałupki","525"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243618,180171407,72460966,"Truskawkowa (nż)","2650"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242874,180185209,72457996,"Kąkolowa (nż)","527"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243619,180196745,72450372,"Chałupki Górne (nż)","2651"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243620,180209989,72465885,"Branice Ośrodek Zdrowia (nż)","2652"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243423,180146191,72502459,"Grabie Kościół","1295"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243424,180139128,72541186,"Niepołomice Podgrabie (nż)","1296"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243425,180147295,72598498,"Niepołomice Pasternik (nż)","1297"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242876,180216997,72515639,"Branice Szkoła","531"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242875,180213138,72492696,"Branice (nż)","530"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245128,180176724,72560376,"Kępa Grabska","3637"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242877,180165951,72589892,"Przylasek Rusiecki","532"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243621,180181242,72591625,"Ciekowiec (nż)","2653"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243622,180207276,72571403,"Rzepakowa Świetlica (nż)","2654"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243848,180220541,72552953,"Rzepakowa (nż)","3009"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244991,180194032,72580735,"Przylasek Rusiecki Kąpielisko","3542"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243624,180251873,72366185,"Nadbrzezie (nż)","2656"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242826,180238900,72394574,"Gwarecka (nż)","455"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242827,180250888,72388221,"Suchy Jar (nż)","456"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242828,180258102,72376449,"Koksochemia (nż)","457"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242829,180262080,72426240,"Pleszów","458"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242863,180265090,72456421,"Zakład Przeróbki (nż)","511"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242837,180339620,72360724,"Lubocza Trafo (nż)","471"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242850,180347361,72429476,"Wadowska (nż)","486"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242849,180350050,72447098,"Wadów","485"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243535,180333900,72479801,"Wadów Glinik (nż)","2554"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244929,180349438,72463702,"Wadów Os. Kolejowe","3501"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242865,180230031,72509259,"Branice Na Dole (nż)","513"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242864,180247142,72503272,"Branice Pagórek (nż)","512"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243614,180270349,72503867,"Szymańskiego (nż)","2646"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242862,180274389,72535447,"Igołomska (nż)","510"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243849,180235519,72550685,"Prawocheńskiego (nż)","3010"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242868,180234088,72605926,"Drożyska (nż)","518"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243615,180251001,72584159,"Wyciąska (nż)","2647"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242867,180247568,72601209,"Podstawie (nż)","517"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242866,180259506,72570320,"Wyciąże Sklep (nż)","515"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244846,180277657,72554896,"Jeziorko (nż)","3477"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242861,180278763,72554170,"Wyciąże (nż)","508"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242860,180285946,72577073,"Janówka (nż)","506"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243613,180280142,72586059,"Wyciąże Zachód (nż)","2645"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244131,180305831,72539543,"Cmentarz Ruszcza (nż)","3120"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242870,180312545,72526967,"Ruszcza","520"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242853,180334044,72501876,"Wadów Działki (nż)","492"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244492,180336597,72528887,"Spławy","3276"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242859,180303855,72597096,"Błonia Kościelnickie (nż)","505"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242879,180186188,72746894,"Wolica Most","536"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243428,180122106,72677832,"Niepołomice Diesla (nż)","1300"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243426,180140432,72622831,"Niepołomice Kątek (nż)","1298"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243427,180134020,72648036,"Niepołomice Poręby (nż)","1299"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243429,180120435,72693550,"Niepołomice Wodna (nż)","1301"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243431,180104572,72742863,"Niepołomice Kościuszki (nż)","1303"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243430,180111951,72712484,"Niepołomice Płaszowska I (nż)","1302"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242886,180212550,72636336,"Przylasek Wyciąski (nż)","543"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242885,180205733,72652338,"Siejówka (nż)","542"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242884,180204018,72672504,"Bartnicza (nż)","541"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244718,180201071,72696323,"Wolica Szkoła (nż)","3427"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242880,180203207,72728194,"Wolica Las","537"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242881,180198102,72728497,"Wolica Kościół (nż)","538"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243164,180159120,72763920,"Niepołomice Kolejowa (nż)","964"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243404,180139176,72777564,"Niepołomice Dworzec","1276"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243405,180119884,72779195,"Niepołomice Rynek","1277"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243406,180146835,72804106,"Niepołomice Batorego (nż)","1278"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243407,180151408,72826744,"Niepołomice Batorego II (nż)","1279"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243417,180157126,72864147,"Niepołomice Jazy (nż)","1289"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242872,180289230,72665678,"Cło","522"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242871,180284693,72620187,"Wyciąże Wiadukt (nż)","521"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242882,180225119,72701147,"Wolica (nż)","539"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243617,180244764,72682952,"Zakępie (nż)","2649"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243616,180261256,72682656,"Brzeska (nż)","2648"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243612,180323926,72631384,"Kościelniki","2644"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242858,180341657,72626839,"Zabłocie Kościelnickie (nż)","503"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243408,180191486,72931463,"Wola Batorska Ruskie (nż)","1280"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243418,180168305,72886192,"Niepołomice Jazy II (nż)","1290"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243409,180189885,72956538,"Wola Batorska Żwirownia (nż)","1281"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243410,180190973,72996677,"Wola Batorska Kościół (nż)","1282"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243412,180190424,73062182,"Wola Batorska Borek (nż)","1284"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243411,180189716,73043805,"Wola Batorska Cmentarz (nż)","1283"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243413,180211589,73075779,"Wola Batorska Mikoniowiec (nż)","1285"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243414,180231454,73088158,"Wola Batorska Zamoglice (nż)","1286"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243416,180288360,73269360,"Chobot Leśniczówka","1288"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243402,180264960,73247760,"Chobot (nż)","1274"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243419,180254160,73208880,"Wola Zabierzowska (nż)","1291"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243415,180245140,73156880,"Zabierzów Bocheński Centrum (nż)","1287"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245036,180368208,70514136,"Rudno Zamek","3589"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245040,180639594,70700652,"Czerna Las","3590"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243979,180484488,70696908,"Krzeszowice Krakowska Muzeum (nż)","2923"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244435,180473400,70693560,"Krzeszowice Dworzec Autobusowy","3250"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244961,180474956,70733146,"Krzeszowice Wiadukt (nż)","3525"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244960,180462032,70765940,"Nawojowa Góra Gwoździec (nż)","3524"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245041,180582250,70675395,"Czerna Klasztor","3591"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244955,180406237,71043422,"Kochanów Sowiarka (nż)","3519"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244705,180486536,70894644,"Pisary Spacerowa (nż)","3420"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244956,180409762,70909835,"Młynka Kalwaryjska (nż)","3520"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242497,180403227,70892538,"Młynka Pętla","1"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244959,180450520,70820684,"Nawojowa Góra Zagrody (nż)","3523"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243378,180464760,70891200,"Pisary Dwór (nż)","1236"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244916,180443779,70851002,"Nawojowa Góra Pisarska (nż)","3489"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244958,180429436,70892022,"Młynka Dolna (nż)","3522"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244706,180452102,70908252,"Pisary Akacjowa (nż)","3421"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243377,180369192,70978742,"Nielepice Stadnina (nż)","1235"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244709,180384056,70954362,"Nielepice Pętla","3424"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243243,180411844,70923675,"Rudawa Młyn (nż)","1064"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243770,180412074,70961117,"Rudawa Stadion (nż)","2924"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244707,180448833,70927468,"Pisary Mleczna (nż)","3422"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243239,180431425,70968673,"Rudawa PKP","1059"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243224,180444319,70946399,"Rudawa Szkoła","1039"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244704,180441291,70961985,"Rudawa Rynek","3419"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244703,180458332,70995542,"Rudawa Osiedle (nż)","3418"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243710,180504720,70895880,"Pisary Kasztanowa (nż)","2860"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244966,180521599,70896386,"Pisary Dąbrówki (nż)","3531"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244917,180507719,70946052,"Rudawa 21 Lipca (nż)","3490"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243218,180533695,70953548,"Radwanowice Pętla","1032"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244359,180520098,70949010,"Radwanowice Krzeszowicka (nż)","3208"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244701,180496304,71171271,"Więckowice Ogrodowa (nż)","3416"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244708,180377753,71095984,"Kleszczów Centrum","3423"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244954,180413500,71092832,"Kochanów Centrum","3518"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243714,180370494,71110542,"Kleszczów Pod Lipką (nż)","2864"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244953,180418294,71145417,"Zabierzów Wrzosowa (nż)","3517"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244434,180421028,71280185,"Zabierzów Rynek","3249"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244952,180416634,71250172,"Zabierzów Kamieniołom","3516"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244951,180406221,71290090,"Zabierzów Centrum","3515"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242657,180422105,71189212,"Zabierzów Ośrodek Zdrowia","213"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242651,180421317,71217842,"Zabierzów Piaski (nż)","203"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243768,180482339,71199633,"Więckowice Lipka (nż)","2921"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242652,180424762,71282760,"Zabierzów PKP","204"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243162,180431049,71285721,"Zabierzów Młyn","961"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243767,180475554,71249545,"Bolechowice Zielona Mała (nż)","2920"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243763,180457172,71293327,"Bolechowice Zielona (nż)","2915"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243215,180488244,71062984,"Brzezinka Skrzyżowanie","1029"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244702,180496599,71058986,"Brzezinka Kościół","3417"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243213,180497837,71092451,"Brzezinka Zarzecze (nż)","1027"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244358,180533225,71111145,"Kobylany Dworska (nż)","3207"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243244,180534725,71131245,"Kobylany Remiza (nż)","1065"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244355,180527125,71146609,"Kobylany Kwiatowa","3204"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243637,180571082,71090635,"Będkowice Pętla","2700"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243718,180591375,71101739,"Będkowice Długa (nż)","2869"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245000,180603476,71107351,"Będkowice Rynek","3551"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244356,180549000,71186400,"Karniowice Pętla","3205"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244357,180537756,71205307,"Karniowice Górki (nż)","3206"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243765,180512775,71268197,"Bolechowice Drogi (nż)","2917"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243764,180486618,71276950,"Bolechowice Krzewiny (nż)","2916"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244698,180529727,71250080,"Bolechowice Centrum","3413"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242655,180574604,71265519,"Zelków Staw","210"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242654,180554112,71278272,"Zelków Wola (nż)","209"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243766,180580729,71281135,"Zelków Spławy (nż)","2918"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244338,180581632,71300230,"Zelków Kościuszki (nż)","3200"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243846,180618402,71098235,"Będkowice Cmentarz (nż)","3007"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243181,180633022,71115842,"Będkowice Borynia (nż)","981"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243180,180644367,71147144,"Będkowice Kawiory (nż)","980"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243179,180650540,71161474,"Będkowice Mosurowa (nż)","979"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243175,180682791,71268462,"Czajowice (nż)","975"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243177,180647809,71228926,"Bębło Łabajowa (nż)","977"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243178,180659576,71199031,"Bębło Lasek (nż)","978"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243176,180664509,71252436,"Bębło Stara Wieś (nż)","976"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244023,180367632,72356364,"Łuczanowicka (nż)","3066"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243440,180882720,72306360,"Słomniki Osiedle","1315"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244997,180564631,71435729,"Wielka Wieś Szkoła (nż)","3548"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244949,180390496,71338521,"Zabierzów Kmity","3513"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244950,180403942,71316613,"Zabierzów Willowa","3514"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244439,180383965,71366800,"Zabierzów Eximius Park","3248"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242645,180390130,71406355,"Modlniczka Mała","197"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242644,180379927,71408992,"Rząska Autostrada (nż)","196"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244337,180356946,71412621,"Rząska Szkoła","3199"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244948,180392815,71373856,"Zabierzów Rzemieślnicza (nż)","3512"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243204,180420358,71383408,"Brzezie Działki (nż)","1016"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243230,180394144,71422072,"Modlniczka Trzcie (nż)","1046"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243232,180450207,71332017,"Brzezie Kulka (nż)","1048"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243209,180439027,71360291,"Brzezie Narodowe (nż)","1021"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244360,180465401,71358470,"Brzezie Kluczwody (nż)","3209"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243867,180476838,71357902,"Brzezie Kościół (nż)","3049"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245007,180485659,71393374,"Tomaszowice Spacerowa (nż)","3558"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244335,180485064,71412840,"Tomaszowice Kolberga (nż)","3167"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245006,180483828,71430859,"Tomaszowice Dwór","3557"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244655,180366646,71500820,"Rząska Cmentarz (nż)","2990"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244436,180381755,71462733,"Modlniczka Leroy Merlin (nż)","3251"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242641,180358699,71480077,"Rząska Jednostka Wojskowa (nż)","193"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245001,180414530,71485764,"Modlniczka Willowa (nż)","3552"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243461,180415346,71523998,"Modlniczka Poligon (nż)","1353"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244992,180405744,71542945,"Modlnica Podchruście (nż)","3543"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243588,180391291,71562546,"Gaik (nż)","2615"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245002,180431422,71477326,"Modlniczka Dworska","3553"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245004,180480779,71480214,"Modlnica Kościelna (nż)","3555"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243185,180448275,71523464,"Modlnica Skrzyżowanie (nż)","985"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245003,180470551,71507228,"Modlnica Szkoła","3554"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244993,180461764,71533265,"Modlnica Kolonia (nż)","3544"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243205,180488876,71353141,"Ujazd Pętla","1017"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244336,180581222,71321675,"Zelków Pętla","3198"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244998,180607449,71374873,"Biały Kościół Dolina Kluczwody (nż)","3549"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243172,180566615,71431962,"Wielka Wieś (nż)","972"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244802,180597960,71542080,"Grębynice Remiza (nż)","3456"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244803,180603360,71524080,"Grębynice Parkowa (nż)","3457"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245005,180486973,71454286,"Tomaszowice Zacisze (nż)","3556"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244996,180541961,71474273,"Szyce Wesoła (nż)","3547"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243330,180545760,71535960,"Giebułtów Morgi","1177"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243460,180531000,71550720,"Giebułtów Zbiornik (nż)","1352"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244924,180497558,71530804,"Giebułtów Świętego Idziego (nż)","3496"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244995,180514759,71504653,"Szyce Spacerowa (nż)","3546"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244994,180490896,71515673,"Modlnica Komora (nż)","3545"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243329,180518400,71562960,"Giebułtów Plac Zabaw (nż)","1176"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244923,180488637,71537238,"Giebułtów Zielone Wzgórze (nż)","3495"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242513,180405595,71634112,"Tonie Skrzyżowanie","23"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242511,180395657,71592343,"Tonie","21"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242509,180362793,71582629,"Ojcowska","18"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242510,180381704,71568432,"Bronowice Wielkie","19"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243589,180402562,71615675,"Na Budzyniu","2616"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244806,180363025,71676115,"Starego Wiarusa","3460"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245056,180362619,71691252,"Pękowicka","3575"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243694,180375378,71664050,"Poziomkowa","2806"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242512,180390005,71649367,"Gospodarska","22"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242514,180416571,71643979,"Tonie Kąty (nż)","25"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245054,180408347,71688054,"Zielonki Długopolska","3573"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244921,180450559,71585003,"Modlnica Cicha (nż)","3493"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243190,180421076,71619292,"Tonie Gliniki (nż)","990"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244922,180463957,71570797,"Giebułtów Osiedle Polana (nż)","3494"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242633,180484560,71659800,"Trojanowice Strugi (nż)","183"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244834,180461430,71632271,"Pękowice Ojcowska","3440"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244840,180448837,71645638,"Pękowice Fort","3474"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242632,180387440,71727690,"Zielonki Skrzyżowanie","182"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245055,180391575,71697246,"Zielonki Na Popielówkę","3574"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245057,180374517,71706686,"Zielonki Słoneczna","3576"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243667,180369412,71739266,"Glogera (nż)","2751"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243668,180375378,71735241,"Glogera Granica Miasta (nż)","2752"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242516,180390578,71795117,"Witkowice","29"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242519,180356178,71810618,"Siewna","32"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242518,180368749,71805732,"Dożynkowa","31"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242517,180377787,71800222,"Witkowice Nowe","30"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244920,180425624,71719879,"Zielonki Urząd Gminy","3492"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242631,180425249,71726872,"Zielonki UG","181"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242630,180445766,71712950,"Zielonki Transformator","180"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243687,180441133,71759664,"Zielonki Galicyjska (nż)","2784"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243677,180484920,71722080,"Garlica Murowana Kasztany (nż)","2770"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244625,180475988,71708486,"Zielonki Jaskinia Zielonkowska (nż)","3358"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242628,180465966,71701369,"Zielonki Rozjazd","177"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242515,180426128,71789796,"Os. Marszowiec","28"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243686,180452520,71792640,"Bibice Cmentarz (nż)","2783"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243819,180444625,71783219,"Zielonki Marszowiec Pętla","2978"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242638,180588600,71636760,"Przybysławice I (nż)","190"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242639,180565920,71622720,"Przybysławice II","191"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243254,180574560,71628480,"Przybysławice III (nż)","1084"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243811,180560160,71580240,"Korzkiew Botoja (nż)","2970"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243812,180582120,71571960,"Korzkiew Zamek (nż)","2971"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244925,180509760,71582760,"Giebułtów Kościół","3497"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242635,180538812,71614260,"Januszowice","185"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242629,180507960,71678880,"Trojanowice Pętla","178"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243818,180494280,71686800,"Trojanowice Krakowska (nż)","2977"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242634,180500724,71637264,"Trojanowice","184"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243597,180563400,71707680,"Garliczka Chochół (nż)","2629"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243598,180583200,71724240,"Owczary Górna (nż)","2630"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243600,180610200,71732520,"Owczary Gajowa (nż)","2632"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244611,180519020,71729574,"Garlica Duchowna Kapliczka (nż)","3344"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244612,180506576,71738511,"Garlica Murowana Plac Zabaw","3345"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243596,180535818,71719515,"Garlica Duchowna Rozjazd","2628"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244610,180541766,71752993,"Wola Zachariaszowska Szkoła","3343"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244623,180571680,71791200,"Michałowice Las Michałowski","3356"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244627,180560122,71771193,"Wola Zachariaszowska Słoneczna","3360"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244622,180558000,71813160,"Michałowice Jana Pawła II (nż)","3355"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244609,180585322,71769876,"Górna Wieś Pętla","3342"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243806,180612583,71785411,"Michałowice Michałówka (nż)","2965"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245047,180606461,71824149,"Michałowice Na Stoku (nż)","3597"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243308,180625320,71509680,"Grębynice Mogiełki (nż)","1150"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243309,180650520,71481240,"Maszyce Skrzyżowanie (nż)","1152"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243328,180644760,71501400,"Maszyce Remiza (nż)","1174"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243813,180672120,71476560,"Smardzowice Wołówka (nż)","2972"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244800,180690840,71473680,"Smardzowice Remiza","3454"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244804,180640080,71508240,"Maszyce Sadzawka (nż)","3458"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245038,180653345,71324040,"Biały Kościół Murownia Pętla","3559"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244999,180643239,71329089,"Biały Kościół Murownia (nż)","3550"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244964,180766300,71392622,"Ojców Zamek","3527"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244965,180785657,71401976,"Ojców Złota Góra","3528"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243809,180627120,71687520,"Owczary Pętla","2968"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244488,180631800,71627040,"Brzozówka Oskarówka","3271"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244489,180619200,71633520,"Brzozówka Ośrodek","3272"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244621,180761040,71818200,"Krasieniec Zakupny Kapliczka","3354"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244801,180639000,71669520,"Owczary Długa (nż)","3455"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243807,180650520,71757360,"Narama Remiza","2966"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244624,180619560,71709840,"Owczary Spacerowa (nż)","3357"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243804,180625155,71794063,"Michałowice Gościniec (nż)","2963"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244615,180649388,71800120,"Narama Graniczna Sklep (nż)","3348"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244616,180669385,71797197,"Narama Księża (nż)","3349"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244617,180684859,71790195,"Krasieniec Stary Skrzyżowanie (nż)","3350"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244618,180705300,71779778,"Krasieniec Stary Kopalina (nż)","3351"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244626,180746640,71776440,"Krasieniec Zakupny Pod Lipą","3359"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244619,180723336,71780703,"Krasieniec Zakupny Remiza (nż)","3352"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243250,180420719,71884206,"Węgrzce Centrum Medyczne (nż)","1074"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243692,180365400,71871120,"Banacha","2796"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243693,180359570,71872025,"Górka Narodowa Wschód","2797"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243601,180381242,71873241,"Belwederczyków (nż)","2633"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244608,180395941,71877326,"Węgrzce Trzecia Góra (nż)","3341"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242737,180410758,71879274,"Węgrzce Starostwo Powiatowe","327"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243120,180368173,71944468,"Cmentarz Batowice","897"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243636,180368951,71952554,"Cmentarz Batowice Wschód (nż)","2699"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244794,180386309,71947273,"Węgrzce Sudół (nż)","3444"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243249,180411345,71906729,"Węgrzce Magiczne Wzgórze (nż)","1073"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244793,180392483,71931621,"Węgrzce B4 (nż)","3443"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243801,180437166,71851100,"Bibice Kościuszki","2960"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245042,180431852,71881731,"Węgrzce A1","3592"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243802,180455040,71833680,"Bibice Rynek","2961"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244628,180477324,71875296,"Bibice Mokra","3361"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245043,180479033,71881087,"Bibice Na Czekaj (nż)","3593"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244363,180463680,71939160,"Boleń Pętla","3210"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243251,180451434,71908936,"Węgrzce Błonie","1079"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242623,180431924,71908712,"Węgrzce Centrum","165"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243252,180463033,71910097,"Węgrzce Pętla","1080"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243305,180480128,72015844,"Książniczki Las (nż)","1143"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244364,180443880,71979120,"Bosutów Remiza","3211"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244303,180375012,71972064,"Dziekanowicka (nż)","3194"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244304,180382320,72005148,"Powstańców Magazyny","3195"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243676,180414360,71982720,"Bosutów Krakowska (nż)","2769"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244792,180396000,71967960,"Węgrzce B1 (nż)","3442"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244302,180388584,71985060,"Dziekanowice Batowice SKA","3193"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242753,180400541,72055448,"Batowice Kapliczka","352"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242769,180363308,72046616,"Os. Piastów","378"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243161,180378098,72043766,"Urząd Skarbowy Nowa Huta","957"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242771,180357523,72063616,"Popielidów","380"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243800,180394448,72030658,"Batowice Spławy (nż)","2959"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244361,180405000,72030312,"Dziekanowice Długa (nż)","3165"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243803,180410320,72081910,"Batowice Dłubnia","2962"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244362,180422172,72044064,"Dziekanowice Kapliczka","3166"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244650,180470824,72050262,"Książniczki Paszczykówka (nż)","3377"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243301,180448748,72080186,"Kończyce","1139"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242741,180513474,71892003,"Michałowice Komora (nż)","332"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243808,180540484,71845615,"Michałowice Brzozowa (nż)","2967"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243505,180528947,71865304,"Michałowice Kwiaty Polne (nż)","2506"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243238,180527335,71881130,"Michałowice Banasiówka (nż)","1058"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245044,180544583,71941537,"Michałowice Dąbrowskich (nż)","3594"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243307,180537945,71950545,"Michałowice Ogrodowa (nż)","1145"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243237,180569879,71881042,"Michałowice Ujęcie Wody (nż)","1055"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242743,180595109,71883618,"Michałowice Lecznica (nż)","335"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243654,180583869,71925504,"Michałowice Ośrodek Zdrowia","2729"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245039,180570382,71925165,"Michałowice P+R","3582"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245045,180570875,71929618,"Michałowice Centrum","3595"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245046,180599916,71921519,"Michałowice Górna (nż)","3596"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244614,180615427,71911446,"Michałowice Warszawka (nż)","3347"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243304,180486688,72033138,"Książniczki Centrum","1142"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243303,180519133,71976047,"Młodziejowice Park","1141"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243306,180502562,71978884,"Młodziejowice Młyn (nż)","1144"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244647,180577615,71963248,"Masłomiąca Koźlica (nż)","3374"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243822,180578755,71995448,"Masłomiąca Staw (nż)","2981"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244651,180568888,72047560,"Masłomiąca Długa (nż)","3378"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244798,180421021,72120711,"Raciborowice Wawelska","3452"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243688,180392005,72191293,"Zakole","2789"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242820,180382779,72157767,"Zesławice","447"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243592,180380620,72178774,"Zesławice Ogródki Działkowe (nż)","2621"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244506,180368327,72219694,"Niebyła (nż)","3278"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243300,180425052,72111451,"Raciborowice Centrum","1138"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243829,180426757,72145411,"Raciborowice Granica (nż)","2988"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244799,180436773,72181915,"Zastów Pętla","3453"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243398,180437683,72204329,"Zastów Działki (nż)","1265"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243399,180477038,72209521,"Wiktorowice Skrzyżowanie (nż)","1266"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243669,180357727,72230554,"Szpital Okulistyczny","2759"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242818,180363958,72249008,"Grębałów (nż)","443"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242819,180376675,72221721,"Kantorowice","445"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244130,180374788,72256370,"Morcinka (nż)","3119"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244565,180395907,72293379,"Prusy","3300"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242843,180409857,72306049,"Prusy Szkoła (nż)","478"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244300,180476280,72232920,"Wiktorowice Rozlewnia Wód (nż)","3189"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242841,180439082,72348526,"Sulechów (nż)","476"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242842,180428759,72331784,"Prusy WSR (nż)","477"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243825,180529920,72173880,"Pielgrzymowice Pętla","2984"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244652,180543240,72172800,"Pielgrzymowice Wierzbowa (nż)","3379"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243397,180508098,72204923,"Wiktorowice Granica (nż)","1264"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243400,180494999,72219466,"Wiktorowice Centrum (nż)","1267"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243828,180555494,72122761,"Więcławice Stare Wysyłek (nż)","2987"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244645,180556770,72104158,"Więcławice Stare Centrum (nż)","3372"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243827,180552600,72142200,"Pielgrzymowice Granica (nż)","2986"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243149,180573515,72128687,"Sieborowice (nż)","943"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244649,180603572,72126757,"Zagórzyce Stare Owocowa (nż)","3376"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244297,180493560,72251640,"Maciejowice Góra (nż)","1269"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244298,180511560,72260280,"Maciejowice Pętla","3159"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244299,180505080,72267840,"Maciejowice Skrzyżowanie (nż)","3168"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243671,180615337,72247918,"Łuczyce Zwierzyniec (nż)","2761"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243373,180593046,72271973,"Łuczyce Zjawienie (nż)","1231"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244551,180578160,72302400,"Łuczyce Kosynierów","3287"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243286,180573020,72332193,"Łuczyce Las (nż)","1120"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243444,180614401,72346244,"Marszowice Góry (nż)","1319"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244620,180794160,71925480,"Iwanowice Dworskie Pętla","3353"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245130,180768132,71839404,"Krasieniec Zakupny Kotryska (nż)","3641"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245131,180768132,71839404,"Iwanowice Dworskie Kotryska (nż)","3642"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244613,180621557,71860616,"Michałowice Laskowiec (nż)","3346"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244648,180629341,72142054,"Zagórzyce Dworskie Remiza","3375"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243673,180655920,72246600,"Goszcza Cmentarz (nż)","2763"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244553,180672480,72251640,"Goszcza Dworek","3289"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244554,180635800,72238806,"Sadowie Wiadukt (nż)","3290"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243842,180651150,72336303,"Marszowice Centrum (nż)","3003"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243843,180676647,72333259,"Marszowice (nż)","3004"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243446,180696480,72330011,"Polanowice Kolonia (nż)","1323"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244552,180713552,72329364,"Polanowice Boisko (nż)","3288"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243448,180763033,72309273,"Niedźwiedź PKP (nż)","1326"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243449,180805526,72295292,"Niedźwiedź Felix (nż)","1327"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243441,180866520,72290160,"Słomniki Rynek","1316"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243657,180875880,72298080,"Słomniki Kościuszki (nż)","2733"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243447,180831255,72295593,"Ratajów Skrzyżowanie (nż)","1325"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243442,180843840,72294840,"Słomniki Zagłoby (nż)","1317"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244555,180617425,72451081,"Goszyce Pod Lasem (nż)","3291"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242845,180386096,72399053,"Łuczanowice","480"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244270,180389520,72389880,"Orłowskiego (nż)","3187"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243595,180395287,72413186,"Bystronia (nż)","2627"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243385,180409680,72456120,"Krzysztoforzyce Góra (nż)","1248"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243389,180416520,72473760,"Krzysztoforzyce przy Dworze (nż)","1256"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242847,180380300,72439402,"Wadów Osiedle (nż)","483"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242848,180362099,72451901,"Wadów Szkoła","484"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242846,180401209,72432385,"Łuczanowice Skrzyżowanie","482"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242840,180457163,72367501,"Dojazdów PKS","475"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242839,180471240,72387720,"Dojazdów Działki (nż)","474"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243839,180480597,72411766,"Kocmyrzów Rondo","3000"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243390,180480960,72453600,"Kocmyrzów Krzyżówka (nż)","1257"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243840,180469175,72468508,"Kocmyrzów Biblioteka","3001"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243863,180414720,72487440,"Krzysztoforzyce Sklep (nż)","3043"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244391,180416880,72498240,"Krzysztoforzyce Pętla","3230"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244493,180357912,72533304,"Węgrzynowicka (nż)","3277"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243533,180372665,72537916,"Węgrzynowice Dół (nż)","2552"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243532,180386633,72545990,"Barwna (nż)","2551"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242851,180415267,72552359,"Węgrzynowice","487"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242852,180400280,72561226,"Węgrzynowice Centrum (nż)","488"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243844,180468482,72494844,"Kocmyrzów Sodfiny (nż)","3005"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243835,180475905,72520223,"Głęboka Kolonia (nż)","2996"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243866,180471204,72547524,"Głęboka Zakręt (nż)","3046"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244545,180479226,72537416,"Głęboka Staw","3281"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244556,180486278,72407554,"Kocmyrzów-Luborzyca Urząd Gminy","3292"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243841,180516143,72390827,"Luborzyca Szkoła","3002"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243836,180546522,72378479,"Wysiołek Luborzycki Skrzyżowanie (nż)","2997"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242838,180527134,72393358,"Luborzyca","472"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245063,180513965,72449309,"Kocmyrzów CPN (nż)","3587"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243838,180556640,72359881,"Wysiołek Luborzycki Kapkazy (nż)","2999"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243837,180572049,72373789,"Wysiołek Luborzycki (nż)","2998"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243454,180557122,72416865,"Wola Luborzycka Działki (nż)","1332"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243445,180589275,72360234,"Wysiołek Luborzycki Radwany (nż)","1320"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244548,180577349,72421438,"Wola Luborzycka Skrzyżowanie (nż)","3284"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243154,180592457,72428860,"Wola Luborzycka Las (nż)","950"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245059,180601200,72562320,"Rawałowice Kapliczka","3583"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245062,180541440,72494352,"Pietrzejowice (nż)","3586"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245061,180557424,72522252,"Rawałowice Góra (nż)","3585"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875245060,180590400,72533880,"Rawałowice Skrzyżowanie (nż)","3584"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875242856,180409070,72682572,"Wróżenice","499"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244544,180441000,72674280,"Czulice Przymiarki (nż)","3280"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244546,180473400,72615960,"Karniów Szkoła","3282"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244547,180457200,72676800,"Czulice Kościół","3283"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243611,180378016,72616515,"Ostafina","2643"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243608,180404271,72641574,"Wróżenicka (nż)","2640"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243610,180394837,72631857,"Hektary (nż)","2642"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243609,180406133,72657050,"Wróżenice Górka (nż)","2641"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243158,180641784,72474109,"Goszyce Remiza (nż)","954"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875243156,180686160,72563760,"Łososkowice Szkoła (nż)","952"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244549,180675720,72576720,"Łososkowice Remiza","3285"))
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278766,180367133,72043450,"Os. Piastów","378"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278732,180234831,71825984,"Lubicz","126"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279100,180064597,71601349,"Czerwone Maki P+R","3038"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278875,180074257,71632051,"Chmieleniec","2691"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278874,180087693,71646235,"Kampus UJ","2690"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278838,180047695,71736393,"Borek Fałęcki","747"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278840,180052313,71740458,"Borek Fałęcki I","824"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278837,180058468,71746670,"Solvay","746"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278823,180080431,71757823,"Sanktuarium Bożego Miłosierdzia","615"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278836,180048914,71821671,"Kurdwanów","744"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279369,180048914,71821671,"Kurdwanów P+R","3176"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278889,180088119,71762192,"Łagiewniki ZUS","2821"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278723,180263081,71696364,"Biprostal","84"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278741,180189697,71695213,"Salwator","311"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278817,180097653,71660276,"Ruczaj","589"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278873,180108113,71685718,"Norymberska","2688"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278745,180220900,71679150,"Reymana","320"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278747,180212247,71759953,"Filharmonia","322"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278807,180157950,71809135,"Korona","571"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278872,180114083,71714885,"Grota-Roweckiego","2687"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278871,180110753,71729800,"Lipińskiego","2686"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278820,180109861,71743736,"Borsucza","612"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278813,180124296,71733518,"Kobierzyńska","584"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278821,180109799,71754497,"Brożka (nż)","613"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278812,180148135,71727501,"Słomiana","577"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278819,180119708,71778550,"Rzemieślnicza","611"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278822,180114207,71762733,"PT","614"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278842,180107850,71769998,"Łagiewniki","922"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278818,180131163,71786300,"Rondo Matecznego","610"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278808,180149478,71795415,"Smolki","572"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278743,180213932,71730079,"Cracovia","318"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279310,180213932,71730079,"Muzeum Narodowe","3141"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278811,180162052,71719420,"Kapelanka","576"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278809,180174943,71751643,"Most Grunwaldzki","574"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279101,180174899,71751717,"Centrum Kongresowe ICE","3039"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279485,180174899,71751717,"Rondo Grunwaldzkie","3338"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278810,180168366,71731454,"Szwedzka","575"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278742,180192257,71718218,"Komorowskiego","313"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278846,180217018,71704348,"Park Jordana","960"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278839,180215404,71714643,"Oleandry","823"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278744,180198915,71739237,"Jubilat","319"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278746,180217279,71752656,"Uniwersytet Jagielloński","321"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278754,180182070,71778588,"Orzeszkowej","361"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278752,180186102,71790433,"Stradom","359"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278878,180179604,71810604,"Muzeum Inżynierii Miejskiej","2726"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278753,180172775,71796294,"Plac Wolnica","360"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278877,180182304,71822304,"Dajwór","915"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278880,180183978,71823985,"Św.Wawrzyńca","2742"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279631,180183978,71823985,"św. Wawrzyńca","3471"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278749,180196182,71782457,"Wawel","325"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278853,180213089,71776500,"Plac Wszystkich Świętych","1360"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278750,180214076,71792015,"Poczta Główna","357"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278879,180210340,71786990,"Św.Gertrudy","2741"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279630,180210340,71786990,"św. Gertrudy","3470"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278751,180206010,71803581,"Starowiślna","358"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278755,180192826,71814352,"Miodowa","362"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278756,180211207,71816125,"Hala Targowa","363"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278738,180284716,71630238,"Wesele","133"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278724,180226642,71651287,"Cichy Kącik","87"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278847,180274061,71659664,"Głowackiego","1049"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278726,180279461,71644220,"Bronowice","89"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278725,180267420,71677535,"Uniwersytet Pedagogiczny","88"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278740,180295027,71577170,"Bronowice Małe","135"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278739,180293148,71601153,"Balicka Wiadukt","134"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279226,180293078,71601237,"Bronowice Wiadukt","136"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279586,180293140,71600923,"Bronowice SKA","3459"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278711,180303281,71761873,"Bratysławska","61"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278720,180240862,71745438,"Batorego","78"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278719,180228878,71758536,"Teatr Bagatela","77"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278721,180249160,71735097,"Plac Inwalidów","79"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278722,180259199,71711001,"Urzędnicza","83"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278717,180255545,71801840,"Politechnika","73"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279096,180239091,71780963,"Stary Kleparz","3032"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278718,180239020,71781145,"Basztowa LOT","75"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278716,180250622,71775251,"Pędzichów","72"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278737,180232794,71802022,"Dworzec Główny","131"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279380,180232736,71802072,"Teatr Słowackiego","3242"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278863,180244921,71803299,"Dworzec Główny Zachód","2608"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278850,180246297,71809578,"Dworzec Główny Tunel","1173"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278714,180272154,71784192,"Dworzec Towarowy","70"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278715,180264512,71771333,"Nowy Kleparz","71"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278712,180319272,71753242,"Krowodrza Górka","63"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278713,180290620,71776085,"Prądnicka","69"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279098,180290484,71776260,"Szpital Narutowicza","3036"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278835,180044563,71842829,"Witosa","718"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278833,180048499,71873272,"Nowosądecka","715"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278826,180084121,71929954,"Bieżanowska","630"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278834,180055534,71897389,"Piaski Nowe","716"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278827,180066423,71919126,"Dauna","632"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278828,180070051,71956735,"Wlotowa","634"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278832,180052049,71998775,"Prokocim Szpital","682"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278829,180063373,71967644,"Prokocim","637"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278831,180059594,72027118,"Teligi","681"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278862,180058408,72045634,"Nowy Prokocim","2582"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278830,180057659,72070712,"Ćwiklińskiej","679"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278861,180056187,72082990,"Nowy Bieżanów","2580"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279368,180056187,72082990,"Nowy Bieżanów P+R","3175"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278760,180217301,71894481,"Fabryczna","368"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278865,180151766,71859715,"Powstańców Wielkopolskich","568"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279348,180290620,71776085,"Podgórze SKA","3158"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278867,180139866,71872993,"Cmentarz Podgórski","621"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278825,180096973,71916944,"Kabel","624"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278824,180119078,71894471,"Dworcowa","623"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278952,180120525,71917500,"Dworzec Płaszów Estakada","2870"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278803,180146336,71920669,"Gromadzka","560"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278804,180146469,71939257,"Lipska","561"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278866,180162383,71839584,"Limanowskiego","569"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278806,180167637,71838366,"Plac Bohaterów Getta","570"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278849,180179166,71873518,"Zabłocie","1154"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278844,180176268,71883649,"Klimeckiego","946"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278758,180207818,71852584,"Rondo Grzegórzeckie","365"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278854,180211890,71864976,"Kordylewskiego","2536"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278914,180211819,71864863,"Teatr Variété","2859"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278759,180216338,71881211,"Francesco Nullo","367"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278762,180219707,71925633,"Dąbie","370"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278805,180160654,71904812,"Kuklińskiego","567"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278761,180214611,71914779,"Ofiar Dąbia","369"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278852,180143662,72005402,"Mały Płaszów","1263"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279480,180143662,72005402,"Mały Płaszów P+R","3310"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278851,180145794,71970297,"Rzebika","1262"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278735,180239469,71891259,"Cystersów","129"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278731,180236041,71853530,"Rondo Mogilskie","125"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278734,180254686,71835785,"Rakowicka (nż)","128"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279762,180254686,71835785,"Muzeum Fotografii (nż)","3621"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278733,180244685,71828772,"Uniwersytet Ekonomiczny","127"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278730,180264956,71844258,"Cmentarz Rakowicki","124"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278729,180257919,71942105,"Wieczysta","114"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279102,180257803,71942128,"TAURON Arena Kraków Wieczysta","3040"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278736,180243813,71919353,"Białucha","130"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278845,180226861,71942233,"Kraków Plaza","959"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279097,180226726,71941976,"Plaza (nż)","3033"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278855,180230163,71954541,"Lema","2537"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278885,180231471,71962356,"Kraków Arena Al. Pokoju","2803"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278953,180231482,71962198,"TAURON Arena Kraków Al. Pokoju (nż)","2871"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279633,180231482,71962198,"TAURON Arena Kraków al. Pokoju","3473"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278843,180236053,71988794,"M1 Al. Pokoju","930"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279632,180236053,71988794,"M1 al. Pokoju","3472"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278763,180242565,72019445,"Nowohucka","372"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279103,180242602,72019457,"Rondo 308. Dywizjonu","3041"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278888,180264612,71965384,"Muzeum Lotnictwa","2811"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278728,180266265,71996755,"AWF","113"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278727,180267446,72016931,"Stella-Sawickiego","112"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278775,180249472,72044791,"Centralna","409"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278773,180266390,72041060,"Czyżyny","407"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278774,180265067,72061596,"Rondo Czyżyńskie","408"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278841,180273208,72075195,"Bieńczycka","867"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278764,180342391,71986739,"Mistrzejowice","375"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278765,180337361,72015690,"Os. Złotego Wieku","377"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278856,180340084,71999812,"Miśnieńska","2538"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278770,180332424,72056920,"Dunikowskiego","388"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278771,180304250,72074134,"DH Wanda","392"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278769,180339761,72040494,"Rondo Piastowskie","383"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278768,180344562,72045557,"Kleeberga","382"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278767,180353434,72046888,"Piasta Kołodzieja","379"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278857,180324306,72077018,"Rondo Hipokratesa","2539"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278881,180259494,72135185,"Plac Centralny im. R.Reagana","2744"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278776,180260346,72104898,"Os. Kolorowe","413"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278882,180286510,72098620,"Rondo Kocmyrzowskie im. Ks. Gorzelanego","2745"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278778,180276386,72112242,"Os. Zgody","418"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278783,180246786,72189420,"Klasztorna","429"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278782,180251143,72164924,"Os. Na Skarpie","424"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278859,180242960,72212828,"Suche Stawy","2548"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278781,180268841,72168894,"Struga","423"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278780,180295778,72116868,"Teatr Ludowy","420"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279099,180306450,72136926,"Cienista","3037"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278772,180306733,72137208,"Kocmyrzowska","401"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278858,180313263,72171640,"Wańkowicza","2543"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278784,180318123,72204362,"Wiadukty","434"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278860,180330387,72217988,"Cmentarz Grębałów Zachód","2549"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278870,180330358,72217850,"Jarzębiny","2685"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278785,180326907,72212839,"Darwina","435"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278798,180315951,72286426,"Agencja Kraków Wschód","462"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278799,180322790,72300966,"Walcownia","463"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278787,180244244,72236407,"Bardosa","449"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278788,180249368,72243352,"Kopiec Wandy","450"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278789,180233825,72269721,"Brama nr 4 (nż)","451"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278848,180238786,72256369,"Fort Mogiła (nż)","1051"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278795,180285303,72236590,"Kombinat","459"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278790,180232684,72304711,"Jeżynowa","452"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856279604,180232830,72304668,"Giedroycia (nż)","3174"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278791,180250342,72332498,"Brama nr 5 (nż)","453"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278792,180251551,72342602,"Meksyk (nż)","454"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278786,180341535,72234935,"Wzgórza Krzesławickie","442"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278802,180303027,72232399,"PH","466"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278801,180300788,72236130,"Zajezdnia Nowa Huta","465"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278800,180315729,72231482,"Elektromontaż (nż)","464"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278796,180302996,72258514,"Mrozowa","460"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278797,180307241,72267887,"Blokowa","461"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278794,180263218,72423770,"Pleszów","458"))
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8059230041856278793,180258540,72375333,"Koksochemia (nż)","457"))
-
-
-        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.BUS,8095258838875244550,180679445,72521518,"Skrzeszowice OSP Boisko","3286"))
-
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119440510,180280415,71892915,"Pilotów ","119","11902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119441512,180239246,71898731,"Cystersów ","129","12904"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119441612,180242596,71917499,"Białucha ","130","13004"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119441611,180243835,71918136,"Białucha ","130","13003"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119775912,180230515,71953144,"TAURON Arena Kraków al. Pokoju ","3473","347304"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119732614,180256082,71937842,"TAURON Arena Kraków Wieczysta ","3040","304006"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119732612,180255400,71942283,"TAURON Arena Kraków Wieczysta ","3040","304004"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119440509,180283834,71897486,"Pilotów ","119","11901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119440410,180289037,71902202,"Rondo Młyńskie ","118","11802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119440412,180287911,71907702,"Rondo Młyńskie ","118","11804"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119545010,180282933,71915790,"Pszona ","1164","116402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119545009,180282949,71917039,"Pszona ","1164","116401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119732613,180258364,71938502,"TAURON Arena Kraków Wieczysta ","3040","304005"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119528110,180269116,71926647,"Meissnera ","995","99502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119732616,180258163,71942356,"TAURON Arena Kraków Wieczysta ","3040","304008"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119528109,180274062,71925857,"Meissnera ","995","99501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119440110,180280642,71940367,"Ugorek ","115","11502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119440210,180289058,71931178,"Spadochroniarzy ","116","11602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119440209,180287613,71933301,"Spadochroniarzy ","116","11601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119440109,180277494,71943048,"Ugorek ","115","11501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119775511,180297253,71827918,"UR al.","3469","346903"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119680110,180296366,71833755,"Wileńska ","2515","251502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119775509,180299701,71829826,"UR al.","3469","346901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119437810,180305518,71832666,"Opolska Estakada ","92","9202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119437812,180311678,71833145,"Opolska Estakada ","92","9204"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119437811,180308596,71840016,"Opolska Estakada ","92","9203"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119437809,180312714,71840103,"Opolska Estakada ","92","9201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119739909,180320120,71850237,"Dobrego Pasterza ","3113","311301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119739910,180319127,71852482,"Dobrego Pasterza ","3113","311302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119681810,180296491,71867270,"Bosaków ","2532","253202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119681809,180299864,71871442,"Bosaków ","2532","253201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438010,180305792,71868895,"Lublańska ","94","9402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439009,180300050,71888073,"Miechowity ","104","10401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438910,180305619,71888014,"Olsza II ","103","10302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438009,180306726,71862067,"Lublańska ","94","9401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438279,180318440,71868388,"Majora ","96","9671"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438209,180318290,71868839,"Majora ","96","9601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438210,180318367,71875463,"Majora ","96","9602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438280,180318549,71875360,"Majora ","96","9672"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438809,180319052,71886463,"Olszecka ","102","10201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119432010,180335649,71831378,"Bociana ","34","3402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119432009,180337419,71827716,"Bociana ","34","3401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119432110,180334415,71842812,"Górka Narodowa ","35","3502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119739912,180322720,71849889,"Dobrego Pasterza ","3113","311304"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119739911,180323278,71851100,"Dobrego Pasterza ","3113","311303"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119689309,180353873,71847239,"Słomczyńskiego ","2607","260701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119689310,180354291,71851324,"Słomczyńskiego ","2607","260702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438412,180352776,71859198,"Kuźnicy Kołłątajowskiej ","98","9804"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119688810,180331347,71872432,"Sudolska ","2602","260202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438309,180334772,71869552,"Powstańców ","97","9701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438310,180336400,71871346,"Powstańców ","97","9702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438410,180347886,71862452,"Kuźnicy Kołłątajowskiej ","98","9802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438409,180354226,71864885,"Kuźnicy Kołłątajowskiej ","98","9801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119544109,180341797,71883047,"Powstańców Garaże ","1155","115501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119544110,180342981,71885774,"Powstańców Garaże ","1155","115502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119440409,180293513,71902536,"Rondo Młyńskie ","118","11801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439010,180299338,71896186,"Miechowity ","104","10402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439011,180300126,71893901,"Miechowity ","104","10403"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119440310,180293489,71916896,"Akacjowa ","117","11702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119440309,180293706,71919191,"Akacjowa ","117","11701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438909,180307384,71894068,"Olsza II ","103","10301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438810,180319539,71895147,"Olszecka ","102","10202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119535211,180318065,71903090,"Rondo Barei ","1066","106603"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119535209,180320597,71902629,"Rondo Barei ","1066","106601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119509609,180309224,71925303,"Bora-Komorowskiego ","810","81001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119535210,180320790,71910288,"Rondo Barei ","1066","106602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119742409,180322188,71915876,"Słoneckiego ","3138","313801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119509610,180308900,71930500,"Bora-Komorowskiego ","810","81002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119747609,180312532,71949851,"Jurczaka (nż) ","3190","319001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119747610,180310920,71951500,"Jurczaka (nż) ","3190","319002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439409,180321843,71954697,"Os. Oświecenia ","108","10801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119535302,180322743,71905883,"Rondo Barei ","1066","106694"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119535212,180322760,71905984,"Rondo Barei ","1066","106604"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438709,180333502,71909656,"Strzelców ","101","10101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438799,180333587,71909682,"Strzelców ","101","10191"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438800,180335817,71912013,"Strzelców ","101","10192"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438710,180335882,71912080,"Strzelców ","101","10102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438610,180345255,71907572,"Prądnik Czerwony ","100","10002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438611,180345255,71907572,"Prądnik Czerwony ","100","10003"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438702,180345255,71907572,"Prądnik Czerwony ","100","10094"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438707,180345255,71907572,"Prądnik Czerwony ","100","10099"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438612,180349222,71904645,"Prądnik Czerwony ","100","10004"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119438609,180347571,71905798,"Prądnik Czerwony ","100","10001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119747809,180353844,71909172,"Reduta (nż) ","3192","319201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119529010,180324278,71936141,"Park Wodny ","1004","100402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119529009,180324653,71936168,"Park Wodny ","1004","100401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119541609,180333365,71955929,"Marchołta ","1130","113001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119541610,180335678,71956404,"Marchołta ","1130","113002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119775913,180231004,71964399,"TAURON Arena Kraków al. Pokoju ","3473","347305"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119775911,180233430,71961734,"TAURON Arena Kraków al. Pokoju ","3473","347303"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119775811,180235078,71986588,"","3472","347203"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119775812,180236164,71986554,"","3472","347204"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119715810,180240840,71959044,"TAURON Arena Kraków ","2872","287202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119715809,180244941,71959501,"TAURON Arena Kraków ","2872","287201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119702210,180226999,72012839,"","2736","273602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119702209,180230823,72014483,"","2736","273601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119732711,180243904,72016506,"Rondo","3041","304103"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119732713,180241868,72020980,"Rondo","3041","304105"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119732712,180251399,72015869,"Rondo","3041","304104"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439911,180266423,71991107,"AWF ","113","11303"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439912,180265820,71993797,"AWF ","113","11304"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439813,180265151,72012244,"Stella-Sawickiego ","112","11205"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439814,180269492,72013243,"Stella-Sawickiego ","112","11206"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439812,180266782,72018724,"Stella-Sawickiego ","112","11204"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439811,180268163,72019652,"Stella-Sawickiego ","112","11203"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439816,180275461,72012684,"Stella-Sawickiego ","112","11208"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119683109,180231030,72051289,"Sołtysowska Zakłady ","2545","254501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119683110,180230640,72053105,"Sołtysowska Zakłady ","2545","254502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119732714,180244335,72025221,"Rondo","3041","304106"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119683009,180240850,72044066,"Sołtysowska (nż) ","2544","254401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119683010,180240897,72043703,"Sołtysowska (nż) ","2544","254402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119469512,180247659,72045054,"Centralna ","409","40904"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119469514,180250478,72045366,"Centralna ","409","40906"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119469511,180249563,72047402,"Centralna ","409","40903"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119683209,180231727,72066372,"Sołtysowska Osiedle ","2546","254601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119683210,180231217,72068396,"Sołtysowska Osiedle ","2546","254602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119545210,180227224,72079929,"Sikorki ","1166","116602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119545209,180225776,72081829,"Sikorki ","1166","116601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119469311,180267001,72040443,"Czyżyny ","407","40703"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119469312,180265659,72044923,"Czyżyny ","407","40704"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119525207,180269378,72053483,"Czyżyny Dworzec ","965","96599"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119525199,180270817,72053751,"Czyżyny Dworzec ","965","96591"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119525109,180269599,72054993,"Czyżyny Dworzec ","965","96501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119469209,180273796,72026460,"Medweckiego ","406","40601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119469210,180274664,72026288,"Medweckiego ","406","40602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740310,180281329,72051809,"Dąbrowskiej ","3117","311702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740309,180281232,72053604,"Dąbrowskiej ","3117","311701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119469418,180260601,72059927,"Rondo Czyżyńskie ","408","40810"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119469416,180262988,72068555,"Rondo Czyżyńskie ","408","40808"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119469413,180265626,72059534,"Rondo Czyżyńskie ","408","40805"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119469414,180267727,72066577,"Rondo Czyżyńskie ","408","40806"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119515311,180275163,72077706,"Bieńczycka ","867","86703"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119515312,180274681,72079020,"Bieńczycka ","867","86704"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439410,180318831,71962710,"Os. Oświecenia ","108","10802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740009,180315614,71979214,"Os. Akademickie PK ","3114","311401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740010,180314139,71982206,"Os. Akademickie PK ","3114","311402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439709,180303377,71998600,"Os. Dywizjonu","111","11101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439710,180305420,72002162,"Os. Dywizjonu","111","11102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439611,180313747,72004793,"Wiślicka ","110","11003"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439609,180316140,72002286,"Wiślicka ","110","11001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439610,180315392,72007439,"Wiślicka ","110","11002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439612,180317690,72005455,"Wiślicka ","110","11004"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119439412,180322352,71958855,"Os. Oświecenia ","108","10804"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119742209,180342677,71959756,"Kurzei ","3136","313601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119742210,180342719,71964007,"Kurzei ","3136","313602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466111,180344139,71977339,"Mistrzejowice ","375","37503"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466110,180343799,71980677,"Mistrzejowice ","375","37502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466207,180342360,71986680,"Mistrzejowice ","375","37599"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466109,180345289,71986404,"Mistrzejowice ","375","37501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466113,180345289,71986404,"Mistrzejowice ","375","37505"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467109,180324850,72015411,"Cedyńska ","385","38501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466312,180338148,72014921,"Os. Złotego Wieku ","377","37704"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467009,180334250,72022737,"Łęczycka ","384","38401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467010,180334553,72023281,"Łęczycka ","384","38402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466311,180338339,72016713,"Os. Złotego Wieku ","377","37703"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119682411,180340600,72000468,"Miśnieńska ","2538","253803"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119682412,180339851,72002071,"Miśnieńska ","2538","253804"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467610,180312281,72032092,"Os. Strusia ","390","39002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467609,180311365,72033949,"Os. Strusia ","390","39001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467710,180309791,72046321,"Os. Na Lotnisku ","391","39102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467711,180308512,72050527,"Os. Na Lotnisku ","391","39103"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467709,180311854,72049875,"Os. Na Lotnisku ","391","39101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119773110,180297485,72060224,"Os. Kościuszkowskie ","3445","344502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119773109,180297893,72059144,"Os. Kościuszkowskie ","3445","344501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467811,180303318,72074558,"DH Wanda ","392","39203"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467812,180304603,72075388,"DH Wanda ","392","39204"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467813,180308769,72069944,"DH Wanda ","392","39205"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467814,180308290,72071118,"DH Wanda ","392","39206"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467210,180329141,72036324,"Os. Kalinowe ","386","38602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467209,180329325,72037242,"Os. Kalinowe ","386","38601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467411,180333078,72056693,"Dunikowskiego ","388","38803"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467310,180338512,72053370,"Kupały ","387","38702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466912,180339109,72040386,"Rondo Piastowskie ","383","38304"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466911,180340044,72038863,"Rondo Piastowskie ","383","38303"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466811,180344468,72046418,"Kleeberga ","382","38203"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466812,180345373,72046308,"Kleeberga ","382","38204"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466813,180346248,72051213,"Kleeberga ","382","38205"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466512,180352624,72047149,"Piasta Kołodzieja ","379","37904"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466511,180355064,72048092,"Piasta Kołodzieja ","379","37903"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466514,180353099,72049201,"Piasta Kołodzieja ","379","37906"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467413,180326443,72060268,"Dunikowskiego ","388","38805"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467414,180327697,72061041,"Dunikowskiego ","388","38806"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467412,180331664,72057186,"Dunikowskiego ","388","38804"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119682515,180324680,72076206,"Rondo Hipokratesa ","2539","253907"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119682513,180327146,72075424,"Rondo Hipokratesa ","2539","253905"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119682514,180327283,72078653,"Rondo Hipokratesa ","2539","253906"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119682512,180325359,72082165,"Rondo Hipokratesa ","2539","253904"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119682511,180324230,72085797,"Rondo Hipokratesa ","2539","253903"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119511309,180333636,72077828,"Szpital Rydygiera ","827","82701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119467309,180343422,72062946,"Kupały ","387","38701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466710,180350899,72069300,"Kruszwicka ","381","38102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466709,180351698,72071701,"Kruszwicka ","381","38101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119702310,180342536,72074965,"Os. Mistrzejowice Nowe ","2737","273702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119702309,180341808,72076851,"Os. Mistrzejowice Nowe ","2737","273701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740809,180099789,72141068,"Danalówka (nż) ","3122","312201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740810,180102298,72142008,"Danalówka (nż) ","3122","312202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740710,180121808,72152286,"Bazarowa ","3121","312102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740709,180123757,72151864,"Bazarowa ","3121","312101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119494109,180137275,72094426,"Jeżowa ","655","65501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119494112,180138362,72096602,"Jeżowa ","655","65504"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119494110,180136794,72101463,"Jeżowa ","655","65502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119494009,180149475,72101934,"Rybitwy Sklep (nż) ","654","65401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119494010,180149778,72103305,"Rybitwy Sklep (nż) ","654","65402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119741011,180136800,72152650,"Półłanki ","3124","312403"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119741009,180139212,72150588,"Półłanki ","3124","312401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119493909,180153590,72126453,"Rybitwy Dom Kultury ","653","65301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119493910,180154279,72128405,"Rybitwy Dom Kultury ","653","65302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119769809,180101160,72185148,"Domagały Magazyny (nż) ","3412","341201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119769810,180104400,72186300,"Domagały Magazyny (nż) ","3412","341202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119493211,180117072,72186480,"Domagały (nż) ","646","64603"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119493210,180118434,72184313,"Domagały (nż) ","646","64602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119493209,180118698,72183855,"Domagały (nż) ","646","64601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119493200,180116606,72204603,"Nad Drwiną ","645","64592"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119493110,180116598,72204633,"Nad Drwiną ","645","64502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119741012,180137664,72156240,"Półłanki ","3124","312404"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119741010,180141020,72155483,"Półłanki ","3124","312402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119680309,180137700,72186804,"Śliwiaka Zakłady ","2517","251701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119493709,180155527,72162864,"Szparagowa ","651","65101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119493712,180155825,72164439,"Szparagowa ","651","65104"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119680310,180136656,72192276,"Śliwiaka Zakłady ","2517","251702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119566009,180135684,72211428,"Śliwiaka (nż) ","1374","137401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119566010,180135036,72214164,"Śliwiaka (nż) ","1374","137402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119702510,180154114,72188758,"Ks.Targosza (nż) ","2739","273902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119702509,180153880,72191476,"Ks.Targosza (nż) ","2739","273901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119707610,180188874,72135450,"Lasek Łęgowski (nż) ","2790","279002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119707609,180189225,72136288,"Lasek Łęgowski (nż) ","2790","279001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119515210,180201204,72090466,"Wiklinowa (nż) ","866","86602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119483810,180206990,72111249,"Habina (nż) ","552","55202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119483610,180214955,72090234,"Na Załęczu ","550","55002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119483809,180208606,72108737,"Habina (nż) ","552","55201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119483910,180194509,72126722,"Odmętowa ","553","55302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119483909,180196963,72125294,"Odmętowa ","553","55301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119493714,180160848,72162792,"Szparagowa ","651","65106"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119493810,180165791,72157810,"Rybitwy Rozjazd (nż) ","652","65202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119493809,180165903,72157784,"Rybitwy Rozjazd (nż) ","652","65201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119493710,180160200,72165925,"Szparagowa ","651","65102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119724279,180164499,72170225,"Cmentarz Półłanki ","2956","295671"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119724280,180165110,72170237,"Cmentarz Półłanki ","2956","295672"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119493009,180170789,72218150,"Podwierzbie ","644","64401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119484009,180194482,72163162,"Lesisko ","554","55401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119484099,180194664,72163149,"Lesisko ","554","55491"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119684310,180195240,72178276,"Lasek Mogilski ","2557","255702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119684309,180195689,72178144,"Lasek Mogilski ","2557","255701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119684409,180214366,72180867,"Stare Wiślisko ","2558","255801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119684410,180215071,72180734,"Stare Wiślisko ","2558","255802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119492709,180150490,72220934,"Przewóz ","641","64101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119492710,180150771,72227646,"Przewóz ","641","64102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119744309,180157316,72236304,"Husarska (nż) ","3157","315701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119492610,180145858,72263961,"Łutnia ","640","64002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119492609,180146088,72265008,"Łutnia ","640","64001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119759709,180113293,72341995,"Brzegi Pętla ","3311","331101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119759799,180113293,72341995,"Brzegi Pętla ","3311","331191"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119779510,180120278,72337120,"Brzegi Grobla ","3509","350902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119779509,180119503,72340028,"Brzegi Grobla ","3509","350901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119762610,180125708,72314827,"Brzegi Użytek Ekologiczny (nż) ","3340","334002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119762609,180128383,72315212,"Brzegi Użytek Ekologiczny (nż) ","3340","334001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119744310,180160485,72238403,"Husarska (nż) ","3157","315702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119492910,180171162,72238840,"Wrobela ","643","64302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119492909,180170893,72241944,"Wrobela ","643","64301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119746509,180190512,72228240,"Zakarnie (nż) ","3179","317901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119746510,180191311,72221891,"Zakarnie (nż) ","3179","317902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119746609,180204480,72244800,"Kępa (nż) ","3180","318001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119746610,180204480,72244800,"Kępa (nż) ","3180","318002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119746409,180213912,72285192,"Giedroycia ZTPO (nż) ","3178","317801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119746410,180213912,72285192,"Giedroycia ZTPO (nż) ","3178","317802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119703015,180256215,72138671,"Plac Centralny im. R.Reagana ","2744","274407"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119469911,180260959,72102189,"Os. Kolorowe ","413","41303"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119469912,180259428,72107933,"Os. Kolorowe ","413","41304"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470109,180270706,72122061,"Aleja Przyjaźni ","415","41501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119703115,180284702,72094532,"Rondo Kocmyrzowskie im. Ks. Gorzelanego ","2745","274507"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119703113,180283848,72101318,"Rondo Kocmyrzowskie im. Ks. Gorzelanego ","2745","274505"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119703116,180288081,72103765,"Rondo Kocmyrzowskie im. Ks. Gorzelanego ","2745","274508"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470412,180276906,72111948,"Os. Zgody ","418","41804"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470411,180275236,72112884,"Os. Zgody ","418","41803"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119703017,180258673,72126285,"Plac Centralny im. R.Reagana ","2744","274409"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119703014,180263326,72130565,"Plac Centralny im. R.Reagana ","2744","274406"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470111,180270684,72122724,"Aleja Przyjaźni ","415","41503"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470113,180271339,72124531,"Aleja Przyjaźni ","415","41505"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470209,180270978,72138307,"Aleja Róż ","416","41601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119703013,180260989,72139935,"Plac Centralny im. R.Reagana ","2744","274405"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470211,180269402,72140198,"Aleja Róż ","416","41603"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470210,180269319,72142541,"Aleja Róż ","416","41602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470309,180284950,72138731,"Żeromskiego ","417","41701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470310,180280935,72141196,"Żeromskiego ","417","41702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119471109,180239050,72169310,"Szpital Żeromskiego ","425","42501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119471110,180239530,72167563,"Szpital Żeromskiego ","425","42502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119471309,180231082,72187845,"Klasztor Cystersów ","427","42701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119471310,180234788,72187481,"Klasztor Cystersów ","427","42702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119683309,180237959,72184184,"Sieroszewskiego (nż) ","2547","254701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119683310,180238039,72185172,"Sieroszewskiego (nż) ","2547","254702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119471013,180246589,72162808,"Os. Na Skarpie ","424","42405"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119471011,180250400,72166910,"Os. Na Skarpie ","424","42403"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119471012,180250905,72169021,"Os. Na Skarpie ","424","42404"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119471511,180247779,72181122,"Klasztorna ","429","42903"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119471512,180247714,72186620,"Klasztorna ","429","42904"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119471410,180249823,72175024,"Os. Wandy ","428","42802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119688909,180255972,72192535,"Bulwarowa Ogródki Działkowe (nż) ","2603","260301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119683482,180242560,72212419,"Suche Stawy ","2548","254874"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119683481,180243476,72211563,"Suche Stawy ","2548","254873"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470914,180268937,72166409,"Struga ","423","42306"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470916,180267952,72169655,"Struga ","423","42308"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470913,180270346,72167738,"Struga ","423","42305"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470912,180270101,72171364,"Struga ","423","42304"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119471709,180263854,72180747,"Orkana ","431","43101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470911,180269283,72171523,"Struga ","423","42303"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470809,180284601,72163587,"Os. Zielone ","422","42201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470810,180286053,72165586,"Os. Zielone ","422","42202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119471812,180274106,72186046,"Bulwarowa (nż) ","432","43204"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119471610,180260075,72193634,"Os. Willowe ","430","43002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119471612,180261921,72192205,"Os. Willowe ","430","43004"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119471809,180270452,72190843,"Bulwarowa (nż) ","432","43201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119471810,180271253,72190002,"Bulwarowa (nż) ","432","43202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119742010,180287795,72204752,"Krzesławice Młyn (nż) ","3134","313402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119742009,180287640,72205200,"Krzesławice Młyn (nż) ","3134","313401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119703114,180289719,72095627,"Rondo Kocmyrzowskie im. Ks. Gorzelanego ","2745","274506"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470614,180292572,72120626,"Teatr Ludowy ","420","42006"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470613,180291991,72122218,"Teatr Ludowy ","420","42005"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470611,180295348,72115161,"Teatr Ludowy ","420","42003"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470612,180296058,72118782,"Teatr Ludowy ","420","42004"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119468909,180300385,72109872,"Arka ","403","40301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119468910,180302688,72107412,"Arka ","403","40302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119468810,180316072,72099962,"Os. Jagiellońskie ","402","40202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119468809,180316591,72099254,"Os. Jagiellońskie ","402","40201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470710,180292379,72145887,"Os. Górali ","421","42102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119470709,180291953,72148696,"Os. Górali ","421","42101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119682709,180321234,72137206,"Nad Dłubnią ","2541","254101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119732312,180307836,72141056,"Cienista ","3037","303704"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119732311,180308261,72139560,"Cienista ","3037","303703"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119682710,180321542,72144722,"Nad Dłubnią ","2541","254102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119682809,180321687,72151564,"Makuszyńskiego (nż) ","2542","254201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740210,180336170,72097938,"Fatimska (nż) ","3116","311602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740209,180335487,72104926,"Fatimska (nż) ","3116","311601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119510309,180327730,72114120,"PB ","817","81701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119790207,180329634,72115463,"TB Brama ","3615","361599"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119468309,180328517,72118202,"Zajezdnia Bieńczyce ","397","39701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119468310,180328657,72118047,"Zajezdnia Bieńczyce ","397","39702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119790607,180332396,72113601,"TB Magazyn ","3619","361999"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119790507,180334635,72111559,"TB Solaris ","3618","361899"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119790307,180331549,72119383,"TB Parking ","3616","361699"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119790407,180334826,72117648,"TB Hala NB ","3617","361799"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119468110,180336208,72117489,"Nowolipki (nż) ","395","39502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119468112,180334790,72121244,"Nowolipki (nż) ","395","39504"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119468180,180336230,72122535,"Nowolipki (nż) ","395","39572"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119747709,180338949,72127428,"Petőfiego (nż) ","3191","319101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119747710,180339028,72127806,"Petőfiego (nż) ","3191","319102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740410,180342074,72144431,"Władysława Jagiełły ","3118","311802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740409,180343836,72149585,"Władysława Jagiełły ","3118","311801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119682912,180312862,72165453,"Wańkowicza ","2543","254304"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119682914,180311774,72170460,"Wańkowicza ","2543","254306"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119682911,180313898,72171500,"Wańkowicza ","2543","254303"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119682810,180322164,72157574,"Makuszyńskiego (nż) ","2542","254202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119682913,180317665,72170019,"Wańkowicza ","2543","254305"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119528409,180307411,72176767,"Krasnowolskiego (nż) ","998","99801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119528410,180307102,72177310,"Krasnowolskiego (nż) ","998","99802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119742110,180303211,72195425,"PCK ","3135","313502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119742109,180303234,72195758,"PCK ","3135","313501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472011,180317171,72201629,"Wiadukty (nż) ","434","43403"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472080,180321564,72201199,"Wiadukty (nż) ","434","43472"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119691210,180341825,72169224,"Jana Kazimierza ","2626","262602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119691209,180342342,72170023,"Jana Kazimierza ","2626","262601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119690509,180344949,72182849,"Leszka Białego ","2619","261901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119690510,180345071,72186306,"Leszka Białego ","2619","261902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119522510,180352358,72180643,"Os. Na Stoku ","939","93902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472210,180335497,72202985,"Os. Na Stoku Szkoła ","436","43602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472209,180336838,72202363,"Os. Na Stoku Szkoła ","436","43601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472111,180328811,72210916,"Darwina ","435","43503"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472113,180325670,72213883,"Darwina ","435","43505"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472114,180324796,72215827,"Darwina ","435","43506"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472112,180330294,72215641,"Darwina ","435","43504"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472310,180348901,72199699,"Architektów ","437","43702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472312,180349035,72196841,"Architektów ","437","43704"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472309,180350559,72196619,"Architektów ","437","43701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119533712,180235255,72252974,"Fort Mogiła ","1051","105104"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119473582,180242979,72228373,"Bardosa (nż) ","449","44974"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119473581,180243734,72226922,"Bardosa (nż) ","449","44973"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119533711,180236225,72253762,"Fort Mogiła ","1051","105103"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474602,180284760,72235080,"Kombinat ","459","45994"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474607,180284760,72235080,"Kombinat ","459","45999"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474512,180285654,72232298,"Kombinat ","459","45904"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474513,180284900,72238799,"Kombinat ","459","45905"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474517,180283407,72239520,"Kombinat ","459","45909"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119746014,180230832,72293508,"Giedroycia (nż) ","3174","317406"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119746011,180231984,72292968,"Giedroycia (nż) ","3174","317403"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119746012,180232020,72305100,"Giedroycia (nż) ","3174","317404"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119473912,180244429,72327211,"Brama nr","453","45304"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119473911,180247397,72329569,"Brama nr","453","45303"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475112,180300183,72236498,"Zajezdnia Nowa Huta ","465","46504"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475111,180303426,72236610,"Zajezdnia Nowa Huta ","465","46503"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475013,180316674,72225792,"Elektromontaż (nż) ","464","46405"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475012,180316405,72232317,"Elektromontaż (nż) ","464","46404"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475011,180314963,72235278,"Elektromontaż (nż) ","464","46403"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475014,180317075,72239374,"Elektromontaż (nż) ","464","46406"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474611,180301520,72256554,"Mrozowa (nż) ","460","46003"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474612,180302377,72258663,"Mrozowa (nż) ","460","46004"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474712,180307334,72267842,"Blokowa (nż) ","461","46104"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474711,180307071,72268399,"Blokowa (nż) ","461","46103"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475309,180319356,72265356,"Lubocza PKP (nż) ","467","46701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474811,180314910,72285442,"Agencja Kraków Wschód (nż) ","462","46203"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474910,180319722,72285070,"Walcownia ","463","46302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119727509,180324418,72227109,"Cmentarz Grębałów Południe (nż) ","2989","298901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119727510,180324753,72231397,"Cmentarz Grębałów Południe (nż) ","2989","298902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119473410,180327830,72252893,"Cmentarz Grębałów ","448","44802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119473409,180327974,72252594,"Cmentarz Grębałów ","448","44801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472810,180341493,72233166,"Wzgórza Krzesławickie ","442","44202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472813,180341640,72235080,"Wzgórza Krzesławickie ","442","44205"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472812,180343577,72232675,"Wzgórza Krzesławickie ","442","44204"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472811,180345746,72236054,"Wzgórza Krzesławickie ","442","44203"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475310,180328356,72260604,"Lubocza PKP (nż) ","467","46702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475410,180331470,72266468,"Lubocza Bugaj (nż) ","468","46802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475409,180332284,72270299,"Lubocza Bugaj (nż) ","468","46801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475509,180341366,72300942,"Lubocza Przychodnia ","469","46901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475510,180342014,72304528,"Lubocza Przychodnia ","469","46902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119747209,180353736,72333180,"Grzegorza z Sanoka (nż) ","3186","318601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475609,180341971,72337151,"Lubocza Szkoła ","470","47001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475610,180341500,72340499,"Lubocza Szkoła ","470","47002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475612,180346356,72336888,"Lubocza Szkoła ","470","47004"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119750710,179887968,72479520,"Biskupice II (nż) ","3221","322102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119750709,179889444,72476784,"Biskupice II (nż) ","3221","322101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119750410,179914032,72353880,"Tomaszkowice ","3218","321802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119750409,179913060,72357048,"Tomaszkowice ","3218","321801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119750510,179904060,72400896,"Przebieczany ","3219","321902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119750509,179906724,72389952,"Przebieczany ","3219","321901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119750610,179901612,72441540,"Biskupice I (nż) ","3220","322002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119750609,179900928,72445968,"Biskupice I (nż) ","3220","322001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119753109,179846316,72529452,"Trąbki P+R ","3245","324501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119750909,179848728,72527652,"Trąbki OSP ","3223","322301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119750910,179851248,72525096,"Trąbki OSP ","3223","322302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119750810,179867376,72512064,"Trąbki I (nż) ","3222","322202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119750809,179868240,72510444,"Trąbki I (nż) ","3222","322201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119678209,179995352,72367403,"Mała Wieś (nż) ","2496","249601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119678210,179995637,72367271,"Mała Wieś (nż) ","2496","249602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119678310,179997450,72396649,"Sułków (nż) ","2497","249702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119678309,179997766,72401716,"Sułków (nż) ","2497","249701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119701309,180008844,72447705,"Ochmanów Otaczarnia (nż) ","2727","272701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119559909,180012209,72458957,"Ochmanów Oknoplast (nż) ","1313","131301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119786609,180052920,72381240,"Węgrzce Wielkie Gościniec (nż) ","3580","358001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119786610,180052920,72381240,"Węgrzce Wielkie Gościniec (nż) ","3580","358002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119786509,180053640,72398520,"Węgrzce Wielkie OSP (nż) ","3579","357901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119786510,180053640,72398520,"Węgrzce Wielkie OSP (nż) ","3579","357902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119755609,180053640,72414720,"Węgrzce Wielkie Pętla ","3270","327001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119559109,180032199,72515778,"Zakrzów (nż) ","1305","130501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119559110,180035050,72525829,"Zakrzów (nż) ","1305","130502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119559709,180038588,72545401,"Podłęże Balachówka (nż) ","1311","131101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119559710,180039224,72547746,"Podłęże Balachówka (nż) ","1311","131102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119701409,180048599,72582566,"Podłęże Przedszkole (nż) ","2728","272801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119559609,180048385,72592403,"Podłęże Straż (nż) ","1310","131001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119559509,180051124,72614446,"Podłęże Centrum (nż) ","1309","130901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119559510,180051489,72617096,"Podłęże Centrum (nż) ","1309","130902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119559409,180056744,72638573,"Staniątki Wiadukt (nż) ","1308","130801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119559410,180059197,72650298,"Staniątki Wiadukt (nż) ","1308","130802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119559309,180069840,72692280,"Niepołomice Wielicka (nż) ","1307","130701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119559310,180069840,72692280,"Niepołomice Wielicka (nż) ","1307","130702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119559209,180084240,72715320,"Niepołomice Boryczów (nż) ","1306","130601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119559210,180084240,72715320,"Niepołomice Boryczów (nż) ","1306","130602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119781209,180083509,72840956,"Niepołomice Puszcza ","3526","352601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119779609,180133014,72364554,"Brzegi Dom Kultury (nż) ","3510","351001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119779610,180132602,72370230,"Brzegi Dom Kultury (nż) ","3510","351002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119779710,180138074,72390740,"Brzegi Granica (nż) ","3511","351102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557809,180139368,72402364,"Grabie Szczurów (nż) ","1292","129201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557810,180139350,72403920,"Grabie Szczurów (nż) ","1292","129202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557909,180143562,72480916,"Grabie Dom Kultury (nż) ","1293","129301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557910,180144090,72481297,"Grabie Dom Kultury (nż) ","1293","129302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119483010,180173362,72360411,"Kujawy ","544","54402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119694110,180186581,72366295,"Oczyszczalnia Ścieków 'Kujawy' (nż) ","2655","265502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119694109,180190033,72366407,"Oczyszczalnia Ścieków 'Kujawy' (nż) ","2655","265501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119694310,180210462,72368387,"Dymarek (nż) ","2657","265702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119694309,180212440,72373270,"Dymarek (nż) ","2657","265701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119483209,180217781,72388795,"Karowa (nż) ","546","54601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119483210,180217640,72388935,"Karowa (nż) ","546","54602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119481109,180176374,72439381,"Chałupki ","525","52501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693611,180171407,72460966,"Truskawkowa (nż) ","2650","265003"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693609,180171996,72461135,"Truskawkowa (nż) ","2650","265001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119481310,180185209,72457996,"Kąkolowa (nż) ","527","52702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119481309,180185141,72458957,"Kąkolowa (nż) ","527","52701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693712,180196745,72450372,"Chałupki Górne (nż) ","2651","265104"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693710,180197974,72452309,"Chałupki Górne (nż) ","2651","265102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693809,180210348,72464030,"Branice Ośrodek Zdrowia (nż) ","2652","265201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693810,180209989,72465885,"Branice Ośrodek Zdrowia (nż) ","2652","265202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558110,180145496,72503480,"Grabie Kościół ","1295","129502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558109,180146191,72502459,"Grabie Kościół ","1295","129501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558111,180146191,72502459,"Grabie Kościół ","1295","129503"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558209,180139128,72541186,"Niepołomice Podgrabie (nż) ","1296","129601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558210,180140130,72546712,"Niepołomice Podgrabie (nż) ","1296","129602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558309,180147295,72598498,"Niepołomice Pasternik (nż) ","1297","129701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558310,180147250,72601500,"Niepołomice Pasternik (nż) ","1297","129702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119481610,180212960,72492691,"Branice (nż) ","530","53002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119481609,180213138,72492696,"Branice (nż) ","530","53001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119481710,180216696,72515440,"Branice Szkoła ","531","53102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119481709,180216997,72515639,"Branice Szkoła ","531","53101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119792309,180176724,72560376,"Kępa Grabska ","3637","363701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119481809,180165951,72589892,"Przylasek Rusiecki ","532","53201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693910,180181666,72591357,"Ciekowiec (nż) ","2653","265302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693909,180181242,72591625,"Ciekowiec (nż) ","2653","265301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119694010,180207245,72571082,"Rzepakowa Świetlica (nż) ","2654","265402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119694009,180207276,72571403,"Rzepakowa Świetlica (nż) ","2654","265401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119729509,180220022,72553309,"Rzepakowa (nż) ","3009","300901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119729510,180220541,72552953,"Rzepakowa (nż) ","3009","300902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119782810,180194223,72582320,"Przylasek Rusiecki Kąpielisko ","3542","354202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119782809,180195068,72581844,"Przylasek Rusiecki Kąpielisko ","3542","354201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119694210,180251873,72366185,"Nadbrzezie (nż) ","2656","265602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119694209,180252236,72366362,"Nadbrzezie (nż) ","2656","265601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474109,180238900,72394574,"Gwarecka (nż) ","455","45501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474110,180239436,72394405,"Gwarecka (nż) ","455","45502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474210,180250828,72386975,"Suchy Jar (nż) ","456","45602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474209,180250888,72388221,"Suchy Jar (nż) ","456","45601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474312,180258102,72376449,"Koksochemia (nż) ","457","45704"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474311,180258422,72376362,"Koksochemia (nż) ","457","45703"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474410,180262770,72423591,"Pleszów ","458","45802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119758582,180262770,72423591,"Pleszów ","458","45805"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119474503,180262080,72426240,"Pleszów ","458","45895"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479710,180264743,72456537,"Zakład Przeróbki (nż) ","511","51102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479709,180265090,72456421,"Zakład Przeróbki (nż) ","511","51101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475710,180339620,72360724,"Lubocza Trafo (nż) ","471","47102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119475709,180339790,72360914,"Lubocza Trafo (nż) ","471","47101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119477209,180347368,72428648,"Wadowska (nż) ","486","48601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119477210,180347361,72429476,"Wadowska (nż) ","486","48602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119477109,180350050,72447098,"Wadów ","485","48501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119477110,180350550,72449500,"Wadów ","485","48502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119684009,180333954,72479135,"Wadów Glinik (nż) ","2554","255401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119684010,180333900,72479801,"Wadów Glinik (nż) ","2554","255402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119778709,180349020,72463651,"Wadów Os. Kolejowe ","3501","350101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119778710,180349438,72463702,"Wadów Os. Kolejowe ","3501","350102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479910,180230031,72509259,"Branice Na Dole (nż) ","513","51302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479909,180235881,72508390,"Branice Na Dole (nż) ","513","51301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479810,180247142,72503272,"Branice Pagórek (nż) ","512","51202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479809,180247558,72504346,"Branice Pagórek (nż) ","512","51201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693209,180270328,72499647,"Szymańskiego (nż) ","2646","264601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693212,180269490,72502769,"Szymańskiego (nż) ","2646","264604"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693300,180270349,72503867,"Szymańskiego (nż) ","2646","264692"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693210,180270454,72503925,"Szymańskiego (nż) ","2646","264602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479610,180264571,72544950,"Igołomska (nż) ","510","51002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479609,180264190,72545404,"Igołomska (nż) ","510","51001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479699,180274389,72535447,"Igołomska (nż) ","510","51091"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479679,180274397,72537040,"Igołomska (nż) ","510","51071"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119729610,180235237,72550419,"Prawocheńskiego (nż) ","3010","301002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119729609,180235519,72550685,"Prawocheńskiego (nż) ","3010","301001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119480410,180234673,72605502,"Drożyska (nż) ","518","51802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119480409,180234088,72605926,"Drożyska (nż) ","518","51801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693309,180251001,72584159,"Wyciąska (nż) ","2647","264701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693310,180250607,72586766,"Wyciąska (nż) ","2647","264702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119480310,180247318,72600957,"Podstawie (nż) ","517","51702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119480309,180247568,72601209,"Podstawie (nż) ","517","51701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119480110,180259506,72570320,"Wyciąże Sklep (nż) ","515","51502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119480109,180260310,72570159,"Wyciąże Sklep (nż) ","515","51501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479410,180275998,72551584,"Wyciąże (nż) ","508","50802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479409,180276771,72554139,"Wyciąże (nż) ","508","50801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479499,180278763,72554170,"Wyciąże (nż) ","508","50891"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119776309,180277657,72554896,"Jeziorko (nż) ","3477","347701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119776399,180278243,72554681,"Jeziorko (nż) ","3477","347791"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119776310,180276459,72557858,"Jeziorko (nż) ","3477","347702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479210,180285881,72576707,"Janówka (nż) ","506","50602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479209,180285946,72577073,"Janówka (nż) ","506","50601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693109,180280170,72582853,"Wyciąże Zachód (nż) ","2645","264501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693110,180280142,72586059,"Wyciąże Zachód (nż) ","2645","264502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740609,180305741,72539266,"Cmentarz Ruszcza (nż) ","3120","312001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740699,180305741,72539266,"Cmentarz Ruszcza (nż) ","3120","312091"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740610,180305831,72539543,"Cmentarz Ruszcza (nż) ","3120","312002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740700,180305831,72539543,"Cmentarz Ruszcza (nż) ","3120","312092"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119480700,180312545,72526967,"Ruszcza ","520","52092"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119480610,180312837,72527330,"Ruszcza ","520","52002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119477809,180334044,72501876,"Wadów Działki (nż) ","492","49201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119477810,180334016,72503852,"Wadów Działki (nż) ","492","49202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119756210,180336597,72528887,"Spławy ","3276","327602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119756209,180336834,72528635,"Spławy ","3276","327601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479109,180303855,72597096,"Błonia Kościelnickie (nż) ","505","50501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119479110,180303700,72598454,"Błonia Kościelnickie (nż) ","505","50502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558609,180122106,72677832,"Niepołomice Diesla (nż) ","1300","130001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558409,180140432,72622831,"Niepołomice Kątek (nż) ","1298","129801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558410,180140287,72624723,"Niepołomice Kątek (nż) ","1298","129802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558510,180133464,72651421,"Niepołomice Poręby (nż) ","1299","129902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558509,180134020,72648036,"Niepołomice Poręby (nż) ","1299","129901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558710,180116395,72694817,"Niepołomice Wodna (nż) ","1301","130102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558610,180121885,72680655,"Niepołomice Diesla (nż) ","1300","130002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558709,180120435,72693550,"Niepołomice Wodna (nż) ","1301","130101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558909,180103764,72741154,"Niepołomice Kościuszki (nż) ","1303","130301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558910,180104572,72742863,"Niepołomice Kościuszki (nż) ","1303","130302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558810,180111109,72713707,"Niepołomice Płaszowska I (nż) ","1302","130202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119558809,180111951,72712484,"Niepołomice Płaszowska I (nż) ","1302","130201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119482909,180212479,72636034,"Przylasek Wyciąski (nż) ","543","54301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119482999,180212479,72636034,"Przylasek Wyciąski (nż) ","543","54391"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119482910,180212550,72636336,"Przylasek Wyciąski (nż) ","543","54302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119482809,180205632,72651966,"Siejówka (nż) ","542","54201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119482810,180205733,72652338,"Siejówka (nż) ","542","54202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119482900,180205733,72652338,"Siejówka (nż) ","542","54292"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119482710,180204018,72672504,"Bartnicza (nż) ","541","54102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119482709,180203839,72673337,"Bartnicza (nż) ","541","54101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119482210,180187495,72742319,"Wolica Most ","536","53602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119771309,180200927,72695218,"Wolica Szkoła (nż) ","3427","342701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119771310,180201071,72696323,"Wolica Szkoła (nż) ","3427","342702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119482410,180198102,72728497,"Wolica Kościół (nż) ","538","53802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119482409,180198937,72727103,"Wolica Kościół (nż) ","538","53801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119482309,180203207,72728194,"Wolica Las ","537","53701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119482310,180200465,72729526,"Wolica Las ","537","53702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556399,180119884,72779195,"Niepołomice Rynek ","1277","127791"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556309,180119916,72779169,"Niepołomice Rynek ","1277","127701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556211,180139176,72777564,"Niepołomice Dworzec ","1276","127603"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556209,180136764,72779544,"Niepołomice Dworzec ","1276","127601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556210,180138312,72778392,"Niepołomice Dworzec ","1276","127602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556410,180146835,72804106,"Niepołomice Batorego (nż) ","1278","127802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556409,180146880,72804240,"Niepołomice Batorego (nż) ","1278","127801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556510,180151408,72826744,"Niepołomice Batorego II (nż) ","1279","127902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556509,180151560,72826560,"Niepołomice Batorego II (nż) ","1279","127901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557509,180156960,72864000,"Niepołomice Jazy (nż) ","1289","128901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557510,180157126,72864147,"Niepołomice Jazy (nż) ","1289","128902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119525009,180159120,72763920,"Niepołomice Kolejowa (nż) ","964","96401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119525010,180159120,72763920,"Niepołomice Kolejowa (nż) ","964","96402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119482209,180186188,72746894,"Wolica Most ","536","53601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119480709,180284693,72620187,"Wyciąże Wiadukt (nż) ","521","52101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119480710,180284555,72623278,"Wyciąże Wiadukt (nż) ","521","52102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119480810,180289230,72665678,"Cło ","522","52202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119482509,180227910,72698407,"Wolica (nż) ","539","53901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119482510,180225119,72701147,"Wolica (nż) ","539","53902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693510,180243890,72682702,"Zakępie (nż) ","2649","264902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693509,180244764,72682952,"Zakępie (nż) ","2649","264901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693409,180260673,72683093,"Brzeska (nż) ","2648","264801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693410,180261256,72682656,"Brzeska (nż) ","2648","264802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119480809,180289827,72667005,"Cło ","522","52201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693010,180325933,72630815,"Kościelniki ","2644","264402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119693009,180325933,72631384,"Kościelniki ","2644","264401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119478909,180341657,72626839,"Zabłocie Kościelnickie (nż) ","503","50301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119478910,180341366,72627282,"Zabłocie Kościelnickie (nż) ","503","50302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119478810,180354745,72642814,"Resztówka ","502","50202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557610,180168305,72886192,"Niepołomice Jazy II (nż) ","1290","129002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557609,180168480,72886320,"Niepołomice Jazy II (nż) ","1290","129001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556609,180191193,72927214,"Wola Batorska Ruskie (nż) ","1280","128001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556610,180191486,72931463,"Wola Batorska Ruskie (nż) ","1280","128002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556709,180189885,72956538,"Wola Batorska Żwirownia (nż) ","1281","128101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556710,180189012,72961154,"Wola Batorska Żwirownia (nż) ","1281","128102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556810,180189791,72992565,"Wola Batorska Kościół (nż) ","1282","128202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556809,180190973,72996677,"Wola Batorska Kościół (nż) ","1282","128201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556909,180189716,73043805,"Wola Batorska Cmentarz (nż) ","1283","128301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556910,180189434,73046097,"Wola Batorska Cmentarz (nż) ","1283","128302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557009,180190424,73062182,"Wola Batorska Borek (nż) ","1284","128401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557010,180196329,73068342,"Wola Batorska Borek (nż) ","1284","128402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557109,180207418,73073893,"Wola Batorska Mikoniowiec (nż) ","1285","128501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557110,180211589,73075779,"Wola Batorska Mikoniowiec (nż) ","1285","128502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557209,180230541,73085915,"Wola Batorska Zamoglice (nż) ","1286","128601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557210,180231454,73088158,"Wola Batorska Zamoglice (nż) ","1286","128602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557309,180243449,73144937,"Zabierzów Bocheński Centrum (nż) ","1287","128701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557310,180245140,73156880,"Zabierzów Bocheński Centrum (nż) ","1287","128702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557709,180254160,73208880,"Wola Zabierzowska (nż) ","1291","129101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557710,180254160,73208880,"Wola Zabierzowska (nż) ","1291","129102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556009,180264960,73247760,"Chobot (nż) ","1274","127401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119556010,180264960,73247760,"Chobot (nż) ","1274","127402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119557409,180288360,73269360,"Chobot Leśniczówka ","1288","128801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119787509,180368208,70514136,"Rudno Zamek ","3589","358901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119753609,180473400,70693560,"Krzeszowice Dworzec Autobusowy ","3250","325001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119720909,180484488,70696908,"Krzeszowice Krakowska Muzeum (nż) ","2923","292301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119781109,180475717,70730596,"Krzeszowice Wiadukt (nż) ","3525","352501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119781110,180474194,70735695,"Krzeszowice Wiadukt (nż) ","3525","352502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119781009,180462441,70765489,"Nawojowa Góra Gwoździec (nż) ","3524","352401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119781010,180461622,70766390,"Nawojowa Góra Gwoździec (nż) ","3524","352402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119787710,180597474,70683426,"Czerna Klasztor ","3591","359102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119787709,180597506,70683214,"Czerna Klasztor ","3591","359101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119787609,180643507,70696008,"Czerna Las ","3590","359001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119428709,180403227,70892538,"Młynka Pętla ","1","101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780609,180409344,70908705,"Młynka Kalwaryjska (nż) ","3520","352001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780910,180450953,70817600,"Nawojowa Góra Zagrody (nż) ","3523","352302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780909,180450087,70823768,"Nawojowa Góra Zagrody (nż) ","3523","352301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119777509,180443779,70851002,"Nawojowa Góra Pisarska (nż) ","3489","348901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119777510,180442542,70854689,"Nawojowa Góra Pisarska (nż) ","3489","348902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780809,180428190,70893309,"Młynka Dolna (nż) ","3522","352201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780810,180430682,70890735,"Młynka Dolna (nż) ","3522","352202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119770709,180452102,70908252,"Pisary Akacjowa (nż) ","3421","342101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119770710,180452421,70909074,"Pisary Akacjowa (nż) ","3421","342102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119552209,180464760,70891200,"Pisary Dwór (nż) ","1236","123601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119552210,180464760,70891200,"Pisary Dwór (nż) ","1236","123602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119770609,180485057,70894499,"Pisary Spacerowa (nż) ","3420","342001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119552109,180371026,70974534,"Nielepice Stadnina (nż) ","1235","123501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119771009,180384056,70954362,"Nielepice Pętla ","3424","342401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780610,180410180,70910965,"Młynka Kalwaryjska (nż) ","3520","352002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119535009,180411844,70923675,"Rudawa Młyn (nż) ","1064","106401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119535010,180411202,70928912,"Rudawa Młyn (nż) ","1064","106402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119721012,180409990,70952936,"Rudawa Stadion (nż) ","2924","292404"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119721099,180412074,70961117,"Rudawa Stadion (nż) ","2924","292491"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119721009,180412106,70961086,"Rudawa Stadion (nż) ","2924","292401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119721010,180408679,70967899,"Rudawa Stadion (nż) ","2924","292402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119552110,180369192,70978742,"Nielepice Stadnina (nż) ","1235","123502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780509,180405831,71039726,"Kochanów Sowiarka (nż) ","3519","351901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119770809,180448833,70927468,"Pisary Mleczna (nż) ","3422","342201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119770810,180448988,70927783,"Pisary Mleczna (nż) ","3422","342202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119534510,180431161,70968468,"Rudawa PKP ","1059","105902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119534509,180431425,70968673,"Rudawa PKP ","1059","105901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119532509,180443547,70943421,"Rudawa Szkoła ","1039","103901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119532510,180444319,70946399,"Rudawa Szkoła ","1039","103902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119770509,180441325,70961871,"Rudawa Rynek ","3419","341901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119770599,180441291,70961985,"Rudawa Rynek ","3419","341991"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119770410,180457417,70995207,"Rudawa Osiedle (nż) ","3418","341802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119770409,180458332,70995542,"Rudawa Osiedle (nż) ","3418","341801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119770610,180486416,70894393,"Pisary Spacerowa (nż) ","3420","342002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119714609,180504862,70895381,"Pisary Kasztanowa (nż) ","2860","286001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119714610,180504720,70895880,"Pisary Kasztanowa (nż) ","2860","286002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119781709,180519627,70896474,"Pisary Dąbrówki (nż) ","3531","353101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119781710,180523571,70896297,"Pisary Dąbrówki (nż) ","3531","353102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119777609,180507719,70946052,"Rudawa","3490","349001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119777610,180507771,70946541,"Rudawa","3490","349002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119749410,180520098,70949010,"Radwanowice Krzeszowicka (nż) ","3208","320802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119749500,180520098,70949010,"Radwanowice Krzeszowicka (nż) ","3208","320892"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119749409,180523368,70948192,"Radwanowice Krzeszowicka (nż) ","3208","320801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119531809,180533695,70953548,"Radwanowice Pętla ","1032","103201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119531899,180533695,70953548,"Radwanowice Pętla ","1032","103291"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119770909,180377753,71095984,"Kleszczów Centrum ","3423","342301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119770999,180377753,71095984,"Kleszczów Centrum ","3423","342391"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780510,180406643,71047117,"Kochanów Sowiarka (nż) ","3519","351902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780409,180413348,71090619,"Kochanów Centrum ","3518","351801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780410,180413651,71095045,"Kochanów Centrum ","3518","351802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119715009,180370494,71110542,"Kleszczów Pod Lipką (nż) ","2864","286401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119715010,180371941,71107389,"Kleszczów Pod Lipką (nż) ","2864","286402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780309,180418051,71141287,"Zabierzów Wrzosowa (nż) ","3517","351701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780310,180418536,71149546,"Zabierzów Wrzosowa (nż) ","3517","351702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780209,180416086,71253125,"Zabierzów Kamieniołom ","3516","351601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780210,180417182,71247218,"Zabierzów Kamieniołom ","3516","351602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780109,180406495,71283544,"Zabierzów Centrum ","3515","351501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119753509,180419411,71279590,"Zabierzów Rynek ","3249","324901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780110,180405947,71296635,"Zabierzów Centrum ","3515","351502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119449909,180422105,71189212,"Zabierzów Ośrodek Zdrowia ","213","21301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119449910,180421233,71201255,"Zabierzów Ośrodek Zdrowia ","213","21302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119448909,180421317,71217842,"Zabierzów Piaski (nż) ","203","20301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119448910,180421041,71224009,"Zabierzów Piaski (nż) ","203","20302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119720709,180481251,71204473,"Więckowice Lipka (nż) ","2921","292101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119720710,180482339,71199633,"Więckowice Lipka (nż) ","2921","292102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119753510,180421028,71280185,"Zabierzów Rynek ","3249","324902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119449010,180424762,71282760,"Zabierzów PKP ","204","20402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119449009,180424746,71282993,"Zabierzów PKP ","204","20401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119524710,180430185,71284722,"Zabierzów Młyn ","961","96102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119524709,180431049,71285721,"Zabierzów Młyn ","961","96101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119524799,180431049,71285721,"Zabierzów Młyn ","961","96191"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119720610,180475434,71249536,"Bolechowice Zielona Mała (nż) ","2920","292002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119720609,180474804,71251520,"Bolechowice Zielona Mała (nż) ","2920","292001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119720200,180457172,71293327,"Bolechowice Zielona (nż) ","2915","291592"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119720110,180457238,71293311,"Bolechowice Zielona (nż) ","2915","291502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119720109,180457748,71293715,"Bolechowice Zielona (nż) ","2915","291501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119720199,180457911,71293773,"Bolechowice Zielona (nż) ","2915","291591"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119531509,180487350,71063010,"Brzezinka Skrzyżowanie ","1029","102901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119531510,180488244,71062984,"Brzezinka Skrzyżowanie ","1029","102902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119770309,180496599,71058986,"Brzezinka Kościół ","3417","341701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119770310,180497378,71060195,"Brzezinka Kościół ","3417","341702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119531309,180497698,71092026,"Brzezinka Zarzecze (nż) ","1027","102701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119531310,180497837,71092451,"Brzezinka Zarzecze (nż) ","1027","102702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119770209,180496304,71171271,"Więckowice Ogrodowa (nż) ","3416","341601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119749309,180533056,71111038,"Kobylany Dworska (nż) ","3207","320701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119749310,180533225,71111145,"Kobylany Dworska (nż) ","3207","320702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119535109,180535001,71130038,"Kobylany Remiza (nż) ","1065","106501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119535110,180534725,71131245,"Kobylany Remiza (nż) ","1065","106502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119749010,180527125,71146609,"Kobylany Kwiatowa ","3204","320402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119749009,180532817,71140709,"Kobylany Kwiatowa ","3204","320401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119698609,180571082,71090635,"Będkowice Pętla ","2700","270001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119715509,180589553,71101232,"Będkowice Długa (nż) ","2869","286901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119715510,180591375,71101739,"Będkowice Długa (nż) ","2869","286902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783709,180602284,71106866,"Będkowice Rynek ","3551","355101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783710,180604668,71107836,"Będkowice Rynek ","3551","355102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119770210,180495245,71172559,"Więckowice Ogrodowa (nż) ","3416","341602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119749109,180548665,71186123,"Karniowice Pętla ","3205","320501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119749209,180537756,71205307,"Karniowice Górki (nż) ","3206","320601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119749210,180537756,71205307,"Karniowice Górki (nż) ","3206","320602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119720309,180510446,71269512,"Bolechowice Drogi (nż) ","2917","291701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119720310,180512775,71268197,"Bolechowice Drogi (nż) ","2917","291702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119720210,180486618,71276950,"Bolechowice Krzewiny (nż) ","2916","291602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119720209,180486513,71277063,"Bolechowice Krzewiny (nż) ","2916","291601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119769910,180530443,71248928,"Bolechowice Centrum ","3413","341302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119769911,180528910,71251747,"Bolechowice Centrum ","3413","341303"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119769909,180529727,71250080,"Bolechowice Centrum ","3413","341301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119769912,180527404,71254077,"Bolechowice Centrum ","3413","341304"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119449610,180574604,71265519,"Zelków Staw ","210","21002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119449609,180574628,71265856,"Zelków Staw ","210","21001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119449510,180554112,71278272,"Zelków Wola (nż) ","209","20902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119449509,180555370,71279186,"Zelków Wola (nż) ","209","20901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119720409,180580267,71280738,"Zelków Spławy (nż) ","2918","291801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119720410,180580729,71281135,"Zelków Spławy (nż) ","2918","291802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119748609,180581531,71298723,"Zelków Kościuszki (nż) ","3200","320001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119748610,180581632,71300230,"Zelków Kościuszki (nż) ","3200","320002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119729309,180618402,71098235,"Będkowice Cmentarz (nż) ","3007","300701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119526709,180633022,71115842,"Będkowice Borynia (nż) ","981","98101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119526710,180633751,71116539,"Będkowice Borynia (nż) ","981","98102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119526610,180641507,71139974,"Będkowice Kawiory (nż) ","980","98002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119526609,180644367,71147144,"Będkowice Kawiory (nż) ","980","98001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119526509,180650540,71161474,"Będkowice Mosurowa (nż) ","979","97901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119526510,180650674,71161979,"Będkowice Mosurowa (nż) ","979","97902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119526310,180647202,71228225,"Bębło Łabajowa (nż) ","977","97702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119526309,180647809,71228926,"Bębło Łabajowa (nż) ","977","97701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119526409,180659576,71199031,"Bębło Lasek (nż) ","978","97801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119526410,180659696,71200097,"Bębło Lasek (nż) ","978","97802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119526209,180663548,71251472,"Bębło Stara Wieś (nż) ","976","97601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119526210,180664509,71252436,"Bębło Stara Wieś (nż) ","976","97602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119526109,180682723,71273953,"Czajowice (nż) ","975","97501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119526110,180682791,71268462,"Czajowice (nż) ","975","97502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119779909,180387122,71339392,"Zabierzów Kmity ","3513","351301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119753410,180383965,71366800,"Zabierzów Eximius Park ","3248","324802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119753409,180384232,71366672,"Zabierzów Eximius Park ","3248","324801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119780009,180403942,71316613,"Zabierzów Willowa ","3514","351401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119779910,180389265,71340128,"Zabierzów Kmity ","3513","351302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119779912,180395100,71336043,"Zabierzów Kmity ","3513","351304"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119748510,180356946,71412621,"Rząska Szkoła ","3199","319902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119748509,180355440,71418772,"Rząska Szkoła ","3199","319901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119448209,180379927,71408992,"Rząska Autostrada (nż) ","196","19601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119448311,180386180,71412255,"Modlniczka Mała ","197","19703"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119779809,180392752,71372427,"Zabierzów Rzemieślnicza (nż) ","3512","351201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119779810,180392878,71375285,"Zabierzów Rzemieślnicza (nż) ","3512","351202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119530209,180419558,71384770,"Brzezie Działki (nż) ","1016","101601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119530210,180420358,71383408,"Brzezie Działki (nż) ","1016","101602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119448309,180390130,71406355,"Modlniczka Mała ","197","19701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119448310,180388103,71416666,"Modlniczka Mała ","197","19702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119533209,180393967,71421706,"Modlniczka Trzcie (nż) ","1046","104601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119533210,180394144,71422072,"Modlniczka Trzcie (nż) ","1046","104602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119533410,180450207,71332017,"Brzezie Kulka (nż) ","1048","104802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119533409,180449417,71334846,"Brzezie Kulka (nż) ","1048","104801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119530710,180439027,71360291,"Brzezie Narodowe (nż) ","1021","102102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119530709,180439762,71358049,"Brzezie Narodowe (nż) ","1021","102101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119530712,180442380,71356035,"Brzezie Narodowe (nż) ","1021","102104"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119530711,180447616,71358117,"Brzezie Narodowe (nż) ","1021","102103"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119749510,180461420,71358551,"Brzezie Kluczwody (nż) ","3209","320902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119749509,180465491,71358483,"Brzezie Kluczwody (nż) ","3209","320901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119733510,180475903,71357885,"Brzezie Kościół (nż) ","3049","304902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119733509,180476838,71357902,"Brzezie Kościół (nż) ","3049","304901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119784409,180485640,71393335,"Tomaszowice Spacerowa (nż) ","3558","355801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119784410,180485677,71393413,"Tomaszowice Spacerowa (nż) ","3558","355802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119745309,180485064,71412840,"Tomaszowice Kolberga (nż) ","3167","316701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119745310,180485064,71412840,"Tomaszowice Kolberga (nż) ","3167","316702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119784309,180483888,71430251,"Tomaszowice Dwór ","3557","355701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119784310,180483767,71431466,"Tomaszowice Dwór ","3557","355702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119753709,180383099,71458483,"Modlniczka Leroy Merlin (nż) ","3251","325101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119753710,180381755,71462733,"Modlniczka Leroy Merlin (nż) ","3251","325102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119447909,180358699,71480077,"Rząska Jednostka Wojskowa (nż) ","193","19301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119447910,180359226,71483223,"Rząska Jednostka Wojskowa (nż) ","193","19302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119727611,180364052,71498573,"Rząska Cmentarz (nż) ","2990","299003"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783810,180414572,71485653,"Modlniczka Willowa (nż) ","3552","355202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783809,180414487,71485874,"Modlniczka Willowa (nż) ","3552","355201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119727679,180367213,71501304,"Rząska Cmentarz (nż) ","2990","299071"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119727610,180368367,71503641,"Rząska Cmentarz (nż) ","2990","299002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119727609,180369820,71501323,"Rząska Cmentarz (nż) ","2990","299001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119430110,180355211,71525357,"Pasternik (nż) ","15","1502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119563909,180415346,71523998,"Modlniczka Poligon (nż) ","1353","135301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119563910,180415238,71524438,"Modlniczka Poligon (nż) ","1353","135302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119782910,180403338,71544513,"Modlnica Podchruście (nż) ","3543","354302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119690110,180391291,71562546,"Gaik (nż) ","2615","261502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119690109,180391402,71564647,"Gaik (nż) ","2615","261501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119782909,180408150,71541377,"Modlnica Podchruście (nż) ","3543","354301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783910,180431744,71476200,"Modlniczka Dworska ","3553","355302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783909,180431100,71478451,"Modlniczka Dworska ","3553","355301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119784109,180480992,71479537,"Modlnica Kościelna (nż) ","3555","355501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119784110,180480565,71480890,"Modlnica Kościelna (nż) ","3555","355502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119527110,180448275,71523464,"Modlnica Skrzyżowanie (nż) ","985","98502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119527109,180449085,71524094,"Modlnica Skrzyżowanie (nż) ","985","98501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119784009,180470634,71506931,"Modlnica Szkoła ","3554","355401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119784010,180470467,71507525,"Modlnica Szkoła ","3554","355402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783010,180460121,71533187,"Modlnica Kolonia (nż) ","3544","354402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783009,180463406,71533342,"Modlnica Kolonia (nż) ","3544","354401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119530309,180488876,71353141,"Ujazd Pętla ","1017","101701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119530399,180488876,71353141,"Ujazd Pętla ","1017","101791"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119748409,180581222,71321675,"Zelków Pętla ","3198","319801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783409,180566615,71431962,"Wielka Wieś Szkoła (nż) ","3548","354801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783510,180605305,71376494,"Biały Kościół Dolina Kluczwody (nż) ","3549","354902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783509,180609592,71373251,"Biały Kościół Dolina Kluczwody (nż) ","3549","354901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119784209,180487164,71453411,"Tomaszowice Zacisze (nż) ","3556","355601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119784210,180486781,71455160,"Tomaszowice Zacisze (nż) ","3556","355602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783310,180539547,71476457,"Szyce Wesoła (nż) ","3547","354702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783309,180544374,71472089,"Szyce Wesoła (nż) ","3547","354701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783110,180488561,71516141,"Modlnica Komora (nż) ","3545","354502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783109,180493230,71515205,"Modlnica Komora (nż) ","3545","354501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119778209,180497192,71528103,"Giebułtów Świętego Idziego (nż) ","3496","349601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783209,180510547,71507577,"Szyce Spacerowa (nż) ","3546","354601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119778109,180488452,71537635,"Giebułtów Zielone Wzgórze (nż) ","3495","349501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119778110,180488822,71536841,"Giebułtów Zielone Wzgórze (nż) ","3495","349502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119778210,180497923,71533505,"Giebułtów Świętego Idziego (nż) ","3496","349602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119546209,180518400,71562960,"Giebułtów Plac Zabaw (nż) ","1176","117601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119546210,180518400,71562960,"Giebułtów Plac Zabaw (nż) ","1176","117602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783210,180518971,71501729,"Szyce Spacerowa (nż) ","3546","354602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119563809,180531000,71550720,"Giebułtów Zbiornik (nż) ","1352","135201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119563810,180531000,71550720,"Giebułtów Zbiornik (nż) ","1352","135202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119546309,180545760,71535960,"Giebułtów Morgi ","1177","117701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119525810,180562647,71439495,"Wielka Wieś (nż) ","972","97202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783410,180562647,71439495,"Wielka Wieś Szkoła (nż) ","3548","354802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119774309,180603360,71524080,"Grębynice Parkowa (nż) ","3457","345701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119774310,180603360,71524080,"Grębynice Parkowa (nż) ","3457","345702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119774209,180597960,71542080,"Grębynice Remiza (nż) ","3456","345601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119774210,180597960,71542080,"Grębynice Remiza (nż) ","3456","345602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119430409,180362793,71582629,"Ojcowska ","18","1801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119430410,180363496,71583360,"Ojcowska ","18","1802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119430509,180378761,71571166,"Bronowice Wielkie ","19","1901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119430510,180381704,71568432,"Bronowice Wielkie ","19","1902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119511810,180356514,71604466,"Jasnogórska (nż) ","832","83202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119430711,180394944,71589134,"Tonie ","21","2103"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119430981,180394687,71590249,"Tonie Skrzyżowanie ","23","2373"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119430982,180394687,71590249,"Tonie Skrzyżowanie ","23","2374"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119690210,180404284,71621139,"Na Budzyniu ","2616","261602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119690209,180404461,71622519,"Na Budzyniu ","2616","261601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119774610,180362520,71676774,"Starego Wiarusa ","3460","346002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119774609,180363025,71676115,"Starego Wiarusa ","3460","346001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119774612,180363067,71676540,"Starego Wiarusa ","3460","346004"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119774679,180364348,71675946,"Starego Wiarusa ","3460","346071"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119786109,180362513,71688354,"Pękowicka ","3575","357501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119786111,180362725,71694149,"Pękowicka ","3575","357503"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119709209,180372543,71667548,"Poziomkowa ","2806","280601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119709210,180375378,71664050,"Poziomkowa ","2806","280602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119430810,180388046,71651241,"Gospodarska ","22","2202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119430809,180390005,71649367,"Gospodarska ","22","2201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119430910,180405595,71634112,"Tonie Skrzyżowanie ","23","2302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119430980,180405595,71634112,"Tonie Skrzyżowanie ","23","2372"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119430909,180405864,71634467,"Tonie Skrzyżowanie ","23","2301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119430979,180405864,71634467,"Tonie Skrzyżowanie ","23","2371"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119431112,180416571,71643979,"Tonie Kąty (nż) ","25","2504"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119431109,180417097,71644679,"Tonie Kąty (nż) ","25","2501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119431111,180417702,71646522,"Tonie Kąty (nż) ","25","2503"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119785980,180409989,71686933,"Zielonki Długopolska ","3573","357372"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119785979,180406704,71689175,"Zielonki Długopolska ","3573","357371"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119777909,180451066,71584038,"Modlnica Cicha (nż) ","3493","349301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119777910,180450051,71585968,"Modlnica Cicha (nż) ","3493","349302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119527610,180421002,71619019,"Tonie Gliniki (nż) ","990","99002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119527609,180421076,71619292,"Tonie Gliniki (nż) ","990","99001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119778010,180463405,71571097,"Giebułtów Osiedle Polana (nż) ","3494","349402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119778009,180464508,71570497,"Giebułtów Osiedle Polana (nż) ","3494","349401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119776010,180448734,71645180,"Pękowice Fort ","3474","347402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119776009,180448920,71645400,"Pękowice Fort ","3474","347401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119772609,180462582,71631916,"Pękowice Ojcowska ","3440","344001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119446909,180484560,71659800,"Trojanowice Strugi (nż) ","183","18301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119446910,180484560,71659800,"Trojanowice Strugi (nż) ","183","18302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119786279,180373456,71706199,"Zielonki Słoneczna ","3576","357671"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119786280,180375578,71707173,"Zielonki Słoneczna ","3576","357672"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119446810,180387440,71727690,"Zielonki Skrzyżowanie ","182","18202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119703709,180368176,71739272,"Glogera (nż) ","2751","275101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119703710,180369412,71739266,"Glogera (nż) ","2751","275102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119703810,180375378,71735241,"Glogera Granica Miasta (nż) ","2752","275202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119703809,180375558,71734939,"Glogera Granica Miasta (nż) ","2752","275201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119786079,180391575,71697246,"Zielonki Na Popielówkę ","3574","357471"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119786080,180391575,71697246,"Zielonki Na Popielówkę ","3574","357472"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119446809,180390079,71727182,"Zielonki Skrzyżowanie ","182","18201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119431509,180386646,71792340,"Witkowice ","29","2901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119431809,180356178,71810618,"Siewna ","32","3201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119431810,180356199,71810815,"Siewna ","32","3202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119431709,180368749,71805732,"Dożynkowa ","31","3101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119431710,180369347,71805556,"Dożynkowa ","31","3102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119431880,180358128,71811504,"Siewna ","32","3272"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119431610,180379398,71798409,"Witkowice Nowe ","30","3002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119431609,180377787,71800222,"Witkowice Nowe ","30","3001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119431511,180390578,71795117,"Witkowice ","29","2903"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119431510,180391496,71795635,"Witkowice ","29","2902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119446710,180425942,71716002,"Zielonki UG ","181","18102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119777810,180425942,71716002,"Zielonki Urząd Gminy ","3492","349202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119777809,180426523,71716765,"Zielonki Urząd Gminy ","3492","349201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119446712,180424781,71719877,"Zielonki UG ","181","18104"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119777812,180424781,71719877,"Zielonki Urząd Gminy ","3492","349204"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119777811,180425249,71726872,"Zielonki Urząd Gminy ","3492","349203"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119446610,180445766,71712950,"Zielonki Transformator ","180","18002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119446609,180445957,71713498,"Zielonki Transformator ","180","18001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119707009,180439880,71756860,"Zielonki Galicyjska (nż) ","2784","278401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119707010,180441133,71759664,"Zielonki Galicyjska (nż) ","2784","278402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119446310,180465594,71701317,"Zielonki Rozjazd ","177","17702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119446309,180465966,71701369,"Zielonki Rozjazd ","177","17701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764409,180475925,71709319,"Zielonki Jaskinia Zielonkowska (nż) ","3358","335801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764410,180475925,71709319,"Zielonki Jaskinia Zielonkowska (nż) ","3358","335802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764479,180475925,71709319,"Zielonki Jaskinia Zielonkowska (nż) ","3358","335871"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119705609,180484920,71722080,"Garlica Murowana Kasztany (nż) ","2770","277001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119705610,180484920,71722080,"Garlica Murowana Kasztany (nż) ","2770","277002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119431410,180426128,71789796,"Os. Marszowiec ","28","2802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119431409,180428047,71788953,"Os. Marszowiec ","28","2801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119726499,180444625,71783219,"Zielonki Marszowiec Pętla ","2978","297891"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119726409,180444960,71783280,"Zielonki Marszowiec Pętla ","2978","297801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119706909,180452520,71792640,"Bibice Cmentarz (nż) ","2783","278301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119706910,180452520,71792640,"Bibice Cmentarz (nż) ","2783","278302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119778309,180509760,71582760,"Giebułtów Kościół ","3497","349701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119778310,180509760,71582760,"Giebułtów Kościół ","3497","349702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119447110,180538812,71614260,"Januszowice ","185","18502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119447109,180537768,71615520,"Januszowice ","185","18501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119447009,180502524,71635500,"Trojanowice ","184","18401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119447010,180500724,71637264,"Trojanowice ","184","18402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119726309,180494280,71686800,"Trojanowice Krakowska (nż) ","2977","297701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119726310,180494280,71686800,"Trojanowice Krakowska (nż) ","2977","297702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119446409,180507482,71678973,"Trojanowice Pętla ","178","17801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119725609,180560160,71580240,"Korzkiew Botoja (nż) ","2970","297001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119725610,180560160,71580240,"Korzkiew Botoja (nż) ","2970","297002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119725709,180582120,71571960,"Korzkiew Zamek (nż) ","2971","297101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119725710,180582120,71571960,"Korzkiew Zamek (nż) ","2971","297102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119447709,180565920,71622720,"Przybysławice II ","191","19101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119447710,180565920,71622720,"Przybysławice II ","191","19102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119537009,180574560,71628480,"Przybysławice III (nż) ","1084","108401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119537010,180574560,71628480,"Przybysławice III (nż) ","1084","108402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119447609,180588600,71636760,"Przybysławice I (nż) ","190","19001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119447610,180588600,71636760,"Przybysławice I (nż) ","190","19002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763110,180506576,71738511,"Garlica Murowana Plac Zabaw ","3345","334502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763109,180507965,71739547,"Garlica Murowana Plac Zabaw ","3345","334501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763010,180517820,71729988,"Garlica Duchowna Kapliczka (nż) ","3344","334402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119691411,180536584,71718837,"Garlica Duchowna Rozjazd ","2628","262803"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119691412,180535818,71719515,"Garlica Duchowna Rozjazd ","2628","262804"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119691409,180540720,71718480,"Garlica Duchowna Rozjazd ","2628","262801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119691410,180540720,71718480,"Garlica Duchowna Rozjazd ","2628","262802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763009,180519020,71729574,"Garlica Duchowna Kapliczka (nż) ","3344","334401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119762910,180541766,71752993,"Wola Zachariaszowska Szkoła ","3343","334302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119762909,180541526,71753808,"Wola Zachariaszowska Szkoła ","3343","334301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119691509,180563400,71707680,"Garliczka Chochół (nż) ","2629","262901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119691510,180563400,71707680,"Garliczka Chochół (nż) ","2629","262902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119691609,180583200,71724240,"Owczary Górna (nż) ","2630","263001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119691610,180583200,71724240,"Owczary Górna (nż) ","2630","263002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119691809,180610200,71732520,"Owczary Gajowa (nż) ","2632","263201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119691810,180610200,71732520,"Owczary Gajowa (nż) ","2632","263202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764610,180560281,71770163,"Wola Zachariaszowska Słoneczna ","3360","336002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764609,180560122,71771193,"Wola Zachariaszowska Słoneczna ","3360","336001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764209,180571680,71791200,"Michałowice Las Michałowski ","3356","335601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764210,180571680,71791200,"Michałowice Las Michałowski ","3356","335602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764110,180555372,71816718,"Michałowice Jana Pawła II (nż) ","3355","335502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764111,180558000,71813160,"Michałowice Jana Pawła II (nż) ","3355","335503"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764109,180557496,71816874,"Michałowice Jana Pawła II (nż) ","3355","335501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119762899,180585322,71769876,"Górna Wieś Pętla ","3342","334291"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119762809,180585378,71769876,"Górna Wieś Pętla ","3342","334201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119725110,180612583,71785411,"Michałowice Michałówka (nż) ","2965","296502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119725109,180612729,71785547,"Michałowice Michałówka (nż) ","2965","296501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119788310,180606640,71822079,"Michałowice Na Stoku (nż) ","3597","359702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119788309,180606282,71826218,"Michałowice Na Stoku (nż) ","3597","359701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783610,180639924,71332792,"Biały Kościół Murownia (nż) ","3550","355002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119783609,180646554,71325386,"Biały Kościół Murownia (nż) ","3550","355001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119784509,180653345,71324040,"Biały Kościół Murownia Pętla ","3559","355901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119543809,180650520,71481240,"Maszyce Skrzyżowanie (nż) ","1152","115201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119543810,180650520,71481240,"Maszyce Skrzyżowanie (nż) ","1152","115202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119725809,180672120,71476560,"Smardzowice Wołówka (nż) ","2972","297201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119725810,180672120,71476560,"Smardzowice Wołówka (nż) ","2972","297202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119543609,180625320,71509680,"Grębynice Mogiełki (nż) ","1150","115001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119543610,180625320,71509680,"Grębynice Mogiełki (nż) ","1150","115002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119774409,180640080,71508240,"Maszyce Sadzawka (nż) ","3458","345801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119774410,180640080,71508240,"Maszyce Sadzawka (nż) ","3458","345802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119546009,180644760,71501400,"Maszyce Remiza (nż) ","1174","117401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119546010,180644760,71501400,"Maszyce Remiza (nż) ","1174","117402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119774009,180690840,71473680,"Smardzowice Remiza ","3454","345401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119781309,180766300,71392622,"Ojców Zamek ","3527","352701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119781409,180785200,71402303,"Ojców Złota Góra ","3528","352801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119781410,180786114,71401648,"Ojców Złota Góra ","3528","352802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119755709,180631800,71627040,"Brzozówka Oskarówka ","3271","327101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119755710,180631800,71627040,"Brzozówka Oskarówka ","3271","327102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119755809,180619200,71633520,"Brzozówka Ośrodek ","3272","327201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119755810,180619200,71633520,"Brzozówka Ośrodek ","3272","327202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119725409,180627120,71687520,"Owczary Pętla ","2968","296801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119774109,180639000,71669520,"Owczary Długa (nż) ","3455","345501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119774110,180639000,71669520,"Owczary Długa (nż) ","3455","345502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764309,180619560,71709840,"Owczary Spacerowa (nż) ","3357","335701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764310,180619560,71709840,"Owczary Spacerowa (nż) ","3357","335702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119725209,180650520,71757360,"Narama Remiza ","2966","296601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119724909,180625155,71794063,"Michałowice Gościniec (nż) ","2963","296301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119724912,180625155,71794063,"Michałowice Gościniec (nż) ","2963","296304"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119724911,180625392,71794737,"Michałowice Gościniec (nż) ","2963","296303"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119724910,180625805,71800086,"Michałowice Gościniec (nż) ","2963","296302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763410,180649388,71800120,"Narama Graniczna Sklep (nż) ","3348","334802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763409,180650027,71800650,"Narama Graniczna Sklep (nż) ","3348","334801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763509,180667871,71797988,"Narama Księża (nż) ","3349","334901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763510,180669385,71797197,"Narama Księża (nż) ","3349","334902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763610,180684859,71790195,"Krasieniec Stary Skrzyżowanie (nż) ","3350","335002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763609,180687974,71789030,"Krasieniec Stary Skrzyżowanie (nż) ","3350","335001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763710,180706190,71779104,"Krasieniec Stary Kopalina (nż) ","3351","335102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763709,180705300,71779778,"Krasieniec Stary Kopalina (nż) ","3351","335101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763810,180723336,71780703,"Krasieniec Zakupny Remiza (nż) ","3352","335202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763809,180723373,71781219,"Krasieniec Zakupny Remiza (nż) ","3352","335201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764509,180746640,71776440,"Krasieniec Zakupny Pod Lipą ","3359","335901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764510,180746640,71776440,"Krasieniec Zakupny Pod Lipą ","3359","335902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764009,180761040,71818200,"Krasieniec Zakupny Kapliczka ","3354","335401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764010,180761040,71818200,"Krasieniec Zakupny Kapliczka ","3354","335402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119708309,180359570,71872025,"Górka Narodowa Wschód ","2797","279701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119708209,180365400,71871120,"Banacha ","2796","279601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119691909,180381242,71873241,"Belwederczyków (nż) ","2633","263301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119691910,180382188,71872829,"Belwederczyków (nż) ","2633","263302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119762709,180395941,71877326,"Węgrzce Trzecia Góra (nż) ","3341","334101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119762710,180396521,71876695,"Węgrzce Trzecia Góra (nż) ","3341","334102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119461310,180410758,71879274,"Węgrzce Starostwo Powiatowe ","327","32702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119461309,180413505,71881786,"Węgrzce Starostwo Powiatowe ","327","32701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119536009,180419960,71885716,"Węgrzce Centrum Medyczne (nż) ","1074","107401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119747810,180357480,71907156,"Reduta (nż) ","3192","319202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119518309,180364524,71935086,"Cmentarz Batowice ","897","89701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119518379,180364524,71935086,"Cmentarz Batowice ","897","89771"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119518310,180365812,71939607,"Cmentarz Batowice ","897","89702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119518311,180368173,71944468,"Cmentarz Batowice ","897","89703"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119698509,180368418,71949670,"Cmentarz Batowice Wschód (nż) ","2699","269901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119698510,180368951,71952554,"Cmentarz Batowice Wschód (nż) ","2699","269902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119773010,180385996,71945823,"Węgrzce Sudół (nż) ","3444","344402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119773009,180386309,71947273,"Węgrzce Sudół (nż) ","3444","344401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119535910,180411345,71906729,"Węgrzce Magiczne Wzgórze (nż) ","1073","107302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119535909,180409435,71910532,"Węgrzce Magiczne Wzgórze (nż) ","1073","107301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119772909,180394697,71928377,"Węgrzce ","3443","344301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119772910,180392483,71931621,"Węgrzce ","3443","344302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119724609,180436978,71851724,"Bibice Kościuszki ","2960","296001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119724610,180437166,71851100,"Bibice Kościuszki ","2960","296002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119536010,180420719,71884206,"Węgrzce Centrum Medyczne (nż) ","1074","107402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119787811,180432045,71880227,"Węgrzce ","3592","359203"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119787810,180429663,71881100,"Węgrzce ","3592","359202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119787812,180431953,71883352,"Węgrzce ","3592","359204"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119787902,180431953,71883352,"Węgrzce ","3592","359294"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119787809,180433746,71882244,"Węgrzce ","3592","359201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119724709,180456983,71830996,"Bibice Rynek ","2961","296101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119724710,180455040,71833680,"Bibice Rynek ","2961","296102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119724780,180455040,71833680,"Bibice Rynek ","2961","296172"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764710,180477324,71875296,"Bibice Mokra ","3361","336102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119787911,180478440,71880480,"Bibice Na Czekaj (nż) ","3593","359303"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119764709,180478404,71880552,"Bibice Mokra ","3361","336101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119787910,180478507,71880557,"Bibice Na Czekaj (nż) ","3593","359302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119787909,180480153,71882224,"Bibice Na Czekaj (nż) ","3593","359301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119445109,180432360,71907120,"Węgrzce Centrum ","165","16501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119445110,180432481,71907308,"Węgrzce Centrum ","165","16502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119445200,180431924,71908712,"Węgrzce Centrum ","165","16592"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119536600,180451434,71908936,"Węgrzce Błonie ","1079","107992"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119536510,180451800,71908920,"Węgrzce Błonie ","1079","107902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119536509,180451816,71909450,"Węgrzce Błonie ","1079","107901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119536609,180462960,71910000,"Węgrzce Pętla ","1080","108001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119536699,180463033,71910097,"Węgrzce Pętla ","1080","108091"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119749609,180463680,71939160,"Boleń Pętla ","3210","321001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119748009,180375012,71972064,"Dziekanowicka (nż) ","3194","319401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119748010,180375012,71972064,"Dziekanowicka (nż) ","3194","319402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119748109,180382320,72005148,"Powstańców Magazyny ","3195","319501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119748110,180382199,72005778,"Powstańców Magazyny ","3195","319502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119772809,180396000,71967960,"Węgrzce ","3442","344201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119772810,180396000,71967960,"Węgrzce ","3442","344202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119747909,180388584,71985060,"Dziekanowice Batowice SKA ","3193","319301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119748000,180388584,71985060,"Dziekanowice Batowice SKA ","3193","319392"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119747910,180388008,71986788,"Dziekanowice Batowice SKA ","3193","319302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119747999,180388008,71986788,"Dziekanowice Batowice SKA ","3193","319391"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119705509,180414360,71982720,"Bosutów Krakowska (nż) ","2769","276901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119705510,180414360,71982720,"Bosutów Krakowska (nż) ","2769","276902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466411,180362300,72047499,"Os. Piastów ","378","37803"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466410,180363308,72046616,"Os. Piastów ","378","37802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119524309,180376585,72043962,"Urząd Skarbowy Nowa Huta ","957","95701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119524310,180378098,72043766,"Urząd Skarbowy Nowa Huta ","957","95702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466609,180357523,72063616,"Popielidów ","380","38001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119466610,180358024,72070909,"Popielidów ","380","38002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119724509,180394389,72030665,"Batowice Spławy (nż) ","2959","295901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119724510,180394448,72030658,"Batowice Spławy (nż) ","2959","295902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119463810,180400541,72055448,"Batowice Kapliczka ","352","35202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119745110,180405000,72030312,"Dziekanowice Długa (nż) ","3165","316502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119745109,180406260,72030924,"Dziekanowice Długa (nż) ","3165","316501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119463809,180401721,72059113,"Batowice Kapliczka ","352","35201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119724809,180409136,72078430,"Batowice Dłubnia ","2962","296201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119724810,180410320,72081910,"Batowice Dłubnia ","2962","296202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119749709,180443880,71979120,"Bosutów Remiza ","3211","321101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119749710,180443880,71979120,"Bosutów Remiza ","3211","321102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119542909,180479724,72017213,"Książniczki Las (nż) ","1143","114301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119745209,180422172,72044064,"Dziekanowice Kapliczka ","3166","316601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119745299,180422172,72044064,"Dziekanowice Kapliczka ","3166","316691"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119542510,180450203,72078424,"Kończyce ","1139","113902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119542509,180450436,72078630,"Kończyce ","1139","113901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119766309,180470824,72050262,"Książniczki Paszczykówka (nż) ","3377","337701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119766310,180470824,72050262,"Książniczki Paszczykówka (nż) ","3377","337702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119542910,180479030,72043171,"Książniczki Las (nż) ","1143","114302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119461810,180509075,71892883,"Michałowice Komora (nż) ","332","33202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119461811,180513474,71892003,"Michałowice Komora (nż) ","332","33203"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119725310,180540484,71845615,"Michałowice Brzozowa (nż) ","2967","296702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119725309,180539627,71847569,"Michałowice Brzozowa (nż) ","2967","296701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119679210,180528947,71865304,"Michałowice Kwiaty Polne (nż) ","2506","250602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119679209,180528461,71867333,"Michałowice Kwiaty Polne (nż) ","2506","250601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119534409,180522685,71886918,"Michałowice Banasiówka (nż) ","1058","105801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119534410,180527335,71881130,"Michałowice Banasiówka (nż) ","1058","105802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119461809,180512650,71895400,"Michałowice Komora (nż) ","332","33201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119788010,180543641,71941222,"Michałowice Dąbrowskich (nż) ","3594","359402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119788009,180545525,71941852,"Michałowice Dąbrowskich (nż) ","3594","359401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119543109,180537582,71949614,"Michałowice Ogrodowa (nż) ","1145","114501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119543110,180537945,71950545,"Michałowice Ogrodowa (nż) ","1145","114502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119534110,180569987,71877653,"Michałowice Ujęcie Wody (nż) ","1055","105502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119534109,180569879,71881042,"Michałowice Ujęcie Wody (nż) ","1055","105501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119462110,180595109,71883618,"Michałowice Lecznica (nż) ","335","33502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119462109,180595477,71888124,"Michałowice Lecznica (nż) ","335","33501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119786810,180570382,71925165,"Michałowice P+R ","3582","358202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119701510,180583869,71925504,"Michałowice Ośrodek Zdrowia ","2729","272902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119788110,180570264,71929313,"Michałowice Centrum ","3595","359502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119788109,180571486,71929923,"Michałowice Centrum ","3595","359501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119701509,180580970,71927095,"Michałowice Ośrodek Zdrowia ","2729","272901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119788210,180594871,71922558,"Michałowice Górna (nż) ","3596","359602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119788209,180604960,71920480,"Michałowice Górna (nż) ","3596","359601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763309,180615832,71910725,"Michałowice Warszawka (nż) ","3347","334701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763310,180615427,71911446,"Michałowice Warszawka (nż) ","3347","334702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119543009,180501828,71980614,"Młodziejowice Młyn (nż) ","1144","114401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119543010,180502597,71978880,"Młodziejowice Młyn (nż) ","1144","114402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119542709,180518571,71975075,"Młodziejowice Park ","1141","114101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119542710,180519202,71976059,"Młodziejowice Park ","1141","114102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119542809,180486512,72033986,"Książniczki Centrum ","1142","114201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119542810,180486512,72033986,"Książniczki Centrum ","1142","114202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119766009,180577191,71961058,"Masłomiąca Koźlica (nż) ","3374","337401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119766010,180577615,71963248,"Masłomiąca Koźlica (nż) ","3374","337402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119726710,180578755,71995448,"Masłomiąca Staw (nż) ","2981","298102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119726709,180578516,71998028,"Masłomiąca Staw (nż) ","2981","298101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119766410,180568888,72047560,"Masłomiąca Długa (nż) ","3378","337802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119766409,180568306,72048063,"Masłomiąca Długa (nż) ","3378","337801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119773810,180420375,72117158,"Raciborowice Wawelska ","3452","345202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119473309,180382779,72157767,"Zesławice ","447","44701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119690710,180380438,72178907,"Zesławice Ogródki Działkowe (nż) ","2621","262102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119690709,180380620,72178774,"Zesławice Ogródki Działkowe (nż) ","2621","262101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119756409,180368327,72219694,"Niebyła (nż) ","3278","327801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119756410,180368032,72220594,"Niebyła (nż) ","3278","327802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119707599,180392000,72191293,"Zakole ","2789","278991"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119707509,180392005,72191293,"Zakole ","2789","278901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119542409,180424416,72112400,"Raciborowice Centrum ","1138","113801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119542410,180425040,72111472,"Raciborowice Centrum ","1138","113802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119773809,180421021,72120711,"Raciborowice Wawelska ","3452","345201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119727410,180426757,72145411,"Raciborowice Granica (nż) ","2988","298802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119727409,180426980,72146487,"Raciborowice Granica (nż) ","2988","298801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119773999,180436773,72181915,"Zastów Pętla ","3453","345391"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119773909,180436622,72182599,"Zastów Pętla ","3453","345301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119555110,180437542,72202499,"Zastów Działki (nż) ","1265","126502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119555109,180437683,72204329,"Zastów Działki (nż) ","1265","126501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119555210,180475659,72210313,"Wiktorowice Skrzyżowanie (nż) ","1266","126602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119555209,180477038,72209521,"Wiktorowice Skrzyżowanie (nż) ","1266","126601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119704600,180357727,72230554,"Szpital Okulistyczny ","2759","275992"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119704510,180358262,72229712,"Szpital Okulistyczny ","2759","275902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472909,180363958,72249008,"Grębałów (nż) ","443","44301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119472910,180365083,72250455,"Grębałów (nż) ","443","44302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119473109,180375175,72222113,"Kantorowice ","445","44501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119473110,180375095,72223410,"Kantorowice ","445","44502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119473112,180376675,72221721,"Kantorowice ","445","44504"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740511,180374788,72256370,"Morcinka (nż) ","3119","311903"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740509,180373280,72259326,"Morcinka (nż) ","3119","311901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740512,180374703,72259131,"Morcinka (nż) ","3119","311904"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119740510,180375991,72262649,"Morcinka (nż) ","3119","311902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119747210,180355788,72333072,"Grzegorza z Sanoka (nż) ","3186","318602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119735210,180360648,72344124,"Łuczanowicka (nż) ","3066","306602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119758610,180395907,72293379,"Prusy ","3300","330002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119758609,180398431,72294684,"Prusy ","3300","330001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119476409,180409725,72306505,"Prusy Szkoła (nż) ","478","47801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119476410,180409857,72306049,"Prusy Szkoła (nż) ","478","47802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119747509,180475560,72232560,"Wiktorowice Rozlewnia Wód (nż) ","3189","318901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119747510,180476280,72232920,"Wiktorowice Rozlewnia Wód (nż) ","3189","318902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119476310,180425796,72328260,"Prusy WSR (nż) ","477","47702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119476309,180428759,72331784,"Prusy WSR (nż) ","477","47701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119476210,180436214,72342252,"Sulechów (nż) ","476","47602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119476209,180439082,72348526,"Sulechów (nż) ","476","47601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119555309,180494999,72219466,"Wiktorowice Centrum (nż) ","1267","126701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119555310,180494433,72220580,"Wiktorowice Centrum (nż) ","1267","126702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119555010,180509356,72203438,"Wiktorowice Granica (nż) ","1264","126402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119555009,180508098,72204923,"Wiktorowice Granica (nż) ","1264","126401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119727009,180529920,72173880,"Pielgrzymowice Pętla ","2984","298401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119766509,180543240,72172800,"Pielgrzymowice Wierzbowa (nż) ","3379","337901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119766510,180543240,72172800,"Pielgrzymowice Wierzbowa (nż) ","3379","337902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119765809,180556364,72096229,"Więcławice Stare Centrum (nż) ","3372","337201"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119765810,180556770,72104158,"Więcławice Stare Centrum (nż) ","3372","337202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119727309,180555611,72121239,"Więcławice Stare Wysyłek (nż) ","2987","298701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119727310,180555494,72122761,"Więcławice Stare Wysyłek (nż) ","2987","298702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119727209,180552600,72142200,"Pielgrzymowice Granica (nż) ","2986","298601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119727210,180552600,72142200,"Pielgrzymowice Granica (nż) ","2986","298602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119522910,180573526,72128571,"Sieborowice (nż) ","943","94302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119522909,180573432,72129271,"Sieborowice (nż) ","943","94301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119766209,180600680,72125807,"Zagórzyce Stare Owocowa (nż) ","3376","337601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119766210,180603572,72126757,"Zagórzyce Stare Owocowa (nż) ","3376","337602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119555509,180493200,72252720,"Maciejowice Góra (nż) ","1269","126901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119555510,180493560,72251640,"Maciejowice Góra (nż) ","1269","126902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119745410,180504000,72267480,"Maciejowice Skrzyżowanie (nż) ","3168","316802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119745409,180505080,72267840,"Maciejowice Skrzyżowanie (nż) ","3168","316801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119744509,180511560,72260280,"Maciejowice Pętla ","3159","315901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119704709,180614531,72248123,"Łuczyce Zwierzyniec (nż) ","2761","276101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119704710,180615337,72247918,"Łuczyce Zwierzyniec (nż) ","2761","276102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119551709,180592898,72270918,"Łuczyce Zjawienie (nż) ","1231","123101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119551710,180593046,72271973,"Łuczyce Zjawienie (nż) ","1231","123102"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119757310,180578022,72302137,"Łuczyce Kosynierów ","3287","328702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119757309,180578160,72302400,"Łuczyce Kosynierów ","3287","328701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119540610,180572984,72330578,"Łuczyce Las (nż) ","1120","112002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119540609,180573020,72332193,"Łuczyce Las (nż) ","1120","112001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119560509,180614401,72346244,"Marszowice Góry (nż) ","1319","131901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119560510,180615542,72345042,"Marszowice Góry (nż) ","1319","131902"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763210,180621181,71862319,"Michałowice Laskowiec (nż) ","3346","334602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763209,180621557,71860616,"Michałowice Laskowiec (nż) ","3346","334601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119792709,180768132,71839404,"Krasieniec Zakupny Kotryska (nż) ","3641","364101"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119792810,180770184,71842536,"Iwanowice Dworskie Kotryska (nż) ","3642","364202"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119763909,180794160,71925480,"Iwanowice Dworskie Pętla ","3353","335301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119766109,180629341,72142054,"Zagórzyce Dworskie Remiza ","3375","337501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119757609,180634026,72240106,"Sadowie Wiadukt (nż) ","3290","329001"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119757610,180635800,72238806,"Sadowie Wiadukt (nż) ","3290","329002"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119704909,180655920,72246600,"Goszcza Cmentarz (nż) ","2763","276301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119704910,180655920,72246600,"Goszcza Cmentarz (nż) ","2763","276302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119757509,180672480,72251640,"Goszcza Dworek ","3289","328901"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119757599,180672480,72251640,"Goszcza Dworek ","3289","328991"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119728910,180650003,72336498,"Marszowice Centrum (nż) ","3003","300302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119728909,180651150,72336303,"Marszowice Centrum (nż) ","3003","300301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119729009,180676647,72333259,"Marszowice (nż) ","3004","300401"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119729010,180676751,72333163,"Marszowice (nż) ","3004","300402"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119560910,180695371,72330065,"Polanowice Kolonia (nż) ","1323","132302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119560909,180696480,72330011,"Polanowice Kolonia (nż) ","1323","132301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119757410,180712358,72328542,"Polanowice Boisko (nż) ","3288","328802"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119757409,180713552,72329364,"Polanowice Boisko (nż) ","3288","328801"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119561210,180761577,72309493,"Niedźwiedź PKP (nż) ","1326","132602"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119561209,180763033,72309273,"Niedźwiedź PKP (nż) ","1326","132601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119561309,180805526,72295292,"Niedźwiedź Felix (nż) ","1327","132701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119561310,180805874,72294914,"Niedźwiedź Felix (nż) ","1327","132702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119561110,180827653,72295159,"Ratajów Skrzyżowanie (nż) ","1325","132502"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119561109,180831255,72295593,"Ratajów Skrzyżowanie (nż) ","1325","132501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119560310,180843840,72294840,"Słomniki Zagłoby (nż) ","1317","131702"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119560309,180844006,72295618,"Słomniki Zagłoby (nż) ","1317","131701"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119560209,180866520,72290160,"Słomniki Rynek ","1316","131601"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119560299,180866520,72290160,"Słomniki Rynek ","1316","131691"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119701909,180875880,72298080,"Słomniki Kościuszki (nż) ","2733","273301"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119701910,180875880,72298080,"Słomniki Kościuszki (nż) ","2733","273302"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119560109,180882720,72306360,"Słomniki Osiedle ","1315","131501"))
+        listOfBusStops.add(Insert_db_BusStopInterface.BusStopRow(Insert_db_VehicleTypeInterface.Vehicle.TRAM,8095258289119735209,180367632,72356364,"Łuczanowicka (nż) ","3066","306601"))
 
 
         for (busStop in listOfBusStops){

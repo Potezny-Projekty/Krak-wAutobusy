@@ -33,7 +33,8 @@ class Database(context: Context) :
     val KEY_KIND_OF_BUS_STOP="kinOfBusStop"
 
     val KEY_BUS_STOP_OTHERID="api_id"
-    val KEY_BUS_STOP_SHORT_NAME="api_short_name"
+    val KEY_BUS_STOP_SHORT_NAME="IdShortBusStop"
+    val KEY_STOP_POINT_NUMBER="stopPoint"
 
     companion object {
 
@@ -63,8 +64,9 @@ class Database(context: Context) :
                 $KEY_NAME_BUS_STOP TEXT NOT NULL,
                 $KEY_LONGTITUDE INT NOT NULL,
                 $KEY_LATTITUDE INT NOT NULL,
-                $KEY_BUS_STOP_SHORT_NAME TEXT NOT NULL,
+                $KEY_BUS_STOP_SHORT_NAME INT NOT NULL,
                 $KEY_KIND_OF_BUS_STOP INT NOT NULL,
+                $KEY_STOP_POINT_NUMBER INT NOT NULL,
                  FOREIGN KEY($KEY_KIND_OF_BUS_STOP)
                 REFERENCES $TABLE_VEHICLE_TYPE($KEY_ID_VEHICLE_TYPE)
                 )""")
@@ -92,7 +94,7 @@ class Database(context: Context) :
                 FOREIGN KEY($KEY_LAST_BUS_STOP)
                 REFERENCES $TABLE_BUS_STOP($KEY_ID_BUS_STOP),
                 FOREIGN KEY($KEY_VEHICLE_TYPE)
-                REFERENCES $TABLE_VEHICLE_TYPE($KEY_VEHICLE_TYPE))""")
+                REFERENCES $TABLE_VEHICLE_TYPE($KEY_ID_VEHICLE_TYPE))""")
         Log.i("Database", createLineTable)
         db?.execSQL(createLineTable)
 
@@ -100,11 +102,8 @@ class Database(context: Context) :
                 $KEY_ID_LINE_BUS_STOP_LIST INTEGER PRIMARY KEY AUTOINCREMENT, 
                 $KEY_NUMBER_LINE INT NOT NULL,
                 $KEY_ID_BUS_STOP INT NOT NULL,
-                $KEY_CONSECUTIVE_NUMBER INT NOT NULL,
-                FOREIGN KEY($KEY_NUMBER_LINE)
-                REFERENCES $TABLE_LINE($KEY_ID),
-                FOREIGN KEY($KEY_ID_BUS_STOP)
-                REFERENCES $TABLE_BUS_STOP($KEY_ID_BUS_STOP))""")
+                $KEY_CONSECUTIVE_NUMBER INT NOT NULL
+               )""")
         db?.execSQL(createLineBusStopListTable)
 
 
