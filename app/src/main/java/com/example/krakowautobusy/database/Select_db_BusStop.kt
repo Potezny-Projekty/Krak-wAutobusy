@@ -12,7 +12,7 @@ class Select_db_BusStop:Select_db_BusStopInterface {
     val COLUMNS_RETURN= arrayOf("idBusStop","nameBusStop","longtitude","lattitude","IdShortBusStop","kinOfBusStop","stopPoint")
     val SELECTION_COL="idBusStop=?"
 
-
+//aa
  //   var line = ""
 
     val cursor = db.query(TABLE_BUS_STOP,COLUMNS_RETURN,SELECTION_COL, arrayOf( id.toString()),null,null,null,null)
