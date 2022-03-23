@@ -11,6 +11,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.BuildConfig
 import com.example.krakowautobusy.R
+import com.example.krakowautobusy.database.Database
+import com.example.krakowautobusy.database.Select_db_BusStop
 import com.example.krakowautobusy.databinding.MapActivityBinding
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -61,6 +63,7 @@ class CreateMapFragment : Fragment() {
 
         map.setScrollableAreaLimitDouble(boundingBox)
         map.minZoomLevel = 13.5
+        map.maxZoomLevel = 20.0
 
         mapController.setZoom(14.0)
 
@@ -343,8 +346,33 @@ class CreateMapFragment : Fragment() {
         marker.title = "Test Marker"
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
         map.overlays.add(marker)
+
+        showAllBusStops(map)
         map.invalidate()
         return binding.root
+    }
+
+
+    fun showAllBusStops(map:MapView){
+        val vv= Select_db_BusStop()
+        val x= Database.getInstance(requireActivity())
+        val xx= vv.selectBusStopAll(x.readableDatabase)//,8095258289119440510L
+
+        for(elem in xx){
+            Log.e("gg",elem.nameBusStop+ " "+(elem.longitude/3600000f).toString())
+            val startingPoint = GeoPoint((elem.latitude/3600000f).toDouble(), (elem.longitude/3600000f).toDouble());
+
+            val marker = Marker(map)
+            marker.position = startingPoint
+            marker.icon = context?.let { ContextCompat.getDrawable(it, R.drawable.bus_icon) }
+            marker.title = elem.nameBusStop+" "+elem.stopPoint
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+            map.overlays.add(marker)
+            //map.invalidate()
+        }
+
+
+
     }
 
     override fun onResume() {
