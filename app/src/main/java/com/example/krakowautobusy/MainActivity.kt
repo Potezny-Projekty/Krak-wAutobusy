@@ -69,7 +69,11 @@ class MainActivity : AppCompatActivity() {
         Log.e("coś","zaczynam")
 
         val vv=Select_db_BusStop()
-       val xx= vv.selectBusStop(x.readableDatabase,8095258289119440510L)
+        val xx= vv.selectBusStopAll(x.readableDatabase)//,8095258289119440510L
+        Log.e("Cotoma",xx[0].id.toString())
+        Log.e("Cotoma",xx[0].nameBusStop)
+        Log.e("Cotoma",xx[0].idOuter.toString())
+        Log.e("Cotoma",xx[0].kindVehicle.toString())
         Log.e("Cotoma",xx[0].id.toString())
 
      //  val databaseInterface = DatabaseInterface(Database.getInstance(this))//bylo
