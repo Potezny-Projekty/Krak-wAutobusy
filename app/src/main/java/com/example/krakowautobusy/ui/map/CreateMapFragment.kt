@@ -365,7 +365,7 @@ class CreateMapFragment : Fragment() {
             val marker = Marker(map)
             marker.position = startingPoint
             marker.icon = context?.let { ContextCompat.getDrawable(it, R.drawable.bus_icon) }
-            marker.title = elem.nameBusStop+" "+elem.stopPoint
+            marker.title = elem.nameBusStop+" "+elem.id
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
             map.overlays.add(marker)
             //map.invalidate()

@@ -60,10 +60,13 @@ class MainActivity : AppCompatActivity() {
 
         hideAppTitleBar()
 
+            val dbHelp=LoadDatabase()
+        dbHelp.importdb("manu", baseContext )
+        baseContext
         val x=Database.getInstance(this)
-        val aa=StaticFillDatabaseData(x,StaticInsert_db_VehicleType(),StaticInsert_db_BusStop(),StaticInsert_db_Line(),StaticInsert_db_LineBusStopList())
-        aa.fill_VehicleTypeTable()
-        aa.fill_BusStopTable()
+       // val aa=StaticFillDatabaseData(x,StaticInsert_db_VehicleType(),StaticInsert_db_BusStop(),StaticInsert_db_Line(),StaticInsert_db_LineBusStopList())
+       // aa.fill_VehicleTypeTable()
+     //   aa.fill_BusStopTable()
     //    aa.fill_LineTable()
     //    aa.fill_LineBusStop()
         Log.e("coś","zaczynam")
