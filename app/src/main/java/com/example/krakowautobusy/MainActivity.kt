@@ -1,21 +1,24 @@
 package com.example.krakowautobusy
 
+
 import android.os.Bundle
+import android.os.StrictMode
 import android.util.Log
 import android.view.View
-
-
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavDestination
-
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.krakowautobusy.database.*
+import com.beust.klaxon.Klaxon
+import com.example.krakowautobusy.database.Database
+import com.example.krakowautobusy.database.LoadDatabase
+import com.example.krakowautobusy.database.Select_db_BusStop
 import com.example.krakowautobusy.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,11 +26,47 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
 
+
+
+
+
+    fun show(){
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+
+        StrictMode.setThreadPolicy(policy)
+        val apiResponse = URL("http://ttss.mpk.krakow.pl/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles").readText()
+        Log.e("siec",apiResponse.toString())
+
+        val result = Klaxon().parse<AllLiveBus>(
+          apiResponse
+        )
+
+        Log.e("siec2",result!!.vehicles[0].latitude.toString())
+
+
+
+        var listBus= mutableListOf<LiveBus>()
+
+        for(x in result.vehicles){
+            if(x.longitude!=-1L){
+                listBus.add(x)
+            }
+        }
+
+
+        for(a in listBus){
+            Log.e("siec2",a.longitude.toString()+" "+a.latitude.toString())
+        }
+
+       // w listBusMasz
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        show()
 
 
        binding = ActivityMainBinding.inflate(layoutInflater)
