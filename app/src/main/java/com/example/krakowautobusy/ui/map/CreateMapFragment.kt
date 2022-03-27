@@ -38,7 +38,6 @@ class CreateMapFragment : Fragment() {
 
         map.setTileSource(TileSourceFactory.MAPNIK)
 
-
         val mapController = map.controller
         // ukrycie przycisków + - zoomujących mapę
         map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
@@ -47,11 +46,14 @@ class CreateMapFragment : Fragment() {
         map.setMultiTouchControls(true)
 
         // ograniczenie zakresu do którego można przesunąć mapę
-        val startingPoint2 = GeoPoint(50.13271431317449, 19.709937084370207);
-        val startingPoint3 = GeoPoint(49.93777520783109, 19.760309614486303);
-        val startingPoint4 = GeoPoint(50.10687584147389, 20.167067795173768);
-        val startingPoint5 = GeoPoint(49.99690671441174, 20.12047320481638);
-
+//        val startingPoint2 = GeoPoint(50.13271431317449, 19.709937084370207)
+//        val startingPoint3 = GeoPoint(49.93777520783109, 19.760309614486303)
+//        val startingPoint4 = GeoPoint(50.10687584147389, 20.167067795173768)
+//        val startingPoint5 = GeoPoint(49.99690671441174, 20.12047320481638)
+        val startingPoint2 = GeoPoint(50.3107434126593, 19.61671721450658)
+        val startingPoint3 = GeoPoint(49.88512598174506, 19.545556322799532)
+        val startingPoint4 = GeoPoint(50.32107434126593, 20.379321439500526)
+        val startingPoint5 = GeoPoint(49.87252834809176, 20.461999509306546)
 
         val arrayList: ArrayList<GeoPoint> = ArrayList()
         arrayList.add(startingPoint2)
@@ -346,6 +348,8 @@ class CreateMapFragment : Fragment() {
         marker.title = "Test Marker"
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
         map.overlays.add(marker)
+        map.overlays.add(marker)
+        map.overlays.add(marker)
 
         showAllBusStops(map)
         map.invalidate()
@@ -365,7 +369,7 @@ class CreateMapFragment : Fragment() {
             val marker = Marker(map)
             marker.position = startingPoint
             marker.icon = context?.let { ContextCompat.getDrawable(it, R.drawable.bus_icon) }
-            marker.title = elem.nameBusStop+" "+elem.stopPoint
+            marker.title = elem.nameBusStop+" "+elem.id.toString()
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
             map.overlays.add(marker)
             //map.invalidate()
