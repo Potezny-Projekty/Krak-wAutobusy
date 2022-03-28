@@ -1,8 +1,10 @@
 package com.example.krakowautobusy.ui.map
 
 import android.graphics.Color
-import android.graphics.Paint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.StrictMode
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,12 @@ import com.example.krakowautobusy.R
 import com.example.krakowautobusy.database.Database
 import com.example.krakowautobusy.database.Select_db_BusStop
 import com.example.krakowautobusy.databinding.MapActivityBinding
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
+import org.json.JSONArray
+import org.json.JSONObject
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.BoundingBox
@@ -21,9 +29,12 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Overlay
+import org.osmdroid.views.overlay.OverlayItem
 import org.osmdroid.views.overlay.Polyline
-import java.nio.file.Files
-import java.nio.file.Path
+import java.net.URL
+import java.nio.charset.StandardCharsets
+
 
 class CreateMapFragment : Fragment() {
     private lateinit var map : MapView;
@@ -75,6 +86,7 @@ class CreateMapFragment : Fragment() {
         val geoPoints = ArrayList<GeoPoint>()
         val line = Polyline()
         line.outlinePaint.setColor(Color.CYAN)
+
 
         geoPoints.add(GeoPoint(50.05276388888889, 19.91520388888889))
         geoPoints.add(GeoPoint(50.05275805555555, 19.915088055555557))
@@ -350,11 +362,65 @@ class CreateMapFragment : Fragment() {
         map.overlays.add(marker)
         map.overlays.add(marker)
         map.overlays.add(marker)
+        /*showAllBusStops(map)*/
+        val mainHandler = Handler(Looper.getMainLooper())
 
-        showAllBusStops(map)
+        mainHandler.post(object : Runnable {
+            override fun run() {
+                map.overlays.clear()
+                showAllVehicle(map)
+                map.invalidate()
+                mainHandler.postDelayed(this, 3000)
+            }
+        })
         map.invalidate()
         return binding.root
     }
+
+    private fun getAllVehicle(): AllVehicles {
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        val apiResponse =
+            URL("http://ttss.mpk.krakow.pl/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles").readText(
+                StandardCharsets.UTF_8
+            )
+        val jsonArray = JSONObject(apiResponse).getJSONArray("vehicles")
+         val json: Json = Json {
+             ignoreUnknownKeys = true
+         }
+        return json.decodeFromString(apiResponse)
+        /*return jsonArray*/
+    }
+
+    private fun showAllVehicle(map: MapView) {
+        val listOfAllVehicle = getAllVehicle().vehicles
+        for (elem in listOfAllVehicle) {
+            if (elem.latitude != 0L) {
+                val locationPoint : GeoPoint = GeoPoint((elem.latitude / 3600000f).toDouble(),
+                    (elem.longitude / 3600000f).toDouble())
+                val marker = Marker(map)
+                marker.position = locationPoint
+                marker.icon = context?.let { ContextCompat.getDrawable(it, R.drawable.green_circle) }
+                marker.title = elem.name
+                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                map.overlays.add(marker)
+            }
+        }
+
+        /*val listOfAllVehicle = getAllVehicle()
+        for (i in 0 until listOfAllVehicle.length()) {
+            val jsonObject = listOfAllVehicle.getJSONObject(i)
+            if (!jsonObject.has("isDeleted")) {
+                val locationPoint : GeoPoint = GeoPoint((jsonObject.getLong("latitude") / 3600000f).toDouble(),
+                    (jsonObject.getLong("longitude") / 3600000f).toDouble())
+                val marker = Marker(map)
+                marker.position = locationPoint
+                marker.icon = context?.let { ContextCompat.getDrawable(it, R.drawable.green_circle) }
+                marker.title = jsonObject.getString("name")
+                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                map.overlays.add(marker)
+            }*/
+        }
 
 
     fun showAllBusStops(map:MapView){
