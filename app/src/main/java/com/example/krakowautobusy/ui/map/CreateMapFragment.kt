@@ -18,10 +18,6 @@ import com.example.krakowautobusy.database.Select_db_BusStop
 import com.example.krakowautobusy.databinding.MapActivityBinding
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonObject
-import org.json.JSONArray
-import org.json.JSONObject
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.BoundingBox
@@ -29,8 +25,6 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import org.osmdroid.views.overlay.Overlay
-import org.osmdroid.views.overlay.OverlayItem
 import org.osmdroid.views.overlay.Polyline
 import java.net.URL
 import java.nio.charset.StandardCharsets
@@ -364,11 +358,12 @@ class CreateMapFragment : Fragment() {
         map.overlays.add(marker)
         /*showAllBusStops(map)*/
         val mainHandler = Handler(Looper.getMainLooper())
-
+        var listOfMarker = showAllVehicle()
         mainHandler.post(object : Runnable {
             override fun run() {
-                map.overlays.clear()
-                showAllVehicle(map)
+                map.overlays.removeAll(listOfMarker)
+                listOfMarker = showAllVehicle()
+                map.overlays.addAll(listOfMarker)
                 map.invalidate()
                 mainHandler.postDelayed(this, 3000)
             }
@@ -377,36 +372,76 @@ class CreateMapFragment : Fragment() {
         return binding.root
     }
 
-    private fun getAllVehicle(): AllVehicles {
+    private fun getAllVehicleBus(): AllVehicles {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         val apiResponse =
             URL("http://ttss.mpk.krakow.pl/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles").readText(
                 StandardCharsets.UTF_8
             )
-        val jsonArray = JSONObject(apiResponse).getJSONArray("vehicles")
+        /*val jsonArray = JSONObject(apiResponse).getJSONArray("vehicles")*/
          val json: Json = Json {
              ignoreUnknownKeys = true
          }
+
         return json.decodeFromString(apiResponse)
         /*return jsonArray*/
     }
 
-    private fun showAllVehicle(map: MapView) {
-        val listOfAllVehicle = getAllVehicle().vehicles
-        for (elem in listOfAllVehicle) {
-            if (elem.latitude != 0L) {
-                val locationPoint : GeoPoint = GeoPoint((elem.latitude / 3600000f).toDouble(),
-                    (elem.longitude / 3600000f).toDouble())
-                val marker = Marker(map)
-                marker.position = locationPoint
-                marker.icon = context?.let { ContextCompat.getDrawable(it, R.drawable.green_circle) }
-                marker.title = elem.name
-                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-                map.overlays.add(marker)
-            }
+    private fun getAllVehicleTram(): AllVehicles {
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        val apiResponse =
+            URL("http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles").readText(
+                StandardCharsets.UTF_8
+            )
+        /*val jsonArray = JSONObject(apiResponse).getJSONArray("vehicles")*/
+        val json: Json = Json {
+            ignoreUnknownKeys = true
         }
 
+        return json.decodeFromString(apiResponse)
+        /*return jsonArray*/
+    }
+
+    private fun showAllVehicle() : ArrayList<Marker> {
+        val listOfAllVehicle = getAllVehicleBus().vehicles
+        val listOfAllTram = getAllVehicleTram().vehicles;
+        val listOfMarek = ArrayList<Marker>()
+        for (elem in listOfAllVehicle) {
+            if (elem.latitude != 0L) {
+                val locationPoint: GeoPoint = GeoPoint(
+                    (elem.latitude / 3600000f).toDouble(),
+                    (elem.longitude / 3600000f).toDouble()
+                )
+                val marker = Marker(map)
+                marker.position = locationPoint
+                marker.rotation = elem.heading.toFloat()
+                marker.icon =
+                        context?.let { ContextCompat.getDrawable(it, R.drawable.ic_autobus_caly) }
+                marker.title = elem.name
+                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                listOfMarek.add(marker)
+            }
+        }
+        for (elem in listOfAllTram) {
+            if (elem.latitude != 0L) {
+                val locationPoint: GeoPoint = GeoPoint(
+                    (elem.latitude / 3600000f).toDouble(),
+                    (elem.longitude / 3600000f).toDouble()
+                )
+                val marker = Marker(map)
+                marker.position = locationPoint
+                marker.rotation = elem.heading.toFloat()
+                marker.icon =
+                        context?.let { ContextCompat.getDrawable(it, R.drawable.ic_tramwaj_caly) }
+
+                marker.title = elem.name
+                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                listOfMarek.add(marker)
+            }
+        }
+        return listOfMarek
         /*val listOfAllVehicle = getAllVehicle()
         for (i in 0 until listOfAllVehicle.length()) {
             val jsonObject = listOfAllVehicle.getJSONObject(i)
@@ -420,7 +455,7 @@ class CreateMapFragment : Fragment() {
                 marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
                 map.overlays.add(marker)
             }*/
-        }
+    }
 
 
     fun showAllBusStops(map:MapView){
@@ -454,4 +489,6 @@ class CreateMapFragment : Fragment() {
         super.onPause();
         map.onPause();
     }
+
+
 }
