@@ -9,5 +9,6 @@ data class Vehicle(
     val category : String = "dfs",
     val id : String = " ",
     val tripId : String = "",
-    val name : String = ""
+    val name : String = "",
+val isDeleted:Boolean=false
 )

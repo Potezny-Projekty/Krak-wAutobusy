@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.StrictMode
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,8 @@ import com.example.krakowautobusy.database.Database
 import com.example.krakowautobusy.database.Select_db_BusStop
 import com.example.krakowautobusy.database.Select_db_BusStopInterface
 import com.example.krakowautobusy.databinding.MapActivityBinding
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.osmdroid.config.Configuration
 import org.osmdroid.events.MapListener
 import org.osmdroid.events.ScrollEvent
@@ -31,6 +34,8 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import java.net.URL
+import java.nio.charset.StandardCharsets
 
 
 @Suppress("DEPRECATION")
