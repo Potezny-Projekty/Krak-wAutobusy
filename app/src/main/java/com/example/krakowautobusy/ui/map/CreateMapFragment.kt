@@ -1,8 +1,10 @@
 package com.example.krakowautobusy.ui.map
 
 import android.graphics.Color
-import android.graphics.Paint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.StrictMode
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,8 @@ import com.example.krakowautobusy.R
 import com.example.krakowautobusy.database.Database
 import com.example.krakowautobusy.database.Select_db_BusStop
 import com.example.krakowautobusy.databinding.MapActivityBinding
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.BoundingBox
@@ -22,8 +26,9 @@ import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
-import java.nio.file.Files
-import java.nio.file.Path
+import java.net.URL
+import java.nio.charset.StandardCharsets
+
 
 class CreateMapFragment : Fragment() {
     private lateinit var map : MapView;
@@ -38,7 +43,6 @@ class CreateMapFragment : Fragment() {
 
         map.setTileSource(TileSourceFactory.MAPNIK)
 
-
         val mapController = map.controller
         // ukrycie przycisków + - zoomujących mapę
         map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
@@ -47,11 +51,14 @@ class CreateMapFragment : Fragment() {
         map.setMultiTouchControls(true)
 
         // ograniczenie zakresu do którego można przesunąć mapę
-        val startingPoint2 = GeoPoint(50.13271431317449, 19.709937084370207);
-        val startingPoint3 = GeoPoint(49.93777520783109, 19.760309614486303);
-        val startingPoint4 = GeoPoint(50.10687584147389, 20.167067795173768);
-        val startingPoint5 = GeoPoint(49.99690671441174, 20.12047320481638);
-
+//        val startingPoint2 = GeoPoint(50.13271431317449, 19.709937084370207)
+//        val startingPoint3 = GeoPoint(49.93777520783109, 19.760309614486303)
+//        val startingPoint4 = GeoPoint(50.10687584147389, 20.167067795173768)
+//        val startingPoint5 = GeoPoint(49.99690671441174, 20.12047320481638)
+        val startingPoint2 = GeoPoint(50.3107434126593, 19.61671721450658)
+        val startingPoint3 = GeoPoint(49.88512598174506, 19.545556322799532)
+        val startingPoint4 = GeoPoint(50.32107434126593, 20.379321439500526)
+        val startingPoint5 = GeoPoint(49.87252834809176, 20.461999509306546)
 
         val arrayList: ArrayList<GeoPoint> = ArrayList()
         arrayList.add(startingPoint2)
@@ -73,6 +80,7 @@ class CreateMapFragment : Fragment() {
         val geoPoints = ArrayList<GeoPoint>()
         val line = Polyline()
         line.outlinePaint.setColor(Color.CYAN)
+
 
         geoPoints.add(GeoPoint(50.05276388888889, 19.91520388888889))
         geoPoints.add(GeoPoint(50.05275805555555, 19.915088055555557))
@@ -346,10 +354,107 @@ class CreateMapFragment : Fragment() {
         marker.title = "Test Marker"
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
         map.overlays.add(marker)
-
-        showAllBusStops(map)
+        map.overlays.add(marker)
+        map.overlays.add(marker)
+        /*showAllBusStops(map)*/
+        val mainHandler = Handler(Looper.getMainLooper())
+        var listOfMarker = showAllVehicle()
+        mainHandler.post(object : Runnable {
+            override fun run() {
+                map.overlays.removeAll(listOfMarker)
+                listOfMarker = showAllVehicle()
+                map.overlays.addAll(listOfMarker)
+                map.invalidate()
+                mainHandler.postDelayed(this, 3000)
+            }
+        })
         map.invalidate()
         return binding.root
+    }
+
+    private fun getAllVehicleBus(): AllVehicles {
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        val apiResponse =
+            URL("http://ttss.mpk.krakow.pl/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles").readText(
+                StandardCharsets.UTF_8
+            )
+        /*val jsonArray = JSONObject(apiResponse).getJSONArray("vehicles")*/
+         val json: Json = Json {
+             ignoreUnknownKeys = true
+         }
+
+        return json.decodeFromString(apiResponse)
+        /*return jsonArray*/
+    }
+
+    private fun getAllVehicleTram(): AllVehicles {
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        val apiResponse =
+            URL("http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles").readText(
+                StandardCharsets.UTF_8
+            )
+        /*val jsonArray = JSONObject(apiResponse).getJSONArray("vehicles")*/
+        val json: Json = Json {
+            ignoreUnknownKeys = true
+        }
+
+        return json.decodeFromString(apiResponse)
+        /*return jsonArray*/
+    }
+
+    private fun showAllVehicle() : ArrayList<Marker> {
+        val listOfAllVehicle = getAllVehicleBus().vehicles
+        val listOfAllTram = getAllVehicleTram().vehicles;
+        val listOfMarek = ArrayList<Marker>()
+        for (elem in listOfAllVehicle) {
+            if (elem.latitude != 0L) {
+                val locationPoint: GeoPoint = GeoPoint(
+                    (elem.latitude / 3600000f).toDouble(),
+                    (elem.longitude / 3600000f).toDouble()
+                )
+                val marker = Marker(map)
+                marker.position = locationPoint
+                marker.rotation = elem.heading.toFloat()
+                marker.icon =
+                        context?.let { ContextCompat.getDrawable(it, R.drawable.ic_autobus_caly) }
+                marker.title = elem.name
+                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                listOfMarek.add(marker)
+            }
+        }
+        for (elem in listOfAllTram) {
+            if (elem.latitude != 0L) {
+                val locationPoint: GeoPoint = GeoPoint(
+                    (elem.latitude / 3600000f).toDouble(),
+                    (elem.longitude / 3600000f).toDouble()
+                )
+                val marker = Marker(map)
+                marker.position = locationPoint
+                marker.rotation = elem.heading.toFloat()
+                marker.icon =
+                        context?.let { ContextCompat.getDrawable(it, R.drawable.ic_tramwaj_caly) }
+
+                marker.title = elem.name
+                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                listOfMarek.add(marker)
+            }
+        }
+        return listOfMarek
+        /*val listOfAllVehicle = getAllVehicle()
+        for (i in 0 until listOfAllVehicle.length()) {
+            val jsonObject = listOfAllVehicle.getJSONObject(i)
+            if (!jsonObject.has("isDeleted")) {
+                val locationPoint : GeoPoint = GeoPoint((jsonObject.getLong("latitude") / 3600000f).toDouble(),
+                    (jsonObject.getLong("longitude") / 3600000f).toDouble())
+                val marker = Marker(map)
+                marker.position = locationPoint
+                marker.icon = context?.let { ContextCompat.getDrawable(it, R.drawable.green_circle) }
+                marker.title = jsonObject.getString("name")
+                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                map.overlays.add(marker)
+            }*/
     }
 
 
@@ -365,7 +470,7 @@ class CreateMapFragment : Fragment() {
             val marker = Marker(map)
             marker.position = startingPoint
             marker.icon = context?.let { ContextCompat.getDrawable(it, R.drawable.bus_icon) }
-            marker.title = elem.nameBusStop+" "+elem.id
+            marker.title = elem.nameBusStop+" "+elem.id.toString()
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
             map.overlays.add(marker)
             //map.invalidate()
@@ -384,4 +489,6 @@ class CreateMapFragment : Fragment() {
         super.onPause();
         map.onPause();
     }
+
+
 }
