@@ -160,15 +160,19 @@ class CreateMapFragment : Fragment() {
     }
 
     private fun resizeIcons() {
+        var currentZoomLevel = map.zoomLevel
         map.setMapListener(
             object : MapListener {
                 override fun onZoom(e: ZoomEvent?): Boolean {
-                    resizedDrawable =
-                        resizeDrawable(setIconSize(map.zoomLevel), setIconSize(map.zoomLevel))
-                    map.overlays.clear()
-                    showAllBusStops(resizedDrawable)
-                    Log.i("MAP", "Current zoom level " + map.zoomLevel.toString())
-                    map.invalidate()
+                    if (currentZoomLevel != map.zoomLevel) {
+                        resizedDrawable =
+                            resizeDrawable(setIconSize(map.zoomLevel), setIconSize(map.zoomLevel))
+                        map.overlays.clear()
+                        showAllBusStops(resizedDrawable)
+                        Log.i("MAP", "Current zoom level " + map.zoomLevel.toString())
+                        map.invalidate()
+                        currentZoomLevel = map.zoomLevel
+                    }
                     return true
                 }
 
