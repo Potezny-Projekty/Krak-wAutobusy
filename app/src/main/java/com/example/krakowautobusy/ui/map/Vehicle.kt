@@ -3,10 +3,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Vehicle(
-    val heading : Int = 1,
-    val latitude : Long = 1L,
-    val longitude : Long = 1L,
-    val category : String = "dfs",
+    val isDeleted : Boolean = false,
+    val heading : Int = 0,
+    val latitude : Long = 0L,
+    val longitude : Long = 0L,
+    val category : String = "",
     val id : String = " ",
     val tripId : String = "",
     val name : String = ""

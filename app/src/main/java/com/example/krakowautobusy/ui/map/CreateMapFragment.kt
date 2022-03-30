@@ -376,7 +376,8 @@ class CreateMapFragment : Fragment() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         val apiResponse =
-            URL("http://ttss.mpk.krakow.pl/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles").readText(
+            URL("http://ttss.mpk.krakow.pl/internetservice/geoserviceDispatcher/" +
+                    "services/vehicleinfo/vehicles").readText(
                 StandardCharsets.UTF_8
             )
         /*val jsonArray = JSONObject(apiResponse).getJSONArray("vehicles")*/
@@ -392,7 +393,8 @@ class CreateMapFragment : Fragment() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         val apiResponse =
-            URL("http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles").readText(
+            URL("http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/" +
+                    "services/vehicleinfo/vehicles").readText(
                 StandardCharsets.UTF_8
             )
         /*val jsonArray = JSONObject(apiResponse).getJSONArray("vehicles")*/
@@ -408,8 +410,9 @@ class CreateMapFragment : Fragment() {
         val listOfAllVehicle = getAllVehicleBus().vehicles
         val listOfAllTram = getAllVehicleTram().vehicles;
         val listOfMarek = ArrayList<Marker>()
+
         for (elem in listOfAllVehicle) {
-            if (elem.latitude != 0L) {
+            if (!elem.isDeleted) {
                 val locationPoint: GeoPoint = GeoPoint(
                     (elem.latitude / 3600000f).toDouble(),
                     (elem.longitude / 3600000f).toDouble()
@@ -425,7 +428,7 @@ class CreateMapFragment : Fragment() {
             }
         }
         for (elem in listOfAllTram) {
-            if (elem.latitude != 0L) {
+            if (!elem.isDeleted) {
                 val locationPoint: GeoPoint = GeoPoint(
                     (elem.latitude / 3600000f).toDouble(),
                     (elem.longitude / 3600000f).toDouble()
