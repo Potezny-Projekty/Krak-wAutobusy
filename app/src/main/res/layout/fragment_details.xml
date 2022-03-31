@@ -32,7 +32,7 @@
         </TextView>
 
         <ImageView
-                android:src="@drawable/back_icon_green"
+                app:srcCompat="@drawable/back_icon_green"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/back_arrow_details_menu"
