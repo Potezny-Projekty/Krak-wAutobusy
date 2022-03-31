@@ -2,6 +2,7 @@ package com.example.krakowautobusy.ui.map
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.HandlerThread
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,10 +11,12 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.BuildConfig
+import com.example.krakowautobusy.MainActivity
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.database.Database
 import com.example.krakowautobusy.database.Select_db_BusStop
 import com.example.krakowautobusy.databinding.MapActivityBinding
+import kotlinx.coroutines.*
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.BoundingBox
@@ -21,12 +24,18 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-
+import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
+import kotlin.concurrent.thread
 
 
 class CreateMapFragment : Fragment() {
     private lateinit var map : MapView;
     private lateinit var binding: MapActivityBinding
+    val mainHandler = Handler(Looper.getMainLooper())
+    private lateinit var updateTextTask : Runnable
+
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -79,16 +88,16 @@ class CreateMapFragment : Fragment() {
         map.overlays.add(marker)
         map.overlays.add(marker)
         map.overlays.add(marker)
-        Log.i("XDD", "Elo")
        /* showAllBusStops(map)*/
-        val mainHandler = Handler(Looper.getMainLooper())
         val actualPositionVehicles = ActualPositionVehicles()
-        mainHandler.post(object : Runnable {
+        actualPositionVehicles.showAllVehicle(map, context)
+        updateTextTask = object : Runnable {
             override fun run() {
                 actualPositionVehicles.showAllVehicle(map, context)
-                mainHandler.postDelayed(this, 4000)
+                mainHandler.postDelayed(this, 3000)
             }
-        })
+        }
+        mainHandler.post(updateTextTask)
         map.invalidate()
         return binding.root
     }
@@ -116,6 +125,8 @@ class CreateMapFragment : Fragment() {
 
     }
 
+
+
     override fun onResume() {
         super.onResume()
         map.onResume()
@@ -126,5 +137,9 @@ class CreateMapFragment : Fragment() {
         map.onPause();
     }
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.i("AAA", "Usuniecie apk")
+        mainHandler.removeCallbacks(updateTextTask)
+    }
 }

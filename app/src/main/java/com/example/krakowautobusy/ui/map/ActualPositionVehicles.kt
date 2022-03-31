@@ -1,9 +1,8 @@
 package com.example.krakowautobusy.ui.map
 
 import android.content.Context
-import android.os.Build
 import android.os.StrictMode
-import androidx.annotation.RequiresApi
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.example.krakowautobusy.R
 import kotlinx.serialization.decodeFromString
@@ -57,6 +56,7 @@ class ActualPositionVehicles {
                                     )
                                 }
                         }
+                        Log.i("XDDD", "bus")
                         marker.title = it.name
                         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
                         markers.put(it.id, marker);
