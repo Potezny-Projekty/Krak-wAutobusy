@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.StrictMode
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,8 +21,6 @@ import com.example.krakowautobusy.database.Database
 import com.example.krakowautobusy.database.Select_db_BusStop
 import com.example.krakowautobusy.database.Select_db_BusStopInterface
 import com.example.krakowautobusy.databinding.MapActivityBinding
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 import org.osmdroid.config.Configuration
 import org.osmdroid.events.MapListener
 import org.osmdroid.events.ScrollEvent
@@ -34,8 +31,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import java.net.URL
-import java.nio.charset.StandardCharsets
+import java.util.*
 
 
 @Suppress("DEPRECATION")
@@ -47,6 +43,8 @@ class CreateMapFragment : Fragment() {
     private lateinit var resizedDrawable: Drawable
     private lateinit var busStopData: ArrayList<Select_db_BusStopInterface.BusStopRow>
     private var busStopPosition: ArrayList<GeoPoint> = ArrayList()
+    private lateinit var updateTextTask : Runnable
+    val mainHandler = Handler(Looper.getMainLooper())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -95,99 +93,21 @@ class CreateMapFragment : Fragment() {
 
         mapController.setCenter(startingPoint)
         showAllBusStops(resizeDrawable(10, 10))
-//        showBusStop(resizeDrawable(10, 10),50.06173293019267,19.937894523426294)
-        resizeIcons()
+        showBusStop(resizeDrawable(10, 10), 50.06173293019267, 19.937894523426294)
+//        resizeIcons()
 
         val mainHandler = Handler(Looper.getMainLooper())
-        var listOfMarker = showAllVehicle()
-        mainHandler.post(object : Runnable {
+        val actualPositionVehicles = ActualPositionVehicles()
+        updateTextTask = object : Runnable {
             override fun run() {
-                map.overlays.removeAll(listOfMarker)
-                listOfMarker = showAllVehicle()
-                map.overlays.addAll(listOfMarker)
-                map.invalidate()
+                actualPositionVehicles.showAllVehicle(map, context)
                 mainHandler.postDelayed(this, 3000)
             }
-        })
+        }
+        mainHandler.post(updateTextTask)
 
         return binding.root
     }
-
-    private fun getAllVehicleBus(): AllVehicles {
-        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-        StrictMode.setThreadPolicy(policy)
-        val apiResponse =
-            URL("http://ttss.mpk.krakow.pl/internetservice/geoserviceDispatcher/" +
-                    "services/vehicleinfo/vehicles").readText(
-                StandardCharsets.UTF_8
-            )
-        /*val jsonArray = JSONObject(apiResponse).getJSONArray("vehicles")*/
-        val json: Json = Json {
-            ignoreUnknownKeys = true
-        }
-
-        return json.decodeFromString(apiResponse)
-        /*return jsonArray*/
-    }
-
-    private fun getAllVehicleTram(): AllVehicles {
-        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-        StrictMode.setThreadPolicy(policy)
-        val apiResponse =
-            URL("http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/" +
-                    "services/vehicleinfo/vehicles").readText(
-                StandardCharsets.UTF_8
-            )
-        /*val jsonArray = JSONObject(apiResponse).getJSONArray("vehicles")*/
-        val json: Json = Json {
-            ignoreUnknownKeys = true
-        }
-
-        return json.decodeFromString(apiResponse)
-        /*return jsonArray*/
-    }
-
-    private fun showAllVehicle() : ArrayList<Marker> {
-        val listOfAllVehicle = getAllVehicleBus().vehicles
-        val listOfAllTram = getAllVehicleTram().vehicles;
-        val listOfMarek = ArrayList<Marker>()
-
-        for (elem in listOfAllVehicle) {
-            if (!elem.isDeleted) {
-                val locationPoint: GeoPoint = GeoPoint(
-                    (elem.latitude / 3600000f).toDouble(),
-                    (elem.longitude / 3600000f).toDouble()
-                )
-                val marker = Marker(map)
-                marker.position = locationPoint
-                marker.rotation = elem.heading.toFloat()
-                marker.icon =
-                    context?.let { ContextCompat.getDrawable(it, R.drawable.ic_autobus_caly) }
-                marker.title = elem.name
-                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-                listOfMarek.add(marker)
-            }
-        }
-        for (elem in listOfAllTram) {
-            if (!elem.isDeleted) {
-                val locationPoint: GeoPoint = GeoPoint(
-                    (elem.latitude / 3600000f).toDouble(),
-                    (elem.longitude / 3600000f).toDouble()
-                )
-                val marker = Marker(map)
-                marker.position = locationPoint
-                marker.rotation = elem.heading.toFloat()
-                marker.icon =
-                    context?.let { ContextCompat.getDrawable(it, R.drawable.ic_tramwaj_caly) }
-
-                marker.title = elem.name
-                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-                listOfMarek.add(marker)
-            }
-        }
-        return listOfMarek
-    }
-
 
     fun showAllBusStops(icon: Drawable) {
         for ((index, elem) in busStopData.withIndex()) {
@@ -316,5 +236,11 @@ class CreateMapFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         map.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("AAA", "OnDestroyCalled")
+        mainHandler.removeCallbacks(updateTextTask)
     }
 }

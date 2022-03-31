@@ -17,10 +17,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-
-        manifestPlaceholders = [
-                MAPS_API_KEY : "dupa"
-        ]
     }
 
     buildTypes {
@@ -39,6 +35,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+
 }
 
 dependencies {
