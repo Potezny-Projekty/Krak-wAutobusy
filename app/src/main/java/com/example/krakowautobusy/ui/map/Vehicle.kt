@@ -1,5 +1,7 @@
 package com.example.krakowautobusy.ui.map
+
 import kotlinx.serialization.Serializable
+
 
 @Serializable
 data class Vehicle(
@@ -8,7 +10,7 @@ data class Vehicle(
     val latitude : Long = 0L,
     val longitude : Long = 0L,
     val category : String = "",
-    val id : String = " ",
+    val id : String = "",
     val tripId : String = "",
     val name : String = ""
 )

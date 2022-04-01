@@ -2,7 +2,6 @@ package com.example.krakowautobusy.ui.map
 
 import android.os.Bundle
 import android.os.Handler
-import android.os.HandlerThread
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,7 +10,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.BuildConfig
-import com.example.krakowautobusy.MainActivity
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.database.Database
 import com.example.krakowautobusy.database.Select_db_BusStop
@@ -24,10 +22,9 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
-import kotlin.concurrent.thread
+
+
 
 
 class CreateMapFragment : Fragment() {
@@ -88,13 +85,13 @@ class CreateMapFragment : Fragment() {
         map.overlays.add(marker)
         map.overlays.add(marker)
         map.overlays.add(marker)
-       /* showAllBusStops(map)*/
+        //showAllBusStops(map)
         val actualPositionVehicles = ActualPositionVehicles()
         actualPositionVehicles.showAllVehicle(map, context)
         updateTextTask = object : Runnable {
             override fun run() {
                 actualPositionVehicles.showAllVehicle(map, context)
-                mainHandler.postDelayed(this, 3000)
+                mainHandler.postDelayed(this, 5000)
             }
         }
         mainHandler.post(updateTextTask)

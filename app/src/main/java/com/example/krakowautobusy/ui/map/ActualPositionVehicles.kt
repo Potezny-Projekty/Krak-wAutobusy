@@ -10,8 +10,10 @@ import kotlinx.serialization.json.Json
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import java.io.StringReader
 import java.net.URL
 import java.nio.charset.StandardCharsets
+
 
 class ActualPositionVehicles {
     private var lastUpdate: Long = 0
@@ -32,8 +34,8 @@ class ActualPositionVehicles {
                     )
                     if (markers.containsKey(it.id)) {
                         val mark = markers.get(it.id)!!
-                        mark.position = locationPoint
-                        mark.rotation = it.heading.toFloat()
+                        mark.icon
+                        MarkerAnimation.animateMarkerToHC(map, mark, locationPoint, GeoPointInterpolator.Linear(), it.heading)
 
                     } else {
                         val marker = Marker(map)
@@ -56,7 +58,6 @@ class ActualPositionVehicles {
                                     )
                                 }
                         }
-                        Log.i("XDDD", "bus")
                         marker.title = it.name
                         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
                         markers.put(it.id, marker);
@@ -69,12 +70,14 @@ class ActualPositionVehicles {
 
 
 
-    private fun getAllVehicleBus(): AllVehicles {
+    private fun getAllVehicleBus() : AllVehicles {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         val apiResponse =
-            URL("http://ttss.mpk.krakow.pl/internetservice/geoserviceDispatcher/" +
-                    "services/vehicleinfo/vehicles").readText(
+            URL(
+                "http://ttss.mpk.krakow.pl/internetservice/geoserviceDispatcher/" +
+                        "services/vehicleinfo/vehicles"
+            ).readText(
                 StandardCharsets.UTF_8
             )
         val json: Json = Json {
