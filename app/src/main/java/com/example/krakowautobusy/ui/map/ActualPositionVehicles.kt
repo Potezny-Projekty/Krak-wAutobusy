@@ -1,6 +1,7 @@
 package com.example.krakowautobusy.ui.map
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.StrictMode
 import androidx.annotation.RequiresApi
@@ -16,9 +17,9 @@ import java.nio.charset.StandardCharsets
 
 class ActualPositionVehicles {
     private var lastUpdate: Long = 0
-    private var markers = mutableMapOf<String, Marker>()
+    var markers = mutableMapOf<String, Marker>()
 
-    fun showAllVehicle(map: MapView, context: Context?) {
+    fun showAllVehicle(map: MapView, context: Context?, busIcon: Drawable, tramIcon:Drawable): Map<String, Marker> {
         val allVehicles = getAllVehicleBus()
         val listOfAllVehicle = allVehicles.vehicles
         listOfAllVehicle.addAll(getAllVehicleTram().vehicles)
@@ -27,7 +28,6 @@ class ActualPositionVehicles {
             listOfAllVehicle
                 .forEach { it ->
                     if (!it.isDeleted) {
-
                         val locationPoint = GeoPoint(
                             (it.latitude / 3600000f).toDouble(),
                             (it.longitude / 3600000f).toDouble()
@@ -41,21 +41,11 @@ class ActualPositionVehicles {
                             marker.position = locationPoint
                             marker.rotation = it.heading.toFloat()
                             if (it.category == "bus") {
-                                marker.icon =
-                                    context?.let {
-                                        ContextCompat.getDrawable(
-                                            it,
-                                            R.drawable.ic_icon_bus
-                                        )
-                                    }
+                                marker.icon = busIcon
+                                marker.id = "bus"
                             } else {
-                                marker.icon =
-                                    context?.let {
-                                        ContextCompat.getDrawable(
-                                            it,
-                                            R.drawable.ic_icon_tram
-                                        )
-                                    }
+                                marker.icon = tramIcon
+                                marker.id = "tram"
                             }
                             marker.title = it.name
                             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
@@ -66,6 +56,7 @@ class ActualPositionVehicles {
                 }
             map.invalidate()
         }
+        return markers
     }
 
 

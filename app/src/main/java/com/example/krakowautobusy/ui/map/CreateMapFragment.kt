@@ -31,7 +31,6 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import java.util.*
 
 
 @Suppress("DEPRECATION")
@@ -39,11 +38,18 @@ class CreateMapFragment : Fragment() {
 
     private lateinit var map: MapView
     private lateinit var binding: MapActivityBinding
-    private lateinit var iconFromDrawable: Drawable
-    private lateinit var resizedDrawable: Drawable
+
+    private lateinit var busStopIconDrawable: Drawable
+    private lateinit var tramIconDrawable: Drawable
+    private lateinit var busIconDrawable: Drawable
+    private lateinit var resizedBusStopIcon: Drawable
+    private lateinit var resizedTramIcon: Drawable
+    private lateinit var resizedBusIcon: Drawable
+
     private lateinit var busStopData: ArrayList<Select_db_BusStopInterface.BusStopRow>
     private var busStopPosition: ArrayList<GeoPoint> = ArrayList()
-    private lateinit var updateTextTask : Runnable
+    private lateinit var updateTextTask: Runnable
+    val actualPositionVehicles = ActualPositionVehicles()
     val mainHandler = Handler(Looper.getMainLooper())
 
     override fun onCreateView(
@@ -82,6 +88,7 @@ class CreateMapFragment : Fragment() {
         val boundingBox = BoundingBox.fromGeoPoints(arrayList)
 
         map.setScrollableAreaLimitDouble(boundingBox)
+
         map.minZoomLevel = 13.0
         map.maxZoomLevel = 20.0
 
@@ -89,18 +96,23 @@ class CreateMapFragment : Fragment() {
 
         val startingPoint = GeoPoint(50.06173293019267, 19.937894523426294)
 
-        iconFromDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.bus_icon)!!
+        busStopIconDrawable =
+            AppCompatResources.getDrawable(requireContext(), R.drawable.bus_icon)!!
+        busIconDrawable =
+            AppCompatResources.getDrawable(requireContext(), R.drawable.ic_icon_bus)!!
+        tramIconDrawable =
+            AppCompatResources.getDrawable(requireContext(), R.drawable.ic_icon_tram)!!
 
         mapController.setCenter(startingPoint)
-        showAllBusStops(resizeDrawable(10, 10))
-        showBusStop(resizeDrawable(10, 10), 50.06173293019267, 19.937894523426294)
-//        resizeIcons()
+        showAllBusStops(resizeDrawable(10, 10, busStopIconDrawable))
+        //showBusStop(resizeDrawable(10, 10), 50.06173293019267, 19.937894523426294)
+        resizeIcons()
 
         val mainHandler = Handler(Looper.getMainLooper())
-        val actualPositionVehicles = ActualPositionVehicles()
+
         updateTextTask = object : Runnable {
             override fun run() {
-                actualPositionVehicles.showAllVehicle(map, context)
+                actualPositionVehicles.showAllVehicle(map, context, busIconDrawable,tramIconDrawable)
                 mainHandler.postDelayed(this, 3000)
             }
         }
@@ -118,6 +130,7 @@ class CreateMapFragment : Fragment() {
             marker.icon = icon
             marker.title = elem.nameBusStop + " " + elem.id
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+            marker.id = "busStop"
             map.overlays.add(marker)
         }
         map.invalidate()
@@ -154,22 +167,21 @@ class CreateMapFragment : Fragment() {
         return connection.selectBusStopAll(instance.readableDatabase)
     }
 
-    private fun resizeDrawable(x: Int, y: Int): Drawable {
-        val bitmap: Bitmap = getBitmapFromVectorDrawable(requireContext(), R.drawable.bus_icon)!!
+    private fun resizeDrawable(x: Int, y: Int, icon: Drawable): Drawable {
+        val bitmap: Bitmap = getBitmapFromVectorDrawable(requireContext(), icon)!!
         val resized = Bitmap.createScaledBitmap(bitmap, x, y, true)
         return BitmapDrawable(resources, resized)
     }
 
-    private fun getBitmapFromVectorDrawable(context: Context, drawableId: Int): Bitmap? {
-        val drawable = ContextCompat.getDrawable(context, drawableId)
+    private fun getBitmapFromVectorDrawable(context: Context, icon: Drawable): Bitmap? {
         val bitmap = Bitmap.createBitmap(
-            drawable!!.intrinsicWidth,
-            drawable.intrinsicHeight,
+            icon!!.intrinsicWidth,
+            icon.intrinsicHeight,
             Bitmap.Config.ARGB_8888
         )
         val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
+        icon.setBounds(0, 0, canvas.width, canvas.height)
+        icon.draw(canvas)
         return bitmap
     }
 
@@ -179,11 +191,42 @@ class CreateMapFragment : Fragment() {
             object : MapListener {
                 override fun onZoom(e: ZoomEvent?): Boolean {
                     if (currentZoomLevel != map.zoomLevel) {
-                        resizedDrawable =
-                            resizeDrawable(setIconSize(map.zoomLevel), setIconSize(map.zoomLevel))
-                        map.overlays.clear()
-                        showAllBusStops(resizedDrawable)
-                        Log.i("MAP", "Current zoom level " + map.zoomLevel.toString())
+                        resizedBusStopIcon =
+                            resizeDrawable(
+                                setIconSize(map.zoomLevel),
+                                setIconSize(map.zoomLevel),
+                                busStopIconDrawable
+                            )
+                        resizedBusIcon =
+                            resizeDrawable(
+                                setIconSize(map.zoomLevel),
+                                setIconSize(map.zoomLevel),
+                                busIconDrawable
+                            )
+                        resizedTramIcon =
+                            resizeDrawable(
+                                setIconSize(map.zoomLevel)*3,
+                                setIconSize(map.zoomLevel)*3,
+                                tramIconDrawable
+                            )
+                        for ((index) in map.overlays.withIndex()) {
+                            if((map.overlays.get(index) as Marker).id == "busStop"){
+                                val marker = map.overlays.get(index) as Marker
+                                marker.icon = resizedBusStopIcon
+                                map.overlays[index] = marker
+                            }
+                            if((map.overlays.get(index) as Marker).id == "bus"){
+                                val marker = map.overlays.get(index) as Marker
+                                marker.icon = resizedBusIcon
+                                map.overlays[index] = marker
+                            }
+                            if((map.overlays.get(index) as Marker).id == "tram"){
+                                val marker = map.overlays.get(index) as Marker
+                                marker.icon = resizedTramIcon
+                                map.overlays[index] = marker
+                            }
+
+                        }
                         map.invalidate()
                         currentZoomLevel = map.zoomLevel
                     }

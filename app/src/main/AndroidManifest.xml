@@ -17,6 +17,7 @@
         >
 
         <activity
+            android:configChanges="uiMode"
             android:name=".MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan|adjustResize|stateVisible"
