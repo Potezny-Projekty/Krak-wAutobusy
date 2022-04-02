@@ -1,12 +1,7 @@
 package com.example.krakowautobusy.ui.map
 
-import android.content.Context
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.StrictMode
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
-import com.example.krakowautobusy.R
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.osmdroid.util.GeoPoint
@@ -19,14 +14,14 @@ class ActualPositionVehicles {
     private var lastUpdate: Long = 0
     var markers = mutableMapOf<String, Marker>()
 
-    fun showAllVehicle(map: MapView, context: Context?, busIcon: Drawable, tramIcon:Drawable): Map<String, Marker> {
+    fun showAllVehicle(map: MapView, busIcon: Drawable, tramIcon:Drawable): Map<String, Marker> {
         val allVehicles = getAllVehicleBus()
         val listOfAllVehicle = allVehicles.vehicles
         listOfAllVehicle.addAll(getAllVehicleTram().vehicles)
         if (allVehicles.lastUpdate != lastUpdate) {
             lastUpdate = allVehicles.lastUpdate
             listOfAllVehicle
-                .forEach { it ->
+                .forEach {
                     if (!it.isDeleted) {
                         val locationPoint = GeoPoint(
                             (it.latitude / 3600000f).toDouble(),
@@ -59,7 +54,6 @@ class ActualPositionVehicles {
         return markers
     }
 
-
     private fun getAllVehicleBus(): AllVehicles {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
@@ -70,13 +64,12 @@ class ActualPositionVehicles {
             ).readText(
                 StandardCharsets.UTF_8
             )
-        val json: Json = Json {
+        val json = Json {
             ignoreUnknownKeys = true
         }
 
         return json.decodeFromString(apiResponse)
     }
-
     private fun getAllVehicleTram(): AllVehicles {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
@@ -87,7 +80,7 @@ class ActualPositionVehicles {
             ).readText(
                 StandardCharsets.UTF_8
             )
-        val json: Json = Json {
+        val json = Json {
             ignoreUnknownKeys = true
         }
 

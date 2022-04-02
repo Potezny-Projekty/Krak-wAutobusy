@@ -1,9 +1,5 @@
 package com.example.krakowautobusy.ui.map
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
@@ -13,13 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.BuildConfig
 import com.example.krakowautobusy.R
-import com.example.krakowautobusy.database.Database
-import com.example.krakowautobusy.database.Select_db_BusStop
-import com.example.krakowautobusy.database.Select_db_BusStopInterface
 import com.example.krakowautobusy.databinding.MapActivityBinding
 import org.osmdroid.config.Configuration
 import org.osmdroid.events.MapListener
@@ -31,7 +23,6 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-
 
 @Suppress("DEPRECATION")
 class CreateMapFragment : Fragment() {
@@ -46,10 +37,10 @@ class CreateMapFragment : Fragment() {
     private lateinit var resizedTramIcon: Drawable
     private lateinit var resizedBusIcon: Drawable
 
-    private lateinit var busStopData: ArrayList<Select_db_BusStopInterface.BusStopRow>
-    private var busStopPosition: ArrayList<GeoPoint> = ArrayList()
     private lateinit var updateTextTask: Runnable
     val actualPositionVehicles = ActualPositionVehicles()
+    val utilites = Utilities()
+    lateinit var busStopPosition: BusStopPosition
     val mainHandler = Handler(Looper.getMainLooper())
 
     override fun onCreateView(
@@ -61,12 +52,10 @@ class CreateMapFragment : Fragment() {
         Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         map = binding.mapView
 
-        busStopData = getBusStopData()
-        calculateBusStopPos()
+        busStopPosition = BusStopPosition(requireContext())
 
         map.setTileSource(TileSourceFactory.MAPNIK)
         val mapController = map.controller
-
         // ukrycie przycisków + - zoomujących mapę
         map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
 
@@ -104,85 +93,29 @@ class CreateMapFragment : Fragment() {
             AppCompatResources.getDrawable(requireContext(), R.drawable.ic_icon_tram)!!
 
         mapController.setCenter(startingPoint)
-        showAllBusStops(resizeDrawable(10, 10, busStopIconDrawable))
-        //showBusStop(resizeDrawable(10, 10), 50.06173293019267, 19.937894523426294)
-        resizeIcons()
 
+        busStopPosition.showAllBusStops(
+            utilites.resizeDrawable(
+                25, 25, busStopIconDrawable,
+                requireContext()
+            ), map
+        )
+        resizeIcons()
         val mainHandler = Handler(Looper.getMainLooper())
 
         updateTextTask = object : Runnable {
             override fun run() {
-                actualPositionVehicles.showAllVehicle(map, context, busIconDrawable,tramIconDrawable)
+                actualPositionVehicles.showAllVehicle(
+                    map,
+                    busIconDrawable,
+                    tramIconDrawable
+                )
                 mainHandler.postDelayed(this, 3000)
             }
         }
         mainHandler.post(updateTextTask)
 
         return binding.root
-    }
-
-    fun showAllBusStops(icon: Drawable) {
-        for ((index, elem) in busStopData.withIndex()) {
-            val startingPoint = busStopPosition[index]
-
-            val marker = Marker(map)
-            marker.position = startingPoint
-            marker.icon = icon
-            marker.title = elem.nameBusStop + " " + elem.id
-            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-            marker.id = "busStop"
-            map.overlays.add(marker)
-        }
-        map.invalidate()
-    }
-
-    fun calculateBusStopPos(): ArrayList<GeoPoint> {
-        for (elem in busStopData) {
-            busStopPosition.add(
-                GeoPoint(
-                    (elem.latitude / 3600000f).toDouble(),
-                    (elem.longitude / 3600000f).toDouble()
-                )
-            )
-        }
-        return busStopPosition
-    }
-
-    fun showBusStop(icon: Drawable, latitude: Double, longtitude: Double) {
-        val startingPoint = GeoPoint(latitude, longtitude)
-
-        val marker = Marker(map)
-        marker.position = startingPoint
-        marker.icon = icon
-        marker.title = "Test Marker"
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-        map.overlays.add(marker)
-
-        map.invalidate()
-    }
-
-    fun getBusStopData(): ArrayList<Select_db_BusStopInterface.BusStopRow> {
-        val connection = Select_db_BusStop()
-        val instance = Database.getInstance(requireActivity())
-        return connection.selectBusStopAll(instance.readableDatabase)
-    }
-
-    private fun resizeDrawable(x: Int, y: Int, icon: Drawable): Drawable {
-        val bitmap: Bitmap = getBitmapFromVectorDrawable(requireContext(), icon)!!
-        val resized = Bitmap.createScaledBitmap(bitmap, x, y, true)
-        return BitmapDrawable(resources, resized)
-    }
-
-    private fun getBitmapFromVectorDrawable(context: Context, icon: Drawable): Bitmap? {
-        val bitmap = Bitmap.createBitmap(
-            icon!!.intrinsicWidth,
-            icon.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        icon.setBounds(0, 0, canvas.width, canvas.height)
-        icon.draw(canvas)
-        return bitmap
     }
 
     private fun resizeIcons() {
@@ -192,40 +125,40 @@ class CreateMapFragment : Fragment() {
                 override fun onZoom(e: ZoomEvent?): Boolean {
                     if (currentZoomLevel != map.zoomLevel) {
                         resizedBusStopIcon =
-                            resizeDrawable(
-                                setIconSize(map.zoomLevel),
-                                setIconSize(map.zoomLevel),
-                                busStopIconDrawable
+                            utilites.resizeDrawable(
+                                utilites.setIconSize(map.zoomLevel),
+                                utilites.setIconSize(map.zoomLevel),
+                                busStopIconDrawable,
+                                requireContext()
                             )
                         resizedBusIcon =
-                            resizeDrawable(
-                                setIconSize(map.zoomLevel),
-                                setIconSize(map.zoomLevel),
-                                busIconDrawable
+                            utilites.resizeDrawable(
+                                utilites.setIconSize(map.zoomLevel),
+                                utilites.setIconSize(map.zoomLevel),
+                                busIconDrawable,
+                                requireContext()
                             )
                         resizedTramIcon =
-                            resizeDrawable(
-                                setIconSize(map.zoomLevel)*3,
-                                setIconSize(map.zoomLevel)*3,
-                                tramIconDrawable
+                            utilites.resizeDrawable(
+                                utilites.setIconSize(map.zoomLevel) * 3,
+                                utilites.setIconSize(map.zoomLevel) * 3,
+                                tramIconDrawable,
+                                requireContext()
                             )
                         for ((index) in map.overlays.withIndex()) {
-                            if((map.overlays.get(index) as Marker).id == "busStop"){
-                                val marker = map.overlays.get(index) as Marker
+                            val marker = map.overlays.get(index) as Marker
+                            if ((map.overlays.get(index) as Marker).id == "busStop") {
                                 marker.icon = resizedBusStopIcon
                                 map.overlays[index] = marker
                             }
-                            if((map.overlays.get(index) as Marker).id == "bus"){
-                                val marker = map.overlays.get(index) as Marker
+                            if ((map.overlays.get(index) as Marker).id == "bus") {
                                 marker.icon = resizedBusIcon
                                 map.overlays[index] = marker
                             }
-                            if((map.overlays.get(index) as Marker).id == "tram"){
-                                val marker = map.overlays.get(index) as Marker
+                            if ((map.overlays.get(index) as Marker).id == "tram") {
                                 marker.icon = resizedTramIcon
                                 map.overlays[index] = marker
                             }
-
                         }
                         map.invalidate()
                         currentZoomLevel = map.zoomLevel
@@ -238,37 +171,6 @@ class CreateMapFragment : Fragment() {
                 }
             },
         )
-    }
-
-    private fun setIconSize(zoomLevel: Int): Int {
-        var iconSize = 15
-        when (zoomLevel) {
-            13 -> {
-                iconSize = 15
-            }
-            14 -> {
-                iconSize = 18
-            }
-            15 -> {
-                iconSize = 25
-            }
-            16 -> {
-                iconSize = 30
-            }
-            17 -> {
-                iconSize = 35
-            }
-            18 -> {
-                iconSize = 40
-            }
-            19 -> {
-                iconSize = 45
-            }
-            20 -> {
-                iconSize = 50
-            }
-        }
-        return iconSize
     }
 
     override fun onResume() {
