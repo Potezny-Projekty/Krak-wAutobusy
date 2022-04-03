@@ -105,9 +105,9 @@ class CreateMapFragment : Fragment() {
         busStopIconDrawable =
             AppCompatResources.getDrawable(requireContext(), R.drawable.bus_icon)!!
         busIconDrawable =
-            AppCompatResources.getDrawable(requireContext(), R.drawable.ic_icon_bus)!!
-        tramIconDrawable =
             AppCompatResources.getDrawable(requireContext(), R.drawable.ic_icon_tram)!!
+        tramIconDrawable =
+            AppCompatResources.getDrawable(requireContext(), R.drawable.ic_icon_bus)!!
 
         mapController.setCenter(startingPoint)
 
@@ -141,7 +141,12 @@ class CreateMapFragment : Fragment() {
                 )
                 mainHandler.postDelayed(this, 3000)
             }
-        }
+        }//DupA
+        /* Dupa2 */
+        /**
+         * Nie używać dupa
+         */
+
         val folderOverlay : FolderOverlay = FolderOverlay()
         mainHandler.post(updateTextTask)
 
@@ -163,8 +168,8 @@ class CreateMapFragment : Fragment() {
                             )
                         resizedBusIcon =
                             utilites.resizeDrawable(
-                                utilites.setIconSize(map.zoomLevel),
-                                utilites.setIconSize(map.zoomLevel),
+                                utilites.setIconSize(map.zoomLevel)* 3,
+                                utilites.setIconSize(map.zoomLevel)* 3,
                                 busIconDrawable,
                                 requireContext()
                             )

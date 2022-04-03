@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.util.Log
 
 class Utilities {
 
@@ -26,6 +27,8 @@ class Utilities {
         return bitmap
     }
     fun setIconSize(zoomLevel: Int): Int {
+
+
         var iconSize = 15
         when (zoomLevel) {
             13 -> {
