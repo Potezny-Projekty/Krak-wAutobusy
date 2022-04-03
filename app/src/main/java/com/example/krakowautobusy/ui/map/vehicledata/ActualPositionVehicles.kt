@@ -1,17 +1,11 @@
-package com.example.krakowautobusy.ui.map
+package com.example.krakowautobusy.ui.map.vehicledata
 
-
-import android.content.Context
 
 import android.util.Log
-import androidx.core.content.ContextCompat
-import com.example.krakowautobusy.R
 import android.graphics.drawable.Drawable
 import android.os.StrictMode
-import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.*
-import org.json.JSONObject
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
@@ -20,7 +14,6 @@ import org.osmdroid.views.overlay.Polyline
 
 import java.net.URL
 import java.nio.charset.StandardCharsets
-import kotlin.reflect.KProperty
 
 class ActualPositionVehicles {
 
@@ -91,18 +84,17 @@ class ActualPositionVehicles {
                     markers.put(it.id, marker);
                     map.overlays.add(marker)
 
-                    marker.setOnMarkerClickListener { marker, mapView ->
-                        drawPathVehicle(it.id,it.category)
-
-                    }
+//                    marker.setOnMarkerClickListener { marker, mapView ->
+//                        drawPathVehicle(it.id,it.category)
+//
+//                    }
 
 
 
 
                 }
             }
-        map.overlays.add(trackedRoute)
-        map.invalidate()
+        //map.overlays.add(trackedRoute)
     }
 
 

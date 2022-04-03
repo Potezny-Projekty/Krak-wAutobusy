@@ -31,7 +31,7 @@ import org.osmdroid.views.overlay.Marker
 import kotlin.collections.ArrayList
 
 @Suppress("DEPRECATION")
-class CreateMapFragment : Fragment() {
+class CreateDetailsMapFragment : Fragment() {
 
     private lateinit var map: MapView
     private lateinit var binding: MapActivityBinding
@@ -98,9 +98,6 @@ class CreateMapFragment : Fragment() {
         tramIconDrawable =
             AppCompatResources.getDrawable(requireContext(), R.drawable.ic_icon_bus)!!
 
-        busIconDrawable = utilites.resizeDrawable(65,65,busIconDrawable,requireContext())
-        tramIconDrawable = utilites.resizeDrawable(65,65,tramIconDrawable,requireContext())
-
         mapController.setCenter(startingPoint)
 
 //        busStopPosition.showAllBusStops(
@@ -109,19 +106,19 @@ class CreateMapFragment : Fragment() {
 //                requireContext()
 //            ), map
 //        )
-        resizeIcons()
-
-        updateTextTask = object : Runnable {
-            override fun run() {
-                actualPositionVehicles.showAllVehicle(
-                    map,
-                    busIconDrawable,
-                    tramIconDrawable
-                )
-                mainHandler.postDelayed(this, 3000)
-            }
-        }
-        mainHandler.post(updateTextTask)
+//        resizeIcons()
+//
+//        updateTextTask = object : Runnable {
+//            override fun run() {
+//                actualPositionVehicles.showAllVehicle(
+//                    map,
+//                    busIconDrawable,
+//                    tramIconDrawable
+//                )
+//                mainHandler.postDelayed(this, 3000)
+//            }
+//        }
+//        mainHandler.post(updateTextTask)
         Log.i("AAA", "OnCreateCalled")
 
         return binding.root
@@ -200,7 +197,6 @@ class CreateMapFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mainHandler.removeCallbacks(updateTextTask)
         Log.i("AAA", "OnDestroyVewCalled")
 
     }

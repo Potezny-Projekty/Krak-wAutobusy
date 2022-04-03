@@ -1,7 +1,8 @@
-package com.example.krakowautobusy.ui.map
+package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.animation.ValueAnimator
-import org.osmdroid.util.GeoPoint
+import com.example.krakowautobusy.ui.map.vehicledata.GeoPointInterpolator
+import com.example.krakowautobusy.ui.map.vehicledata.PathVehicle
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 

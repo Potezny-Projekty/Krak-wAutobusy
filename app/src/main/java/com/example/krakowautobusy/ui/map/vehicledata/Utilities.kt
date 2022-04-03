@@ -1,4 +1,4 @@
-package com.example.krakowautobusy.ui.map
+package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -26,16 +26,15 @@ class Utilities {
         icon.draw(canvas)
         return bitmap
     }
+
     fun setIconSize(zoomLevel: Int): Int {
-
-
-        var iconSize = 15
+        var iconSize = 65
         when (zoomLevel) {
             13 -> {
-                iconSize = 15
+                iconSize = 30
             }
             14 -> {
-                iconSize = 18
+                iconSize = 25
             }
             15 -> {
                 iconSize = 25

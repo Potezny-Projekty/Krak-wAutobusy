@@ -54,7 +54,7 @@
 
             android:id="@+id/details_view_map"
             tools:context=".MapsActivity"
-            android:name="com.example.krakowautobusy.ui.map.CreateMapFragment"
+            android:name="com.example.krakowautobusy.ui.map.CreateDetailsMapFragment"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/upper_bar" />
 

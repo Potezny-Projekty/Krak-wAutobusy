@@ -1,6 +1,5 @@
 package com.example.krakowautobusy.ui.details
 
-import android.os.Build
 import android.os.Bundle
 
 import android.view.LayoutInflater
@@ -10,7 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.FragmentDetailsBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-
+import org.osmdroid.views.MapView
 
 
 class DetailsFragment : Fragment() {
@@ -24,8 +23,9 @@ class DetailsFragment : Fragment() {
     ): View {
 
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
+        val map: MapView = requireActivity().findViewById(R.id.mapView)
+//        map.overlays.remove()
+//        map.invalidate()
         return binding.root
     }
 
@@ -35,9 +35,6 @@ class DetailsFragment : Fragment() {
         val xd=requireActivity().findViewById<View>(R.id.nav_view)
     }
 
-
-
-
      fun uncheckedAllNavMenuOption(){
         val navView:BottomNavigationView=requireActivity().findViewById(R.id.nav_view)
         navView.menu.setGroupCheckable(0,true,false)
@@ -45,7 +42,6 @@ class DetailsFragment : Fragment() {
             navView.menu.getItem(i).isChecked=false
         }
          navView.menu.setGroupCheckable(0,true,true)
-
     }
 
 }
