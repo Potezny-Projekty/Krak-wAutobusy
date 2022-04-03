@@ -6,4 +6,6 @@ import kotlinx.serialization.Serializable
 data class AllVehicles(
     val lastUpdate : Long,
     val vehicles : ArrayList<Vehicle>
+
 )
+

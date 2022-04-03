@@ -1,5 +1,8 @@
 package com.example.krakowautobusy.ui.map
 
+
+import android.graphics.drawable.Drawable
+
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -7,42 +10,65 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.BuildConfig
 import com.example.krakowautobusy.R
-import com.example.krakowautobusy.database.Database
-import com.example.krakowautobusy.database.Select_db_BusStop
 import com.example.krakowautobusy.databinding.MapActivityBinding
+
 import kotlinx.coroutines.*
+
 import org.osmdroid.config.Configuration
+import org.osmdroid.events.MapListener
+import org.osmdroid.events.ScrollEvent
+import org.osmdroid.events.ZoomEvent
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+
 import kotlin.collections.ArrayList
 
 
 
 
+
+@Suppress("DEPRECATION")
 class CreateMapFragment : Fragment() {
-    private lateinit var map : MapView;
+
+    private lateinit var map: MapView
     private lateinit var binding: MapActivityBinding
+
+
+
+
+    private lateinit var busStopIconDrawable: Drawable
+    private lateinit var tramIconDrawable: Drawable
+    private lateinit var busIconDrawable: Drawable
+    private lateinit var resizedBusStopIcon: Drawable
+    private lateinit var resizedTramIcon: Drawable
+    private lateinit var resizedBusIcon: Drawable
+
+    private lateinit var updateTextTask: Runnable
+    val actualPositionVehicles = ActualPositionVehicles()
+    val utilites = Utilities()
+    lateinit var busStopPosition: BusStopPosition
     val mainHandler = Handler(Looper.getMainLooper())
-    private lateinit var updateTextTask : Runnable
 
-
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = MapActivityBinding.inflate(inflater, container, false)
         Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         map = binding.mapView
 
-        map.setTileSource(TileSourceFactory.MAPNIK)
+        busStopPosition = BusStopPosition(requireContext())
 
+        map.setTileSource(TileSourceFactory.MAPNIK)
         val mapController = map.controller
         // ukrycie przycisków + - zoomujących mapę
         map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
@@ -51,10 +77,6 @@ class CreateMapFragment : Fragment() {
         map.setMultiTouchControls(true)
 
         // ograniczenie zakresu do którego można przesunąć mapę
-//        val startingPoint2 = GeoPoint(50.13271431317449, 19.709937084370207)
-//        val startingPoint3 = GeoPoint(49.93777520783109, 19.760309614486303)
-//        val startingPoint4 = GeoPoint(50.10687584147389, 20.167067795173768)
-//        val startingPoint5 = GeoPoint(49.99690671441174, 20.12047320481638)
         val startingPoint2 = GeoPoint(50.3107434126593, 19.61671721450658)
         val startingPoint3 = GeoPoint(49.88512598174506, 19.545556322799532)
         val startingPoint4 = GeoPoint(50.32107434126593, 20.379321439500526)
@@ -66,59 +88,104 @@ class CreateMapFragment : Fragment() {
         arrayList.add(startingPoint4)
         arrayList.add(startingPoint5)
 
-        val boundingBox =  BoundingBox.fromGeoPoints(arrayList)
+        val boundingBox = BoundingBox.fromGeoPoints(arrayList)
 
         map.setScrollableAreaLimitDouble(boundingBox)
-        map.minZoomLevel = 13.5
+
+        map.minZoomLevel = 13.0
         map.maxZoomLevel = 20.0
 
         mapController.setZoom(14.0)
 
-        val startingPoint = GeoPoint(50.06173293019267, 19.937894523426294);
 
-        mapController.setCenter(startingPoint);
-        val marker = Marker(map)
-        marker.position = startingPoint
-        marker.icon = context?.let { ContextCompat.getDrawable(it, R.drawable.bus_icon) }
-        marker.title = "Test Marker"
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-        map.overlays.add(marker)
-        map.overlays.add(marker)
-        map.overlays.add(marker)
-        //showAllBusStops(map)
-        val actualPositionVehicles = ActualPositionVehicles()
-        actualPositionVehicles.showAllVehicle(map, context)
+        val startingPoint = GeoPoint(50.06173293019267, 19.937894523426294)
+
+        busStopIconDrawable =
+            AppCompatResources.getDrawable(requireContext(), R.drawable.bus_icon)!!
+        busIconDrawable =
+            AppCompatResources.getDrawable(requireContext(), R.drawable.ic_icon_bus)!!
+        tramIconDrawable =
+            AppCompatResources.getDrawable(requireContext(), R.drawable.ic_icon_tram)!!
+
+        mapController.setCenter(startingPoint)
+
+        busStopPosition.showAllBusStops(
+            utilites.resizeDrawable(
+                25, 25, busStopIconDrawable,
+                requireContext()
+            ), map
+        )
+        resizeIcons()
+        val mainHandler = Handler(Looper.getMainLooper())
+
         updateTextTask = object : Runnable {
             override fun run() {
-                actualPositionVehicles.showAllVehicle(map, context)
-                mainHandler.postDelayed(this, 5000)
+                actualPositionVehicles.showAllVehicle(
+                    map,
+                    busIconDrawable,
+                    tramIconDrawable
+                )
+                mainHandler.postDelayed(this, 3000)
             }
         }
         mainHandler.post(updateTextTask)
-        map.invalidate()
+
         return binding.root
     }
 
+    private fun resizeIcons() {
+        var currentZoomLevel = map.zoomLevel
+        map.setMapListener(
+            object : MapListener {
+                override fun onZoom(e: ZoomEvent?): Boolean {
+                    if (currentZoomLevel != map.zoomLevel) {
+                        resizedBusStopIcon =
+                            utilites.resizeDrawable(
+                                utilites.setIconSize(map.zoomLevel),
+                                utilites.setIconSize(map.zoomLevel),
+                                busStopIconDrawable,
+                                requireContext()
+                            )
+                        resizedBusIcon =
+                            utilites.resizeDrawable(
+                                utilites.setIconSize(map.zoomLevel),
+                                utilites.setIconSize(map.zoomLevel),
+                                busIconDrawable,
+                                requireContext()
+                            )
+                        resizedTramIcon =
+                            utilites.resizeDrawable(
+                                utilites.setIconSize(map.zoomLevel) * 3,
+                                utilites.setIconSize(map.zoomLevel) * 3,
+                                tramIconDrawable,
+                                requireContext()
+                            )
+                        for ((index) in map.overlays.withIndex()) {
+                            val marker = map.overlays.get(index) as Marker
+                            if ((map.overlays.get(index) as Marker).id == "busStop") {
+                                marker.icon = resizedBusStopIcon
+                                map.overlays[index] = marker
+                            }
+                            if ((map.overlays.get(index) as Marker).id == "bus") {
+                                marker.icon = resizedBusIcon
+                                map.overlays[index] = marker
+                            }
+                            if ((map.overlays.get(index) as Marker).id == "tram") {
+                                marker.icon = resizedTramIcon
+                                map.overlays[index] = marker
+                            }
+                        }
+                        map.invalidate()
+                        currentZoomLevel = map.zoomLevel
+                    }
+                    return true
+                }
 
-    fun showAllBusStops(map:MapView){
-        val vv= Select_db_BusStop()
-        val x= Database.getInstance(requireActivity())
-        val xx= vv.selectBusStopAll(x.readableDatabase)//,8095258289119440510L
-
-        for(elem in xx){
-            Log.e("gg",elem.nameBusStop+ " "+(elem.longitude/3600000f).toString())
-            val startingPoint = GeoPoint((elem.latitude/3600000f).toDouble(), (elem.longitude/3600000f).toDouble());
-
-            val marker = Marker(map)
-            marker.position = startingPoint
-            marker.icon = context?.let { ContextCompat.getDrawable(it, R.drawable.bus_icon) }
-            marker.title = elem.nameBusStop+" "+elem.id.toString()
-            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-            map.overlays.add(marker)
-            //map.invalidate()
-        }
-
-
+                override fun onScroll(e: ScrollEvent?): Boolean {
+                    return true
+                }
+            },
+        )
 
     }
 
@@ -130,13 +197,15 @@ class CreateMapFragment : Fragment() {
     }
 
     override fun onPause() {
-        super.onPause();
-        map.onPause();
+        super.onPause()
+        map.onPause()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.i("AAA", "Usuniecie apk")
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("AAA", "OnDestroyCalled")
+
         mainHandler.removeCallbacks(updateTextTask)
     }
 }

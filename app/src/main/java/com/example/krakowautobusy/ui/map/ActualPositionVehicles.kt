@@ -1,76 +1,71 @@
 package com.example.krakowautobusy.ui.map
 
+
 import android.content.Context
-import android.os.StrictMode
+
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.example.krakowautobusy.R
+
+import android.graphics.drawable.Drawable
+import android.os.StrictMode
+
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import java.io.StringReader
+
 import java.net.URL
 import java.nio.charset.StandardCharsets
 
-
 class ActualPositionVehicles {
     private var lastUpdate: Long = 0
-    private var markers = mutableMapOf<String, Marker>()
+    var markers = mutableMapOf<String, Marker>()
 
-    fun showAllVehicle(map : MapView, context: Context?) {
+    fun showAllVehicle(map: MapView, busIcon: Drawable, tramIcon:Drawable) {
+
         val allVehicles = getAllVehicleBus()
         val listOfAllVehicle = allVehicles.vehicles
         listOfAllVehicle.addAll(getAllVehicleTram().vehicles)
         if (allVehicles.lastUpdate != lastUpdate) {
             lastUpdate = allVehicles.lastUpdate
             listOfAllVehicle
-                .filter { !it.isDeleted }
-                .forEach { it ->
-                    val locationPoint: GeoPoint = GeoPoint(
-                        (it.latitude / 3600000f).toDouble(),
-                        (it.longitude / 3600000f).toDouble()
-                    )
-                    if (markers.containsKey(it.id)) {
-                        val mark = markers.get(it.id)!!
-                        mark.icon
-                        MarkerAnimation.animateMarkerToHC(map, mark, locationPoint, GeoPointInterpolator.Linear(), it.heading)
-
-                    } else {
-                        val marker = Marker(map)
-                        marker.position = locationPoint
-                        marker.rotation = it.heading.toFloat()
-                        if (it.category == "bus") {
-                            marker.icon =
-                                context?.let {
-                                    ContextCompat.getDrawable(
-                                        it,
-                                        R.drawable.ic_icon_bus
-                                    )
-                                }
+                .forEach {
+                    if (!it.isDeleted) {
+                        val locationPoint = GeoPoint(
+                            (it.latitude / 3600000f).toDouble(),
+                            (it.longitude / 3600000f).toDouble()
+                        )
+                        if (markers.containsKey(it.id)) {
+                            val mark = markers.get(it.id)!!
+                            mark.position = locationPoint
+                            mark.rotation = it.heading.toFloat()
                         } else {
-                            marker.icon =
-                                context?.let {
-                                    ContextCompat.getDrawable(
-                                        it,
-                                        R.drawable.ic_icon_tram
-                                    )
-                                }
+                            val marker = Marker(map)
+                            marker.position = locationPoint
+                            marker.rotation = it.heading.toFloat()
+                            if (it.category == "bus") {
+                                marker.icon = busIcon
+                                marker.id = "bus"
+                            } else {
+                                marker.icon = tramIcon
+                                marker.id = "tram"
+                            }
+                            marker.title = it.name
+                            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                            markers.put(it.id, marker);
+                            map.overlays.add(marker)
                         }
-                        marker.title = it.name
-                        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-                        markers.put(it.id, marker);
-                        map.overlays.add(marker)
+
                     }
                 }
             map.invalidate()
         }
     }
 
+    private fun getAllVehicleBus(): AllVehicles {
 
-
-    private fun getAllVehicleBus() : AllVehicles {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         val apiResponse =
@@ -80,7 +75,9 @@ class ActualPositionVehicles {
             ).readText(
                 StandardCharsets.UTF_8
             )
-        val json: Json = Json {
+
+        val json = Json {
+
             ignoreUnknownKeys = true
         }
 
@@ -91,11 +88,15 @@ class ActualPositionVehicles {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         val apiResponse =
-            URL("http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/" +
-                    "services/vehicleinfo/vehicles").readText(
+
+            URL(
+                "http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/" +
+                        "services/vehicleinfo/vehicles"
+            ).readText(
                 StandardCharsets.UTF_8
             )
-        val json: Json = Json {
+        val json = Json {
+
             ignoreUnknownKeys = true
         }
 
