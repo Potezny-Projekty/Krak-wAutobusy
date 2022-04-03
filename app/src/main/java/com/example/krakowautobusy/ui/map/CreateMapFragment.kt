@@ -27,6 +27,7 @@ import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.FolderOverlay
 import org.osmdroid.views.overlay.Marker
 
 import kotlin.collections.ArrayList
@@ -98,6 +99,7 @@ class CreateMapFragment : Fragment() {
         mapController.setZoom(14.0)
 
 
+
         val startingPoint = GeoPoint(50.06173293019267, 19.937894523426294)
 
         busStopIconDrawable =
@@ -118,6 +120,18 @@ class CreateMapFragment : Fragment() {
         resizeIcons()
         val mainHandler = Handler(Looper.getMainLooper())
 
+
+
+
+
+
+
+        //showAllBusStops(map)
+        val actualPositionVehicles = ActualPositionVehicles()
+
+
+
+        //////////////
         updateTextTask = object : Runnable {
             override fun run() {
                 actualPositionVehicles.showAllVehicle(
@@ -128,6 +142,7 @@ class CreateMapFragment : Fragment() {
                 mainHandler.postDelayed(this, 3000)
             }
         }
+        val folderOverlay : FolderOverlay = FolderOverlay()
         mainHandler.post(updateTextTask)
 
         return binding.root

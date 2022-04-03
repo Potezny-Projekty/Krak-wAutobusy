@@ -5,17 +5,17 @@ import org.osmdroid.util.GeoPoint
 
 
 interface GeoPointInterpolator {
-    fun interpolate(fraction: Float, a: GeoPoint, b: GeoPoint): GeoPoint
+    fun interpolate(fraction: Float, pathVehicle: PathVehicle): GeoPoint
     class Linear : GeoPointInterpolator {
-        override fun interpolate(fraction: Float, a: GeoPoint, b: GeoPoint): GeoPoint {
-            val lat = (b.latitude - a.latitude) * fraction + a.latitude
-            val lng = (b.longitude - a.longitude) * fraction + a.longitude
-            return GeoPoint(lat, lng)
+        override fun interpolate(fraction: Float, pathVehicle: PathVehicle): GeoPoint {
+           // val lat = (b.latitude - a.latitude) * fraction + a.latitude
+            //val lng = (b.longitude - a.longitude) * fraction + a.longitude
+            return GeoPoint(0.0, 0.0)
         }
 
     }
 
-    class LinearFixed : GeoPointInterpolator {
+  /*  class LinearFixed : GeoPointInterpolator {
         override fun interpolate(fraction: Float, a: GeoPoint, b: GeoPoint): GeoPoint {
             val lat = (b.latitude - a.latitude) * fraction + a.latitude
             var lngDelta = b.longitude - a.longitude
@@ -30,7 +30,7 @@ interface GeoPointInterpolator {
     }
 
     class Spherical : GeoPointInterpolator {
-        /* From github.com/googlemaps/android-maps-utils */
+        *//* From github.com/googlemaps/android-maps-utils *//*
         override fun interpolate(fraction: Float, from: GeoPoint, to: GeoPoint): GeoPoint {
             // http://en.wikipedia.org/wiki/Slerp
             val fromLat = Math.toRadians(from.latitude)
@@ -76,5 +76,5 @@ interface GeoPointInterpolator {
                 )
             )
         }
-    }
+    }*/
 }
