@@ -11,19 +11,19 @@ object MarkerAnimation {
     fun animateMarkerToHC(
         map: MapView,
         marker: Marker,
-        finalPosition: GeoPoint,
+        pathVehicles: ArrayList<PathVehicle>,
         GeoPointInterpolator: GeoPointInterpolator,
-        rotation : Int
     ): ValueAnimator {
         val startPosition = marker.position
         val valueAnimator = ValueAnimator()
         valueAnimator.addUpdateListener { animation ->
-            val v = animation.animatedFraction
-            val newPosition: GeoPoint =
-                GeoPointInterpolator.interpolate(v, startPosition, finalPosition)
-            marker.position = newPosition
-            marker.rotation =  (rotation.toFloat() - marker.rotation) * v + marker.rotation
-            map.invalidate()
+
+        val v = animation.animatedFraction
+        //val newPosition: GeoPoint =
+          //  GeoPointInterpolator.interpolate(v, pathVehicle)
+       // marker.position = newPosition
+        map.invalidate()
+
         }
         valueAnimator.setFloatValues(0f, 1f) // Ignored.
         valueAnimator.duration = 3000

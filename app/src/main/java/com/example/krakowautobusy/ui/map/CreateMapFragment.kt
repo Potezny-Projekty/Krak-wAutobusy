@@ -21,6 +21,7 @@ import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.FolderOverlay
 import org.osmdroid.views.overlay.Marker
 import kotlin.collections.ArrayList
 
@@ -82,9 +83,9 @@ class CreateMapFragment : Fragment() {
         marker.icon = context?.let { ContextCompat.getDrawable(it, R.drawable.bus_icon) }
         marker.title = "Test Marker"
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+        marker.id = "cos"
         map.overlays.add(marker)
-        map.overlays.add(marker)
-        map.overlays.add(marker)
+
         //showAllBusStops(map)
         val actualPositionVehicles = ActualPositionVehicles()
         actualPositionVehicles.showAllVehicle(map, context)
@@ -94,6 +95,7 @@ class CreateMapFragment : Fragment() {
                 mainHandler.postDelayed(this, 5000)
             }
         }
+        val folderOverlay : FolderOverlay = FolderOverlay()
         mainHandler.post(updateTextTask)
         map.invalidate()
         return binding.root

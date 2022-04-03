@@ -12,5 +12,6 @@ data class Vehicle(
     val category : String = "",
     val id : String = "",
     val tripId : String = "",
-    val name : String = ""
+    val name : String = "",
+    val path : ArrayList<PathVehicle> = ArrayList()
 )
