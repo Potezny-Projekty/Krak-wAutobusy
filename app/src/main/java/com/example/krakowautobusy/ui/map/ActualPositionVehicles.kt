@@ -33,9 +33,11 @@ class ActualPositionVehicles {
     }
     private val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
 
+
     fun showAllVehicle(map: MapView, busIcon: Drawable, tramIcon:Drawable)  {
-        val allVehiclesBus = getAllVehicleBus()
-        val allVehiclesTram = getAllVehicleTram()
+        val allVehiclesBus = getAllVehicle("bus")
+        val allVehiclesTram = getAllVehicle("tram")
+
         val listOfAllVehicle = allVehiclesBus.vehicles
         listOfAllVehicle.addAll(allVehiclesTram.vehicles)
         lastUpdateBus = allVehiclesBus.lastUpdate
@@ -79,8 +81,10 @@ class ActualPositionVehicles {
                         marker.icon = busIcon
                         marker.id = "bus"
                     } else {
+
                         marker.icon = tramIcon
                         marker.id = "tram"
+
                     }
                     marker.title = it.name
                     marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
@@ -88,7 +92,7 @@ class ActualPositionVehicles {
                     map.overlays.add(marker)
 
                     marker.setOnMarkerClickListener { marker, mapView ->
-                        drawPathVehicle(it.id)
+                        drawPathVehicle(it.id,it.category)
 
                     }
 
@@ -102,43 +106,40 @@ class ActualPositionVehicles {
     }
 
 
-
-
-
-    private fun getAllVehicleBus() : AllVehicles {
+    private fun getAllVehicle(type : String): AllVehicles {
 
         StrictMode.setThreadPolicy(policy)
+        val url : String
+        if (type == "tram") {
+            url = "http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/" +
+            "services/vehicleinfo/vehicles?lastUpdate=${this.lastUpdateTram}" +
+                    "&positionType=CORRECTED&colorType=ROUTE_BASED&language=pl"
+        } else {
+            url = "http://ttss.mpk.krakow.pl/internetservice/geoserviceDispatcher/" +
+                    "services/vehicleinfo/vehicles?lastUpdate=${this.lastUpdateBus}" +
+                    "&positionType=CORRECTED&colorType=ROUTE_BASED&language=pl"
+        }
         val apiResponse =
-            URL(
-                "http://ttss.mpk.krakow.pl/internetservice/geoserviceDispatcher/" +
-                        "services/vehicleinfo/vehicles?lastUpdate=${this.lastUpdateBus}&positionType=CORRECTED&colorType=ROUTE_BASED&language=pl"
-            ).readText(
-                StandardCharsets.UTF_8
-            )
-
-
-        return json.decodeFromString(apiResponse)
-    }
-
-    private fun getAllVehicleTram(): AllVehicles {
-        StrictMode.setThreadPolicy(policy)
-        val apiResponse =
-            URL("http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/" +
-                    "services/vehicleinfo/vehicles?lastUpdate=${this.lastUpdateTram}&positionType=CORRECTED&colorType=ROUTE_BASED&language=pl").readText(
+            URL(url).readText(
                 StandardCharsets.UTF_8
             )
         return json.decodeFromString(apiResponse)
     }
 
-    private fun getPathVehicle(idVehicle : String): ArrayList<GeoPoint> {
+    private fun getPathVehicle(idVehicle : String, type : String): ArrayList<GeoPoint> {
         StrictMode.setThreadPolicy(policy)
+        val url : String
+        if  (type == "tram") {
+            url = "http://www.ttss.krakow.pl/internetservice/" +
+                    "geoserviceDispatcher/services/pathinfo/vehicle?id=${idVehicle}"
+        } else {
+            url = "http://ttss.mpk.krakow.pl/internetservice/" +
+                    "geoserviceDispatcher/services/pathinfo/vehicle?id=${idVehicle}"
+        }
         val apiResponse =
-            URL("http://ttss.mpk.krakow.pl/internetservice/" +
-                    "geoserviceDispatcher/services/pathinfo/" +
-                    "vehicle?id=${idVehicle}").readText(
+            URL(url).readText(
                 StandardCharsets.UTF_8
             )
-
         val geoPoints = ArrayList<GeoPoint>()
         val jsonObjectValue = json.decodeFromString<JsonObject>(apiResponse)
         jsonObjectValue.getValue("paths").jsonArray[0].
@@ -153,8 +154,8 @@ class ActualPositionVehicles {
         return geoPoints
     }
 
-    private fun drawPathVehicle(idVehicle : String) : Boolean {
-        val cos = getPathVehicle(idVehicle)
+    private fun drawPathVehicle(idVehicle : String, type: String) : Boolean {
+        val cos = getPathVehicle(idVehicle, type)
         trackedRoute.actualPoints.clear()
         trackedRoute.actualPoints.addAll(cos)
         Log.i("SIEMA", cos.toString())

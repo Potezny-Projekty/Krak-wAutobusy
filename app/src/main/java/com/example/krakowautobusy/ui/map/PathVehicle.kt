@@ -2,6 +2,11 @@ package com.example.krakowautobusy.ui.map
 
 import kotlinx.serialization.Serializable
 
+/**
+ * Koła autobusu kręcą kręcą się a autobus mknie (<-xD tak się to piszę) a tramwaj też mknie
+ * DUPA
+ * Kurwa nie usuwać
+ */
 @Serializable
 data class PathVehicle(
     val y1 : Long = 180243382,
