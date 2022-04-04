@@ -1,6 +1,5 @@
 package com.example.krakowautobusy
 
-
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
@@ -24,41 +23,35 @@ import java.net.URL
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
-
-
-
-
-
-    fun show(){
+    fun show() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
 
         StrictMode.setThreadPolicy(policy)
-        val apiResponse = URL("http://ttss.mpk.krakow.pl/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles").readText()
-        Log.e("siec",apiResponse.toString())
+        val apiResponse =
+            URL("http://ttss.mpk.krakow.pl/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles").readText()
+        Log.e("siec", apiResponse.toString())
 
         val result = Klaxon().parse<AllLiveBus>(
-          apiResponse
+            apiResponse
         )
 
-        Log.e("siec2",result!!.vehicles[0].latitude.toString())
+        Log.e("siec2", result!!.vehicles[0].latitude.toString())
 
 
+        var listBus = mutableListOf<LiveBus>()
 
-        var listBus= mutableListOf<LiveBus>()
-
-        for(x in result.vehicles){
-            if(x.longitude!=-1L){
+        for (x in result.vehicles) {
+            if (x.longitude != -1L) {
                 listBus.add(x)
             }
         }
 
 
-        for(a in listBus){
-            Log.e("siec2",a.longitude.toString()+" "+a.latitude.toString())
+        for (a in listBus) {
+            Log.e("siec2", a.longitude.toString() + " " + a.latitude.toString())
         }
 
-       // w listBusMasz
+        // w listBusMasz
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         show()
 
 
-       binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.navView
@@ -99,22 +92,22 @@ class MainActivity : AppCompatActivity() {
 
         hideAppTitleBar()
 
-            val dbHelp=LoadDatabase()
-        dbHelp.importdb("manu", baseContext )
+        val dbHelp = LoadDatabase()
+        dbHelp.importdb("manu", baseContext)
         baseContext
-        val x=Database.getInstance(this)
-       // val aa=StaticFillDatabaseData(x,StaticInsert_db_VehicleType(),StaticInsert_db_BusStop(),StaticInsert_db_Line(),StaticInsert_db_LineBusStopList())
-       // aa.fill_VehicleTypeTable()
-     //   aa.fill_BusStopTable()
-    //    aa.fill_LineTable()
-    //    aa.fill_LineBusStop()
-        Log.e("coś","zaczynam")
+        val x = Database.getInstance(this)
+        // val aa=StaticFillDatabaseData(x,StaticInsert_db_VehicleType(),StaticInsert_db_BusStop(),StaticInsert_db_Line(),StaticInsert_db_LineBusStopList())
+        // aa.fill_VehicleTypeTable()
+        //   aa.fill_BusStopTable()
+        //    aa.fill_LineTable()
+        //    aa.fill_LineBusStop()
+        Log.e("coś", "zaczynam")
 
-        val vv=Select_db_BusStop()
-        val xx= vv.selectBusStopAll(x.readableDatabase)//,8095258289119440510L
+        val vv = Select_db_BusStop()
+        val xx = vv.selectBusStopAll(x.readableDatabase)//,8095258289119440510L
 
 
-     //  val databaseInterface = DatabaseInterface(Database.getInstance(this))//bylo
+        //  val databaseInterface = DatabaseInterface(Database.getInstance(this))//bylo
 
 //        Log.i("MainActivity",databaseInterface.addLine("TEST1","TEST2",20).toString())
 //        Log.i("MainActivity",databaseInterface.getLine("1"))
@@ -124,10 +117,6 @@ class MainActivity : AppCompatActivity() {
 
 //xD()
     }
-
-
-
-
 
 /*
    private var mLastContentHeight = 0
@@ -160,15 +149,14 @@ class MainActivity : AppCompatActivity() {
 
 */
 
-    private fun hideAppTitleBar(){
+    private fun hideAppTitleBar() {
         supportActionBar?.hide()
 
 
+        // val databaseInterface = DatabaseInterface(Database.getInstance(this))
 
-       // val databaseInterface = DatabaseInterface(Database.getInstance(this))
-
-      //  Log.i("MainActivity", databaseInterface.addLine("Przystanek TEST1", "Przystanek TEST2", 20).toString())
-      //  Log.i("MainActivity", databaseInterface.addBusStop().toString())
+        //  Log.i("MainActivity", databaseInterface.addLine("Przystanek TEST1", "Przystanek TEST2", 20).toString())
+        //  Log.i("MainActivity", databaseInterface.addBusStop().toString())
 
     }
 
