@@ -18,6 +18,7 @@ import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.MapActivityBinding
 import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.BusStopPosition
+import com.example.krakowautobusy.ui.map.vehicledata.UserLocation
 import com.example.krakowautobusy.ui.map.vehicledata.Utilities
 import kotlinx.coroutines.*
 import org.osmdroid.config.Configuration
@@ -43,9 +44,11 @@ class CreateMapFragment : Fragment() {
     private lateinit var busStopIconDrawable: Drawable
     private lateinit var tramIconDrawable: Drawable
     private lateinit var busIconDrawable: Drawable
+    private lateinit var userLocationIconDrawable: Drawable
     private lateinit var resizedBusStopIcon: Drawable
     private lateinit var resizedTramIcon: Drawable
     private lateinit var resizedBusIcon: Drawable
+    private lateinit var resizedUserLocationIcon: Drawable
 
     private lateinit var updateTextTask: Runnable
     private lateinit var busStopPosition: BusStopPosition
@@ -87,7 +90,7 @@ class CreateMapFragment : Fragment() {
 
         val boundingBox = BoundingBox.fromGeoPoints(arrayList)
 
-        map.setScrollableAreaLimitDouble(boundingBox)
+        //map.setScrollableAreaLimitDouble(boundingBox)
 
         map.minZoomLevel = 13.0
         map.maxZoomLevel = 20.0
@@ -102,9 +105,13 @@ class CreateMapFragment : Fragment() {
             AppCompatResources.getDrawable(requireContext(), R.drawable.ic_icon_tram)!!
         tramIconDrawable =
             AppCompatResources.getDrawable(requireContext(), R.drawable.ic_icon_bus)!!
+        userLocationIconDrawable =
+            AppCompatResources.getDrawable(requireContext(), R.drawable.location_icon)!!
 
-        busIconDrawable = utilites.resizeDrawable(65,65,busIconDrawable,requireContext())
-        tramIconDrawable = utilites.resizeDrawable(65,65,tramIconDrawable,requireContext())
+        busIconDrawable = utilites.resizeDrawable(65, 65, busIconDrawable, requireContext())
+        tramIconDrawable = utilites.resizeDrawable(65, 65, tramIconDrawable, requireContext())
+        userLocationIconDrawable =
+            utilites.resizeDrawable(100, 100, userLocationIconDrawable, requireContext())
 
         mapController.setCenter(startingPoint)
 
@@ -115,6 +122,7 @@ class CreateMapFragment : Fragment() {
 //            ), map
 //        )
         resizeIcons()
+        userLocation.drawLocationMarker(map, userLocationIconDrawable)
 
         updateTextTask = object : Runnable {
             override fun run() {
@@ -123,13 +131,12 @@ class CreateMapFragment : Fragment() {
                     busIconDrawable,
                     tramIconDrawable
                 )
+                userLocation.getLastLocation(map)
                 mainHandler.postDelayed(this, 3000)
             }
         }
         mainHandler.post(updateTextTask)
         Log.i("AAA", "OnCreateCalled")
-
-        userLocation.getLastLocation()
 
         return binding.root
     }
@@ -140,7 +147,6 @@ class CreateMapFragment : Fragment() {
             object : MapListener {
                 override fun onZoom(e: ZoomEvent?): Boolean {
                     if (currentZoomLevel != map.zoomLevel) {
-                        userLocation.getLastLocation()
                         resizedBusStopIcon =
                             utilites.resizeDrawable(
                                 utilites.setIconSize(map.zoomLevel),
@@ -162,10 +168,16 @@ class CreateMapFragment : Fragment() {
                                 tramIconDrawable,
                                 requireContext()
                             )
+                        resizedUserLocationIcon =
+                            utilites.resizeDrawable(
+                                utilites.setIconSize(map.zoomLevel) * 3,
+                                utilites.setIconSize(map.zoomLevel) * 3,
+                                userLocationIconDrawable,
+                                requireContext()
+                            )
                         for ((index) in map.overlays.withIndex()) {
                             if (map.overlays[index] is Marker) {
                                 val marker = map.overlays[index] as Marker
-
                                 when ((map.overlays[index] as Marker).id) {
                                     "busStop" -> {
                                         marker.icon = resizedBusStopIcon
@@ -177,6 +189,10 @@ class CreateMapFragment : Fragment() {
                                     }
                                     "tram" -> {
                                         marker.icon = resizedTramIcon
+                                        map.overlays[index] = marker
+                                    }
+                                    "location" -> {
+                                        marker.icon = resizedUserLocationIcon
                                         map.overlays[index] = marker
                                     }
                                 }

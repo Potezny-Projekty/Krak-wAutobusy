@@ -24,8 +24,6 @@ class DetailsFragment : Fragment() {
 
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         val map: MapView = requireActivity().findViewById(R.id.mapView)
-//        map.overlays.remove()
-//        map.invalidate()
         return binding.root
     }
 

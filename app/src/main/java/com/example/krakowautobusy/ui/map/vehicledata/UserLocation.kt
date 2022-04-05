@@ -1,53 +1,64 @@
-package com.example.krakowautobusy.ui.map
+package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Looper
-import android.provider.Settings
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
+
 
 @Suppress("DEPRECATION")
 @SuppressLint("MissingPermission")
 @RequiresApi(Build.VERSION_CODES.M)
 class UserLocation(var activity: AppCompatActivity) {
-    val PERMISSION_ID = 42
-    var mFusedLocationClient: FusedLocationProviderClient
+    private val PERMISSION_ID = 42
+    private var mFusedLocationClient: FusedLocationProviderClient
+    var latitude: Double = 50.06173293019267
+    var longtitude: Double = 19.937894523426294
 
     init {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
     }
-    fun getLastLocation() {
-        Log.i("XD", "permission status: " + checkPermissions())
+
+    fun getLastLocation(map: MapView): GeoPoint {
+        val locationPoint = GeoPoint(latitude, longtitude)
         if (checkPermissions()) {
-            Log.i("XD", "permission status: " + checkPermissions())
+            Log.i("UserLocation", "Permission status: " + checkPermissions())
             if (isLocationEnabled()) {
                 mFusedLocationClient.lastLocation.addOnCompleteListener(activity) { task ->
                     val location: Location? = task.result
                     if (location == null) {
                         requestNewLocationData()
                     } else {
-                        Log.i("XD", location.latitude.toString())
-                        Log.i("XD", location.longitude.toString())
+                        latitude = location.latitude
+                        longtitude = location.longitude
+                        Log.i(
+                            "UserLocation",
+                            "Position from getLastLocation() " + location.latitude.toString()
+                        )
+                        Log.i(
+                            "UserLocation",
+                            "Position from getLastLocation() " + location.longitude.toString()
+                        )
+                        updateLocationMarkerPosition(map)
                     }
                 }
-            } else {
-                Toast.makeText(activity, "Turn on location", Toast.LENGTH_LONG).show()
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                activity.startActivity(intent)
             }
         } else {
             requestPermissions()
         }
+        return locationPoint
     }
 
     private fun requestNewLocationData() {
@@ -67,8 +78,16 @@ class UserLocation(var activity: AppCompatActivity) {
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             val mLastLocation: Location = locationResult.lastLocation
-            Log.i("XD", mLastLocation.longitude.toString())
-            Log.i("XD", mLastLocation.latitude.toString())
+            Log.i(
+                "UserLocation",
+                "Location from mLocationCallbacak" + mLastLocation.latitude.toString()
+            )
+            Log.i(
+                "UserLocation",
+                "Location from mLocationCallbacak" + mLastLocation.longitude.toString()
+            )
+            latitude = mLastLocation.latitude
+            longtitude = mLastLocation.longitude
         }
     }
 
@@ -106,13 +125,38 @@ class UserLocation(var activity: AppCompatActivity) {
         )
     }
 
-//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        if (requestCode == PERMISSION_ID) {
-//            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-//                getLastLocation()
-//            }
-//        }
-//    }
+    fun drawLocationMarker(map: MapView, busIcon: Drawable) {
+        val marker = Marker(map)
+        val locationPoint = GeoPoint(latitude, longtitude)
 
+        Log.i("UserLocation", "Drawing initial marker, pos: $latitude, $longtitude")
+
+        marker.icon = busIcon
+        marker.title = "Twoja pozycja"
+        marker.id = "location"
+        marker.position = locationPoint
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+        map.overlays.add(marker)
+        map.invalidate()
+    }
+
+    fun updateLocationMarkerPosition(map: MapView) {
+        Log.i("UserLocation", "Position update Called")
+        val locationPoint = GeoPoint(latitude, longtitude)
+        for ((index) in map.overlays.withIndex()) {
+            if (map.overlays[index] is Marker && (map.overlays[index] as Marker).id == "location") {
+                if ((map.overlays[index] as Marker).position == locationPoint) {
+                    Log.i("UserLocation", "Position hasnt changed since last update")
+                } else {
+                    (map.overlays[index] as Marker).position = locationPoint
+                    map.controller.setCenter(locationPoint)
+                    map.invalidate()
+                    Log.i(
+                        "UserLocation",
+                        "Updated marker position: " + (map.overlays[index] as Marker).position.toString()
+                    )
+                }
+            }
+        }
+    }
 }

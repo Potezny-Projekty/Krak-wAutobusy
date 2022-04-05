@@ -74,7 +74,6 @@ class ActualPositionVehicles {
                         marker.icon = busIcon
                         marker.id = "bus"
                     } else {
-
                         marker.icon = tramIcon
                         marker.id = "tram"
 
