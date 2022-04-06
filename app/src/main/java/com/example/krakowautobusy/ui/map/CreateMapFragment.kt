@@ -122,8 +122,7 @@ class CreateMapFragment : Fragment() {
 //            ), map
 //        )
         resizeIcons()
-        userLocation.drawLocationMarker(map, userLocationIconDrawable)
-
+        userLocation.drawLocationMarker(map,userLocationIconDrawable)
         updateTextTask = object : Runnable {
             override fun run() {
                 actualPositionVehicles.showAllVehicle(
@@ -209,16 +208,21 @@ class CreateMapFragment : Fragment() {
                 }
             },
         )
-
     }
 
     override fun onResume() {
         super.onResume()
+        userLocation.setEnabled(true)
+        actualPositionVehicles.setEnabled(true)
+        Log.i("UserLocation","onResumeCalled")
         map.onResume()
     }
 
     override fun onPause() {
         super.onPause()
+        Log.i("UserLocation","onPauseCalled")
+        userLocation.setEnabled(false)
+        actualPositionVehicles.setEnabled(false)
         map.onPause()
     }
 
