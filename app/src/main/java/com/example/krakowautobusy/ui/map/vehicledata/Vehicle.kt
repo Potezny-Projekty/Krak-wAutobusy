@@ -1,6 +1,5 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
-import com.example.krakowautobusy.ui.map.vehicledata.PathVehicle
 import kotlinx.serialization.Serializable
 
 
