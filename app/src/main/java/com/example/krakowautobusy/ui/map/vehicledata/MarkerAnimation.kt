@@ -12,7 +12,7 @@ import org.osmdroid.views.overlay.Marker
 
 
 object MarkerAnimation {
-    private val DURATION_ANIMATION = 5000L
+    private const val DURATION_ANIMATION = 5000L
 
     fun animateMarkerToHC(
         map: MapView,
@@ -23,17 +23,16 @@ object MarkerAnimation {
 
         val valueAnimator = ValueAnimator()
         var i = 0
+        val fullAngle = 360F
         valueAnimator.addUpdateListener { animation ->
 
             val startPosition = marker.position
             val v = animation.animatedFraction
-            val start = GeoPoint((endPoint[i].y1 / 3600000f).toDouble(),
-                (endPoint[i].x1 / 3600000f).toDouble())
-            val end = GeoPoint((endPoint[i].y2 / 3600000f).toDouble(),
-                (endPoint[i].x2 / 3600000f).toDouble())
+            val start = ConvertUnits.convertToGeoPoint(endPoint[i].y1, endPoint[i].x1)
+            val end =  ConvertUnits.convertToGeoPoint(endPoint[i].y2, endPoint[i].x2)
             val newPosition: GeoPoint =
             GeoPointInterpolator.interpolate(v, startPosition, end)
-            marker.rotation = 360f - endPoint[i].angle
+            marker.rotation = fullAngle - endPoint[i].angle
             marker.position = newPosition
             map.invalidate()
         }
@@ -41,6 +40,7 @@ object MarkerAnimation {
             i++
         }
         valueAnimator.setFloatValues(0f, 1f) // Ignored.
+        //Empty array
         if (endPoint.size == 0) {
             valueAnimator.duration = DURATION_ANIMATION
         } else {
