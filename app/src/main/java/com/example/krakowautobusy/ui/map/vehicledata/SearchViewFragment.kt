@@ -1,8 +1,5 @@
-package com.example.krakowautobusy.ui
+package com.example.krakowautobusy.ui.map.vehicledata
 
-
-import LineBusData
-import Vehicle
 import android.animation.*
 import android.app.Activity
 import android.content.Context
@@ -15,7 +12,6 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import androidx.core.animation.doOnEnd
 import androidx.fragment.app.Fragment
-import com.example.krakowautobusy.AdapterListSearchPanel
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.FragmentSearchViewBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -120,10 +116,10 @@ class SearchViewFragment : Fragment() {
 
     private fun addDataToSearchView(){
       val dataModels = ArrayList<LineBusData>()
-      dataModels.add(LineBusData(1,Vehicle.BUS,537,"Witkowice","Dworzec Główny Wschód",true))
-      dataModels.add(LineBusData(2,Vehicle.BUS,112,"Os,Podwawelskie","Tyniec Kamieniołom",false))
-      dataModels.add(LineBusData(3,Vehicle.TRAM,5,"Wzgórze Krzesłowickie","Krowodrza Górka",true))
-      dataModels.add(LineBusData(4,Vehicle.TRAM,17,"Czerwone Maki P+R","Dworzec Towarowy",false))
+      dataModels.add(LineBusData(1,VehicleEnum.BUS,537,"Witkowice","Dworzec Główny Wschód",true))
+      dataModels.add(LineBusData(2,VehicleEnum.BUS,112,"Os,Podwawelskie","Tyniec Kamieniołom",false))
+      dataModels.add(LineBusData(3,VehicleEnum.TRAM,5,"Wzgórze Krzesłowickie","Krowodrza Górka",true))
+      dataModels.add(LineBusData(4,VehicleEnum.TRAM,17,"Czerwone Maki P+R","Dworzec Towarowy",false))
 
       val  adapter = AdapterListSearchPanel(dataModels,requireContext())
 

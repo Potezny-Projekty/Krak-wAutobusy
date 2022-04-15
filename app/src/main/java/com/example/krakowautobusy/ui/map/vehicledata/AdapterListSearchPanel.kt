@@ -1,7 +1,5 @@
 
-package com.example.krakowautobusy
-import LineBusData
-
+package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,10 +9,11 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.example.krakowautobusy.R
 
 
 class AdapterListSearchPanel(data: ArrayList<LineBusData>, context: Context) :
-    ArrayAdapter<LineBusData?>(context, com.example.krakowautobusy.R.layout.search_result_field_bus,
+    ArrayAdapter<LineBusData?>(context, R.layout.search_result_field_bus,
         data as List<LineBusData?>
     ), View.OnClickListener {
     private val dataSet: ArrayList<LineBusData>
@@ -54,19 +53,19 @@ class AdapterListSearchPanel(data: ArrayList<LineBusData>, context: Context) :
     }
 
 
-    private fun fillViewData(viewHolder: ViewHolder,dataModel:LineBusData){
+    private fun fillViewData(viewHolder: ViewHolder, dataModel:LineBusData){
         viewHolder.lineNumber!!.text= dataModel.numberLine.toString()
         if(dataModel.isFavourite){
-            viewHolder.isFavouriteIcon!!.setImageResource(com.example.krakowautobusy.R.drawable.red_heart_icon)
+            viewHolder.isFavouriteIcon!!.setImageResource(R.drawable.red_heart_icon)
         }else{
-            viewHolder.isFavouriteIcon!!.setImageResource(com.example.krakowautobusy.R.drawable.ic_gray_hert_icon)
+            viewHolder.isFavouriteIcon!!.setImageResource(R.drawable.ic_gray_hert_icon)
         }
 
 
-        if(dataModel.isBus==Vehicle.BUS){
-            viewHolder.lineNumberBox!!.setBackgroundResource(com.example.krakowautobusy.R.drawable.round_rect_shape_bus)
+        if(dataModel.isBus==VehicleEnum.BUS){
+            viewHolder.lineNumberBox!!.setBackgroundResource(R.drawable.round_rect_shape_bus)
         }else{
-            viewHolder.lineNumberBox!!.setBackgroundResource(com.example.krakowautobusy.R.drawable.round_rect_shape_train)
+            viewHolder.lineNumberBox!!.setBackgroundResource(R.drawable.round_rect_shape_train)
         }
 
 
@@ -86,7 +85,7 @@ class AdapterListSearchPanel(data: ArrayList<LineBusData>, context: Context) :
         if (convertView == null) {
             viewHolder = ViewHolder()
             val inflater = LayoutInflater.from(context)
-            convertView = inflater.inflate( R.layout.search_result_field_bus, parent, false)
+            convertView = inflater.inflate(R.layout.search_result_field_bus, parent, false)
             fillViewHolderReferenceView(viewHolder,convertView)
             convertView.tag = viewHolder
         } else {

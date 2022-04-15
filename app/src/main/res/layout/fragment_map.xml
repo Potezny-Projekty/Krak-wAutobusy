@@ -37,7 +37,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_height="match_parent"
-        class="com.example.krakowautobusy.ui.SearchViewFragment"
+        class="com.example.krakowautobusy.ui.map.vehicledata.SearchViewFragment"
         tools:layout="@layout/fragment_search_view">
     </fragment>
 

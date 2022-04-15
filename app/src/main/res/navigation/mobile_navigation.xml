@@ -46,7 +46,7 @@
 
     <fragment
         android:id="@+id/search_view"
-        android:name="com.example.krakowautobusy.ui.SearchViewFragment"
+        android:name="com.example.krakowautobusy.ui.map.vehicledata.SearchViewFragment"
         android:label="SearchView" />
 
     <fragment
