@@ -37,7 +37,6 @@ import kotlin.collections.ArrayList
 @Suppress("DEPRECATION")
 @RequiresApi(Build.VERSION_CODES.M)
 class CreateMapFragment : Fragment() {
-
     private lateinit var map: MapView
     private lateinit var binding: MapActivityBinding
 
@@ -56,6 +55,10 @@ class CreateMapFragment : Fragment() {
     val actualPositionVehicles = ActualPositionVehicles()
     val utilites = Utilities()
     val mainHandler = Handler(Looper.getMainLooper())
+
+    private var ICON_SIZEX = 65
+    private var ICON_SIZEY = 65
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,35 +73,56 @@ class CreateMapFragment : Fragment() {
 
         map.setTileSource(TileSourceFactory.MAPNIK)
         val mapController = map.controller
-        // ukrycie przycisków + - zoomujących mapę
+        // hiding +- buttons used to change map zoom
         map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
 
-        // odblokowanie zoomowania
+        // unlocking zoom
         map.setMultiTouchControls(true)
 
-        // ograniczenie zakresu do którego można przesunąć mapę
-        val startingPoint2 = GeoPoint(50.3107434126593, 19.61671721450658)
-        val startingPoint3 = GeoPoint(49.88512598174506, 19.545556322799532)
-        val startingPoint4 = GeoPoint(50.32107434126593, 20.379321439500526)
-        val startingPoint5 = GeoPoint(49.87252834809176, 20.461999509306546)
-
-        val arrayList: ArrayList<GeoPoint> = ArrayList()
-        arrayList.add(startingPoint2)
-        arrayList.add(startingPoint3)
-        arrayList.add(startingPoint4)
-        arrayList.add(startingPoint5)
-
-        val boundingBox = BoundingBox.fromGeoPoints(arrayList)
-
-        //map.setScrollableAreaLimitDouble(boundingBox)
+        // setting map scope
+        createMapScope(map)
 
         map.minZoomLevel = 13.0
         map.maxZoomLevel = 20.0
-
         mapController.setZoom(14.0)
 
+        //setting map starting point
         val startingPoint = GeoPoint(50.06173293019267, 19.937894523426294)
+        mapController.setCenter(startingPoint)
 
+        setDrawables()
+        setInitialDrawableSize()
+
+        //launching listener to resine icon whenever the zoom is changed
+        resizeIcons()
+
+        //draws location marker used before receiving proper data from geolocalization
+        userLocation.drawLocationMarker(map, userLocationIconDrawable)
+
+        updateTextTask = object : Runnable {
+            override fun run() {
+                actualPositionVehicles.showAllVehicle(
+                    map,
+                    busIconDrawable,
+                    tramIconDrawable
+                )
+                //userLocation.getLocationUpdates(map)
+                mainHandler.postDelayed(this, 3000)
+            }
+        }
+        mainHandler.post(updateTextTask)
+        Log.i("CreateMapFragment", "OnCreateCalled")
+        return binding.root
+    }
+
+    private fun setInitialDrawableSize(){
+        busIconDrawable = utilites.resizeDrawable(ICON_SIZEX, ICON_SIZEY, busIconDrawable, requireContext())
+        tramIconDrawable = utilites.resizeDrawable(ICON_SIZEX, ICON_SIZEY, tramIconDrawable, requireContext())
+        userLocationIconDrawable =
+            utilites.resizeDrawable(ICON_SIZEX, ICON_SIZEY, userLocationIconDrawable, requireContext())
+    }
+
+    private fun setDrawables(){
         busStopIconDrawable =
             AppCompatResources.getDrawable(requireContext(), R.drawable.bus_icon)!!
         busIconDrawable =
@@ -107,37 +131,23 @@ class CreateMapFragment : Fragment() {
             AppCompatResources.getDrawable(requireContext(), R.drawable.ic_icon_bus)!!
         userLocationIconDrawable =
             AppCompatResources.getDrawable(requireContext(), R.drawable.location_icon)!!
+    }
 
-        busIconDrawable = utilites.resizeDrawable(65, 65, busIconDrawable, requireContext())
-        tramIconDrawable = utilites.resizeDrawable(65, 65, tramIconDrawable, requireContext())
-        userLocationIconDrawable =
-            utilites.resizeDrawable(100, 100, userLocationIconDrawable, requireContext())
+    private fun createMapScope(map: MapView) {
+        val startingPoint1 = GeoPoint(50.3107434126593, 19.61671721450658)
+        val startingPoint2 = GeoPoint(49.88512598174506, 19.545556322799532)
+        val startingPoint3 = GeoPoint(50.32107434126593, 20.379321439500526)
+        val startingPoint4 = GeoPoint(49.87252834809176, 20.461999509306546)
 
-        mapController.setCenter(startingPoint)
+        val arrayList: ArrayList<GeoPoint> = ArrayList()
+        arrayList.add(startingPoint1)
+        arrayList.add(startingPoint2)
+        arrayList.add(startingPoint3)
+        arrayList.add(startingPoint4)
 
-//        busStopPosition.showAllBusStops(
-//            utilites.resizeDrawable(
-//                25, 25, busStopIconDrawable,
-//                requireContext()
-//            ), map
-//        )
-        resizeIcons()
-        userLocation.drawLocationMarker(map,userLocationIconDrawable)
-        updateTextTask = object : Runnable {
-            override fun run() {
-                actualPositionVehicles.showAllVehicle(
-                    map,
-                    busIconDrawable,
-                    tramIconDrawable
-                )
-                userLocation.getLastLocation(map)
-                mainHandler.postDelayed(this, 3000)
-            }
-        }
-        mainHandler.post(updateTextTask)
-        Log.i("AAA", "OnCreateCalled")
+        val boundingBox = BoundingBox.fromGeoPoints(arrayList)
 
-        return binding.root
+        map.setScrollableAreaLimitDouble(boundingBox)
     }
 
     private fun resizeIcons() {
@@ -145,6 +155,7 @@ class CreateMapFragment : Fragment() {
         map.setMapListener(
             object : MapListener {
                 override fun onZoom(e: ZoomEvent?): Boolean {
+                    Log.i("CreateMapFragment",map.zoomLevel.toString())
                     if (currentZoomLevel != map.zoomLevel) {
                         resizedBusStopIcon =
                             utilites.resizeDrawable(
@@ -214,13 +225,13 @@ class CreateMapFragment : Fragment() {
         super.onResume()
         userLocation.setEnabled(true)
         actualPositionVehicles.setEnabled(true)
-        Log.i("UserLocation","onResumeCalled")
+        Log.i("CreateMapFragment", "onResumeCalled")
         map.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        Log.i("UserLocation","onPauseCalled")
+        Log.i("CreateMapFragment", "onPauseCalled")
         userLocation.setEnabled(false)
         actualPositionVehicles.setEnabled(false)
         map.onPause()
@@ -229,13 +240,13 @@ class CreateMapFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         mainHandler.removeCallbacks(updateTextTask)
-        Log.i("AAA", "OnDestroyVewCalled")
+        Log.i("CreateMapFragment", "OnDestroyVewCalled")
 
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.i("AAA", "OnDestroyCalled")
+        Log.i("CreateMapFragment", "OnDestroyCalled")
 
     }
 }

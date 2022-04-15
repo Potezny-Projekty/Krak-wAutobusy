@@ -61,6 +61,7 @@ class CreateDetailsMapFragment : Fragment() {
         busStopPosition = BusStopPosition(requireContext())
 
         map.setTileSource(TileSourceFactory.MAPNIK)
+
         val mapController = map.controller
         // ukrycie przycisków + - zoomujących mapę
         map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)

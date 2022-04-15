@@ -21,7 +21,6 @@ import com.google.android.gms.tasks.Task
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import java.lang.ClassCastException
 
 
 @Suppress("DEPRECATION")
@@ -30,42 +29,50 @@ import java.lang.ClassCastException
 class UserLocation(var activity: AppCompatActivity) {
     private val PERMISSION_ID = 42
     private var REQUEST_CHECK_CODE: Int = 1
-    private var mFusedLocationClient: FusedLocationProviderClient
+
+    private var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallback: LocationCallback
+
     var latitude: Double = 50.06173293019267
     var longtitude: Double = 19.937894523426294
     private var enabled = true
 
     init {
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
     }
 
     fun setEnabled(enabled: Boolean) {
         this.enabled = enabled
     }
 
-    fun getLastLocation(map: MapView): GeoPoint {
+    fun getLocationUpdates(map: MapView): GeoPoint {
         val locationPoint = GeoPoint(latitude, longtitude)
         if (enabled) {
             if (checkPermissions()) {
                 Log.i("UserLocation", "Permission status: " + checkPermissions())
                 Log.i("UserLocation", "Location status: " + isLocationEnabled())
                 if (isLocationEnabled()) {
-                    mFusedLocationClient.lastLocation.addOnCompleteListener(activity) { task ->
-                        val location: Location? = task.result
-                        if (location == null) {
-                            requestNewLocationData()
-                        } else {
-                            latitude = location.latitude
-                            longtitude = location.longitude
-                            Log.i(
-                                "UserLocation",
-                                "Position from getLastLocation() " + location.latitude.toString()
-                            )
-                            Log.i(
-                                "UserLocation",
-                                "Position from getLastLocation() " + location.longitude.toString()
-                            )
-                            updateLocationMarkerPosition(map)
+                    fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
+                    locationRequest = LocationRequest()
+                    locationRequest.interval = 50000
+                    locationRequest.fastestInterval = 50000
+                    locationRequest.smallestDisplacement = 170f // 170 m = 0.1 mile
+                    locationRequest.priority =
+                        LocationRequest.PRIORITY_HIGH_ACCURACY
+                    locationCallback = object : LocationCallback() {
+                        override fun onLocationResult(locationResult: LocationResult) {
+                            Log.i("UserLocation", locationResult.locations.isNotEmpty().toString())
+                            super.onLocationResult(locationResult)
+                            if (locationResult.locations.isNotEmpty()) {
+                                val location =
+                                    locationResult.lastLocation
+                                latitude = location.latitude
+                                longtitude = location.longitude
+                                Log.i("UserLocation", "New pos from location${location.latitude}")
+                                Log.i("UserLocation", "New pos from location${location.longitude}")
+                                updateLocationMarkerPosition(map)
+                            }
                         }
                     }
                 } else {
@@ -76,36 +83,6 @@ class UserLocation(var activity: AppCompatActivity) {
             }
         }
         return locationPoint
-    }
-
-    private fun requestNewLocationData() {
-        val mLocationRequest = LocationRequest()
-        mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        mLocationRequest.interval = 0
-        mLocationRequest.fastestInterval = 0
-        mLocationRequest.numUpdates = 1
-
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
-        mFusedLocationClient.requestLocationUpdates(
-            mLocationRequest, mLocationCallback,
-            Looper.myLooper()!!
-        )
-    }
-
-    private val mLocationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult) {
-            val mLastLocation: Location = locationResult.lastLocation
-            Log.i(
-                "UserLocation",
-                "Location from mLocationCallbacak" + mLastLocation.latitude.toString()
-            )
-            Log.i(
-                "UserLocation",
-                "Location from mLocationCallbacak" + mLastLocation.longitude.toString()
-            )
-            latitude = mLastLocation.latitude
-            longtitude = mLastLocation.longitude
-        }
     }
 
     private fun isLocationEnabled(): Boolean {
@@ -146,9 +123,11 @@ class UserLocation(var activity: AppCompatActivity) {
                             } catch (ex: IntentSender.SendIntentException) {
                                 ex.printStackTrace()
                             } catch (ex: ClassCastException) {
+                                ex.printStackTrace()
                             }
                         }
                         LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
+                            Log.i("UserLocation", "Settings change unavailable")
                         }
                     }
                 }
@@ -215,5 +194,12 @@ class UserLocation(var activity: AppCompatActivity) {
                 }
             }
         }
+    }
+    fun startLocationUpdates() {
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.myLooper()!!
+        )
     }
 }

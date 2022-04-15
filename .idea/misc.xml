@@ -103,6 +103,12 @@
         <entry key="..\:/Users/mati1/Desktop/StudioProjects/Krak-wAutobusy2/app/src/main/res/drawable/location_icon.xml" value="0.206" />
         <entry key="..\:/Users/mati1/Desktop/StudioProjects/Krak-wAutobusy2/app/src/main/res/drawable/map_icon.xml" value="0.206" />
         <entry key="..\:/Users/mati1/Desktop/StudioProjects/Krak-wAutobusy2/app/src/main/res/drawable/squre_small_radius_thin.xml" value="0.206" />
+        <entry key="..\:/Users/mati1/Desktop/StudioProjects/Krak-wAutobusy2/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/mati1/Desktop/StudioProjects/Krak-wAutobusy2/app/src/main/res/layout/bus_stop_arrival_box.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/mati1/Desktop/StudioProjects/Krak-wAutobusy2/app/src/main/res/layout/favourite_empty.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/mati1/Desktop/StudioProjects/Krak-wAutobusy2/app/src/main/res/layout/favourite_with_content.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/mati1/Desktop/StudioProjects/Krak-wAutobusy2/app/src/main/res/layout/fragment_details.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/mati1/Desktop/StudioProjects/Krak-wAutobusy2/app/src/main/res/layout/fragment_favorite.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

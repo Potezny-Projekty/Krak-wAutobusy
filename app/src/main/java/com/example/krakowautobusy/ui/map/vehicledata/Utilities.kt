@@ -28,25 +28,25 @@ class Utilities {
     }
 
     fun setIconSize(zoomLevel: Int): Int {
-        var iconSize = 65
+        var iconSize = 30
         when (zoomLevel) {
             13 -> {
-                iconSize = 30
+                iconSize = 28
             }
             14 -> {
-                iconSize = 25
-            }
-            15 -> {
-                iconSize = 25
-            }
-            16 -> {
                 iconSize = 30
             }
-            17 -> {
+            15 -> {
+                iconSize = 32
+            }
+            16 -> {
                 iconSize = 35
             }
-            18 -> {
+            17 -> {
                 iconSize = 40
+            }
+            18 -> {
+                iconSize = 43
             }
             19 -> {
                 iconSize = 45
