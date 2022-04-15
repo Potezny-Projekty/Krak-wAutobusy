@@ -27,29 +27,6 @@ class MainActivity : AppCompatActivity() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
 
         StrictMode.setThreadPolicy(policy)
-        val apiResponse =
-            URL("http://ttss.mpk.krakow.pl/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles").readText()
-        Log.e("siec", apiResponse.toString())
-
-        val result = Klaxon().parse<AllLiveBus>(
-            apiResponse
-        )
-
-        Log.e("siec2", result!!.vehicles[0].latitude.toString())
-
-
-        var listBus = mutableListOf<LiveBus>()
-
-        for (x in result.vehicles) {
-            if (x.longitude != -1L) {
-                listBus.add(x)
-            }
-        }
-
-
-        for (a in listBus) {
-            Log.e("siec2", a.longitude.toString() + " " + a.latitude.toString())
-        }
 
         // w listBusMasz
     }
@@ -57,10 +34,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         show()
-
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

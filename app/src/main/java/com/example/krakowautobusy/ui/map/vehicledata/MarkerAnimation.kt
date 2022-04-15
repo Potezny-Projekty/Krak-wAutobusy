@@ -1,15 +1,10 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
-
-import android.animation.Animator
-import android.animation.FloatArrayEvaluator
 import android.animation.ValueAnimator
-import android.util.Log
 import androidx.core.animation.*
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-
 
 object MarkerAnimation {
     private const val DURATION_ANIMATION = 5000L
@@ -29,9 +24,9 @@ object MarkerAnimation {
             val startPosition = marker.position
             val v = animation.animatedFraction
             val start = ConvertUnits.convertToGeoPoint(endPoint[i].y1, endPoint[i].x1)
-            val end =  ConvertUnits.convertToGeoPoint(endPoint[i].y2, endPoint[i].x2)
+            val end = ConvertUnits.convertToGeoPoint(endPoint[i].y2, endPoint[i].x2)
             val newPosition: GeoPoint =
-            GeoPointInterpolator.interpolate(v, startPosition, end)
+                GeoPointInterpolator.interpolate(v, startPosition, end)
             marker.rotation = fullAngle - endPoint[i].angle
             marker.position = newPosition
             map.invalidate()
@@ -74,5 +69,4 @@ object MarkerAnimation {
 
         return valueAnimator
     }
-
 }

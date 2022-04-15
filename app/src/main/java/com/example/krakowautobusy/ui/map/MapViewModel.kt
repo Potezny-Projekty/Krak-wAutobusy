@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class MapViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "To jest mapa"
+        value = "Map"
     }
     val text: LiveData<String> = _text
 }

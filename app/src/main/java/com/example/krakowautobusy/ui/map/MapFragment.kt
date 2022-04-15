@@ -1,6 +1,5 @@
 package com.example.krakowautobusy.ui.map
 
-
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -19,70 +18,13 @@ import com.example.krakowautobusy.databinding.MapActivityBinding
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 
-
 class MapFragment : Fragment() {
 
-
-    enum class HowShowVehicles {
-
-        ALL, FAVORITE
-
-    }
+    private val binding get() = _binding!!
 
     private lateinit var mapViewModel: MapViewModel
     private var _binding: FragmentMapBinding? = null
-
-
     private var showVehiclesOnMap = HowShowVehicles.ALL
-
-
-    private fun showToast(message: String) {
-
-        val x_offset_position = resources.getInteger(R.integer.toast_x_offset_position)
-        val y_offset_position = resources.getInteger(R.integer.toast_y_offset_position)
-        val myInflater = LayoutInflater.from(context)
-        val view = myInflater!!.inflate(R.layout.tost_show_allvehivles_orone, null)
-        val toastText = view.findViewById(R.id.Tost_text) as TextView
-        toastText.text = message
-        val showOnMapOneOrAllVehiclesToast = Toast(context)
-        showOnMapOneOrAllVehiclesToast.view = view
-        showOnMapOneOrAllVehiclesToast.duration = Toast.LENGTH_LONG
-        showOnMapOneOrAllVehiclesToast.setGravity(
-            Gravity.BOTTOM or Gravity.CENTER,
-            x_offset_position,
-            y_offset_position
-        )
-        showOnMapOneOrAllVehiclesToast.show()
-    }
-
-    private fun addCallbackClickShowAllOrOneVehicles() {
-        //właściwa zawartość metody, wszystko pozostałe do usunięcia
-//        binding.MapShowAllVehiclesOrFavorite.setOnClickListener {
-//            showVehiclesOnMap = if (showVehiclesOnMap == HowShowVehicles.ALL) {
-//                showToast(getString(R.string.show_favorite_vehicles))
-//                HowShowVehicles.FAVORITE
-//            } else {
-//                showToast(getString(R.string.show_all_vehicles))
-//                HowShowVehicles.ALL
-//            }
-//        }
-        binding.MapShowAllVehiclesOrFavorite.setOnClickListener { view: View ->
-            view.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment)
-            //Navigation.findNavController(view).navigate(R.id.action_navigation_map_to_searchview);
-        }
-//        binding.extendedFab2.setOnClickListener { view: View ->
-//            view.findNavController().navigate(R.id.action_navigation_map_to_navigation_no_internet)
-//        }
-        binding.extendedFab2.setOnClickListener { view: View ->
-            view.findNavController().navigate(R.id.action_navigation_map_to_navigation_loading_page)
-        }
-    }
-
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -108,11 +50,49 @@ class MapFragment : Fragment() {
         return root
     }
 
-    override fun onStart() {
-        super.onStart()
-
+    enum class HowShowVehicles {
+        ALL, FAVORITE
     }
 
+    private fun showToast(message: String) {
+        val x_offset_position = resources.getInteger(R.integer.toast_x_offset_position)
+        val y_offset_position = resources.getInteger(R.integer.toast_y_offset_position)
+        val myInflater = LayoutInflater.from(context)
+        val view = myInflater!!.inflate(R.layout.tost_show_allvehivles_orone, null)
+        val toastText = view.findViewById(R.id.Tost_text) as TextView
+        toastText.text = message
+        val showOnMapOneOrAllVehiclesToast = Toast(context)
+        showOnMapOneOrAllVehiclesToast.view = view
+        showOnMapOneOrAllVehiclesToast.duration = Toast.LENGTH_LONG
+        showOnMapOneOrAllVehiclesToast.setGravity(
+            Gravity.BOTTOM or Gravity.CENTER,
+            x_offset_position,
+            y_offset_position
+        )
+        showOnMapOneOrAllVehiclesToast.show()
+    }
+
+    private fun addCallbackClickShowAllOrOneVehicles() {
+//        binding.MapShowAllVehiclesOrFavorite.setOnClickListener {
+//            showVehiclesOnMap = if (showVehiclesOnMap == HowShowVehicles.ALL) {
+//                showToast(getString(R.string.show_favorite_vehicles))
+//                HowShowVehicles.FAVORITE
+//            } else {
+//                showToast(getString(R.string.show_all_vehicles))
+//                HowShowVehicles.ALL
+//            }
+//        }
+        binding.MapShowAllVehiclesOrFavorite.setOnClickListener { view: View ->
+            view.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment)
+        }
+        binding.extendedFab2.setOnClickListener { view: View ->
+            view.findNavController().navigate(R.id.action_navigation_map_to_navigation_loading_page)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+    }
 
     private fun addControllerToMap() {
 

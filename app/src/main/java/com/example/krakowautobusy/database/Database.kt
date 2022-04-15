@@ -30,11 +30,10 @@ class Database(context: Context) :
     val KEY_LONGTITUDE = "longtitude"
     val KEY_CONSECUTIVE_NUMBER = "consecutiveNumber"
     val KEY_VEHICLE_TYPE = "vehicleType"
-    val KEY_KIND_OF_BUS_STOP="kinOfBusStop"
-
-    val KEY_BUS_STOP_OTHERID="api_id"
-    val KEY_BUS_STOP_SHORT_NAME="IdShortBusStop"
-    val KEY_STOP_POINT_NUMBER="stopPoint"
+    val KEY_KIND_OF_BUS_STOP = "kinOfBusStop"
+    val KEY_BUS_STOP_OTHERID = "api_id"
+    val KEY_BUS_STOP_SHORT_NAME = "IdShortBusStop"
+    val KEY_STOP_POINT_NUMBER = "stopPoint"
 
     companion object {
 
@@ -52,7 +51,7 @@ class Database(context: Context) :
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        Log.e("coś","tworze")
+        Log.e("coś", "tworze")
 
         val createVehicleTypeTable = ("""CREATE TABLE  $TABLE_VEHICLE_TYPE (
                 $KEY_ID_VEHICLE_TYPE INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -105,15 +104,6 @@ class Database(context: Context) :
                 $KEY_CONSECUTIVE_NUMBER INT NOT NULL
                )""")
         db?.execSQL(createLineBusStopListTable)
-
-
-
-     //   val fill:FillDatabase=StaticFillDatabase(instance!!,StaticDatabaseVehicleType())
-     //   fill.fill_VehicleTypeTable()
-     //   Log.e("coś","x")
-
-
-
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {

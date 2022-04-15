@@ -8,13 +8,16 @@ import java.io.*
 import java.security.AccessController.getContext
 
 class LoadDatabase {
-    public fun importdb(db_path: String,context:Context) {
+    public fun importdb(db_path: String, context: Context) {
         try {
-            val file = File(context.getApplicationInfo().dataDir + "/databases/"+db_path)
-            Log.e("baza","sciezka :"+context.getApplicationInfo().dataDir + "/databases/"+db_path)
-          //  Log.e("baza","sciezka2:"+context.filesDir)
+            val file = File(context.getApplicationInfo().dataDir + "/databases/" + db_path)
+            Log.e(
+                "baza",
+                "sciezka :" + context.getApplicationInfo().dataDir + "/databases/" + db_path
+            )
+            //  Log.e("baza","sciezka2:"+context.filesDir)
             context.assets.open("manu")
-            val mInputStream: InputStream = DataInputStream( context.assets.open("manu"))
+            val mInputStream: InputStream = DataInputStream(context.assets.open("manu"))
 
             val outFileName: String = context.getDatabasePath(
                 "busDatabase"
@@ -26,13 +29,13 @@ class LoadDatabase {
                 mOutputStream.write(buffer, 0, length)
             }
             mOutputStream.flush()
-            Log.e("baza","Ladowanie")
+            Log.e("baza", "Ladowanie")
             mOutputStream.close()
             mInputStream.close()
-           // CustomMessage(getActivity(), "Database replaced sucessfully")
+            // CustomMessage(getActivity(), "Database replaced sucessfully")
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.e("baza","error")
+            Log.e("baza", "error")
             //CustomLog.showLogD("WORKING_STOP", e.message)
         }
     }

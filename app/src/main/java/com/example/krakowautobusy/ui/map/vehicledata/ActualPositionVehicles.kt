@@ -1,6 +1,5 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
-
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
@@ -12,7 +11,6 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.*
 import java.net.URL
 import java.nio.charset.StandardCharsets
-
 
 class ActualPositionVehicles(
     private val busIcon: Drawable,
@@ -30,15 +28,15 @@ class ActualPositionVehicles(
     }
     private val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
     private var enabled = true
-    private var trackingVehicle : Marker? = null
+    private var trackingVehicle: Marker? = null
     private val typeVehicleBus = "bus"
     private val typeVehicleTram = "tram"
 
-    fun setEnabled(enabled:Boolean){
+    fun setEnabled(enabled: Boolean) {
         this.enabled = enabled
     }
 
-    fun showAllVehicle(map: MapView)  {
+    fun showAllVehicle(map: MapView) {
         val allVehiclesBus = getAllVehicle(typeVehicleBus)
         val allVehiclesTram = getAllVehicle(typeVehicleTram)
         val listOfAllVehicle = allVehiclesBus.vehicles
@@ -51,12 +49,19 @@ class ActualPositionVehicles(
             .forEach {
                 if (markers.containsKey(it.id)) {
                     val mark = markers[it.id]!!
-                    if (it.path.size > 0 ) {
-                        MarkerAnimation.animateMarkerToHC(map, mark, it.path, GeoPointInterpolator.Linear())
+                    if (it.path.size > 0) {
+                        MarkerAnimation.animateMarkerToHC(
+                            map,
+                            mark,
+                            it.path,
+                            GeoPointInterpolator.Linear()
+                        )
                     } else {
-                        MarkerAnimation.animateMarkerToHCLinear(map, mark,
+                        MarkerAnimation.animateMarkerToHCLinear(
+                            map, mark,
                             ConvertUnits.convertToGeoPoint(it.latitude, it.longitude),
-                            GeoPointInterpolator.Linear())
+                            GeoPointInterpolator.Linear()
+                        )
                         mark.rotation = fullAngle - it.heading
                     }
                 } else {
@@ -85,8 +90,8 @@ class ActualPositionVehicles(
     }
 
 
-    private fun getAllVehicle(type : String): AllVehicles {
-        val url : String = if (type == typeVehicleTram) {
+    private fun getAllVehicle(type: String): AllVehicles {
+        val url: String = if (type == typeVehicleTram) {
             "http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/" +
                     "services/vehicleinfo/vehicles?lastUpdate=${this.lastUpdateTram}" +
                     "&positionType=CORRECTED&colorType=ROUTE_BASED&language=pl"
@@ -102,8 +107,8 @@ class ActualPositionVehicles(
         return json.decodeFromString(apiResponse)
     }
 
-    private fun getPathVehicle(idVehicle : String, type : String): ArrayList<GeoPoint> {
-        val url : String = if  (type == typeVehicleTram) {
+    private fun getPathVehicle(idVehicle: String, type: String): ArrayList<GeoPoint> {
+        val url: String = if (type == typeVehicleTram) {
             "http://www.ttss.krakow.pl/internetservice/" +
                     "geoserviceDispatcher/services/pathinfo/vehicle?id=${idVehicle}"
         } else {
@@ -116,20 +121,23 @@ class ActualPositionVehicles(
             )
         val geoPoints = ArrayList<GeoPoint>()
         val jsonObjectValue = json.decodeFromString<JsonObject>(apiResponse)
-        jsonObjectValue.getValue("paths").jsonArray[0].
-        jsonObject.getValue("wayPoints")
+        jsonObjectValue.getValue("paths").jsonArray[0].jsonObject.getValue("wayPoints")
             .jsonArray
             .forEach {
                 geoPoints.add(
-                    ConvertUnits.convertToGeoPoint(it.jsonObject["lat"]!!.jsonPrimitive.long,
-                    it.jsonObject["lon"]!!.jsonPrimitive.long)
+                    ConvertUnits.convertToGeoPoint(
+                        it.jsonObject["lat"]!!.jsonPrimitive.long,
+                        it.jsonObject["lon"]!!.jsonPrimitive.long
+                    )
                 )
             }
         return geoPoints
     }
 
-    private fun drawPathVehicle(idVehicle : String, type: String,
-                                map: MapView, marker: Marker) : Boolean {
+    private fun drawPathVehicle(
+        idVehicle: String, type: String,
+        map: MapView, marker: Marker
+    ): Boolean {
         val pathPoints = getPathVehicle(idVehicle, type)
         if (trackingVehicle != null) {
             if (trackingVehicle!!.id == typeVehicleBus) {
@@ -152,14 +160,14 @@ class ActualPositionVehicles(
         return true
     }
 
-     fun createPolyline(polyline: Polyline) {
-         val colorSelectedRoute = "#39DD00"
-         val routeWidth = 20.5f
-         trackedRoute = polyline
-         trackedRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
-         trackedRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
-         trackedRoute.outlinePaint.color = Color.parseColor(colorSelectedRoute)
-         trackedRoute.outlinePaint.strokeWidth = routeWidth
-         trackedRoute.isGeodesic = true
+    fun createPolyline(polyline: Polyline) {
+        val colorSelectedRoute = "#39DD00"
+        val routeWidth = 20.5f
+        trackedRoute = polyline
+        trackedRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
+        trackedRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
+        trackedRoute.outlinePaint.color = Color.parseColor(colorSelectedRoute)
+        trackedRoute.outlinePaint.strokeWidth = routeWidth
+        trackedRoute.isGeodesic = true
     }
 }

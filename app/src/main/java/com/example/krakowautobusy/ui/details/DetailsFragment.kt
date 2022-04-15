@@ -21,25 +21,21 @@ class DetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
-        val map: MapView = requireActivity().findViewById(R.id.mapView)
         return binding.root
     }
 
-    override fun onStart(){
+    override fun onStart() {
         super.onStart()
         uncheckedAllNavMenuOption()
-        val xd=requireActivity().findViewById<View>(R.id.nav_view)
     }
 
-     fun uncheckedAllNavMenuOption(){
-        val navView:BottomNavigationView=requireActivity().findViewById(R.id.nav_view)
-        navView.menu.setGroupCheckable(0,true,false)
-        for(i in 0 until navView.menu.size()){
-            navView.menu.getItem(i).isChecked=false
+    fun uncheckedAllNavMenuOption() {
+        val navView: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        navView.menu.setGroupCheckable(0, true, false)
+        for (i in 0 until navView.menu.size()) {
+            navView.menu.getItem(i).isChecked = false
         }
-         navView.menu.setGroupCheckable(0,true,true)
+        navView.menu.setGroupCheckable(0, true, true)
     }
-
 }

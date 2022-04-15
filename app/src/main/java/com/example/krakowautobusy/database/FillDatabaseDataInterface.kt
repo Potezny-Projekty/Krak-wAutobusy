@@ -8,15 +8,7 @@ interface FillDatabaseDataInterface {
     var insertLineDatabase:Insert_db_LineInterface
     var insertLineBusStopList:Insert_db_LineBusStopList
 
-
     fun fill_VehicleTypeTable(){
-
-
-
-
-
-
-
 
     }
 
@@ -32,11 +24,7 @@ interface FillDatabaseDataInterface {
 
     }
 
-
     fun fill_LineBusStop(){
 
     }
-
-
-
 }

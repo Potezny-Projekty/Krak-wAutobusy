@@ -2,8 +2,6 @@ package com.example.krakowautobusy.ui.map.vehicledata
 
 import org.osmdroid.util.GeoPoint
 
-
-
 interface GeoPointInterpolator {
     fun interpolate(fraction: Float, a: GeoPoint, b: GeoPoint): GeoPoint
     class Linear : GeoPointInterpolator {
@@ -12,6 +10,5 @@ interface GeoPointInterpolator {
             val lng = (b.longitude - a.longitude) * fraction + a.longitude
             return GeoPoint(lat, lng)
         }
-
     }
 }

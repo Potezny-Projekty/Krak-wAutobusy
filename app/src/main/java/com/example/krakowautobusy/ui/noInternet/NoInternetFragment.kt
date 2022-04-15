@@ -32,7 +32,6 @@ class NoInternetFragment : Fragment() {
                 binding.progressBar.visibility = View.GONE
             }, 3000)
         }
-
         return root
     }
 }

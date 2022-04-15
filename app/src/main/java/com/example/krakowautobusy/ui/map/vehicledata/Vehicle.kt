@@ -2,7 +2,6 @@ package com.example.krakowautobusy.ui.map.vehicledata
 
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class Vehicle(
     val isDeleted : Boolean = false,
@@ -14,5 +13,4 @@ data class Vehicle(
     val tripId : String = "",
     val name : String = "",
     val path : ArrayList<PathVehicle> = ArrayList()
-
 )
