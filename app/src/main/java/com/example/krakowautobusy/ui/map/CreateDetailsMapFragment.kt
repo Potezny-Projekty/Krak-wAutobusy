@@ -44,7 +44,6 @@ class CreateDetailsMapFragment : Fragment() {
     private lateinit var resizedBusIcon: Drawable
 
     private lateinit var updateTextTask: Runnable
-    val actualPositionVehicles = ActualPositionVehicles()
     val utilites = Utilities()
     lateinit var busStopPosition: BusStopPosition
     val mainHandler = Handler(Looper.getMainLooper())

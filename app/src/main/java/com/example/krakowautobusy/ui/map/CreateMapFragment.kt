@@ -31,6 +31,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Polyline
 
 import kotlin.collections.ArrayList
 
@@ -44,6 +45,8 @@ class CreateMapFragment : Fragment() {
     private lateinit var tramIconDrawable: Drawable
     private lateinit var busIconDrawable: Drawable
     private lateinit var userLocationIconDrawable: Drawable
+    private lateinit var busIconTrackingDrawable: Drawable
+    private lateinit var tramIconTracingDrawable: Drawable
     private lateinit var resizedBusStopIcon: Drawable
     private lateinit var resizedTramIcon: Drawable
     private lateinit var resizedBusIcon: Drawable
@@ -52,7 +55,6 @@ class CreateMapFragment : Fragment() {
     private lateinit var updateTextTask: Runnable
     private lateinit var busStopPosition: BusStopPosition
     private lateinit var userLocation: UserLocation
-    val actualPositionVehicles = ActualPositionVehicles()
     val utilites = Utilities()
     val mainHandler = Handler(Looper.getMainLooper())
 
@@ -99,15 +101,18 @@ class CreateMapFragment : Fragment() {
         //draws location marker used before receiving proper data from geolocalization
         userLocation.drawLocationMarker(map, userLocationIconDrawable)
 
+        val trackedRoute = Polyline()
+        map.overlays.add(trackedRoute)
+        val actualPositionVehicles = ActualPositionVehicles(busIconDrawable,
+            tramIconDrawable, busIconTrackingDrawable, tramIconTracingDrawable)
+        actualPositionVehicles.createPolyline(trackedRoute)
         updateTextTask = object : Runnable {
             override fun run() {
                 actualPositionVehicles.showAllVehicle(
-                    map,
-                    busIconDrawable,
-                    tramIconDrawable
+                    map
                 )
                 //userLocation.getLocationUpdates(map)
-                mainHandler.postDelayed(this, 3000)
+                mainHandler.postDelayed(this, 7000)
             }
         }
         mainHandler.post(updateTextTask)
@@ -120,6 +125,8 @@ class CreateMapFragment : Fragment() {
         tramIconDrawable = utilites.resizeDrawable(ICON_SIZEX, ICON_SIZEY, tramIconDrawable, requireContext())
         userLocationIconDrawable =
             utilites.resizeDrawable(ICON_SIZEX, ICON_SIZEY, userLocationIconDrawable, requireContext())
+        busIconTrackingDrawable = utilites.resizeDrawable(65,65,busIconTrackingDrawable,requireContext())
+        tramIconTracingDrawable = utilites.resizeDrawable(65,65,tramIconTracingDrawable,requireContext())
     }
 
     private fun setDrawables(){
@@ -131,6 +138,10 @@ class CreateMapFragment : Fragment() {
             AppCompatResources.getDrawable(requireContext(), R.drawable.ic_icon_bus)!!
         userLocationIconDrawable =
             AppCompatResources.getDrawable(requireContext(), R.drawable.location_icon)!!
+        tramIconTracingDrawable =
+            AppCompatResources.getDrawable(requireContext(), R.drawable.ic_icon_tram_tracking)!!
+        busIconTrackingDrawable =
+            AppCompatResources.getDrawable(requireContext(), R.drawable.ic_icon_bus_tracking)!!
     }
 
     private fun createMapScope(map: MapView) {
