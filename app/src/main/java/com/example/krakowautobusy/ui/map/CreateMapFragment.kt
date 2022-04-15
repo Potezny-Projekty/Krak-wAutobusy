@@ -57,6 +57,7 @@ class CreateMapFragment : Fragment() {
     private lateinit var userLocation: UserLocation
     val utilites = Utilities()
     val mainHandler = Handler(Looper.getMainLooper())
+    private lateinit var actualPositionVehicles: ActualPositionVehicles
 
     private var ICON_SIZEX = 65
     private var ICON_SIZEY = 65
@@ -103,8 +104,9 @@ class CreateMapFragment : Fragment() {
 
         val trackedRoute = Polyline()
         map.overlays.add(trackedRoute)
-        val actualPositionVehicles = ActualPositionVehicles(busIconDrawable,
+        actualPositionVehicles = ActualPositionVehicles(busIconDrawable,
             tramIconDrawable, busIconTrackingDrawable, tramIconTracingDrawable)
+
         actualPositionVehicles.createPolyline(trackedRoute)
         updateTextTask = object : Runnable {
             override fun run() {
