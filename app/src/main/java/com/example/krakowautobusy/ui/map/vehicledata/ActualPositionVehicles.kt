@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.os.StrictMode
+import android.util.Log
+import com.example.krakowautobusy.ui.map.Drawables
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.*
 import org.osmdroid.util.GeoPoint
@@ -12,12 +14,7 @@ import org.osmdroid.views.overlay.*
 import java.net.URL
 import java.nio.charset.StandardCharsets
 
-class ActualPositionVehicles(
-    private val busIcon: Drawable,
-    private val tramIcon: Drawable,
-    private val busIconTracking: Drawable,
-    private val tramIconTracking: Drawable
-) {
+class ActualPositionVehicles(var drawables: Drawables) {
 
     private var lastUpdateBus: Long = 0
     private var lastUpdateTram: Long = 0
@@ -31,7 +28,6 @@ class ActualPositionVehicles(
     private var trackingVehicle: Marker? = null
     private val typeVehicleBus = "bus"
     private val typeVehicleTram = "tram"
-
     fun setEnabled(enabled: Boolean) {
         this.enabled = enabled
     }
@@ -70,10 +66,10 @@ class ActualPositionVehicles(
                     marker.position = locationPoint
                     marker.rotation = fullAngle - it.heading.toFloat()
                     if (it.category == typeVehicleBus) {
-                        marker.icon = busIcon
+                        marker.icon = drawables.busIconDrawable
                         marker.id = typeVehicleBus
                     } else {
-                        marker.icon = tramIcon
+                        marker.icon = drawables.tramIconDrawable
                         marker.id = typeVehicleTram
                     }
                     marker.id = it.category
@@ -88,7 +84,6 @@ class ActualPositionVehicles(
                 }
             }
     }
-
 
     private fun getAllVehicle(type: String): AllVehicles {
         val url: String = if (type == typeVehicleTram) {
@@ -141,16 +136,18 @@ class ActualPositionVehicles(
         val pathPoints = getPathVehicle(idVehicle, type)
         if (trackingVehicle != null) {
             if (trackingVehicle!!.id == typeVehicleBus) {
-                trackingVehicle!!.icon = busIcon
+                trackingVehicle!!.icon = drawables.resizedBusIcon
             } else {
-                trackingVehicle!!.icon = tramIcon
+                trackingVehicle!!.icon = drawables.resizedTramIcon
             }
         }
         trackingVehicle = marker
         if (marker.id == typeVehicleBus) {
-            marker.icon = busIconTracking
+            marker.id = "busFocused"
+            marker.icon = drawables.resizedBusIconTracking
         } else {
-            marker.icon = tramIconTracking
+            marker.id = "tramFocused"
+            marker.icon = drawables.resizedTramIconTracking
         }
         trackedRoute.actualPoints.clear()
         pathPoints.forEach {
@@ -160,14 +157,12 @@ class ActualPositionVehicles(
         return true
     }
 
-    fun createPolyline(polyline: Polyline) {
-        val colorSelectedRoute = "#39DD00"
-        val routeWidth = 20.5f
+    fun createPolyline(polyline: Polyline, width: Float, color: String) {
         trackedRoute = polyline
         trackedRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
         trackedRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
-        trackedRoute.outlinePaint.color = Color.parseColor(colorSelectedRoute)
-        trackedRoute.outlinePaint.strokeWidth = routeWidth
+        trackedRoute.outlinePaint.color = Color.parseColor(color)
+        trackedRoute.outlinePaint.strokeWidth = width
         trackedRoute.isGeodesic = true
     }
 }

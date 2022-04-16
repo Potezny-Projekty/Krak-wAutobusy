@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import com.example.krakowautobusy.database.Database
 import com.example.krakowautobusy.database.Select_db_BusStop
 import com.example.krakowautobusy.database.Select_db_BusStopInterface
+import com.example.krakowautobusy.ui.map.Drawables
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
@@ -19,13 +20,13 @@ class BusStopPosition(private var context: Context) {
         busStopPositionArray = calculateBusStopPos()
     }
 
-    fun showAllBusStops(icon: Drawable,map: MapView) {
+    fun showAllBusStops(map: MapView, drawables: Drawables) {
         for ((index, elem) in busStopData.withIndex()) {
             val startingPoint = busStopPositionArray[index]
 
             val marker = Marker(map)
             marker.position = startingPoint
-            marker.icon = icon
+            marker.icon = drawables.resizedBusStopIcon
             marker.title = elem.nameBusStop + " " + elem.id
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
             marker.id = "busStop"

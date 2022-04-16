@@ -11,13 +11,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.beust.klaxon.Klaxon
 import com.example.krakowautobusy.database.Database
 import com.example.krakowautobusy.database.LoadDatabase
 import com.example.krakowautobusy.database.Select_db_BusStop
 import com.example.krakowautobusy.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
@@ -43,7 +41,6 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.main_fragment)
-
 
         //removes navBar from noInternetFragment and loadingPageFragment
         navController.addOnDestinationChangedListener { _, nd: NavDestination, _ ->
