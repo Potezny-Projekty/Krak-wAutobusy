@@ -1,37 +1,20 @@
 package com.example.krakowautobusy.ui.map
 
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.BuildConfig
-import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.MapActivityBinding
-import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
-import com.example.krakowautobusy.ui.map.vehicledata.BusStopPosition
 import com.example.krakowautobusy.ui.map.vehicledata.Utilities
-import kotlinx.coroutines.*
 import org.osmdroid.config.Configuration
-import org.osmdroid.events.MapListener
-import org.osmdroid.events.ScrollEvent
-import org.osmdroid.events.ZoomEvent
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.util.BoundingBox
-import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.Marker
 
-import kotlin.collections.ArrayList
+private const val TAG = "CreateDetailsMapFragment"
 
 @Suppress("DEPRECATION")
 class CreateDetailsMapFragment : Fragment() {
@@ -64,10 +47,10 @@ class CreateDetailsMapFragment : Fragment() {
         drawables.resizeIcons(drawables, utilities, map.zoomLevel)
 
         val mapController = MapController(map, requireContext())
-        mapController.initialConfig()
+
         mapController.setStartingPoint(STARTING_LATTITUDE,STARTING_LONGTITUDE)
         mapController.setZoomLevels(MIN_ZOOM_LEVEL,MAX_ZOOM_LEVEL,CURRENT_ZOOM_LEVEL)
-        mapController.showAllBusStops(drawables)
+        mapController.drawAllBusStops(drawables)
 
         return binding.root
     }

@@ -9,31 +9,25 @@ import android.graphics.drawable.Drawable
 class Utilities(var context: Context) {
     private var currentZoomLevel = 13
 
-    private var ZOOM_LEVEL_13_ICON_SIZE = 84
-    private var ZOOM_LEVEL_14_ICON_SIZE = 90
-    private var ZOOM_LEVEL_15_ICON_SIZE = 96
-    private var ZOOM_LEVEL_16_ICON_SIZE = 105
-    private var ZOOM_LEVEL_17_ICON_SIZE = 120
-    private var ZOOM_LEVEL_18_ICON_SIZE = 130
-    private var ZOOM_LEVEL_19_ICON_SIZE = 135
-    private var ZOOM_LEVEL_20_ICON_SIZE = 150
+    private val ZOOM_LEVEL_13_ICON_SIZE = 84
+    private val ZOOM_LEVEL_14_ICON_SIZE = 90
+    private val ZOOM_LEVEL_15_ICON_SIZE = 96
+    private val ZOOM_LEVEL_16_ICON_SIZE = 105
+    private val ZOOM_LEVEL_17_ICON_SIZE = 120
+    private val ZOOM_LEVEL_18_ICON_SIZE = 130
+    private val ZOOM_LEVEL_19_ICON_SIZE = 135
+    private val ZOOM_LEVEL_20_ICON_SIZE = 150
+
+    private val DEFAULT_MULTIPLIER_VALUE = 1.0F
+    private val BITMAP_LEFT_BOUND = 0
+    private val BITMAP_TOP_BOUND = 0
 
     fun setZoomLevel(currentZoomLevel: Int) {
         this.currentZoomLevel = currentZoomLevel
     }
 
-    fun resizeDrawable(icon: Drawable): Drawable {
-        val bitmap: Bitmap = getBitmapFromVectorDrawable(icon)!!
-        val resized = Bitmap.createScaledBitmap(
-            bitmap,
-            setIconSize(currentZoomLevel),
-            setIconSize(currentZoomLevel),
-            true
-        )
-        return BitmapDrawable(context.resources, resized)
-    }
     // unsecure conversion from float to int, in this case the lost value is irrelevant
-    fun resizeDrawable(icon: Drawable,multiplier : Float): Drawable {
+    fun resizeDrawable(icon: Drawable,multiplier : Float = DEFAULT_MULTIPLIER_VALUE): Drawable {
         val bitmap: Bitmap = getBitmapFromVectorDrawable(icon)!!
         val resized = Bitmap.createScaledBitmap(
             bitmap,
@@ -51,7 +45,7 @@ class Utilities(var context: Context) {
             Bitmap.Config.ARGB_8888
         )
         val canvas = Canvas(bitmap)
-        icon.setBounds(0, 0, canvas.width, canvas.height)
+        icon.setBounds(BITMAP_LEFT_BOUND, BITMAP_TOP_BOUND, canvas.width, canvas.height)
         icon.draw(canvas)
         return bitmap
     }

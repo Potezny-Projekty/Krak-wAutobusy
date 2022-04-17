@@ -21,11 +21,11 @@ class Drawables(var context: Context) {
     lateinit var resizedBusIconTracking: Drawable
     lateinit var resizedTramIconTracking: Drawable
 
-    private var busStopIconSizeMultiplier = 0.33f
+    private var BUS_STOP_ICON_SIZE_MULTIPLIER = 0.33f
 
     fun resizeIcons(drawables: Drawables, utilities: Utilities, zoomLevel: Int) {
         utilities.setZoomLevel(zoomLevel)
-        drawables.resizedBusStopIcon = utilities.resizeDrawable(drawables.busStopIconDrawable,busStopIconSizeMultiplier)
+        drawables.resizedBusStopIcon = utilities.resizeDrawable(drawables.busStopIconDrawable,BUS_STOP_ICON_SIZE_MULTIPLIER)
         drawables.resizedBusIcon = utilities.resizeDrawable(drawables.busIconDrawable)
         drawables.resizedTramIcon = utilities.resizeDrawable(drawables.tramIconDrawable)
         drawables.resizedUserLocationIcon = utilities.resizeDrawable(drawables.userLocationIconDrawable)

@@ -1,6 +1,5 @@
 package com.example.krakowautobusy.ui.map
 
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -11,30 +10,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.BuildConfig
-import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.MapActivityBinding
 import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.BusStopPosition
 import com.example.krakowautobusy.ui.map.vehicledata.UserLocation
 import com.example.krakowautobusy.ui.map.vehicledata.Utilities
-import kotlinx.coroutines.*
 import org.osmdroid.config.Configuration
-import org.osmdroid.events.MapListener
-import org.osmdroid.events.ScrollEvent
-import org.osmdroid.events.ZoomEvent
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.util.BoundingBox
-import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.Marker
-import org.osmdroid.views.overlay.Polyline
 import java.lang.Runnable
 
-import kotlin.collections.ArrayList
+private const val TAG = "CreateMapFragment"
 
 @Suppress("DEPRECATION")
 @RequiresApi(Build.VERSION_CODES.M)
@@ -59,6 +46,8 @@ class CreateMapFragment : Fragment() {
     private val STARTING_LATTITUDE = 50.06173293019267
     private val STARTING_LONGTITUDE = 19.937894523426294
 
+    private lateinit var mapController: MapController
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -68,25 +57,11 @@ class CreateMapFragment : Fragment() {
         Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         map = binding.mapView
 
-        userLocation = UserLocation(context as AppCompatActivity)
-        busStopPosition = BusStopPosition(context as AppCompatActivity)
-        drawables = Drawables(context as AppCompatActivity)
-        utilities = Utilities(context as AppCompatActivity)
+        initialSetup()
+        setupMapView()
+        setupDrawables()
 
-        utilities.setZoomLevel(map.zoomLevel)
-
-        actualPositionVehicles = ActualPositionVehicles(drawables)
-
-        val mapController = MapController(map, requireContext())
-
-        drawables.resizeIcons(drawables, utilities, map.zoomLevel)
-
-        mapController.initialConfig()
-        mapController.setZoomLevels(MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL, CURRENT_ZOOM_LEVEL)
-        mapController.onZoomChangeListener(drawables, utilities)
-        mapController.setStartingPoint(STARTING_LATTITUDE, STARTING_LONGTITUDE)
-        mapController.drawLocationMarker(userLocation, drawables)
-        mapController.drawTrackedRoute(actualPositionVehicles)
+        enableLocalization()
 
         updateTextTask = object : Runnable {
             override fun run() {
@@ -99,18 +74,46 @@ class CreateMapFragment : Fragment() {
         return binding.root
     }
 
+    private fun setupMapView() {
+        utilities.setZoomLevel(CURRENT_ZOOM_LEVEL.toInt())
+
+        mapController.setZoomLevels(MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL, CURRENT_ZOOM_LEVEL)
+        mapController.onZoomChangeListener(drawables, utilities)
+        mapController.setStartingPoint(STARTING_LATTITUDE, STARTING_LONGTITUDE)
+        mapController.drawLocationMarker(userLocation, drawables)
+        mapController.drawTrackedRoute(actualPositionVehicles)
+
+    }
+
+    private fun setupDrawables() {
+        drawables.resizeIcons(drawables, utilities, map.zoomLevel)
+    }
+
+    private fun initialSetup() {
+        drawables = Drawables(context as AppCompatActivity)
+        mapController = MapController(map, requireContext())
+        userLocation = UserLocation(context as AppCompatActivity)
+        busStopPosition = BusStopPosition(context as AppCompatActivity)
+        utilities = Utilities(context as AppCompatActivity)
+        actualPositionVehicles = ActualPositionVehicles(drawables)
+    }
+    private fun enableLocalization(){
+        userLocation.getLocationUpdates(map)
+        userLocation.startLocationUpdates()
+    }
+
     override fun onResume() {
         super.onResume()
-        userLocation.setEnabled(true)
+        userLocation.startLocationUpdates()
         actualPositionVehicles.setEnabled(true)
-        Log.i("CreateMapFragment", "onResumeCalled")
+        Log.i(TAG, "onResumeCalled")
         map.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        Log.i("CreateMapFragment", "onPauseCalled")
-        userLocation.setEnabled(false)
+        Log.i(TAG, "onPauseCalled")
+        userLocation.stopLocationUpdates()
         actualPositionVehicles.setEnabled(false)
         map.onPause()
     }
@@ -118,11 +121,11 @@ class CreateMapFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         mainHandler.removeCallbacks(updateTextTask)
-        Log.i("CreateMapFragment", "OnDestroyVewCalled")
+        Log.i(TAG, "OnDestroyVewCalled")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.i("CreateMapFragment", "OnDestroyCalled")
+        Log.i(TAG, "OnDestroyCalled")
     }
 }

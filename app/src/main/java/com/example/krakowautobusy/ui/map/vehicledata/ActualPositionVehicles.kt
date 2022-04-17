@@ -15,7 +15,6 @@ import java.net.URL
 import java.nio.charset.StandardCharsets
 
 class ActualPositionVehicles(var drawables: Drawables) {
-
     private var lastUpdateBus: Long = 0
     private var lastUpdateTram: Long = 0
     private var markers = mutableMapOf<String, Marker>()
@@ -23,7 +22,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
     private val json: Json = Json {
         ignoreUnknownKeys = true
     }
-    private val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+
     private var enabled = true
     private var trackingVehicle: Marker? = null
     private val typeVehicleBus = "bus"
@@ -37,6 +36,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
         val allVehiclesTram = getAllVehicle(typeVehicleTram)
         val listOfAllVehicle = allVehiclesBus.vehicles
         val fullAngle = 360F
+
         listOfAllVehicle.addAll(allVehiclesTram.vehicles)
         lastUpdateBus = allVehiclesBus.lastUpdate
         lastUpdateTram = allVehiclesTram.lastUpdate

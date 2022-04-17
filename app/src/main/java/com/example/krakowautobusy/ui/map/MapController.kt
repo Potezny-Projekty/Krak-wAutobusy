@@ -24,6 +24,7 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 
+private const val TAG = "MapController"
 @Suppress("DEPRECATION")
 @RequiresApi(Build.VERSION_CODES.M)
 class MapController(private var map: MapView, private var context: Context) {
@@ -38,7 +39,7 @@ class MapController(private var map: MapView, private var context: Context) {
     private val routeWidth = 10.0f
     private val routeColor = "#39DD00"
 
-    fun initialConfig() {
+    init {
         map.setTileSource(TileSourceFactory.MAPNIK)
 
         // hiding +- buttons used to change map zoom
@@ -48,7 +49,7 @@ class MapController(private var map: MapView, private var context: Context) {
         map.setMultiTouchControls(true)
 
         // setting map scope
-        createMapScope(map)
+        //createMapScope(map)
     }
 
     fun setZoomLevels(minZoomLevel: Double, maxZoomLevel: Double, startingZoom: Double) {
@@ -68,14 +69,14 @@ class MapController(private var map: MapView, private var context: Context) {
 
     fun drawTrackedRoute(actualPositionVehicles: ActualPositionVehicles) {
         map.overlays.add(trackedRoute)
-        actualPositionVehicles.createPolyline(trackedRoute,routeWidth,routeColor)
+        actualPositionVehicles.createPolyline(trackedRoute, routeWidth, routeColor)
     }
 
     fun drawAllVehicles(actualPositionVehicles: ActualPositionVehicles) {
         actualPositionVehicles.showAllVehicle(map)
     }
 
-    fun showAllBusStops(drawables: Drawables){
+    fun drawAllBusStops(drawables: Drawables) {
         var busStopPosition = BusStopPosition(context)
         busStopPosition.showAllBusStops(map, drawables)
     }
@@ -97,7 +98,7 @@ class MapController(private var map: MapView, private var context: Context) {
         map.setMapListener(
             object : MapListener {
                 override fun onZoom(e: ZoomEvent?): Boolean {
-                    Log.i("CreateMapFragment", map.zoomLevel.toString())
+                    Log.i(TAG, map.zoomLevel.toString())
                     if (currentZoomLevel != map.zoomLevel) {
                         drawables.resizeIcons(drawables, utilites, map.zoomLevel)
                         for ((index) in map.overlays.withIndex()) {
@@ -106,29 +107,24 @@ class MapController(private var map: MapView, private var context: Context) {
                                 when ((map.overlays[index] as Marker).id) {
                                     "busStop" -> {
                                         marker.icon = drawables.resizedBusStopIcon
-                                        map.overlays[index] = marker
                                     }
                                     "bus" -> {
                                         marker.icon = drawables.resizedBusIcon
-                                        map.overlays[index] = marker
                                     }
                                     "tram" -> {
                                         marker.icon = drawables.resizedTramIcon
-                                        map.overlays[index] = marker
                                     }
                                     "location" -> {
                                         marker.icon = drawables.resizedUserLocationIcon
-                                        map.overlays[index] = marker
                                     }
                                     "busFocused" -> {
                                         marker.icon = drawables.resizedBusIconTracking
-                                        map.overlays[index] = marker
                                     }
                                     "tramFocused" -> {
                                         marker.icon = drawables.resizedTramIconTracking
-                                        map.overlays[index] = marker
                                     }
                                 }
+                                map.overlays[index] = marker
                             }
                         }
                         map.invalidate()
