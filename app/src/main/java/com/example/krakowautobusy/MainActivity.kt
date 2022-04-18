@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         hideAppTitleBar()
 
         val dbHelp = LoadDatabase()
-        dbHelp.importdb("manu", baseContext)
+        dbHelp.importdb(baseContext)
         baseContext
         val x = Database.getInstance(this)
         // val aa=StaticFillDatabaseData(x,StaticInsert_db_VehicleType(),StaticInsert_db_BusStop(),StaticInsert_db_Line(),StaticInsert_db_LineBusStopList())
