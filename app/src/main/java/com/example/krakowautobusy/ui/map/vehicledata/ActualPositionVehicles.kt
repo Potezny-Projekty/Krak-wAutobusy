@@ -1,10 +1,11 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
 
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.os.StrictMode
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.*
 import org.osmdroid.util.GeoPoint
@@ -28,7 +29,6 @@ class ActualPositionVehicles(
     private val json: Json = Json {
         ignoreUnknownKeys = true
     }
-    private val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
     private var trackingVehicle : Marker? = null
     private val typeVehicleBus = "bus"
     private val typeVehicleTram = "tram"
@@ -47,16 +47,28 @@ class ActualPositionVehicles(
             .forEach {
                 if (markers.containsKey(it.id)) {
                     val mark = markers[it.id]!!
-                    if (it.path.size > 0 ) {
-                        MarkerAnimation.animateMarkerToHC(map, mark, it.path, GeoPointInterpolator.Linear())
+                    if (it.path.size > 0) {
+                        val lastPosition = ConvertUnits.convertToGeoPoint(it.path[it.path.size - 1].y2,
+                            it.path[it.path.size - 1].x2 )
+                        if (lastPosition != mark.position) {
+                            MarkerAnimation.animateMarkerToHC(
+                                map,
+                                mark,
+                                it.path,
+                                GeoPointInterpolator.Linear()
+                            )
+                        }
                     } else {
-                        MarkerAnimation.animateMarkerToHCLinear(map, mark,
+                        MarkerAnimation.animateMarkerToHCLinear(
+                            map, mark,
                             ConvertUnits.convertToGeoPoint(it.latitude, it.longitude),
-                            GeoPointInterpolator.Linear())
+                            GeoPointInterpolator.Linear()
+                        )
                         mark.rotation = fullAngle - it.heading
                     }
                 } else {
-                    val locationPoint = ConvertUnits.convertToGeoPoint(it.latitude, it.longitude)
+                    val locationPoint =
+                        ConvertUnits.convertToGeoPoint(it.latitude, it.longitude)
                     val marker = Marker(map)
                     marker.position = locationPoint
                     marker.rotation = fullAngle - it.heading.toFloat()
@@ -67,6 +79,7 @@ class ActualPositionVehicles(
                         marker.icon = tramIcon
                         marker.id = typeVehicleTram
                     }
+                    val a = marker.icon
                     marker.id = it.category
                     marker.title = it.name
                     marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
@@ -76,6 +89,7 @@ class ActualPositionVehicles(
                         markerTracing.showInfoWindow()
                         drawPathVehicle(it.id, it.category, mapView, marker)
                     }
+
                 }
             }
     }

@@ -16,7 +16,12 @@ import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.BuildConfig
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.MapActivityBinding
+import com.example.krakowautobusy.ui.map.network.ActualPositionApi
+import com.example.krakowautobusy.ui.map.network.RequestActualPosition
+import com.example.krakowautobusy.ui.map.network.RetrofitHelperBus
+import com.example.krakowautobusy.ui.map.network.requestData.ActualPositionData
 import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
+import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.BusStopPosition
 import com.example.krakowautobusy.ui.map.vehicledata.Utilities
 import kotlinx.coroutines.*
@@ -31,6 +36,9 @@ import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 import kotlin.collections.ArrayList
 
@@ -141,6 +149,10 @@ class CreateMapFragment : Fragment() {
 
         userLocation.getLastLocation()
 
+       /* val api = RetrofitHelperBus.getInstance().create(ActualPositionApi::class.java)
+
+         api.getAllVehicles(ActualPositionData(0)).enqueue(
+            RequestActualPosition)*/
         return binding.root
     }
 

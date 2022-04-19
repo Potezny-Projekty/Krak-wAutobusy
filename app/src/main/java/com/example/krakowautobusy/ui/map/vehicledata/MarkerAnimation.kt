@@ -12,7 +12,7 @@ import org.osmdroid.views.overlay.Marker
 
 
 object MarkerAnimation {
-    private const val DURATION_ANIMATION = 5000L
+    private const val DURATION_ANIMATION = 6000L
 
     fun animateMarkerToHC(
         map: MapView,
