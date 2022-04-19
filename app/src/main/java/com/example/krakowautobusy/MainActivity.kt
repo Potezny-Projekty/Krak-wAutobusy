@@ -11,13 +11,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.beust.klaxon.Klaxon
 import com.example.krakowautobusy.database.Database
 import com.example.krakowautobusy.database.LoadDatabase
-import com.example.krakowautobusy.database.Select_db_BusStop
+import com.example.krakowautobusy.database.VehicleStop
 import com.example.krakowautobusy.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
@@ -78,8 +76,8 @@ class MainActivity : AppCompatActivity() {
         //    aa.fill_LineBusStop()
         Log.e("coś", "zaczynam")
 
-        val vv = Select_db_BusStop()
-        val xx = vv.selectBusStopAll(x.readableDatabase)//,8095258289119440510L
+        val vv = VehicleStop()
+   //     val xx = vv.selectBusStopAll(x.readableDatabase)//,8095258289119440510L
 
 
         //  val databaseInterface = DatabaseInterface(Database.getInstance(this))//bylo

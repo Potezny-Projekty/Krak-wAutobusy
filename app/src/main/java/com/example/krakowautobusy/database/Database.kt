@@ -24,6 +24,10 @@ class Database(context: Context) :
         private var instance: Database? = null
 
         fun getInstance(context: Context): Database {
+            val loadDatabase=LoadDatabase()
+            loadDatabase.importdb(context)
+
+
             if (instance == null) {
                 instance = Database(context)
             }
