@@ -1,7 +1,10 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
+
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.StrictMode
 import android.util.Log
@@ -46,12 +49,16 @@ class ActualPositionVehicles(var drawables: Drawables) {
                 if (markers.containsKey(it.id)) {
                     val mark = markers[it.id]!!
                     if (it.path.size > 0) {
-                        MarkerAnimation.animateMarkerToHC(
-                            map,
-                            mark,
-                            it.path,
-                            GeoPointInterpolator.Linear()
-                        )
+                        val lastPosition = ConvertUnits.convertToGeoPoint(it.path[it.path.size - 1].y2,
+                            it.path[it.path.size - 1].x2 )
+                        if (lastPosition != mark.position) {
+                            MarkerAnimation.animateMarkerToHC(
+                                map,
+                                mark,
+                                it.path,
+                                GeoPointInterpolator.Linear()
+                            )
+                        }
                     } else {
                         MarkerAnimation.animateMarkerToHCLinear(
                             map, mark,
@@ -61,7 +68,8 @@ class ActualPositionVehicles(var drawables: Drawables) {
                         mark.rotation = fullAngle - it.heading
                     }
                 } else {
-                    val locationPoint = ConvertUnits.convertToGeoPoint(it.latitude, it.longitude)
+                    val locationPoint =
+                        ConvertUnits.convertToGeoPoint(it.latitude, it.longitude)
                     val marker = Marker(map)
                     marker.position = locationPoint
                     marker.rotation = fullAngle - it.heading.toFloat()

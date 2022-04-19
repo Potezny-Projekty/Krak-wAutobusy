@@ -14,12 +14,15 @@ import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.BuildConfig
 import com.example.krakowautobusy.databinding.MapActivityBinding
 import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
+import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.BusStopPosition
 import com.example.krakowautobusy.ui.map.vehicledata.UserLocation
 import com.example.krakowautobusy.ui.map.vehicledata.Utilities
 import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
 import java.lang.Runnable
+import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Polyline
 
 private const val TAG = "CreateMapFragment"
 
