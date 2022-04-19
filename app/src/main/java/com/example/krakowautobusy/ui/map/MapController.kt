@@ -73,7 +73,7 @@ class MapController(private var map: MapView, private var context: Context) {
     }
 
     fun drawAllVehicles(actualPositionVehicles: ActualPositionVehicles) {
-        actualPositionVehicles.showAllVehicle(map)
+        actualPositionVehicles.getActualPosition()
     }
 
     fun drawAllBusStops(drawables: Drawables) {

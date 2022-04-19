@@ -9,6 +9,11 @@ import android.graphics.drawable.Drawable
 import android.os.StrictMode
 import android.util.Log
 import com.example.krakowautobusy.ui.map.Drawables
+import com.example.krakowautobusy.ui.map.network.ActualPositionApi
+import com.example.krakowautobusy.ui.map.network.RequestActualPosition
+import com.example.krakowautobusy.ui.map.network.RetrofitHelperBus
+import com.example.krakowautobusy.ui.map.network.RetrofitHelperTram
+import com.example.krakowautobusy.ui.map.network.requestData.ActualPositionData
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.*
 import org.osmdroid.util.GeoPoint
@@ -172,5 +177,13 @@ class ActualPositionVehicles(var drawables: Drawables) {
         trackedRoute.outlinePaint.color = Color.parseColor(color)
         trackedRoute.outlinePaint.strokeWidth = width
         trackedRoute.isGeodesic = true
+    }
+
+    fun getActualPosition(){
+        val busHelperInstance = RetrofitHelperBus.getInstance().create(ActualPositionApi::class.java)
+        busHelperInstance.getAllVehicles(ActualPositionData(0)).enqueue(RequestActualPosition)
+
+        val tramHelperInstance = RetrofitHelperTram.getInstance().create(ActualPositionApi::class.java)
+        tramHelperInstance.getAllVehicles(ActualPositionData(0)).enqueue(RequestActualPosition)
     }
 }
