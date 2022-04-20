@@ -1,5 +1,8 @@
 package com.example.krakowautobusy.ui.map
 
+import android.content.BroadcastReceiver
+import android.content.IntentFilter
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -13,20 +16,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.BuildConfig
 import com.example.krakowautobusy.databinding.MapActivityBinding
-import com.example.krakowautobusy.ui.map.network.ActualPositionApi
-import com.example.krakowautobusy.ui.map.network.RequestActualPosition
-import com.example.krakowautobusy.ui.map.network.RetrofitHelperBus
-import com.example.krakowautobusy.ui.map.network.requestData.ActualPositionData
-import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
-import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
-import com.example.krakowautobusy.ui.map.vehicledata.BusStopPosition
-import com.example.krakowautobusy.ui.map.vehicledata.UserLocation
-import com.example.krakowautobusy.ui.map.vehicledata.Utilities
+import com.example.krakowautobusy.ui.map.vehicledata.*
 import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
-import java.lang.Runnable
-import org.osmdroid.views.overlay.Marker
-import org.osmdroid.views.overlay.Polyline
 
 private const val TAG = "CreateMapFragment"
 
@@ -68,6 +60,7 @@ class CreateMapFragment : Fragment() {
         setupMapView()
         setupDrawables()
 
+        enableBroadcastReceiver()
         enableLocalization()
 
         updateTextTask = object : Runnable {
@@ -107,6 +100,11 @@ class CreateMapFragment : Fragment() {
     private fun enableLocalization(){
         userLocation.getLocationUpdates(map)
         userLocation.startLocationUpdates()
+    }
+    private fun enableBroadcastReceiver(){
+        val br: BroadcastReceiver = LocationProviderChangedReceiver(map,userLocation)
+        val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
+        requireActivity().registerReceiver(br,filter)
     }
 
     override fun onResume() {
