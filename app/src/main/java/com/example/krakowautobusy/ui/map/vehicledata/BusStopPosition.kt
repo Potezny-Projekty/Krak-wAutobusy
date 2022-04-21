@@ -5,13 +5,14 @@ import android.graphics.drawable.Drawable
 import com.example.krakowautobusy.database.Database
 import com.example.krakowautobusy.database.VehicleStop
 import com.example.krakowautobusy.database.VehicleStopData
+import com.example.krakowautobusy.database.VehicleStopInterface
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 
 class BusStopPosition(private var context: Context) {
 
-    private var busStopData: ArrayList<VehicleStopData.VehicleStopPoint>
+    private var busStopData: ArrayList<VehicleStopData>
     private var busStopPositionArray: ArrayList<GeoPoint> = ArrayList()
 
     init {
@@ -58,9 +59,9 @@ class BusStopPosition(private var context: Context) {
 
         map.invalidate()
     }
-    private fun getBusStopData(): ArrayList<VehicleStopData.VehicleStopPoint> {
+    private fun getBusStopData(): ArrayList<VehicleStopData> {
         val connection = VehicleStop()
         val instance = Database.getInstance(context)
-        return connection.selectBusStopAll(instance.readableDatabase)
+        return connection.getAllVehicleStop(instance.readableDatabase)
     }
 }

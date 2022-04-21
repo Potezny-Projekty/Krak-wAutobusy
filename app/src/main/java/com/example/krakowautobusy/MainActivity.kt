@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.Database
 import com.example.krakowautobusy.database.LoadDatabase
 import com.example.krakowautobusy.database.VehicleStop
@@ -65,10 +66,22 @@ class MainActivity : AppCompatActivity() {
 
         hideAppTitleBar()
 
-        val dbHelp = LoadDatabase()
-        dbHelp.importdb(baseContext)
+        val dbHelp = LoadDatabase(baseContext)
+
+
+
+        //dbHelp.importdb(baseContext)
         baseContext
         val x = Database.getInstance(this)
+
+
+        val api= Api(baseContext)
+
+       // Log.e("testbaza",api.addLineToFavourite(x.writableDatabase,2).toString())
+        Log.e("testbaza",api.isLineFavourite(x.writableDatabase,2).toString())
+        Log.e("testbaza",api.getAllFavouriteLine(x.writableDatabase)[0].id.toString())
+        Log.e("testbaza",api.removeLineFromFavourite(x.writableDatabase,2).toString())
+        Log.e("testbaza",api.isLineFavourite(x.writableDatabase,2).toString())
         // val aa=StaticFillDatabaseData(x,StaticInsert_db_VehicleType(),StaticInsert_db_BusStop(),StaticInsert_db_Line(),StaticInsert_db_LineBusStopList())
         // aa.fill_VehicleTypeTable()
         //   aa.fill_BusStopTable()

@@ -3,7 +3,7 @@ package com.example.krakowautobusy.database
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 
-class VehicleStop:VehicleStopData {
+class VehicleStop:VehicleStopInterface {
 
     val ID_VEHICLE_STOP_COL = "idVehicleStop"
     val NAME_COL = "name"
@@ -27,12 +27,12 @@ class VehicleStop:VehicleStopData {
     }
 
 
-    override fun returnVehicleStopPointFromCursor(
+    fun returnVehicleStopPointFromCursor(
         cursor: Cursor,
         vehicle: Vehicle
-    ): VehicleStopData.VehicleStopPoint {
+    ): VehicleStopData {
 
-         return   VehicleStopData.VehicleStopPoint(
+         return   VehicleStopData(
                 cursor.getLong(COLUMN_VEHICLE_STOP_TABLE_NUMBER[ID_VEHICLE_STOP_COL]!!),
                 cursor.getString(COLUMN_VEHICLE_STOP_TABLE_NUMBER[NAME_COL]!!).toString(),
                 cursor.getLong(COLUMN_VEHICLE_STOP_TABLE_NUMBER[LONGITUDE_COL]!!),
@@ -48,8 +48,8 @@ class VehicleStop:VehicleStopData {
     override fun getVehicleStopsByID(
         db: SQLiteDatabase,
         id: Long
-    ): ArrayList<VehicleStopData.VehicleStopPoint> {
-        var busStop = arrayListOf<VehicleStopData.VehicleStopPoint>()
+    ): VehicleStopData {
+        var busStop = arrayListOf<VehicleStopData>()
 
 
         val columnReturns = arrayOf(
@@ -71,7 +71,7 @@ class VehicleStop:VehicleStopData {
         )
         if (cursor!!.moveToFirst()) {
 
-                val findVehicleStop: VehicleStopData.VehicleStopPoint =
+                val findVehicleStop: VehicleStopData =
                     if (COLUMN_VEHICLE_STOP_TABLE_NUMBER[VEHICLE_TYPE_COL]?.let { cursor.getInt(it) } == Vehicle.BUS.number) {
                         returnVehicleStopPointFromCursor(cursor,Vehicle.BUS)
                     } else {
@@ -82,13 +82,13 @@ class VehicleStop:VehicleStopData {
         }
         cursor.close()
 
-        return busStop
+        return busStop[0]
 
     }
 
 
-    override fun selectBusStopAll(db: SQLiteDatabase): ArrayList<VehicleStopData.VehicleStopPoint> {
-        val allVehicleStop = arrayListOf<VehicleStopData.VehicleStopPoint>()
+    override fun getAllVehicleStop(db: SQLiteDatabase): ArrayList<VehicleStopData> {
+        val allVehicleStop = arrayListOf<VehicleStopData>()
 
         val columnReturns = arrayOf(
             ID_VEHICLE_STOP_COL, NAME_COL, LONGITUDE_COL,
@@ -98,7 +98,7 @@ class VehicleStop:VehicleStopData {
         val cursor = db.query(TABLE_VEHICLE_STOP, columnReturns, null, null, null, null, null, null)
         if (cursor!!.moveToFirst()) {
             do {
-                val vehicleStop: VehicleStopData.VehicleStopPoint =
+                val vehicleStop: VehicleStopData =
                     if (COLUMN_VEHICLE_STOP_TABLE_NUMBER[VEHICLE_TYPE_COL]?.let { cursor.getInt(it) } == Vehicle.BUS.number) {
                         returnVehicleStopPointFromCursor(cursor,Vehicle.BUS)
                     } else {
@@ -112,6 +112,4 @@ class VehicleStop:VehicleStopData {
         cursor.close()
         return allVehicleStop
     }
-
-
 }
