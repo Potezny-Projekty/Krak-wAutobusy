@@ -8,6 +8,8 @@ import org.osmdroid.views.overlay.Marker
 
 object MarkerAnimation {
     private const val DURATION_ANIMATION = 6000L
+    private const val START_ANIMATION_RANGE = 0f
+    private const val END_ANIMATION_RANGE = 1f
 
     fun animateMarkerToHC(
         map: MapView,
@@ -17,24 +19,24 @@ object MarkerAnimation {
     ): ValueAnimator {
 
         val valueAnimator = ValueAnimator()
-        var i = 0
+        var pathIterator = 0
         val fullAngle = 360F
         valueAnimator.addUpdateListener { animation ->
 
             val startPosition = marker.position
-            val v = animation.animatedFraction
-            val start = ConvertUnits.convertToGeoPoint(endPoint[i].y1, endPoint[i].x1)
-            val end = ConvertUnits.convertToGeoPoint(endPoint[i].y2, endPoint[i].x2)
+            val fraction = animation.animatedFraction
+            val end = ConvertUnits.convertToGeoPoint(endPoint[pathIterator].y2, endPoint[pathIterator].x2)
             val newPosition: GeoPoint =
-                GeoPointInterpolator.interpolate(v, startPosition, end)
-            marker.rotation = fullAngle - endPoint[i].angle
+                GeoPointInterpolator.interpolate(fraction, startPosition, end)
+            marker.rotation = fullAngle - endPoint[pathIterator].angle
             marker.position = newPosition
             map.invalidate()
         }
         valueAnimator.doOnRepeat {
-            i++
+            pathIterator++
         }
-        valueAnimator.setFloatValues(0f, 1f) // Ignored.
+
+        valueAnimator.setFloatValues(START_ANIMATION_RANGE, END_ANIMATION_RANGE)
         //Empty array
         if (endPoint.size == 0) {
             valueAnimator.duration = DURATION_ANIMATION
@@ -56,13 +58,13 @@ object MarkerAnimation {
         val valueAnimator = ValueAnimator()
         valueAnimator.addUpdateListener { animation ->
             val startPosition = marker.position
-            val v = animation.animatedFraction
+            val fraction = animation.animatedFraction
             val newPosition: GeoPoint =
-                GeoPointInterpolator.interpolate(v, startPosition, endPoint)
+                GeoPointInterpolator.interpolate(fraction, startPosition, endPoint)
             marker.position = newPosition
             map.invalidate()
         }
-        valueAnimator.setFloatValues(0f, 1f) // Ignored.
+        valueAnimator.setFloatValues(START_ANIMATION_RANGE, END_ANIMATION_RANGE)
         valueAnimator.duration = DURATION_ANIMATION
 
         valueAnimator.start()

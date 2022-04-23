@@ -16,9 +16,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.BuildConfig
 import com.example.krakowautobusy.databinding.MapActivityBinding
+import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
+import com.example.krakowautobusy.ui.map.vehicledata.BusStopPosition
+import com.example.krakowautobusy.ui.map.vehicledata.UserLocation
+import com.example.krakowautobusy.ui.map.vehicledata.Utilities
 import com.example.krakowautobusy.ui.map.vehicledata.*
 import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
+import java.lang.Runnable
+
 
 private const val TAG = "CreateMapFragment"
 
