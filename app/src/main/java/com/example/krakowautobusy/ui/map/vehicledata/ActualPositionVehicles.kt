@@ -1,9 +1,19 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
+
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.StrictMode
+import android.util.Log
+import com.example.krakowautobusy.ui.map.Drawables
+import com.example.krakowautobusy.ui.map.network.ActualPositionApi
+import com.example.krakowautobusy.ui.map.network.RequestActualPosition
+import com.example.krakowautobusy.ui.map.network.RetrofitHelperBus
+import com.example.krakowautobusy.ui.map.network.RetrofitHelperTram
+import com.example.krakowautobusy.ui.map.network.requestData.ActualPositionData
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.*
 import org.osmdroid.util.GeoPoint
@@ -12,13 +22,7 @@ import org.osmdroid.views.overlay.*
 import java.net.URL
 import java.nio.charset.StandardCharsets
 
-class ActualPositionVehicles(
-    private val busIcon: Drawable,
-    private val tramIcon: Drawable,
-    private val busIconTracking: Drawable,
-    private val tramIconTracking: Drawable
-) {
-
+class ActualPositionVehicles(var drawables: Drawables) {
     private var lastUpdateBus: Long = 0
     private var lastUpdateTram: Long = 0
     private var markers = mutableMapOf<String, Marker>()
@@ -26,12 +30,11 @@ class ActualPositionVehicles(
     private val json: Json = Json {
         ignoreUnknownKeys = true
     }
-    private val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+
     private var enabled = true
     private var trackingVehicle: Marker? = null
     private val typeVehicleBus = "bus"
     private val typeVehicleTram = "tram"
-
     fun setEnabled(enabled: Boolean) {
         this.enabled = enabled
     }
@@ -41,6 +44,7 @@ class ActualPositionVehicles(
         val allVehiclesTram = getAllVehicle(typeVehicleTram)
         val listOfAllVehicle = allVehiclesBus.vehicles
         val fullAngle = 360F
+
         listOfAllVehicle.addAll(allVehiclesTram.vehicles)
         lastUpdateBus = allVehiclesBus.lastUpdate
         lastUpdateTram = allVehiclesTram.lastUpdate
@@ -50,12 +54,16 @@ class ActualPositionVehicles(
                 if (markers.containsKey(it.id)) {
                     val mark = markers[it.id]!!
                     if (it.path.size > 0) {
-                        MarkerAnimation.animateMarkerToHC(
-                            map,
-                            mark,
-                            it.path,
-                            GeoPointInterpolator.Linear()
-                        )
+                        val lastPosition = ConvertUnits.convertToGeoPoint(it.path[it.path.size - 1].y2,
+                            it.path[it.path.size - 1].x2 )
+                        if (lastPosition != mark.position) {
+                            MarkerAnimation.animateMarkerToHC(
+                                map,
+                                mark,
+                                it.path,
+                                GeoPointInterpolator.Linear()
+                            )
+                        }
                     } else {
                         MarkerAnimation.animateMarkerToHCLinear(
                             map, mark,
@@ -65,15 +73,16 @@ class ActualPositionVehicles(
                         mark.rotation = fullAngle - it.heading
                     }
                 } else {
-                    val locationPoint = ConvertUnits.convertToGeoPoint(it.latitude, it.longitude)
+                    val locationPoint =
+                        ConvertUnits.convertToGeoPoint(it.latitude, it.longitude)
                     val marker = Marker(map)
                     marker.position = locationPoint
                     marker.rotation = fullAngle - it.heading.toFloat()
                     if (it.category == typeVehicleBus) {
-                        marker.icon = busIcon
+                        marker.icon = drawables.busIconDrawable
                         marker.id = typeVehicleBus
                     } else {
-                        marker.icon = tramIcon
+                        marker.icon = drawables.tramIconDrawable
                         marker.id = typeVehicleTram
                     }
                     marker.id = it.category
@@ -88,7 +97,6 @@ class ActualPositionVehicles(
                 }
             }
     }
-
 
     private fun getAllVehicle(type: String): AllVehicles {
         val url: String = if (type == typeVehicleTram) {
@@ -141,16 +149,18 @@ class ActualPositionVehicles(
         val pathPoints = getPathVehicle(idVehicle, type)
         if (trackingVehicle != null) {
             if (trackingVehicle!!.id == typeVehicleBus) {
-                trackingVehicle!!.icon = busIcon
+                trackingVehicle!!.icon = drawables.resizedBusIcon
             } else {
-                trackingVehicle!!.icon = tramIcon
+                trackingVehicle!!.icon = drawables.resizedTramIcon
             }
         }
         trackingVehicle = marker
         if (marker.id == typeVehicleBus) {
-            marker.icon = busIconTracking
+            marker.id = "busFocused"
+            marker.icon = drawables.resizedBusIconTracking
         } else {
-            marker.icon = tramIconTracking
+            marker.id = "tramFocused"
+            marker.icon = drawables.resizedTramIconTracking
         }
         trackedRoute.actualPoints.clear()
         pathPoints.forEach {
@@ -160,14 +170,20 @@ class ActualPositionVehicles(
         return true
     }
 
-    fun createPolyline(polyline: Polyline) {
-        val colorSelectedRoute = "#39DD00"
-        val routeWidth = 20.5f
+    fun createPolyline(polyline: Polyline, width: Float, color: String) {
         trackedRoute = polyline
         trackedRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
         trackedRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
-        trackedRoute.outlinePaint.color = Color.parseColor(colorSelectedRoute)
-        trackedRoute.outlinePaint.strokeWidth = routeWidth
+        trackedRoute.outlinePaint.color = Color.parseColor(color)
+        trackedRoute.outlinePaint.strokeWidth = width
         trackedRoute.isGeodesic = true
+    }
+
+    fun getActualPosition(){
+        val busHelperInstance = RetrofitHelperBus.getInstance().create(ActualPositionApi::class.java)
+        busHelperInstance.getAllVehicles(ActualPositionData(0)).enqueue(RequestActualPosition)
+
+        val tramHelperInstance = RetrofitHelperTram.getInstance().create(ActualPositionApi::class.java)
+        tramHelperInstance.getAllVehicles(ActualPositionData(0)).enqueue(RequestActualPosition)
     }
 }

@@ -17,6 +17,7 @@ import com.example.krakowautobusy.database.LoadDatabase
 import com.example.krakowautobusy.database.VehicleStop
 import com.example.krakowautobusy.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {

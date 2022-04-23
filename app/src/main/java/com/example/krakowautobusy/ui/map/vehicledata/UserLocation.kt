@@ -2,10 +2,12 @@ package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
-import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Looper
@@ -22,66 +24,66 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 
+
+private const val TAG = "UserLocation"
+
 @Suppress("DEPRECATION")
 @SuppressLint("MissingPermission")
 @RequiresApi(Build.VERSION_CODES.M)
-class UserLocation(var activity: AppCompatActivity) {
+class UserLocation(var activity: AppCompatActivity){
     private val PERMISSION_ID = 42
     private var REQUEST_CHECK_CODE: Int = 1
 
-    private var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationRequest: LocationRequest
-    private lateinit var locationCallback: LocationCallback
+    private val LOCATION_INTERVAL: Long = 1500// in ms
+    private val LOCATION_FASTEST_INTERVAL: Long = 3000 // in ms
+    private val SMALLEST_DISPLACEMENT = 5.0F // 1 - 1meter
+    private val priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+
+    private var fusedLocationProviderClient: FusedLocationProviderClient? = null
+    private var locationRequest: LocationRequest? = null
+    private var locationCallback: LocationCallback? = null
 
     var latitude: Double = 50.06173293019267
     var longtitude: Double = 19.937894523426294
-    private var enabled = true
 
-    init {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
+    fun a(){
+        requestPermissions()
+        requestLocation()
     }
 
-    fun setEnabled(enabled: Boolean) {
-        this.enabled = enabled
-    }
+    fun getLocationUpdates(map: MapView) {
 
-    fun getLocationUpdates(map: MapView): GeoPoint {
-        val locationPoint = GeoPoint(latitude, longtitude)
-        if (enabled) {
-            if (checkPermissions()) {
-                Log.i("UserLocation", "Permission status: " + checkPermissions())
-                Log.i("UserLocation", "Location status: " + isLocationEnabled())
-                if (isLocationEnabled()) {
-                    fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
-                    locationRequest = LocationRequest()
-                    locationRequest.interval = 50000
-                    locationRequest.fastestInterval = 50000
-                    locationRequest.smallestDisplacement = 170f // 170 m = 0.1 mile
-                    locationRequest.priority =
-                        LocationRequest.PRIORITY_HIGH_ACCURACY
-                    locationCallback = object : LocationCallback() {
-                        override fun onLocationResult(locationResult: LocationResult) {
-                            Log.i("UserLocation", locationResult.locations.isNotEmpty().toString())
-                            super.onLocationResult(locationResult)
-                            if (locationResult.locations.isNotEmpty()) {
-                                val location =
-                                    locationResult.lastLocation
-                                latitude = location.latitude
-                                longtitude = location.longitude
-                                Log.i("UserLocation", "New pos from location${location.latitude}")
-                                Log.i("UserLocation", "New pos from location${location.longitude}")
-                                updateLocationMarkerPosition(map)
-                            }
+        Log.i(TAG, "Permission status: " + checkPermissions())
+        Log.i(TAG, "Location status: " + isLocationEnabled())
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+                fusedLocationProviderClient =
+                    LocationServices.getFusedLocationProviderClient(activity)
+                locationRequest = LocationRequest()
+                locationRequest!!.interval = LOCATION_INTERVAL
+                locationRequest!!.fastestInterval = LOCATION_FASTEST_INTERVAL
+                locationRequest!!.smallestDisplacement = SMALLEST_DISPLACEMENT
+                locationRequest!!.priority = priority
+                locationCallback = object : LocationCallback() {
+                    override fun onLocationResult(locationResult: LocationResult) {
+                        super.onLocationResult(locationResult)
+                        if (locationResult.locations.isNotEmpty()) {
+                            val location =
+                                locationResult.lastLocation
+                            latitude = location.latitude
+                            longtitude = location.longitude
+                            Log.i(TAG, "New pos from location ${location.latitude}")
+                            Log.i(TAG, "New pos from location ${location.longitude}")
+                            updateLocationMarkerPosition(map)
                         }
                     }
-                } else {
-                    requestLocation()
                 }
             } else {
-                requestPermissions()
+                requestLocation()
             }
+        } else {
+            requestPermissions()
         }
-        return locationPoint
     }
 
     private fun isLocationEnabled(): Boolean {
@@ -95,9 +97,9 @@ class UserLocation(var activity: AppCompatActivity) {
     private fun requestLocation() {
         val builder: LocationSettingsRequest.Builder
         val request = LocationRequest()
-            .setFastestInterval(1500)
-            .setInterval(3000)
-            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+            .setFastestInterval(LOCATION_FASTEST_INTERVAL)
+            .setInterval(LOCATION_INTERVAL)
+            .setPriority(priority)
 
         builder = LocationSettingsRequest.Builder()
             .addLocationRequest(request)
@@ -126,7 +128,7 @@ class UserLocation(var activity: AppCompatActivity) {
                             }
                         }
                         LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
-                            Log.i("UserLocation", "Settings change unavailable")
+                            Log.i(TAG, "Settings change unavailable")
                         }
                     }
                 }
@@ -164,7 +166,7 @@ class UserLocation(var activity: AppCompatActivity) {
         val marker = Marker(map)
         val locationPoint = GeoPoint(latitude, longtitude)
 
-        Log.i("UserLocation", "Drawing initial marker, pos: $latitude, $longtitude")
+        Log.i(TAG, "Drawing initial marker, pos: $latitude, $longtitude")
 
         marker.icon = busIcon
         marker.title = "Twoja pozycja"
@@ -176,29 +178,34 @@ class UserLocation(var activity: AppCompatActivity) {
     }
 
     fun updateLocationMarkerPosition(map: MapView) {
-        Log.i("UserLocation", "Position update Called")
+        Log.i(TAG, "Position update Called")
         val locationPoint = GeoPoint(latitude, longtitude)
         for ((index) in map.overlays.withIndex()) {
             if (map.overlays[index] is Marker && (map.overlays[index] as Marker).id == "location") {
                 if ((map.overlays[index] as Marker).position == locationPoint) {
-                    Log.i("UserLocation", "Position hasnt changed since last update")
+                    Log.i(TAG, "Position hasnt changed since last update")
                 } else {
                     (map.overlays[index] as Marker).position = locationPoint
                     map.controller.setCenter(locationPoint)
                     map.invalidate()
                     Log.i(
-                        "UserLocation",
+                        TAG,
                         "Updated marker position: " + (map.overlays[index] as Marker).position.toString()
                     )
                 }
             }
         }
     }
+
     fun startLocationUpdates() {
-        fusedLocationClient.requestLocationUpdates(
-            locationRequest,
-            locationCallback,
+        fusedLocationProviderClient?.requestLocationUpdates(
+            locationRequest!!,
+            locationCallback!!,
             Looper.myLooper()!!
         )
+    }
+
+    fun stopLocationUpdates() {
+        fusedLocationProviderClient?.removeLocationUpdates(locationCallback!!)
     }
 }

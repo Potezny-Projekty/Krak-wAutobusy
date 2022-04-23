@@ -6,6 +6,7 @@ import com.example.krakowautobusy.database.Database
 import com.example.krakowautobusy.database.VehicleStop
 import com.example.krakowautobusy.database.VehicleStopData
 import com.example.krakowautobusy.database.VehicleStopInterface
+
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
