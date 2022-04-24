@@ -29,7 +29,7 @@ class VehicleStop:VehicleStopInterface {
 
     fun returnVehicleStopPointFromCursor(
         cursor: Cursor,
-        vehicle: Vehicle
+        vehicleType: VehicleType
     ): VehicleStopData {
 
          return   VehicleStopData(
@@ -38,7 +38,7 @@ class VehicleStop:VehicleStopInterface {
                 cursor.getLong(COLUMN_VEHICLE_STOP_TABLE_NUMBER[LONGITUDE_COL]!!),
                 cursor.getLong(COLUMN_VEHICLE_STOP_TABLE_NUMBER[LATITUDE_COL]!!),
                 cursor.getInt(COLUMN_VEHICLE_STOP_TABLE_NUMBER[ID_SHORT_COL]!!),
-                vehicle,
+                vehicleType,
                 cursor.getInt(COLUMN_VEHICLE_STOP_TABLE_NUMBER[ID_STOP_POINT_COL]!!)
             )
 
@@ -71,13 +71,13 @@ class VehicleStop:VehicleStopInterface {
         )
         if (cursor!!.moveToFirst()) {
 
-                val findVehicleStop: VehicleStopData =
-                    if (COLUMN_VEHICLE_STOP_TABLE_NUMBER[VEHICLE_TYPE_COL]?.let { cursor.getInt(it) } == Vehicle.BUS.number) {
-                        returnVehicleStopPointFromCursor(cursor,Vehicle.BUS)
+                val findVehicleStopType: VehicleStopData =
+                    if (COLUMN_VEHICLE_STOP_TABLE_NUMBER[VEHICLE_TYPE_COL]?.let { cursor.getInt(it) } == VehicleType.BUS.number) {
+                        returnVehicleStopPointFromCursor(cursor,VehicleType.BUS)
                     } else {
-                        returnVehicleStopPointFromCursor(cursor,Vehicle.TRAM)
+                        returnVehicleStopPointFromCursor(cursor,VehicleType.TRAM)
                     }
-                busStop.add(findVehicleStop)
+                busStop.add(findVehicleStopType)
 
         }
         cursor.close()
@@ -98,13 +98,13 @@ class VehicleStop:VehicleStopInterface {
         val cursor = db.query(TABLE_VEHICLE_STOP, columnReturns, null, null, null, null, null, null)
         if (cursor!!.moveToFirst()) {
             do {
-                val vehicleStop: VehicleStopData =
-                    if (COLUMN_VEHICLE_STOP_TABLE_NUMBER[VEHICLE_TYPE_COL]?.let { cursor.getInt(it) } == Vehicle.BUS.number) {
-                        returnVehicleStopPointFromCursor(cursor,Vehicle.BUS)
+                val vehicleTypeStop: VehicleStopData =
+                    if (COLUMN_VEHICLE_STOP_TABLE_NUMBER[VEHICLE_TYPE_COL]?.let { cursor.getInt(it) } == VehicleType.BUS.number) {
+                        returnVehicleStopPointFromCursor(cursor,VehicleType.BUS)
                     } else {
-                        returnVehicleStopPointFromCursor(cursor,Vehicle.TRAM)
+                        returnVehicleStopPointFromCursor(cursor,VehicleType.TRAM)
                     }
-                allVehicleStop.add(vehicleStop)
+                allVehicleStop.add(vehicleTypeStop)
 
 
             } while (cursor.moveToNext())

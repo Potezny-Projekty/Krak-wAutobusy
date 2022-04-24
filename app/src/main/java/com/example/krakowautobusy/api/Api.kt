@@ -1,57 +1,103 @@
 package com.example.krakowautobusy.api
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import com.example.krakowautobusy.database.*
+import com.example.krakowautobusy.networkttss.ActualPositionVehicle
+import com.example.krakowautobusy.networkttss.ActualPositionVehicleInterface
+import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
+import retrofit2.Call
+import retrofit2.Response
 
 class Api {
-    private  val vehicleStopAccess:VehicleStopInterface=VehicleStop()
-    private val favouriteLineAccess:FavouriteLineInterface=FavouriteLine()
-    private var context:Context
-    private var database:Database
+    private val vehicleStopAccess: VehicleStopInterface = VehicleStop()
+    private val favouriteLineAccess: FavouriteLineInterface = FavouriteLine()
+    private val actualPositionAccess: ActualPositionVehicleInterface = ActualPositionVehicle()
+    private var context: Context
+    private var database: Database
 
 
-    constructor(context: Context){
-        this.context=context
+  private  constructor(context: Context) {
+        this.context = context
         database = Database.getInstance(context)
+
 
     }
 
 
 
 
+    companion object {
+
+        @SuppressLint("StaticFieldLeak")
+        private var INSTANCE: Api? = null
+
+        fun getApi():Api{
+            if(INSTANCE==null){
+                //wyjatek?
+            }
+                return INSTANCE !!
+
+        }
+
+
+         fun buildApi(context: Context) {
+            INSTANCE=Api(context)
+        }
+
+    }
+
+
+
+/////////////////// Actual Position Bus API
+
+
+
+
+    public fun getTramPosition(
+        lastUpdate: Long,
+        combine: (Response<AllVehicles>) -> Unit
+    ) {
+        actualPositionAccess.getTramPosition(lastUpdate, combine)
+    }
 
 
 
 
 
+    public fun getBusPosition(
+        lastUpdate: Long,
+        combine: (Response<AllVehicles>) -> Unit
+    ) {
+        actualPositionAccess.getBusPosition(lastUpdate, combine)
+    }
 
 
-
-/////// Vehicle Stop API
-    public fun  getAllVehiclesStop(): ArrayList<VehicleStopData> {
+    /////// Vehicle Stop API
+    public fun getAllVehiclesStop(): ArrayList<VehicleStopData> {
         return vehicleStopAccess.getAllVehicleStop(database.readableDatabase)
     }
 
-    public fun  getVehicleStopById( shortId:Long): VehicleStopData {
-        return vehicleStopAccess.getVehicleStopsByID(database.readableDatabase,shortId)
+    public fun getVehicleStopById(shortId: Long): VehicleStopData {
+        return vehicleStopAccess.getVehicleStopsByID(database.readableDatabase, shortId)
     }
 
-///////Favourite Line API
-    fun isLineFavourite(db: SQLiteDatabase, idLine:Long):Boolean{
-        return favouriteLineAccess.isLineFavourite(db,idLine)
+    ///////Favourite Line API
+    fun isLineFavourite(idLine: Long): Boolean {
+        return favouriteLineAccess.isLineFavourite(database.readableDatabase, idLine)
     }
 
-    fun getAllFavouriteLine(db: SQLiteDatabase):ArrayList<FavouriteLineData>{
-        return favouriteLineAccess.getAllFavouriteLine(db)
+    fun getAllFavouriteLine(): ArrayList<FavouriteLineData> {
+        return favouriteLineAccess.getAllFavouriteLine(database.readableDatabase)
     }
 
-    fun addLineToFavourite(db: SQLiteDatabase, idLine:Int):Boolean{
-        return favouriteLineAccess.addLineToFavourite(db,idLine)
+    fun addLineToFavourite(idLine: Int) {
+        favouriteLineAccess.addLineToFavourite(database.writableDatabase, idLine)
     }
 
-    fun removeLineFromFavourite(db: SQLiteDatabase, idLine:Int):Boolean{
-        return favouriteLineAccess.removeLineFromFavourite(db,idLine)
+    fun removeLineFromFavourite(idLine: Int){
+         favouriteLineAccess.removeLineFromFavourite(database.writableDatabase, idLine)
     }
 
 }

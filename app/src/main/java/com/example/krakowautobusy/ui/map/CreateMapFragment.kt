@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.BuildConfig
+import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.databinding.MapActivityBinding
 import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.BusStopPosition
@@ -53,6 +54,12 @@ class CreateMapFragment : Fragment() {
 
     private lateinit var mapController: MapController
 
+
+
+    init{//to wyrzucić xD
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -76,6 +83,10 @@ class CreateMapFragment : Fragment() {
             }
         }
         mainHandler.post(updateTextTask)
+
+
+
+
 
         return binding.root
     }

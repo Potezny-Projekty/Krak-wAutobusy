@@ -8,7 +8,7 @@ interface FavouriteLineInterface {
 
     fun getAllFavouriteLine(db: SQLiteDatabase):ArrayList<FavouriteLineData>
 
-    fun addLineToFavourite(db:SQLiteDatabase,idLine:Int):Boolean
+    fun addLineToFavourite(db:SQLiteDatabase,idLine:Int)
 
-    fun removeLineFromFavourite(db:SQLiteDatabase,idLine:Int):Boolean
+    fun removeLineFromFavourite(db:SQLiteDatabase,idLine:Int)
 }

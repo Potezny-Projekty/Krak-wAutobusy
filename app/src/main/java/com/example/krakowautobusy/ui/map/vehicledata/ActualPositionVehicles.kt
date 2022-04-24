@@ -3,6 +3,7 @@ package com.example.krakowautobusy.ui.map.vehicledata
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.Log
+import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.ui.map.Drawables
 import com.example.krakowautobusy.ui.map.network.ActualPositionApi
 import com.example.krakowautobusy.ui.map.network.RetrofitHelperBus
@@ -30,6 +31,11 @@ class ActualPositionVehicles(var drawables: Drawables) {
     private var trackingVehicle: Marker? = null
     private val typeVehicleBus = "bus"
     private val typeVehicleTram = "tram"
+
+
+
+
+
 
     fun setEnabled(enabled: Boolean) {
         this.enabled = enabled
@@ -163,34 +169,26 @@ class ActualPositionVehicles(var drawables: Drawables) {
     }
 
     fun getActualPosition(map : MapView){
-        busHelperInstance.getAllVehicles(lastUpdateBus)
-            .enqueue(object:
-            Callback<AllVehicles> {
-                override fun onResponse(call: Call<AllVehicles>, response: Response<AllVehicles>) {
-                    if (response.isSuccessful) {
-                        val allBus = response.body()!!
-                        lastUpdateBus = allBus.lastUpdate
-                        showAllVehicle(map, response.body()!!)
-                        Log.i("ERRORR2", allBus.toString())
-                    }
-                }
+      //  combine: (responseFun: Response<AllVehicles>) -> Unit
+      Api.getApi().getBusPosition(lastUpdateBus,
+          fun(response: Response<AllVehicles>) {
+              if (response.isSuccessful && response.body() != null) {
+                  val allBus = response.body()!!
+                  lastUpdateBus = allBus.lastUpdate
+                  showAllVehicle(map, response.body()!!)
+                  Log.i("ERRORR2", allBus.toString())
+              }
+          }
+        )
 
-                override fun onFailure(call: Call<AllVehicles>, t: Throwable) {
 
-                }
-        })
-        tramHelperInstance.getAllVehicles(lastUpdateTram)
-            .enqueue(object: Callback<AllVehicles> {
-                override fun onResponse(call: Call<AllVehicles>, response: Response<AllVehicles>) {
-                    if (response.isSuccessful) {
-                        val allTram = response.body()!!
-                        lastUpdateTram = allTram.lastUpdate
-                        showAllVehicle(map, allTram)
-                    }
-                }
-                override fun onFailure(call: Call<AllVehicles>, t: Throwable) {
-                    Log.i("ERRORR2", t.toString())
-                }
-        })
+      Api.getApi().getTramPosition(lastUpdateTram, fun(response: Response<AllVehicles>)  {
+          if (response.isSuccessful) {
+              val allTram = response.body()!!
+              lastUpdateTram = allTram.lastUpdate
+              showAllVehicle(map, allTram)
+          }
+      })
+
     }
 }

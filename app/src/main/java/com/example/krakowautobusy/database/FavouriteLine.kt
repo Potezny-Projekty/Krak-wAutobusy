@@ -34,22 +34,22 @@ class FavouriteLine:FavouriteLineInterface {
     }
 
 
-    override fun addLineToFavourite(db: SQLiteDatabase, idLine: Int): Boolean {
+    override fun addLineToFavourite(db: SQLiteDatabase, idLine: Int) {
 
         val line = ContentValues().apply {
 
             put(ID_LINE,idLine)
         }
 
-        return db.insert(FAVOURITE_LINE_TABLE_NAME,null,line)>NO_ELEMENT
+        db.insert(FAVOURITE_LINE_TABLE_NAME,null,line)
 
     }
 
-    override fun removeLineFromFavourite(db:SQLiteDatabase,idLine: Int): Boolean {
+    override fun removeLineFromFavourite(db:SQLiteDatabase,idLine: Int) {
 
         val removeCondition = "${ID_LINE}=?"
 
-        return db.delete(FAVOURITE_LINE_TABLE_NAME,  removeCondition, arrayOf( idLine.toString())) > NO_ELEMENT;
+        db.delete(FAVOURITE_LINE_TABLE_NAME,  removeCondition, arrayOf( idLine.toString()))
     }
 
 
