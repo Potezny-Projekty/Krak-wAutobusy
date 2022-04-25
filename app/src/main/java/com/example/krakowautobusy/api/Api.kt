@@ -2,18 +2,17 @@ package com.example.krakowautobusy.api
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
 import com.example.krakowautobusy.database.*
-import com.example.krakowautobusy.networkttss.ActualPositionVehicle
-import com.example.krakowautobusy.networkttss.ActualPositionVehicleInterface
+import com.example.krakowautobusy.networkttss.PositionVehicle
+import com.example.krakowautobusy.networkttss.PositionVehicleInterface
 import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
-import retrofit2.Call
+import com.google.gson.JsonObject
 import retrofit2.Response
 
 class Api {
     private val vehicleStopAccess: VehicleStopInterface = VehicleStop()
     private val favouriteLineAccess: FavouriteLineInterface = FavouriteLine()
-    private val actualPositionAccess: ActualPositionVehicleInterface = ActualPositionVehicle()
+    private val positionVehicleAccess: PositionVehicleInterface = PositionVehicle()
     private var context: Context
     private var database: Database
 
@@ -50,7 +49,27 @@ class Api {
 
 
 
-/////////////////// Actual Position Bus API
+///////////////////  Position Vehicle API
+
+
+
+
+
+    public fun getTramPath(
+        idTram: String,
+        combine: (Response<JsonObject>) -> Unit
+    ) {
+        positionVehicleAccess.getTramPath(idTram,combine)
+    }
+
+
+
+    public fun getBusPath(
+        idBus: String,
+        combine: (Response<JsonObject>) -> Unit
+    ) {
+        positionVehicleAccess.getBusPath(idBus,combine)
+    }
 
 
 
@@ -59,7 +78,7 @@ class Api {
         lastUpdate: Long,
         combine: (Response<AllVehicles>) -> Unit
     ) {
-        actualPositionAccess.getTramPosition(lastUpdate, combine)
+        positionVehicleAccess.getTramPosition(lastUpdate, combine)
     }
 
 
@@ -70,7 +89,7 @@ class Api {
         lastUpdate: Long,
         combine: (Response<AllVehicles>) -> Unit
     ) {
-        actualPositionAccess.getBusPosition(lastUpdate, combine)
+        positionVehicleAccess.getBusPosition(lastUpdate, combine)
     }
 
 

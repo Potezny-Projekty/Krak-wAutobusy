@@ -2,10 +2,11 @@ package com.example.krakowautobusy.networkttss
 
 import com.example.krakowautobusy.database.VehicleType
 import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
+import com.google.gson.JsonObject
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ActualPositionVehicle:ActualPositionVehicleInterface {
+class PositionVehicle:PositionVehicleInterface {
 
     private val tramHelperInstance = getInstanceRetrofit(VehicleType.TRAM).create<ActualPositionRetrofitApi>()
 
@@ -22,7 +23,7 @@ class ActualPositionVehicle:ActualPositionVehicleInterface {
 
 
 
-    private fun generateHelper(lastUpdate: Long,retrofitAp:ActualPositionRetrofitApi, callbackResponse: (Response<AllVehicles>) -> Unit){
+    private fun generateHelperPosition(lastUpdate: Long, retrofitAp:ActualPositionRetrofitApi, callbackResponse: (Response<AllVehicles>) -> Unit){
         return retrofitAp.getAllVehicleFromUrl(lastUpdate).enqueue(object:
             Callback<AllVehicles> {
             override fun onResponse(call: Call<AllVehicles>, response: Response<AllVehicles>) {
@@ -36,12 +37,29 @@ class ActualPositionVehicle:ActualPositionVehicleInterface {
     }
 
 
+    private fun generateHelperPath(idVehicle: String, retrofitAp:ActualPositionRetrofitApi, callbackResponse: (Response<JsonObject>) -> Unit){
+        return retrofitAp.getPathVehicleFromUrl(idVehicle).enqueue(object:
+            Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                callbackResponse(response)
+            }
+
+
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+
+            }
+        })
+    }
+
+
+
     override fun getBusPosition(
         lastUpdate:Long,
         callbackResponse: (Response<AllVehicles>) -> Unit
     ): Unit {
 
-        return generateHelper(lastUpdate,busHelperInstance,callbackResponse)
+        return generateHelperPosition(lastUpdate,busHelperInstance,callbackResponse)
     }
 
     override fun getAllVehiclePosition() {
@@ -53,6 +71,20 @@ class ActualPositionVehicle:ActualPositionVehicleInterface {
         callbackResponse: (Response<AllVehicles>) -> Unit
     ): Unit {
 
-        return   return generateHelper(lastUpdate,tramHelperInstance,callbackResponse)
+         return generateHelperPosition(lastUpdate,tramHelperInstance,callbackResponse)
+    }
+
+    override fun getTramPath(
+        idVehicle: String,
+        callbackResponse: (Response<JsonObject>) -> Unit
+    ) {
+        return generateHelperPath(idVehicle,tramHelperInstance,callbackResponse)
+    }
+
+    override fun getBusPath(
+        idVehicle: String,
+        callbackResponse: (Response<JsonObject>) -> Unit
+    ) {
+        return generateHelperPath(idVehicle,busHelperInstance,callbackResponse)
     }
 }
