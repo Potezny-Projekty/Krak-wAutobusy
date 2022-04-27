@@ -28,6 +28,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
     private var enabled = true
     private var trackingVehicle: Marker? = null
     private val typeVehicleBus = "bus"
+    private val typeVehicleBusFocused = "busFocused"
     private val typeVehicleTram = "tram"
     val NO_ELEMENT=0
 
@@ -36,7 +37,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
 
 
 
-    fun setEnabled(enabled: Boolean) {//co to kurwa jest nazwa nic nie mówi
+    fun setEnabled(enabled: Boolean) {//co to kurwa jest nazwa nic nie mówi dobra żartuje ale nic nie mówi
         this.enabled = enabled
     }
 
@@ -157,7 +158,8 @@ class ActualPositionVehicles(var drawables: Drawables) {
                                 pathPoints : ArrayList<GeoPoint>
     ) {
         if (trackingVehicle != null) {
-            if (trackingVehicle!!.id == typeVehicleBus) {
+
+            if (trackingVehicle!!.id == typeVehicleBusFocused) {
                 trackingVehicle!!.icon = drawables.resizedBusIcon
             } else {
                 trackingVehicle!!.icon = drawables.resizedTramIcon

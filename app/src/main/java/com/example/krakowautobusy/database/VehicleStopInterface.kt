@@ -11,6 +11,8 @@ interface VehicleStopInterface {
 
     fun getAllVehicleStop(db: SQLiteDatabase):ArrayList<VehicleStopData>
 
+    fun getAllVehicleStopLine(db: SQLiteDatabase):ArrayList<VehicleStopData>
+
 
 
 }
