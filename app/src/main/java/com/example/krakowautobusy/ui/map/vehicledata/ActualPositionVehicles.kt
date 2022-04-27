@@ -101,7 +101,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
             fillMarkerData(marker,drawables.busIconDrawable,typeVehicleBus,vehicle.name)
         } else {
 
-            fillMarkerData(marker,drawables.tramIconDrawable,typeVehicleBus,vehicle.name)
+            fillMarkerData(marker,drawables.tramIconDrawable,typeVehicleTram,vehicle.name)
         }
 
         markers[vehicle.id] = marker
