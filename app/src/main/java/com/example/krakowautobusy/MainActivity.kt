@@ -86,6 +86,7 @@ class MainActivity : AppCompatActivity() {
         Log.e("testbaza",api.getAllFavouriteLine()[0].id.toString())
         Log.e("testbaza",api.removeLineFromFavourite(2).toString())
         Log.e("testbaza",api.isLineFavourite(2).toString())
+        Log.e("testbaza",api.getInfoAboutLineConcretDirection(537,2901).numberLine.toString())
         // val aa=StaticFillDatabaseData(x,StaticInsert_db_VehicleType(),StaticInsert_db_BusStop(),StaticInsert_db_Line(),StaticInsert_db_LineBusStopList())
         // aa.fill_VehicleTypeTable()
         //   aa.fill_BusStopTable()

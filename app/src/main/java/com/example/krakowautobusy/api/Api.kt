@@ -2,6 +2,7 @@ package com.example.krakowautobusy.api
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import com.example.krakowautobusy.database.*
 import com.example.krakowautobusy.networkttss.PositionVehicle
 import com.example.krakowautobusy.networkttss.PositionVehicleInterface
@@ -13,6 +14,7 @@ class Api {
     private val vehicleStopAccess: VehicleStopInterface = VehicleStop()
     private val favouriteLineAccess: FavouriteLineInterface = FavouriteLine()
     private val positionVehicleAccess: PositionVehicleInterface = PositionVehicle()
+    private val lineAccess:LineInteerface=Line()
     private var context: Context
     private var database: Database
 
@@ -53,6 +55,18 @@ class Api {
 
 
 
+
+
+
+    fun getInfoAboutLineConcretDirection(
+
+        numberLine: Long,
+        lastStopId: Long
+    ): LineData {
+
+      return   lineAccess.getInfoAboutLineConcretDirection(database.readableDatabase,numberLine,lastStopId)
+
+    }
 
 
     public fun getTramPath(
