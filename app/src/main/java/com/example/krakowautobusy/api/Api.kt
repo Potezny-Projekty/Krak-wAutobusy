@@ -2,7 +2,6 @@ package com.example.krakowautobusy.api
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
 import com.example.krakowautobusy.database.*
 import com.example.krakowautobusy.networkttss.PositionVehicle
 import com.example.krakowautobusy.networkttss.PositionVehicleInterface
@@ -58,13 +57,25 @@ class Api {
 
 
 
-    fun getInfoAboutLineConcretDirection(
+    fun getInfoAboutLineConcretDirectionLastStopID(
 
         numberLine: Long,
         lastStopId: Long
     ): LineData {
 
-      return   lineAccess.getInfoAboutLineConcretDirection(database.readableDatabase,numberLine,lastStopId)
+      return   lineAccess.getInfoAboutLineConcretDirectionId(database.readableDatabase,numberLine,lastStopId)
+
+    }
+
+
+
+    fun getInfoAboutLineConcretDirectionLastStopName(
+
+        numberLine: Long,
+        lastStopName: String
+    ): LineData {
+
+        return   lineAccess.getInfoAboutLineConcretDirectionName(database.readableDatabase,numberLine,lastStopName)
 
     }
 
@@ -117,20 +128,32 @@ class Api {
     }
 
     ///////Favourite Line API
-    fun isLineFavourite(idLine: Long): Boolean {
-        return favouriteLineAccess.isLineFavourite(database.readableDatabase, idLine)
+  //  fun isLineFavourite(idLine: Long): Boolean {
+   //     return favouriteLineAccess.isLineFavourite(database.readableDatabase, idLine)
+  //  }
+
+    fun isLineFavourite(numberLine:Int):Boolean{
+        return favouriteLineAccess.isLineFavourite(database.readableDatabase,numberLine)
+    }
+
+    fun removeLinesFromFavourites(numberLine:Int){
+        favouriteLineAccess.removeLineFromFavourite(database.writableDatabase,numberLine)
     }
 
     fun getAllFavouriteLine(): ArrayList<FavouriteLineData> {
         return favouriteLineAccess.getAllFavouriteLine(database.readableDatabase)
     }
 
-    fun addLineToFavourite(idLine: Int) {
-        favouriteLineAccess.addLineToFavourite(database.writableDatabase, idLine)
+   // fun addLineToFavourite(idLine: Int) {
+   //     favouriteLineAccess.addLineToFavourite(database.writableDatabase, idLine)
+   // }
+
+    fun addLineToFavourite(nameLine:Int){
+        favouriteLineAccess.addLineToFavoriteNumberLine(database.writableDatabase,nameLine)
     }
 
-    fun removeLineFromFavourite(idLine: Int){
-         favouriteLineAccess.removeLineFromFavourite(database.writableDatabase, idLine)
-    }
+  //  fun removeLineFromFavourite(idLine: Int){
+  //       favouriteLineAccess.removeLineFromFavourite(database.writableDatabase, idLine)
+  //  }
 
 }

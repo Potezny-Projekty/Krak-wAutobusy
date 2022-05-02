@@ -3,66 +3,135 @@ package com.example.krakowautobusy.database
 import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 
 class FavouriteLine:FavouriteLineInterface {
-
-    val ID_FAVOURITE = "idFavouriteLine"
-    val ID_LINE = "idLine"
-    val FAVOURITE_LINE_TABLE_NAME="FavouriteLine"
-    val NO_ELEMENT=0
-
-    val COLUMN_FAVOURITE_LINE_TABLE_NUMBER = LinkedHashMap<String, Int>()
-
-    init {
-        COLUMN_FAVOURITE_LINE_TABLE_NUMBER[ID_FAVOURITE] = 0
-        COLUMN_FAVOURITE_LINE_TABLE_NUMBER[ID_LINE] = 1
-
-    }
-
 
     fun returnFavouriteLineDataFromCursor(
         cursor: Cursor
 
     ): FavouriteLineData {
 
+
+
         return   FavouriteLineData(
-            cursor.getInt(COLUMN_FAVOURITE_LINE_TABLE_NUMBER[ID_FAVOURITE]!!),
-            cursor.getInt(COLUMN_FAVOURITE_LINE_TABLE_NUMBER[ID_LINE]!!),
+            cursor.getInt(FavouriteLineTable.ID_FAVOURITE_LINE.indexColumn),
+            cursor.getInt(FavouriteLineTable.ID_LINE.indexColumn),
 
         )
 
     }
 
 
-    override fun addLineToFavourite(db: SQLiteDatabase, idLine: Int) {
+    fun addLineToFavouriteById(db: SQLiteDatabase, idLine: Int) {
 
-        val line = ContentValues().apply {
+      val isLineAlreadyFavourites=  isLineFavouriteById(db, idLine.toLong())
+      if(!isLineAlreadyFavourites){
+          val line = ContentValues().apply {
+              put(FavouriteLineTable.ID_FAVOURITE_LINE.nameColumn,idLine)
+          }
 
-            put(ID_LINE,idLine)
+          db.insert(TableName.FAVOURITE_LINE_TABLE_NAME.nameTable,null,line)
+      }
+    }
+
+    override fun addLineToFavoriteNumberLine(db: SQLiteDatabase, numberLine: Int) {
+        //select Line.idLine from Line where Line.numberLine=537
+
+        val isLineAlreadyFavourite=isLineFavourite(db,numberLine)
+
+        if(!isLineAlreadyFavourite){
+            var linesId = arrayListOf<Int>()
+
+
+            val columnReturns = arrayOf(
+                "Line.idLine"
+            )
+
+            val filterCondition = "Line.numberLine=?"
+
+            val cursor = db.query(
+                "Line",
+                columnReturns,
+                filterCondition,
+                arrayOf(numberLine.toString()),
+                null,
+                null,
+                null,
+                null
+            )
+            if (cursor!!.moveToFirst()) {
+                do {
+
+
+                    linesId.add( cursor.getInt(0))
+
+
+                } while (cursor.moveToNext())
+            }
+            cursor.close()
+            Log.e("testbaza","xxx"+linesId[0].toString()+" "+linesId[1].toString())
+
+            addLineToFavouriteById(db,linesId[0]!!)
+            addLineToFavouriteById(db,linesId[1]!!)
         }
 
-        db.insert(FAVOURITE_LINE_TABLE_NAME,null,line)
 
     }
 
-    override fun removeLineFromFavourite(db:SQLiteDatabase,idLine: Int) {
+    override fun removeLineFromFavourite(db: SQLiteDatabase, numberLine: Int) {
+        var linesId = arrayListOf<Int>()
 
-        val removeCondition = "${ID_LINE}=?"
 
-        db.delete(FAVOURITE_LINE_TABLE_NAME,  removeCondition, arrayOf( idLine.toString()))
+        val columnReturns = arrayOf(
+            "Line.idLine"
+        )
+
+        val filterCondition = "Line.numberLine=?"
+
+        val cursor = db.query(
+            "Line",
+            columnReturns,
+            filterCondition,
+            arrayOf(numberLine.toString()),
+            null,
+            null,
+            null,
+            null
+        )
+        if (cursor!!.moveToFirst()) {
+            do {
+
+
+                linesId.add( cursor.getInt(0))
+
+
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        removeLineFromFavouriteById(db,linesId[0])
+        removeLineFromFavouriteById(db,linesId[1])
+
+    }
+
+    fun removeLineFromFavouriteById(db:SQLiteDatabase, idLine: Int) {
+
+        val removeCondition = "${FavouriteLineTable.ID_LINE.nameColumn}=?"
+
+        db.delete(TableName.FAVOURITE_LINE_TABLE_NAME.nameTable,  removeCondition, arrayOf( idLine.toString()))
     }
 
 
-    override fun getAllFavouriteLine(db: SQLiteDatabase): ArrayList<FavouriteLineData>  {
+    override fun getAllFavouriteLine(db: SQLiteDatabase): ArrayList<FavouriteLineData>  {//to inne dane ma zwracać te które nas interesują
         var favouritesLine = arrayListOf<FavouriteLineData>()
 
 
         val columnReturns = arrayOf(
-            ID_FAVOURITE,ID_LINE
+            FavouriteLineTable.ID_FAVOURITE_LINE.nameColumn,FavouriteLineTable.ID_LINE.nameColumn
         )
 
         val cursor = db.query(
-            FAVOURITE_LINE_TABLE_NAME,
+            TableName.FAVOURITE_LINE_TABLE_NAME.nameTable,
             columnReturns,
             null,
             null,
@@ -86,19 +155,35 @@ class FavouriteLine:FavouriteLineInterface {
 
     }
 
+    override fun isLineFavourite(db: SQLiteDatabase, numberLine: Int):Boolean {
+        val basequey="select * from FavouriteLine join Line on Line.idLine=FavouriteLine.idLine where "
 
-    override fun isLineFavourite(db: SQLiteDatabase, idLine: Long):Boolean {
+        val filterCondition = "Line.numberLine=${numberLine}"
 
-
-        val columnReturns = arrayOf(
-            ID_FAVOURITE,ID_LINE
+        val cursor = db.rawQuery(basequey+filterCondition,null
         )
 
-        val filterCondition = "${ID_LINE}=?"
 
+        return if(cursor.count> TABLE_NO_ELEMENT){
+            cursor.close()
+            true
+        }else {
+
+            cursor.close()
+            false
+        }
+    }
+
+
+   fun isLineFavouriteById(db: SQLiteDatabase, idLine: Long):Boolean {
+        val columnReturns = arrayOf(
+           FavouriteLineTable.ID_FAVOURITE_LINE.nameColumn,FavouriteLineTable.ID_LINE.nameColumn
+        )
+
+        val filterCondition = "${FavouriteLineTable.ID_LINE.nameColumn}=?"
 
         val cursor = db.query(
-            FAVOURITE_LINE_TABLE_NAME,
+            TableName.FAVOURITE_LINE_TABLE_NAME.nameTable,
             columnReturns,
             filterCondition,
             arrayOf(idLine.toString()),
@@ -109,7 +194,7 @@ class FavouriteLine:FavouriteLineInterface {
         )
 
 
-        return if(cursor.count>NO_ELEMENT){
+        return if(cursor.count> TABLE_NO_ELEMENT){
             cursor.close()
             true
         }else {

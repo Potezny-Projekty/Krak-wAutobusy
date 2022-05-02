@@ -2,12 +2,13 @@ package com.example.krakowautobusy.database
 
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 
 class Line:LineInteerface {
 
     val TABLE_LINE="Line"
 
-    val ID_LINE_COL = "idLine"
+    val ID_LINE_COL = "$TABLE_LINE.idLine"
     val NUMBER_LINE_COL = "numberLine"
     val FIRST_STOP_ID_COL = "firstStop"
     val LAST_STOP_ID_COL = "lastStop"
@@ -47,33 +48,55 @@ class Line:LineInteerface {
 
 
 
-    override fun getVehicleStopsLinesWithConcretDirection(
+
+
+    override fun getInfoAboutLineConcretDirectionName(
         db: SQLiteDatabase,
         numberLine: Long,
-        lastStopId: Long
-    ): Boolean {
+        lastStopName: String
+    ): LineData {
+
+       //
+        val columnReturns = arrayOf(
+            ID_LINE_COL,NUMBER_LINE_COL,FIRST_STOP_ID_COL,LAST_STOP_ID_COL,ID_VEHICLE_COL
+        )
+       val baseQuery="  select "+columnReturns.joinToString(",")+" from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=Line.lastStop where  "
+
+
+        val filterCondition = "${NUMBER_LINE_COL}=${numberLine} and  ${LAST_STOP_ID_COL}=(SELECT Line.lastStop from Line join VehicleStop on VehicleStop.idStopPoint=Line.lastStop where VehicleStop.name like \"%${lastStopName}%\" )"
+// arrayOf(numberLine.toString(),lastStopId.toString())
+
+        val cursor = db.rawQuery(baseQuery+filterCondition, null
+        )
+
+        Log.e("hmm",baseQuery+filterCondition)
+        var findVehicleStopType: LineData? =null
+        if (cursor!!.moveToFirst()) {
+
+            findVehicleStopType=
+                if (COLUMN_LINE_TABLE_NUMBER[ID_VEHICLE_COL]?.let { cursor.getInt(it) } == VehicleType.BUS.number) {
+                    returnLineFromCursor(cursor,VehicleType.BUS)
+                } else {
+                    returnLineFromCursor(cursor,VehicleType.TRAM)
+                }
+
+
+        }
+        cursor.close()
+        return  findVehicleStopType!!
 
 
 
-
-
-
-
-
-
-
-
-        TODO("Not yet implemented")
 
     }
 
-    override fun getInfoAboutLineConcretDirection(
+    override fun getInfoAboutLineConcretDirectionId(
         db: SQLiteDatabase,
         numberLine: Long,
         lastStopId: Long
     ): LineData {
 
-        //select VehicleStop.idStopPoint from VehicleStop where  trim(VehicleStop.name)="Witkowice"
+
         val columnReturns = arrayOf(
             ID_LINE_COL,NUMBER_LINE_COL,FIRST_STOP_ID_COL,LAST_STOP_ID_COL,ID_VEHICLE_COL
         )
@@ -90,25 +113,23 @@ class Line:LineInteerface {
             null,
             null
         )
+        var findVehicleStopType: LineData? =null
         if (cursor!!.moveToFirst()) {
 
-            val findVehicleStopType: LineData =
+             findVehicleStopType=
                 if (COLUMN_LINE_TABLE_NUMBER[ID_VEHICLE_COL]?.let { cursor.getInt(it) } == VehicleType.BUS.number) {
                     returnLineFromCursor(cursor,VehicleType.BUS)
                 } else {
                     returnLineFromCursor(cursor,VehicleType.TRAM)
                 }
-            return  findVehicleStopType
+
 
         }
         cursor.close()
-
-
-
-        TODO("Not yet implemented")
+        return  findVehicleStopType!!
     }
 
     override fun getInfoAboutLinesAnyDirection(db: SQLiteDatabase, numberLine: Long): ArrayList<LineData> {
-        TODO("Not yet implemented")
+        TODO("Not yet implemented Kurwa ")
     }
 }

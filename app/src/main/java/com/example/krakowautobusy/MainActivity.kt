@@ -12,12 +12,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.krakowautobusy.api.Api
-import com.example.krakowautobusy.database.Database
-import com.example.krakowautobusy.database.LoadDatabase
 import com.example.krakowautobusy.database.VehicleStop
 import com.example.krakowautobusy.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
@@ -71,83 +68,43 @@ class MainActivity : AppCompatActivity() {
 
 
 
-      //  val dbHelp = LoadDatabase(baseContext)
-
-
-
-        //dbHelp.importdb(baseContext)
-
-
-
         val api= Api.getApi()
 
-        Log.e("testbaza",api.addLineToFavourite(2).toString())
-        Log.e("testbaza",api.isLineFavourite(2).toString())
-        Log.e("testbaza",api.getAllFavouriteLine()[0].id.toString())
-        Log.e("testbaza",api.removeLineFromFavourite(2).toString())
-        Log.e("testbaza",api.isLineFavourite(2).toString())
-        Log.e("testbaza",api.getInfoAboutLineConcretDirection(537,2901).numberLine.toString())
-        // val aa=StaticFillDatabaseData(x,StaticInsert_db_VehicleType(),StaticInsert_db_BusStop(),StaticInsert_db_Line(),StaticInsert_db_LineBusStopList())
-        // aa.fill_VehicleTypeTable()
-        //   aa.fill_BusStopTable()
-        //    aa.fill_LineTable()
-        //    aa.fill_LineBusStop()
-        Log.e("coś", "zaczynam")
 
-        val vv = VehicleStop()
-   //     val xx = vv.selectBusStopAll(x.readableDatabase)//,8095258289119440510L
+        api.addLineToFavourite(137)
+        api.addLineToFavourite(537)
+        Log.e("testbaza",api.isLineFavourite(137).toString())
+        Log.e("testbaza",api.isLineFavourite(537).toString())
 
-
-        //  val databaseInterface = DatabaseInterface(Database.getInstance(this))//bylo
-
-//        Log.i("MainActivity",databaseInterface.addLine("TEST1","TEST2",20).toString())
-//        Log.i("MainActivity",databaseInterface.getLine("1"))
-//        Log.i("MainActivity",databaseInterface.updateLine(1,"TEST1","TEST2",20).toString())
-//        Log.i("MainActivity",databaseInterface.addLine("TEST1XDDD","TEST2XDDD",20).toString())
-//        Log.i("MainActivity",databaseInterface.deleteLine(2).toString())
-
-//xD()
-    }
-
-/*
-   private var mLastContentHeight = 0
-    val keyboardLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
-        val currentContentHeight: Int =
-            findViewById<View>(Window.ID_ANDROID_CONTENT).getHeight()
-        if (mLastContentHeight > currentContentHeight + 100) {
-            Log.e("animacje", "onGlobalLayout: Keyboard is open")
-            mLastContentHeight = currentContentHeight
-        } else if (currentContentHeight > mLastContentHeight + 100) {
-            Log.e("animacje", "close")
-            mLastContentHeight = currentContentHeight
-
-
-            val editTxt=findViewById<EditText>(R.id.search_edit_text)
-            if(editTxt !=null){
-                editTxt.clearFocus()
-            }else{
-                Log.e("czy","null")
-            }
-
+        for(x in api.getAllFavouriteLine()){
+            Log.e("testbaza",x.id.toString())
         }
+
+        api.removeLinesFromFavourites(537)
+        api.removeLinesFromFavourites(137)
+
+        Log.e("testbaza",api.isLineFavourite(137).toString())
+        Log.e("testbaza",api.isLineFavourite(537).toString())
+
+       // Log.e("testbaza",api.removeLineFromFavourite(2).toString())
+      //  Log.e("testbaza",api.isLineFavouriteName(137).toString()+".....................................")
+      //  api.removeLinesFromFavouritesName(137)
+     //   Log.e("testbaza",api.isLineFavouriteName(137).toString()+".....................................")
+      //  Log.e("testbaza",api.isLineFavourite(2).toString())
+      //  Log.e("testbaza",api.getInfoAboutLineConcretDirectionLastStopID(537,2901).numberLine.toString())
+     //   Log.e("testbaza",api.getInfoAboutLineConcretDirectionLastStopName(537,"Witkowice Nowe").numberLine.toString())
+
+
+
     }
-    fun xD(){
 
 
-        binding.navView.getViewTreeObserver().addOnGlobalLayoutListener(keyboardLayoutListener);
-
-    }
-
-*/
 
     private fun hideAppTitleBar() {
         supportActionBar?.hide()
 
 
-        // val databaseInterface = DatabaseInterface(Database.getInstance(this))
 
-        //  Log.i("MainActivity", databaseInterface.addLine("Przystanek TEST1", "Przystanek TEST2", 20).toString())
-        //  Log.i("MainActivity", databaseInterface.addBusStop().toString())
 
     }
 
