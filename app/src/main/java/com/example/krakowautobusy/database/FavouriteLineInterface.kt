@@ -9,7 +9,7 @@ interface FavouriteLineInterface {
 
     fun isLineFavourite(db:SQLiteDatabase,numberLine: Int):Boolean
 
-    fun addLineToFavoriteNumberLine(db:SQLiteDatabase,numberLine:Int)
+    fun addLineToFavorite(db:SQLiteDatabase, numberLine:Int)
 
     fun removeLineFromFavourite(db:SQLiteDatabase,numberLine: Int)
 

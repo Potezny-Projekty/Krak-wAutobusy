@@ -77,11 +77,11 @@ class MainActivity : AppCompatActivity() {
         Log.e("testbaza",api.isLineFavourite(537).toString())
 
         for(x in api.getAllFavouriteLine()){
-            Log.e("testbaza",x.id.toString())
+            Log.e("testbaza",x.firstStopName.  toString()+"/"+x.lastStopName+"/"+x.numberLine)
         }
 
-        api.removeLinesFromFavourites(537)
-        api.removeLinesFromFavourites(137)
+       // api.removeLinesFromFavourites(537)
+     //   api.removeLinesFromFavourites(137)
 
         Log.e("testbaza",api.isLineFavourite(137).toString())
         Log.e("testbaza",api.isLineFavourite(537).toString())

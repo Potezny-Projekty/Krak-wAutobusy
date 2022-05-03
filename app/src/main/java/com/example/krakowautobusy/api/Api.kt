@@ -149,7 +149,7 @@ class Api {
    // }
 
     fun addLineToFavourite(nameLine:Int){
-        favouriteLineAccess.addLineToFavoriteNumberLine(database.writableDatabase,nameLine)
+        favouriteLineAccess.addLineToFavorite(database.writableDatabase,nameLine)
     }
 
   //  fun removeLineFromFavourite(idLine: Int){
