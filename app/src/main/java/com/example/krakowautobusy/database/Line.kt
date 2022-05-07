@@ -6,26 +6,6 @@ import android.util.Log
 
 class Line:LineInteerface {
 
-    val TABLE_LINE="Line"
-
-    val ID_LINE_COL = "$TABLE_LINE.idLine"
-    val NUMBER_LINE_COL = "numberLine"
-    val FIRST_STOP_ID_COL = "firstStop"
-    val LAST_STOP_ID_COL = "lastStop"
-    val ID_VEHICLE_COL = "idVehicle"
-
-
-    val COLUMN_LINE_TABLE_NUMBER = LinkedHashMap<String, Int>()
-
-    init {
-        COLUMN_LINE_TABLE_NUMBER[ID_LINE_COL] = 0
-        COLUMN_LINE_TABLE_NUMBER[NUMBER_LINE_COL] = 1
-        COLUMN_LINE_TABLE_NUMBER[FIRST_STOP_ID_COL] = 2
-        COLUMN_LINE_TABLE_NUMBER[LAST_STOP_ID_COL] = 3
-        COLUMN_LINE_TABLE_NUMBER[ID_VEHICLE_COL] = 4
-    }
-
-
 
     fun returnLineFromCursor(
         cursor: Cursor,
@@ -33,20 +13,20 @@ class Line:LineInteerface {
     ): LineData {
 
         return   LineData(
-            cursor.getLong(COLUMN_LINE_TABLE_NUMBER[ID_LINE_COL]!!),
-            cursor.getLong(COLUMN_LINE_TABLE_NUMBER[NUMBER_LINE_COL]!!),
-            cursor.getLong(COLUMN_LINE_TABLE_NUMBER[FIRST_STOP_ID_COL]!!),
-            cursor.getLong(COLUMN_LINE_TABLE_NUMBER[LAST_STOP_ID_COL]!!),
-            vehicleType
+            cursor.getLong(LineTable.ID_LINE.indexColumn),
+            cursor.getLong(LineTable.NUMBER_LINE.indexColumn),
+            cursor.getLong(LineTable.FIRST_STOP_ID.indexColumn),
+            cursor.getLong(LineTable.LAST_STOP_ID.indexColumn),
+            vehicleType,
+            //PLECEHOLDER
+        "Przystanek pcozątkowy nazwa","Przystanek końcowy nazwa",true
+
+
+        ///PLECEHOLDER ZAMIENIC NA DANE
 
         )
 
     }
-
-
-
-
-
 
 
 
@@ -56,14 +36,17 @@ class Line:LineInteerface {
         lastStopName: String
     ): LineData {
 
-       //
         val columnReturns = arrayOf(
-            ID_LINE_COL,NUMBER_LINE_COL,FIRST_STOP_ID_COL,LAST_STOP_ID_COL,ID_VEHICLE_COL
+            LineTable.ID_LINE.nameColumn,LineTable.NUMBER_LINE.nameColumn,
+            LineTable.FIRST_STOP_ID.nameColumn,LineTable.LAST_STOP_ID.nameColumn,
+            LineTable.ID_VEHICLE.nameColumn
         )
-       val baseQuery="  select "+columnReturns.joinToString(",")+" from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=Line.lastStop where  "
 
 
-        val filterCondition = "${NUMBER_LINE_COL}=${numberLine} and  ${LAST_STOP_ID_COL}=(SELECT Line.lastStop from Line join VehicleStop on VehicleStop.idStopPoint=Line.lastStop where VehicleStop.name like \"%${lastStopName}%\" )"
+       val baseQuery="SELECT "+columnReturns.joinToString(",")+" from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=Line.lastStop where  "
+
+
+        val filterCondition = "${LineTable.NUMBER_LINE.nameColumn}=${numberLine} and  ${LineTable.LAST_STOP_ID.nameColumn}=(SELECT Line.lastStop from Line join VehicleStop on VehicleStop.idStopPoint=Line.lastStop where VehicleStop.name like \"%${lastStopName}%\" )"
 // arrayOf(numberLine.toString(),lastStopId.toString())
 
         val cursor = db.rawQuery(baseQuery+filterCondition, null
@@ -74,7 +57,7 @@ class Line:LineInteerface {
         if (cursor!!.moveToFirst()) {
 
             findVehicleStopType=
-                if (COLUMN_LINE_TABLE_NUMBER[ID_VEHICLE_COL]?.let { cursor.getInt(it) } == VehicleType.BUS.number) {
+                if (LineTable.ID_VEHICLE.indexColumn.let { cursor.getInt(it) } == VehicleType.BUS.number) {
                     returnLineFromCursor(cursor,VehicleType.BUS)
                 } else {
                     returnLineFromCursor(cursor,VehicleType.TRAM)
@@ -97,14 +80,18 @@ class Line:LineInteerface {
     ): LineData {
 
 
+
         val columnReturns = arrayOf(
-            ID_LINE_COL,NUMBER_LINE_COL,FIRST_STOP_ID_COL,LAST_STOP_ID_COL,ID_VEHICLE_COL
+            LineTable.ID_LINE.nameColumn,LineTable.NUMBER_LINE.nameColumn,
+            LineTable.FIRST_STOP_ID.nameColumn,LineTable.LAST_STOP_ID.nameColumn,
+            LineTable.ID_VEHICLE.nameColumn
         )
-        val filterCondition = "${NUMBER_LINE_COL}=? and ${LAST_STOP_ID_COL}=?"
+
+        val filterCondition = "${LineTable.NUMBER_LINE.nameColumn}=? and ${LineTable.LAST_STOP_ID.nameColumn}=?"
 
 
         val cursor = db.query(
-            TABLE_LINE,
+            TableName.LINE.nameTable,
             columnReturns,
             filterCondition,
             arrayOf(numberLine.toString(),lastStopId.toString()),
@@ -117,7 +104,7 @@ class Line:LineInteerface {
         if (cursor!!.moveToFirst()) {
 
              findVehicleStopType=
-                if (COLUMN_LINE_TABLE_NUMBER[ID_VEHICLE_COL]?.let { cursor.getInt(it) } == VehicleType.BUS.number) {
+                if (LineTable.ID_VEHICLE.indexColumn.let { cursor.getInt(it) } == VehicleType.BUS.number) {
                     returnLineFromCursor(cursor,VehicleType.BUS)
                 } else {
                     returnLineFromCursor(cursor,VehicleType.TRAM)
@@ -131,5 +118,28 @@ class Line:LineInteerface {
 
     override fun getInfoAboutLinesAnyDirection(db: SQLiteDatabase, numberLine: Long): ArrayList<LineData> {
         TODO("Not yet implemented Kurwa ")
+    }
+
+    override fun getInfoAllLine(db: SQLiteDatabase): ArrayList<LineData> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getInfoAboutLinePatternName(db: SQLiteDatabase, patternName: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getInfoAboutLinePatternNumber(db: SQLiteDatabase, patternNumber: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getInfoAboutLinePatternFirstOrLastStopName(
+        db: SQLiteDatabase,
+        patternVehicleStopName: String
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getVehicleStopsLine(db: SQLiteDatabase, idLine: Int) {
+        TODO("Not yet implemented")
     }
 }

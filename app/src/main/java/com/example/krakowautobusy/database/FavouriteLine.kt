@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
+import com.example.krakowautobusy.api.Api
 
 class FavouriteLine:FavouriteLineInterface {
 
@@ -23,12 +24,12 @@ class FavouriteLine:FavouriteLineInterface {
 
         val vehicleType = checkTypeVehicleByNumber(cursor.getInt(LineTable.ID_VEHICLE.indexColumn))
 
-        val firstStopName=findNameBusStopById(database,cursor.getInt(LineTable.FIRST_STOP_ID.indexColumn))
-        Log.e("testbaza",";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
-        Log.e("testbaza",cursor.getInt(LineTable.FIRST_STOP_ID.indexColumn).toString()+";")
-        Log.e("testbaza",cursor.getInt(LineTable.LAST_STOP_ID.indexColumn).toString()+";")
-        Log.e("testbaza",";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
-        val lastStopName=findNameBusStopById(database,cursor.getInt(LineTable.LAST_STOP_ID.indexColumn))
+        val firstStopName= Api.getApi().getNameVehicleStopByID(cursor.getInt(LineTable.FIRST_STOP_ID.indexColumn))
+     //   Log.e("testbaza",";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
+     //   Log.e("testbaza",cursor.getInt(LineTable.FIRST_STOP_ID.indexColumn).toString()+";")
+     //   Log.e("testbaza",cursor.getInt(LineTable.LAST_STOP_ID.indexColumn).toString()+";")
+       // Log.e("testbaza",";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
+        val lastStopName=Api.getApi().getNameVehicleStopByID(cursor.getInt(LineTable.LAST_STOP_ID.indexColumn))
 
         return   FavouriteLineData(
             cursor.getInt(LineTable.ID_LINE.indexColumn),
@@ -42,29 +43,6 @@ class FavouriteLine:FavouriteLineInterface {
 
 
 
-    private fun findNameBusStopById( db: SQLiteDatabase,idStop:Int):String{
-        val columnReturns = arrayOf(VehicleStopTable.NAME.nameColumn)
-        val FIRST_COLUMN_RETURN=0
-        val RETURN_NOTHING=""
-
-        val filterCondition = "${VehicleStopTable.ID_STOP_POINT.nameColumn}=?"
-
-        val cursor = db.query(
-            TableName.VEHICLE_STOP.nameTable,
-            columnReturns,
-            filterCondition,
-            arrayOf(idStop.toString()),
-            null,
-            null,
-            null,
-            null
-        )
-        if (cursor!!.moveToFirst()) {
-
-              return   cursor.getString(FIRST_COLUMN_RETURN)
-        }
-        return RETURN_NOTHING
-    }
 
 
     private fun addLineToFavouriteById(db: SQLiteDatabase, idLine: Int) {
@@ -107,8 +85,8 @@ class FavouriteLine:FavouriteLineInterface {
             }
             cursor.close()
 
-            Log.e("bazatest",linesIdBothDirection[FIRST_DIRECTION_POS].toString()+" ..")
-            Log.e("bazatest",linesIdBothDirection[SECOND_DIRECTION_POS].toString()+ "..")
+       //     Log.e("bazatest",linesIdBothDirection[FIRST_DIRECTION_POS].toString()+" ..")
+       //     Log.e("bazatest",linesIdBothDirection[SECOND_DIRECTION_POS].toString()+ "..")
             addLineToFavouriteById(db,linesIdBothDirection[FIRST_DIRECTION_POS])
             addLineToFavouriteById(db,linesIdBothDirection[SECOND_DIRECTION_POS])
         }

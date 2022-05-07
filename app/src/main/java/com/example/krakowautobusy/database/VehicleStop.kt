@@ -119,4 +119,28 @@ class VehicleStop:VehicleStopInterface {
 
         TODO("Not yet implemented")
     }
+
+    override fun findNameBusStopById(db: SQLiteDatabase, idStop: Int): String {
+        val columnReturns = arrayOf(VehicleStopTable.NAME.nameColumn)
+        val FIRST_COLUMN_RETURN=0
+        val RETURN_NOTHING=""
+
+        val filterCondition = "${VehicleStopTable.ID_STOP_POINT.nameColumn}=?"
+
+        val cursor = db.query(
+            TableName.VEHICLE_STOP.nameTable,
+            columnReturns,
+            filterCondition,
+            arrayOf(idStop.toString()),
+            null,
+            null,
+            null,
+            null
+        )
+        if (cursor!!.moveToFirst()) {
+
+            return   cursor.getString(FIRST_COLUMN_RETURN)
+        }
+        return RETURN_NOTHING
+    }
 }

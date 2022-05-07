@@ -127,6 +127,11 @@ class Api {
         return vehicleStopAccess.getVehicleStopsByID(database.readableDatabase, shortId)
     }
 
+
+    fun getNameVehicleStopByID(idVehicleStop: Int):String{
+        return vehicleStopAccess.findNameBusStopById(database.readableDatabase,idVehicleStop);
+    }
+
     ///////Favourite Line API
   //  fun isLineFavourite(idLine: Long): Boolean {
    //     return favouriteLineAccess.isLineFavourite(database.readableDatabase, idLine)
