@@ -5,6 +5,7 @@ import androidx.core.animation.*
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Polyline
 
 object MarkerAnimation {
     private const val DURATION_ANIMATION = 6000L
@@ -15,7 +16,8 @@ object MarkerAnimation {
         map: MapView,
         marker: Marker,
         endPoint: ArrayList<PathVehicle>,
-        GeoPointInterpolator: GeoPointInterpolator
+        GeoPointInterpolator: GeoPointInterpolator,
+        polyline: Polyline
     ): ValueAnimator {
 
         val valueAnimator = ValueAnimator()
@@ -28,6 +30,9 @@ object MarkerAnimation {
             val end = ConvertUnits.convertToGeoPoint(endPoint[pathIterator].y2, endPoint[pathIterator].x2)
             val newPosition: GeoPoint =
                 GeoPointInterpolator.interpolate(fraction, startPosition, end)
+            if (marker.id == "busFocused" || marker.id == "tramFocused") {
+                polyline.addPoint(startPosition)
+            }
             marker.rotation = fullAngle - endPoint[pathIterator].angle
             marker.position = newPosition
             map.invalidate()
@@ -53,7 +58,8 @@ object MarkerAnimation {
         map: MapView,
         marker: Marker,
         endPoint: GeoPoint,
-        GeoPointInterpolator: GeoPointInterpolator
+        GeoPointInterpolator: GeoPointInterpolator,
+        polyline: Polyline
     ): ValueAnimator {
         val valueAnimator = ValueAnimator()
         valueAnimator.addUpdateListener { animation ->
@@ -62,6 +68,9 @@ object MarkerAnimation {
             val newPosition: GeoPoint =
                 GeoPointInterpolator.interpolate(fraction, startPosition, endPoint)
             marker.position = newPosition
+            if (marker.id == "busFocused" || marker.id == "tramFocused") {
+                polyline.addPoint(startPosition)
+            }
             map.invalidate()
         }
         valueAnimator.setFloatValues(START_ANIMATION_RANGE, END_ANIMATION_RANGE)

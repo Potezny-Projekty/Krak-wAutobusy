@@ -1,7 +1,6 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.util.Log
 import com.example.krakowautobusy.ui.map.Drawables
 import com.example.krakowautobusy.ui.map.network.ActualPositionApi
@@ -21,6 +20,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
     private var lastUpdateTram: Long = 0
     private var markers = mutableMapOf<String, Marker>()
     private var trackedRoute = Polyline()
+    private var traveledRoute = Polyline()
     private val busHelperInstance = RetrofitHelperBus
         .getInstance().create(ActualPositionApi::class.java)
     private val tramHelperInstance = RetrofitHelperTram.getInstance()
@@ -58,14 +58,16 @@ class ActualPositionVehicles(var drawables: Drawables) {
                     map,
                     marker,
                     vehicle.path,
-                    GeoPointInterpolator.Linear()
+                    GeoPointInterpolator.Linear(),
+                    traveledRoute
                 )
             }
         } else {
             MarkerAnimation.animateMarkerToHCLinear(
                 map, marker,
                 ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude),
-                GeoPointInterpolator.Linear()
+                GeoPointInterpolator.Linear(),
+                traveledRoute
             )
             marker.rotation = fullAngle - vehicle.heading
         }
@@ -90,6 +92,9 @@ class ActualPositionVehicles(var drawables: Drawables) {
         map.overlays.add(marker)
         marker.setOnMarkerClickListener { markerTracing, mapView ->
             markerTracing.showInfoWindow()
+            markerTracing.infoWindow.view.setOnClickListener{
+                Log.i("TESTOWY", it.toString())
+            }
             drawPathVehicle(vehicle.id, vehicle.category, mapView, marker)
         }
     }
@@ -147,19 +152,33 @@ class ActualPositionVehicles(var drawables: Drawables) {
             marker.icon = drawables.resizedTramIconTracking
         }
         trackedRoute.actualPoints.clear()
+        traveledRoute.actualPoints.clear()
         pathPoints.forEach {
-            trackedRoute.addPoint(it)
+            if (pathPoints[0].distanceToAsDouble(it) < pathPoints[0].distanceToAsDouble(marker.position)) {
+                traveledRoute.addPoint(it)
+            } else {
+                trackedRoute.addPoint(it)
+            }
+
         }
+        map.overlays.add(traveledRoute)
         map.invalidate()
     }
 
-    fun createPolyline(polyline: Polyline, width: Float, color: String) {
-        trackedRoute = polyline
+    fun createPolyline(tracked: Polyline, traveled: Polyline, width: Float, color: String) {
+        trackedRoute = tracked
         trackedRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
         trackedRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
         trackedRoute.outlinePaint.color = Color.parseColor(color)
         trackedRoute.outlinePaint.strokeWidth = width
         trackedRoute.isGeodesic = true
+
+        traveledRoute = traveled
+        traveledRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
+        traveledRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
+        traveledRoute.outlinePaint.color = Color.parseColor("#FF0000")
+        traveledRoute.outlinePaint.strokeWidth = width
+        traveledRoute.isGeodesic = true
     }
 
     fun getActualPosition(map : MapView){

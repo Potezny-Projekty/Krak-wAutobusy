@@ -36,6 +36,7 @@ class MapController(private var map: MapView, private var context: Context) {
 
     private val mapController = map.controller
     private val trackedRoute = Polyline()
+    private val traveledRoute = Polyline()
     private val routeWidth = 10.0f
     private val routeColor = "#39DD00"
 
@@ -69,7 +70,8 @@ class MapController(private var map: MapView, private var context: Context) {
 
     fun drawTrackedRoute(actualPositionVehicles: ActualPositionVehicles) {
         map.overlays.add(trackedRoute)
-        actualPositionVehicles.createPolyline(trackedRoute, routeWidth, routeColor)
+        map.overlays.add(traveledRoute)
+        actualPositionVehicles.createPolyline(trackedRoute, traveledRoute, routeWidth, routeColor)
     }
 
     fun drawAllVehicles(actualPositionVehicles: ActualPositionVehicles) {
