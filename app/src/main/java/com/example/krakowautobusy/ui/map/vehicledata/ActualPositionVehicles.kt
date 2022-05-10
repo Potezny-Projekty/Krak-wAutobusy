@@ -2,7 +2,6 @@ package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.drawable.Drawable
 import android.util.Log
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.ui.map.Drawables
@@ -23,7 +22,11 @@ class ActualPositionVehicles(var drawables: Drawables) {
     private var lastUpdateTram: Long = 0
     private var markers = mutableMapOf<String, Marker>()
     private var trackedRoute = Polyline()
-
+    private var traveledRoute = Polyline()
+    private val busHelperInstance = RetrofitHelperBus
+        .getInstance().create(ActualPositionApi::class.java)
+    private val tramHelperInstance = RetrofitHelperTram.getInstance()
+        .create(ActualPositionApi::class.java)
     private val fullAngle = 360F
     private var enabled = true
     private var trackingVehicle: Marker? = null
@@ -33,11 +36,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
     val NO_ELEMENT=0
 
 
-
-
-
-
-    fun setEnabled(enabled: Boolean) {//co to kurwa jest nazwa nic nie mówi dobra żartuje ale nic nie mówi
+    fun setEnabled(enabled: Boolean) {
         this.enabled = enabled
     }
 
@@ -64,14 +63,16 @@ class ActualPositionVehicles(var drawables: Drawables) {
                     map,
                     marker,
                     vehicle.path,
-                    GeoPointInterpolator.Linear()
+                    GeoPointInterpolator.Linear(),
+                    traveledRoute
                 )
             }
         } else {
             MarkerAnimation.animateMarkerToHCLinear(
                 map, marker,
                 ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude),
-                GeoPointInterpolator.Linear()
+                GeoPointInterpolator.Linear(),
+                traveledRoute
             )
             marker.rotation = fullAngle - vehicle.heading
         }
@@ -92,11 +93,8 @@ class ActualPositionVehicles(var drawables: Drawables) {
         val locationPoint =
             ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude)
         val marker = Marker(map)
-
-
         marker.position = locationPoint
         marker.rotation = fullAngle - vehicle.heading.toFloat()
-
         if (vehicle.category == typeVehicleBus) {
             fillMarkerData(marker,drawables.busIconDrawable,typeVehicleBus,vehicle.name)
         } else {
@@ -151,6 +149,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
 
         }
 
+        } )
         return true
     }
 
@@ -174,24 +173,33 @@ class ActualPositionVehicles(var drawables: Drawables) {
             marker.icon = drawables.resizedTramIconTracking
         }
         trackedRoute.actualPoints.clear()
+        traveledRoute.actualPoints.clear()
         pathPoints.forEach {
-            trackedRoute.addPoint(it)
+            if (pathPoints[0].distanceToAsDouble(it) < pathPoints[0].distanceToAsDouble(marker.position)) {
+                traveledRoute.addPoint(it)
+            } else {
+                trackedRoute.addPoint(it)
+            }
+
         }
+        map.overlays.add(traveledRoute)
         map.invalidate()
     }
 
-    fun createPolyline(polyline: Polyline, width: Float, color: String) {
-        trackedRoute = polyline
+    fun createPolyline(tracked: Polyline, traveled: Polyline, width: Float, color: String) {
+        trackedRoute = tracked
         trackedRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
         trackedRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
         trackedRoute.outlinePaint.color = Color.parseColor(color)
         trackedRoute.outlinePaint.strokeWidth = width
         trackedRoute.isGeodesic = true
-    }
 
-    //to niżej dodać
-    fun checkIsResponseExist(){
-
+        traveledRoute = traveled
+        traveledRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
+        traveledRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
+        traveledRoute.outlinePaint.color = Color.parseColor("#FF0000")
+        traveledRoute.outlinePaint.strokeWidth = width
+        traveledRoute.isGeodesic = true
     }
 
     fun getActualPosition(map : MapView){
@@ -207,6 +215,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
           }
         )
 
+                override fun onFailure(call: Call<AllVehicles>, t: Throwable) {
 
       Api.getApi().getTramPosition(lastUpdateTram, fun(response: Response<AllVehicles>)  {
           if (response.isSuccessful) {

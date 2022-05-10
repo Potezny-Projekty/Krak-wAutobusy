@@ -1,10 +1,12 @@
 package com.example.krakowautobusy.ui.map
 
 import android.content.Context
+import android.graphics.*
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.ui.map.vehicledata.Utilities
+
 
 class Drawables(var context: Context) {
     var busStopIconDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.bus_icon)!!
@@ -32,5 +34,4 @@ class Drawables(var context: Context) {
         drawables.resizedBusIconTracking = utilities.resizeDrawable(drawables.busIconTrackingDrawable)
         drawables.resizedTramIconTracking = utilities.resizeDrawable(drawables.tramIconTrackingDrawable)
     }
-
 }
