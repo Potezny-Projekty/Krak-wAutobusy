@@ -3,6 +3,7 @@ package com.example.krakowautobusy.database
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
+import com.example.krakowautobusy.api.Api
 
 class Line:LineInteerface {
 
@@ -12,18 +13,17 @@ class Line:LineInteerface {
         vehicleType: VehicleType
     ): LineData {
 
+        val firstVehicleStopName=Api.getApi().getVehicleStopById( cursor.getLong(LineTable.FIRST_STOP_ID.indexColumn)).name
+        val lastVehicleStopName=Api.getApi().getVehicleStopById(cursor.getLong(LineTable.LAST_STOP_ID.indexColumn)).name
+        val isLineFavourite=Api.getApi().isLineFavourite(cursor.getInt(LineTable.NUMBER_LINE.indexColumn))
+
         return   LineData(
             cursor.getLong(LineTable.ID_LINE.indexColumn),
             cursor.getLong(LineTable.NUMBER_LINE.indexColumn),
             cursor.getLong(LineTable.FIRST_STOP_ID.indexColumn),
             cursor.getLong(LineTable.LAST_STOP_ID.indexColumn),
             vehicleType,
-            //PLECEHOLDER
-        "Przystanek pcozątkowy nazwa","Przystanek końcowy nazwa",true
-
-
-        ///PLECEHOLDER ZAMIENIC NA DANE
-
+            firstVehicleStopName,lastVehicleStopName,isLineFavourite
         )
 
     }
@@ -124,22 +124,66 @@ class Line:LineInteerface {
         TODO("Not yet implemented")
     }
 
-    override fun getInfoAboutLinePatternName(db: SQLiteDatabase, patternName: String) {
+    override fun getInfoAboutLinePatternName(db: SQLiteDatabase, patternName: String): ArrayList<LineData> {
         TODO("Not yet implemented")
     }
 
-    override fun getInfoAboutLinePatternNumber(db: SQLiteDatabase, patternNumber: Int) {
-        TODO("Not yet implemented")
+    override fun getInfoAboutLinePatternNumber(db: SQLiteDatabase, patternNumber: Int): ArrayList<LineData> {
+
+        val columnReturns = arrayOf(
+            LineTable.ID_LINE.nameColumn,LineTable.NUMBER_LINE.nameColumn,
+            LineTable.FIRST_STOP_ID.nameColumn,LineTable.LAST_STOP_ID.nameColumn,
+            LineTable.ID_VEHICLE.nameColumn
+        )
+
+        val filterCondition = "cast(${LineTable.NUMBER_LINE.nameColumn} as text) like \"%${patternNumber}%\""
+
+
+        val cursor = db.query(
+            TableName.LINE.nameTable,
+            columnReturns,
+            filterCondition,
+            null,
+            null,
+            null,
+            null,
+            null
+        )
+
+        val lineDataMatchToPattern= arrayListOf<LineData>()
+        var findVehicleStopType: LineData? =null
+        if (cursor!!.moveToFirst()) {
+            do {
+
+
+                findVehicleStopType=
+                 if (LineTable.ID_VEHICLE.indexColumn.let { cursor.getInt(it) } == VehicleType.BUS.number) {
+                      returnLineFromCursor(cursor,VehicleType.BUS)
+                  } else {
+                     returnLineFromCursor(cursor,VehicleType.TRAM)
+                  }
+                lineDataMatchToPattern.add(findVehicleStopType)
+
+            }while(cursor.moveToNext())
+
+
+        }
+        cursor.close()
+        return  lineDataMatchToPattern!!
     }
 
     override fun getInfoAboutLinePatternFirstOrLastStopName(
         db: SQLiteDatabase,
         patternVehicleStopName: String
-    ) {
+    ): ArrayList<LineData> {
         TODO("Not yet implemented")
     }
 
-    override fun getVehicleStopsLine(db: SQLiteDatabase, idLine: Int) {
+    override fun getVehicleStopsLine(db: SQLiteDatabase, idLine: Int): ArrayList<SequenceVehicleStopData> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAllLineWithAnyVehicleStopFitPattern(db: SQLiteDatabase, nameVehicleStop: String): ArrayList<LineData> {
         TODO("Not yet implemented")
     }
 }

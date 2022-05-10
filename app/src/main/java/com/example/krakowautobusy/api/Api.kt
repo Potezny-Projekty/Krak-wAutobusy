@@ -50,6 +50,23 @@ class Api {
 
 
 
+
+
+
+
+
+ //////////////////////Line API
+
+  fun  getInfoAboutLinePatternNumber( patternNumber: Int): ArrayList<LineData>   {
+     return lineAccess.getInfoAboutLinePatternNumber(database.readableDatabase,patternNumber );
+  }
+
+
+
+
+
+
+
 ///////////////////  Position Vehicle API
 
 

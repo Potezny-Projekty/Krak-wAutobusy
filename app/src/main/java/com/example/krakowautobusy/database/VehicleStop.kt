@@ -82,7 +82,12 @@ class VehicleStop:VehicleStopInterface {
         }
         cursor.close()
 
-        return busStop[0]
+        if(busStop.size>0){
+            return busStop[0]
+        }else{//źle to jest formalnie
+            return VehicleStopData(-1,"Brak",0,0,0,VehicleType.BUS,0);
+        }
+
 
     }
 

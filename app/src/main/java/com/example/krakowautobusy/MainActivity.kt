@@ -71,30 +71,38 @@ class MainActivity : AppCompatActivity() {
         val api= Api.getApi()
 
 
-        api.addLineToFavourite(137)
-        api.addLineToFavourite(537)
-        Log.e("testbaza",api.isLineFavourite(137).toString())
-        Log.e("testbaza",api.isLineFavourite(537).toString())
+     //   api.addLineToFavourite(137)
+     //   api.addLineToFavourite(537)
+     //   Log.e("testbaza",api.isLineFavourite(137).toString())
+     //   Log.e("testbaza",api.isLineFavourite(537).toString())
 
-        for(x in api.getAllFavouriteLine()){
-            Log.e("testbaza",x.firstStopName.  toString()+"/"+x.lastStopName+"/"+x.numberLine)
-        }
+     //   for(x in api.getAllFavouriteLine()){
+       //     Log.e("testbaza",x.firstStopName.  toString()+"/"+x.lastStopName+"/"+x.numberLine)
+     //   }
 
        // api.removeLinesFromFavourites(537)
      //   api.removeLinesFromFavourites(137)
 
-        Log.e("testbaza",api.isLineFavourite(137).toString())
-        Log.e("testbaza",api.isLineFavourite(537).toString())
+      //  Log.e("testbaza",api.isLineFavourite(137).toString())
+      //  Log.e("testbaza",api.isLineFavourite(537).toString())
 
        // Log.e("testbaza",api.removeLineFromFavourite(2).toString())
       //  Log.e("testbaza",api.isLineFavouriteName(137).toString()+".....................................")
       //  api.removeLinesFromFavouritesName(137)
      //   Log.e("testbaza",api.isLineFavouriteName(137).toString()+".....................................")
       //  Log.e("testbaza",api.isLineFavourite(2).toString())
-      //  Log.e("testbaza",api.getInfoAboutLineConcretDirectionLastStopID(537,2901).numberLine.toString())
-     //   Log.e("testbaza",api.getInfoAboutLineConcretDirectionLastStopName(537,"Witkowice Nowe").numberLine.toString())
 
 
+        Log.e("testbaza",api.getInfoAboutLineConcretDirectionLastStopName(537,"Witkowice").numberLine.toString())
+        Log.e("testbaza",api.getInfoAboutLineConcretDirectionLastStopName(537,"Witkowice").firstStopName.toString())
+        Log.e("testbaza",api.getInfoAboutLineConcretDirectionLastStopName(537,"Witkowice").lastStopName.toString())
+        Log.e("testbaza",api.getInfoAboutLineConcretDirectionLastStopName(537,"Witkowice").isFavourite. toString())
+        Log.e("testbaza",api.getInfoAboutLineConcretDirectionLastStopName(537,"Witkowice").numberLine.toString())
+      // Log.e("testbaza",api.getInfoAboutLineConcretDirectionLastStopName(537,"Witkowice Nowe").numberLine.toString())
+
+        for(x in api.getInfoAboutLinePatternNumber(5)){
+                 Log.e("testbaza",x.firstStopName.  toString()+"/"+x.lastStopName+"/"+x.numberLine)
+               }
 
     }
 
