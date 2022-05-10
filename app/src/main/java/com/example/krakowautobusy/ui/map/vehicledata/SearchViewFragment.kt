@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.animation.doOnEnd
 import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.R
+import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.databinding.FragmentSearchViewBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -111,19 +112,48 @@ class SearchViewFragment : Fragment() {
 
     }
 
+    private fun addHandlerToInputText(){
+      binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                try{
+             binding.searchEditText.text.toString().toInt()
+
+                    val dataModels = ArrayList<LineData>()
+                    val xD= Api.getApi().getInfoAboutLinePatternNumber(binding.searchEditText.text.toString().toInt())
+                    val  adapter = AdapterListSearchPanel(xD,requireContext())
+
+                    binding.searchList.adapter = adapter
+
+                }
+                catch (exp:Exception){
+println(exp.message)
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+    }
+
 
 
 
     private fun addDataToSearchView(){
-      val dataModels = ArrayList<LineBusData>()
-      dataModels.add(LineBusData(1,VehicleEnum.BUS,537,"Witkowice","Dworzec Główny Wschód",true))
-      dataModels.add(LineBusData(2,VehicleEnum.BUS,112,"Os,Podwawelskie","Tyniec Kamieniołom",false))
-      dataModels.add(LineBusData(3,VehicleEnum.TRAM,5,"Wzgórze Krzesłowickie","Krowodrza Górka",true))
-      dataModels.add(LineBusData(4,VehicleEnum.TRAM,17,"Czerwone Maki P+R","Dworzec Towarowy",false))
+      val dataModels = ArrayList<LineData>()
+   //  val xD= Api.getApi().getInfoAboutLinePatternNumber(5)
+   //     val  adapter = AdapterListSearchPanel(xD,requireContext())
 
-      val  adapter = AdapterListSearchPanel(dataModels,requireContext())
+      // binding.searchList.adapter = adapter
 
-        binding.searchList.adapter = adapter
+      dataModels.add(LineData(1,VehicleEnum.BUS,537,"Witkowice","Dworzec Główny Wschód",true))
+      dataModels.add(LineData(2,VehicleEnum.BUS,112,"Os,Podwawelskie","Tyniec Kamieniołom",false))
+      dataModels.add(LineData(3,VehicleEnum.TRAM,5,"Wzgórze Krzesłowickie","Krowodrza Górka",true))
+      dataModels.add(LineData(4,VehicleEnum.TRAM,17,"Czerwone Maki P+R","Dworzec Towarowy",false))
+
+
     }
 
 
@@ -185,8 +215,8 @@ class SearchViewFragment : Fragment() {
     }
 
     private fun changeSearchIconToNoActiveSearchIcon(){
-        val searchIcon=binding.searchIcon
-        searchIcon.setImageResource(R.drawable.ic_baseline_menu_24)
+//        val searchIcon=binding.searchIcon
+     //   searchIcon.setImageResource(R.drawable.ic_baseline_menu_24)
     }
 
 

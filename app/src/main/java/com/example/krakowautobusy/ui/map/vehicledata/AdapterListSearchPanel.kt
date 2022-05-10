@@ -10,13 +10,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.krakowautobusy.R
+import com.example.krakowautobusy.database.VehicleType
 
 
-class AdapterListSearchPanel(data: ArrayList<LineBusData>, context: Context) :
-    ArrayAdapter<LineBusData?>(context, R.layout.search_result_field_bus,
-        data as List<LineBusData?>
+class AdapterListSearchPanel(data: ArrayList<com.example.krakowautobusy.database.LineData>, context: Context) :
+    ArrayAdapter<com.example.krakowautobusy.database.LineData>(context, R.layout.search_result_field_bus,
+        data as ArrayList<com.example.krakowautobusy.database.LineData?>
     ), View.OnClickListener {
-    private val dataSet: ArrayList<LineBusData>
+    private val dataSet: ArrayList<com.example.krakowautobusy.database.LineData>
     var mContext: Context
 
 
@@ -53,8 +54,8 @@ class AdapterListSearchPanel(data: ArrayList<LineBusData>, context: Context) :
     }
 
 
-    private fun fillViewData(viewHolder: ViewHolder, dataModel:LineBusData){
-        viewHolder.lineNumber!!.text= dataModel.numberLine.toString()
+    private fun fillViewData(viewHolder: ViewHolder, dataModel:com.example.krakowautobusy.database.LineData){
+        viewHolder.lineNumber!!.text= dataModel.numberLine .toString()
         if(dataModel.isFavourite){
             viewHolder.isFavouriteIcon!!.setImageResource(R.drawable.red_heart_icon)
         }else{
@@ -62,7 +63,7 @@ class AdapterListSearchPanel(data: ArrayList<LineBusData>, context: Context) :
         }
 
 
-        if(dataModel.isBus==VehicleEnum.BUS){
+        if(dataModel.typeVehicle==VehicleType.BUS){
             viewHolder.lineNumberBox!!.setBackgroundResource(R.drawable.round_rect_shape_bus)
         }else{
             viewHolder.lineNumberBox!!.setBackgroundResource(R.drawable.round_rect_shape_train)
@@ -70,15 +71,15 @@ class AdapterListSearchPanel(data: ArrayList<LineBusData>, context: Context) :
 
 
 
-        viewHolder.startBusStation!!.text= dataModel.startBusStop
-        viewHolder.stopBusStation!!.text= dataModel.endBusStop
-        viewHolder.idLine=dataModel.numberLine
+        viewHolder.startBusStation!!.text= dataModel.firstStopName
+        viewHolder.stopBusStation!!.text= dataModel.lastStopName
+        viewHolder.idLine=dataModel.numberLine.toInt()
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
         var convertView: View? = convertView
-        val dataModel: LineBusData? = getItem(position)
+        val dataModel: com.example.krakowautobusy.database.LineData? = getItem(position)
 
         val viewHolder: ViewHolder
 
