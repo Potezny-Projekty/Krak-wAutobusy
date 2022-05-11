@@ -1,42 +1,56 @@
 package com.example.krakowautobusy.database
 
-import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.util.Log
-import com.example.krakowautobusy.R
-import java.io.*
-import java.security.AccessController.getContext
+import java.io.DataInputStream
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 
-class LoadDatabase {
-    public fun importdb(db_path: String, context: Context) {
+class LoadDatabase(context: Context) {
+    val NAME_DATABASE_IN_ASSETS_FOLDER="manu"
+    val NAME_DATABASE_OUTPUT="busDatabase"
+    val KILO_BYTE=1024
+    val ZERO_SIZE=0
+    val COPY_WRITE_POSITION=0
+
+
+    init {
+        importdb(context)
+    }
+    private fun copyFileDatabaseFromAssetsToDatabaseFolder(context: Context){
+
+        val mInputStream: InputStream = DataInputStream(context.assets.open(NAME_DATABASE_IN_ASSETS_FOLDER))
+        val outFileName: String = context.getDatabasePath(
+            NAME_DATABASE_OUTPUT
+        ).absolutePath
+
+        val mOutputStream: OutputStream = FileOutputStream(outFileName)
+        val buffer = ByteArray(KILO_BYTE)
+        var length: Int
+        while (mInputStream.read(buffer).also { length = it } > ZERO_SIZE) {
+            mOutputStream.write(buffer, COPY_WRITE_POSITION, length)
+        }
+        mOutputStream.flush()
+        mOutputStream.close()
+        mInputStream.close()
+
+    }
+
+    private fun doesDatabaseExist(context: Context, dbName: String): Boolean {
+        val dbFile = context.getDatabasePath(dbName)
+        return dbFile.exists()
+    }
+
+  private  fun importdb( context: Context) {
+
         try {
-            val file = File(context.getApplicationInfo().dataDir + "/databases/" + db_path)
-            Log.e(
-                "baza",
-                "sciezka :" + context.getApplicationInfo().dataDir + "/databases/" + db_path
-            )
-            //  Log.e("baza","sciezka2:"+context.filesDir)
-            context.assets.open("manu")
-            val mInputStream: InputStream = DataInputStream(context.assets.open("manu"))
-
-            val outFileName: String = context.getDatabasePath(
-                "busDatabase"
-            ).getAbsolutePath()
-            val mOutputStream: OutputStream = FileOutputStream(outFileName)
-            val buffer = ByteArray(1024)
-            var length: Int
-            while (mInputStream.read(buffer).also { length = it } > 0) {
-                mOutputStream.write(buffer, 0, length)
+            if(!doesDatabaseExist(context,NAME_DATABASE_OUTPUT)){
+                copyFileDatabaseFromAssetsToDatabaseFolder(context)
             }
-            mOutputStream.flush()
-            Log.e("baza", "Ladowanie")
-            mOutputStream.close()
-            mInputStream.close()
-            // CustomMessage(getActivity(), "Database replaced sucessfully")
+
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.e("baza", "error")
-            //CustomLog.showLogD("WORKING_STOP", e.message)
         }
     }
 }

@@ -10,8 +10,8 @@ import com.example.krakowautobusy.ui.map.vehicledata.Utilities
 
 class Drawables(var context: Context) {
     var busStopIconDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.bus_icon)!!
-    var tramIconDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_bus)!!
-    var busIconDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_tram)!!
+    var tramIconDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_tram_icon)!!
+    var busIconDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_bus_icon)!!
     var userLocationIconDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.location_icon)!!
     var busIconTrackingDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_bus_tracking)!!
     var tramIconTrackingDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_tram_tracking)!!

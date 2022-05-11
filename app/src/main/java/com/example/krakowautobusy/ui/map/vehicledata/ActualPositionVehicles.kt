@@ -1,7 +1,10 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
-import android.graphics.*
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.drawable.Drawable
 import android.util.Log
+import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.ui.map.Drawables
 import com.example.krakowautobusy.ui.map.network.ActualPositionApi
 import com.example.krakowautobusy.ui.map.network.RetrofitHelperBus
@@ -20,18 +23,21 @@ class ActualPositionVehicles(var drawables: Drawables) {
     private var lastUpdateTram: Long = 0
     private var markers = mutableMapOf<String, Marker>()
     private var trackedRoute = Polyline()
-    private var traveledRoute = Polyline()
-    private val busHelperInstance = RetrofitHelperBus
-        .getInstance().create(ActualPositionApi::class.java)
-    private val tramHelperInstance = RetrofitHelperTram.getInstance()
-        .create(ActualPositionApi::class.java)
+
     private val fullAngle = 360F
     private var enabled = true
     private var trackingVehicle: Marker? = null
     private val typeVehicleBus = "bus"
+    private val typeVehicleBusFocused = "busFocused"
     private val typeVehicleTram = "tram"
+    val NO_ELEMENT=0
 
-    fun setEnabled(enabled: Boolean) {
+
+
+
+
+
+    fun setEnabled(enabled: Boolean) {//co to kurwa jest nazwa nic nie mówi dobra żartuje ale nic nie mówi
         this.enabled = enabled
     }
 
@@ -50,7 +56,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
     }
 
     private fun updateMarkerPosition(marker : Marker, vehicle: Vehicle, map : MapView) {
-        if (vehicle.path.size > 0) {
+        if (vehicle.path.size > NO_ELEMENT) {
             val lastPosition = ConvertUnits.convertToGeoPoint(vehicle.path[vehicle.path.size - 1].y2,
                 vehicle.path[vehicle.path.size - 1].x2 )
             if (lastPosition != marker.position) {
@@ -58,78 +64,93 @@ class ActualPositionVehicles(var drawables: Drawables) {
                     map,
                     marker,
                     vehicle.path,
-                    GeoPointInterpolator.Linear(),
-                    traveledRoute
+                    GeoPointInterpolator.Linear()
                 )
             }
         } else {
             MarkerAnimation.animateMarkerToHCLinear(
                 map, marker,
                 ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude),
-                GeoPointInterpolator.Linear(),
-                traveledRoute
+                GeoPointInterpolator.Linear()
             )
             marker.rotation = fullAngle - vehicle.heading
         }
     }
 
+
+    private fun fillMarkerData(marker: Marker, icon: Drawable, typeVehicle:String, title:String){
+        marker.icon=icon
+        marker.id=typeVehicle
+        marker.title=title
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+    }
+
+
+
+
     private fun drawMarkerVehiclesOnMap(vehicle: Vehicle, map : MapView) {
         val locationPoint =
             ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude)
         val marker = Marker(map)
+
+
         marker.position = locationPoint
         marker.rotation = fullAngle - vehicle.heading.toFloat()
+
         if (vehicle.category == typeVehicleBus) {
-            marker.icon = drawables.busIconDrawable
-            marker.id = typeVehicleBus
+            fillMarkerData(marker,drawables.busIconDrawable,typeVehicleBus,vehicle.name)
         } else {
-            marker.icon = drawables.tramIconDrawable
-            marker.id = typeVehicleTram
+
+            fillMarkerData(marker,drawables.tramIconDrawable,typeVehicleTram,vehicle.name)
         }
-        marker.title = vehicle.name
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+
         markers[vehicle.id] = marker
         map.overlays.add(marker)
         marker.setOnMarkerClickListener { markerTracing, mapView ->
             markerTracing.showInfoWindow()
-            markerTracing.infoWindow.view.setOnClickListener{
-                Log.i("TESTOWY", it.toString())
-            }
             drawPathVehicle(vehicle.id, vehicle.category, mapView, marker)
         }
     }
 
+
+
+    private fun analisePathVehicleResponse(response: Response<JsonObject>, map: MapView, marker: Marker){
+        val FIRST_RESPONSE_ELEM=0
+        val PATH="paths"
+        val WAY_POINT="wayPoints"
+        val LATITUDE="lat"
+        val LONGITUDE="lon"
+
+
+        Log.i("ERRORR2", response.raw().toString())
+        val geoPoints = ArrayList<GeoPoint>()
+        val jsonObjectValue = response.body()!!
+        jsonObjectValue.getAsJsonArray(PATH)[FIRST_RESPONSE_ELEM]
+            .asJsonObject.getAsJsonArray(WAY_POINT)
+            .forEach {
+                geoPoints.add(
+                    ConvertUnits.convertToGeoPoint(
+                        it.asJsonObject[LATITUDE].asLong,
+                        it.asJsonObject[LONGITUDE].asLong
+                    )
+                )
+            }
+        drawPathVehicleOnMap(map, marker, geoPoints)
+    }
+
     private fun drawPathVehicle(idVehicle: String, type: String, map: MapView, marker: Marker) : Boolean{
-        val pathVehicleAPi =  if (type == typeVehicleTram) {
-            tramHelperInstance
+
+        if (type == typeVehicleTram) {
+            Api.getApi().getTramPath(idVehicle,fun( response: Response<JsonObject>) {
+               analisePathVehicleResponse(response,map,marker)
+            })
         } else {
-            busHelperInstance
+            Api.getApi().getBusPath(idVehicle,fun( response: Response<JsonObject>) {
+                analisePathVehicleResponse(response,map,marker)
+            })
+
         }
-        pathVehicleAPi.getPathVehicle(idVehicle).enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>,
-                                    response: Response<JsonObject>) {
-                Log.i("ERRORR2", response.raw().toString())
-                val geoPoints = ArrayList<GeoPoint>()
-                val jsonObjectValue = response.body()!!
-                jsonObjectValue.getAsJsonArray("paths")[0]
-                    .asJsonObject.getAsJsonArray("wayPoints")
-                    .forEach {
-                        geoPoints.add(
-                            ConvertUnits.convertToGeoPoint(
-                                it.asJsonObject["lat"].asLong,
-                                it.asJsonObject["lon"].asLong
-                            )
-                        )
-                    }
-                drawPathVehicleOnMap(map, marker, geoPoints)
-            }
 
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                Log.i("ERRORR2", t.toString())
-                Log.i("ERRORR2", call.request().toString())
-            }
-
-        } )
         return true
     }
 
@@ -137,7 +158,8 @@ class ActualPositionVehicles(var drawables: Drawables) {
                                 pathPoints : ArrayList<GeoPoint>
     ) {
         if (trackingVehicle != null) {
-            if (trackingVehicle!!.id == typeVehicleBus) {
+
+            if (trackingVehicle!!.id == typeVehicleBusFocused) {
                 trackingVehicle!!.icon = drawables.resizedBusIcon
             } else {
                 trackingVehicle!!.icon = drawables.resizedTramIcon
@@ -152,64 +174,47 @@ class ActualPositionVehicles(var drawables: Drawables) {
             marker.icon = drawables.resizedTramIconTracking
         }
         trackedRoute.actualPoints.clear()
-        traveledRoute.actualPoints.clear()
         pathPoints.forEach {
-            if (pathPoints[0].distanceToAsDouble(it) < pathPoints[0].distanceToAsDouble(marker.position)) {
-                traveledRoute.addPoint(it)
-            } else {
-                trackedRoute.addPoint(it)
-            }
-
+            trackedRoute.addPoint(it)
         }
-        map.overlays.add(traveledRoute)
         map.invalidate()
     }
 
-    fun createPolyline(tracked: Polyline, traveled: Polyline, width: Float, color: String) {
-        trackedRoute = tracked
+    fun createPolyline(polyline: Polyline, width: Float, color: String) {
+        trackedRoute = polyline
         trackedRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
         trackedRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
         trackedRoute.outlinePaint.color = Color.parseColor(color)
         trackedRoute.outlinePaint.strokeWidth = width
         trackedRoute.isGeodesic = true
+    }
 
-        traveledRoute = traveled
-        traveledRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
-        traveledRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
-        traveledRoute.outlinePaint.color = Color.parseColor("#FF0000")
-        traveledRoute.outlinePaint.strokeWidth = width
-        traveledRoute.isGeodesic = true
+    //to niżej dodać
+    fun checkIsResponseExist(){
+
     }
 
     fun getActualPosition(map : MapView){
-        busHelperInstance.getAllVehicles(lastUpdateBus)
-            .enqueue(object:
-            Callback<AllVehicles> {
-                override fun onResponse(call: Call<AllVehicles>, response: Response<AllVehicles>) {
-                    if (response.isSuccessful) {
-                        val allBus = response.body()!!
-                        lastUpdateBus = allBus.lastUpdate
-                        showAllVehicle(map, response.body()!!)
-                        Log.i("ERRORR2", allBus.toString())
-                    }
-                }
+      //  combine: (responseFun: Response<AllVehicles>) -> Unit
+      Api.getApi().getBusPosition(lastUpdateBus,
+          fun(response: Response<AllVehicles>) {
+              if (response.isSuccessful && response.body() != null) {
+                  val allBus = response.body()!!
+                  lastUpdateBus = allBus.lastUpdate
+                  showAllVehicle(map, response.body()!!)
+                  Log.i("ERRORR2", allBus.toString())
+              }
+          }
+        )
 
-                override fun onFailure(call: Call<AllVehicles>, t: Throwable) {
 
-                }
-        })
-        tramHelperInstance.getAllVehicles(lastUpdateTram)
-            .enqueue(object: Callback<AllVehicles> {
-                override fun onResponse(call: Call<AllVehicles>, response: Response<AllVehicles>) {
-                    if (response.isSuccessful) {
-                        val allTram = response.body()!!
-                        lastUpdateTram = allTram.lastUpdate
-                        showAllVehicle(map, allTram)
-                    }
-                }
-                override fun onFailure(call: Call<AllVehicles>, t: Throwable) {
-                    Log.i("ERRORR2", t.toString())
-                }
-        })
+      Api.getApi().getTramPosition(lastUpdateTram, fun(response: Response<AllVehicles>)  {
+          if (response.isSuccessful) {
+              val allTram = response.body()!!
+              lastUpdateTram = allTram.lastUpdate
+              showAllVehicle(map, allTram)
+          }
+      })
+
     }
 }
