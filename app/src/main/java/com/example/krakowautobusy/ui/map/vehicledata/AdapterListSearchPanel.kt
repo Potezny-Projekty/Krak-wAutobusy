@@ -2,6 +2,7 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.krakowautobusy.R
+import com.example.krakowautobusy.database.LineData
 import com.example.krakowautobusy.database.VehicleType
 
 
@@ -17,8 +19,21 @@ class AdapterListSearchPanel(data: ArrayList<com.example.krakowautobusy.database
     ArrayAdapter<com.example.krakowautobusy.database.LineData>(context, R.layout.search_result_field_bus,
         data as ArrayList<com.example.krakowautobusy.database.LineData?>
     ), View.OnClickListener {
-    private val dataSet: ArrayList<com.example.krakowautobusy.database.LineData>
+    private var dataSet: ArrayList<com.example.krakowautobusy.database.LineData>
     var mContext: Context
+
+
+    override fun getCount(): Int {
+        Log.e("searchV",dataSet.size.toString()+" Rozmiar")
+        return dataSet.size
+    }
+
+
+    fun changeDataset(Linedata:ArrayList<com.example.krakowautobusy.database.LineData>){
+        dataSet=Linedata
+        notifyDataSetChanged()
+        notifyDataSetInvalidated()
+    }
 
 
     private class ViewHolder {
@@ -40,6 +55,11 @@ class AdapterListSearchPanel(data: ArrayList<com.example.krakowautobusy.database
     init {
         dataSet = data
         mContext = context
+    }
+
+
+    override fun getItem(position: Int): LineData? {
+        return dataSet.get(position)
     }
 
 

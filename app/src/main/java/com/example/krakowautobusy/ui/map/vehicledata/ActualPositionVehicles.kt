@@ -2,6 +2,7 @@ package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.Drawable
 import android.util.Log
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.ui.map.Drawables
@@ -148,10 +149,11 @@ class ActualPositionVehicles(var drawables: Drawables) {
             })
 
         }
-
-        } )
         return true
-    }
+
+        }
+
+
 
     private fun drawPathVehicleOnMap(map: MapView, marker: Marker,
                                 pathPoints : ArrayList<GeoPoint>
@@ -215,7 +217,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
           }
         )
 
-                override fun onFailure(call: Call<AllVehicles>, t: Throwable) {
+
 
       Api.getApi().getTramPosition(lastUpdateTram, fun(response: Response<AllVehicles>)  {
           if (response.isSuccessful) {
@@ -225,5 +227,5 @@ class ActualPositionVehicles(var drawables: Drawables) {
           }
       })
 
-    }
-}
+
+}}

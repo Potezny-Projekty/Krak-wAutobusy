@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
@@ -26,6 +27,8 @@ class SearchViewFragment : Fragment() {
     private var findMyLocationOnMap_FAB:com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton?=null
     val ANIM_DURATION_MS=800L
 
+    private lateinit var   adapter :AdapterListSearchPanel;
+
     private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +36,8 @@ class SearchViewFragment : Fragment() {
     ): View {
         _binding = FragmentSearchViewBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        adapter= AdapterListSearchPanel(arrayListOf<com.example.krakowautobusy.database.LineData>(),requireContext())
+        binding.searchList.adapter=adapter
         return root
     }
 
@@ -107,6 +112,7 @@ class SearchViewFragment : Fragment() {
         hideListOption()
         addWatchListenerToSearch()
         addCallbackToDeleteIconDeleteText()
+        addHandlerToInputText()
 
 
 
@@ -120,9 +126,14 @@ class SearchViewFragment : Fragment() {
 
                     val dataModels = ArrayList<LineData>()
                     val xD= Api.getApi().getInfoAboutLinePatternNumber(binding.searchEditText.text.toString().toInt())
-                    val  adapter = AdapterListSearchPanel(xD,requireContext())
+                for (x in xD){
+                    Log.e("searchV",x.numberLine.toString())
+                }
+                    //    val  adapter = AdapterListSearchPanel(xD,requireContext())
+adapter.changeDataset(xD)
+                   // binding.searchList.adapter = adapter
+                    adapter.notifyDataSetChanged()
 
-                    binding.searchList.adapter = adapter
 
                 }
                 catch (exp:Exception){
@@ -210,8 +221,8 @@ println(exp.message)
 
 
     private fun changeSearchIconToActiveSearchIcon(){
-        val searchIcon=binding.searchIcon
-        searchIcon.setImageResource(R.drawable.back_icon_green)
+//        val searchIcon=binding.searchIcon
+       // searchIcon.setImageResource(R.drawable.back_icon_green)
     }
 
     private fun changeSearchIconToNoActiveSearchIcon(){

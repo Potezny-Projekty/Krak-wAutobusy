@@ -136,7 +136,7 @@ class Line:LineInteerface {
             LineTable.ID_VEHICLE.nameColumn
         )
 
-        val filterCondition = "cast(${LineTable.NUMBER_LINE.nameColumn} as text) like \"%${patternNumber}%\""
+        val filterCondition = "cast(${LineTable.NUMBER_LINE.nameColumn} as text) like \"${patternNumber}%\""
 
 
         val cursor = db.query(
