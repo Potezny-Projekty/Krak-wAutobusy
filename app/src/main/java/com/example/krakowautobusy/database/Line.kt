@@ -10,7 +10,7 @@ class Line:LineInteerface {
 
     fun returnLineFromCursor(
         cursor: Cursor,
-        vehicleType: VehicleType
+        vehicleType: VehicleType,stopName:String=""
     ): LineData {
 
         val firstVehicleStopName=Api.getApi().getVehicleStopById( cursor.getLong(LineTable.FIRST_STOP_ID.indexColumn)).name
@@ -23,7 +23,7 @@ class Line:LineInteerface {
             cursor.getLong(LineTable.FIRST_STOP_ID.indexColumn),
             cursor.getLong(LineTable.LAST_STOP_ID.indexColumn),
             vehicleType,
-            firstVehicleStopName,lastVehicleStopName,isLineFavourite
+            firstVehicleStopName,lastVehicleStopName,isLineFavourite,stopName
         )
 
     }
@@ -184,6 +184,45 @@ class Line:LineInteerface {
     }
 
     override fun getAllLineWithAnyVehicleStopFitPattern(db: SQLiteDatabase, nameVehicleStop: String): ArrayList<LineData> {
-        TODO("Not yet implemented")
+
+        val columnReturns = arrayOf(
+            LineTable.ID_LINE.nameColumn,LineTable.NUMBER_LINE.nameColumn,
+            LineTable.FIRST_STOP_ID.nameColumn,LineTable.LAST_STOP_ID.nameColumn,
+            LineTable.ID_VEHICLE.nameColumn
+        )
+
+
+        val baseQuery="SELECT  Line.idLine,Line.numberLine,Line.firstStop,Line.lastStop,VehicleStop.vehicleType, VehicleStop.name from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=VehicleStopSequence.idVehicleStop where lower(name) like \"${nameVehicleStop.toString().lowercase()}%\"";
+
+
+       // val filterCondition = "${LineTable.NUMBER_LINE.nameColumn}=${numberLine} and  ${LineTable.LAST_STOP_ID.nameColumn}=(SELECT Line.lastStop from Line join VehicleStop on VehicleStop.idStopPoint=Line.lastStop where VehicleStop.name like \"%${lastStopName}%\" )"
+// arrayOf(numberLine.toString(),lastStopId.toString())
+        Log.e("searchV",baseQuery+" ||||||||||||")
+        val cursor = db.rawQuery(baseQuery/*+filterCondition*/, null
+        )
+
+       // Log.e("hmm",baseQuery+filterCondition)
+        var linedatas:ArrayList<LineData> = ArrayList()
+        var findVehicleStopType: LineData? =null
+        if (cursor!!.moveToFirst()) {
+
+            do {
+                var lineData:LineData
+
+                if(cursor.getInt(4)==VehicleType.BUS.number){
+                   lineData= returnLineFromCursor(cursor,VehicleType.BUS,cursor.getString(5))
+                }else{
+                    lineData=  returnLineFromCursor(cursor,VehicleType.TRAM,cursor.getString(5))
+                }
+                linedatas.add(lineData);
+
+
+            }while(cursor!!.moveToNext())
+
+        }
+        cursor.close()
+        return  linedatas!!;
+
+        //SELECT DISTINCT Line.numberLine,Line.firstStop,Line.lastStop from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=VehicleStopSequence.idVehicleStop where name like "Sło%"
     }
 }

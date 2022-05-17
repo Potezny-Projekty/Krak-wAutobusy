@@ -42,6 +42,7 @@ class AdapterListSearchPanel(data: ArrayList<com.example.krakowautobusy.database
         var stopBusStation:TextView?=null
         var lineNumberBox:LinearLayout?=null
         var isFavouriteIcon:ImageView?=null
+        var busStopViaRoute:TextView?=null
         var idLine:Int?=null
 
     }
@@ -71,6 +72,7 @@ class AdapterListSearchPanel(data: ArrayList<com.example.krakowautobusy.database
         viewHolder.lineNumberBox=view.findViewById(R.id.lineNumberBox)
         viewHolder.startBusStation=view.findViewById(R.id.firstBusStopTextField)
         viewHolder.stopBusStation=view.findViewById(R.id.lastBusStopTextField)
+        viewHolder.busStopViaRoute=view.findViewById(R.id.busStopViaRoute)
     }
 
 
@@ -94,6 +96,14 @@ class AdapterListSearchPanel(data: ArrayList<com.example.krakowautobusy.database
         viewHolder.startBusStation!!.text= dataModel.firstStopName
         viewHolder.stopBusStation!!.text= dataModel.lastStopName
         viewHolder.idLine=dataModel.numberLine.toInt()
+
+
+
+        if(dataModel.busStopViaRoute.length>0){
+            viewHolder.busStopViaRoute!!.text=dataModel.busStopViaRoute.toString();
+        }else{//Moze dodaj jak zrobisz tez numery
+           // viewHolder.busStopViaRoute.visibility=View.GONE
+        }
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

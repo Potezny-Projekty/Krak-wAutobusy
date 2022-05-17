@@ -60,7 +60,9 @@ class Api {
   fun  getInfoAboutLinePatternNumber( patternNumber: Int): ArrayList<LineData>   {
      return lineAccess.getInfoAboutLinePatternNumber(database.readableDatabase,patternNumber );
   }
-
+fun getInfoAboutLinePatternAnyVehicleStop(patternName:String):ArrayList<LineData>{
+    return lineAccess.getAllLineWithAnyVehicleStopFitPattern(database.readableDatabase,patternName)
+}
 
 
 

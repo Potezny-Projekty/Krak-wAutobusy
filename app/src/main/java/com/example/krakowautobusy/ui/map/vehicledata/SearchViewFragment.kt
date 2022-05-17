@@ -122,10 +122,20 @@ class SearchViewFragment : Fragment() {
       binding.searchEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 try{
-             binding.searchEditText.text.toString().toInt()
+            // binding.searchEditText.text.toString().toInt()
 
                     val dataModels = ArrayList<LineData>()
-                    val xD= Api.getApi().getInfoAboutLinePatternNumber(binding.searchEditText.text.toString().toInt())
+                    var xD:ArrayList<com.example.krakowautobusy.database.LineData> =ArrayList<com.example.krakowautobusy.database.LineData>()
+
+                    //rozrzerz to na dodanie obu wyszukiwan
+                  //  val xD= Api.getApi().getInfoAboutLinePatternNumber(binding.searchEditText.text.toString().toInt())
+               if(binding.searchEditText.text.toString().length>2) {
+                    xD = Api.getApi()
+                       .getInfoAboutLinePatternAnyVehicleStop(binding.searchEditText.text.toString())
+               }
+
+               Log.e("searchV",xD.size.toString()+" xD")
+
                 for (x in xD){
                     Log.e("searchV",x.numberLine.toString())
                 }
@@ -138,6 +148,7 @@ adapter.changeDataset(xD)
                 }
                 catch (exp:Exception){
 println(exp.message)
+                    Log.e("searchV",exp.message.toString())
                 }
             }
 
