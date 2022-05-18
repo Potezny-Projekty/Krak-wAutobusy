@@ -11,8 +11,12 @@ import android.util.Log
 import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.animation.doOnEnd
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.databinding.FragmentSearchViewBinding
@@ -113,12 +117,33 @@ class SearchViewFragment : Fragment() {
         addWatchListenerToSearch()
         addCallbackToDeleteIconDeleteText()
         addHandlerToInputText()
+        binding.searchList.setOnItemClickListener { parent, view, position, id ->
+Log.e("klik","klikek"+view.findViewById<TextView>(R.id.lineNumber).toString())
+            val bundle = bundleOf("nameLine" to view.findViewById<TextView>(R.id.lineNumber).text.toString().trim().toInt())
 
+            Navigation.findNavController(view).navigate(R.id.action_navigation_map_to_detailsFragment,bundle);
+            //I tried you use comented line to solwe my problem
+            //view.imageViewButton.setOnClickListener { Toast.makeText(this, "button $position is clicked",Toast.LENGTH_SHORT).show() }
+           // Toast.makeText(context, "not button clicked, $position works correctly", Toast.LENGTH_SHORT).show()
+        }
 
 
     }
 
     private fun addHandlerToInputText(){
+
+
+
+
+
+
+
+
+
+
+
+
+
       binding.searchEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 try{
@@ -129,11 +154,17 @@ class SearchViewFragment : Fragment() {
 
                     //rozrzerz to na dodanie obu wyszukiwan
                   //  val xD= Api.getApi().getInfoAboutLinePatternNumber(binding.searchEditText.text.toString().toInt())
+
+               if(binding.searchEditText.text.toString().toIntOrNull()!=null){
+                   xD= Api.getApi().getInfoAboutLinePatternNumber(binding.searchEditText.text.toString().toInt())
+
+               }else{
+
                if(binding.searchEditText.text.toString().length>2) {
                     xD = Api.getApi()
                        .getInfoAboutLinePatternAnyVehicleStop(binding.searchEditText.text.toString())
                }
-
+               }
                Log.e("searchV",xD.size.toString()+" xD")
 
                 for (x in xD){

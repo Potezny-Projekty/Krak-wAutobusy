@@ -67,6 +67,19 @@
             android:layout_height="match_parent">
 
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_baseline_view_headline_24"
+                android:scaleX="0.5"
+                android:scaleY="0.5"
+                android:id="@+id/ic_baseline_view_week_24.xml"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ic_baseline_view_week_24.xml"
+                android:layout_marginStart="8dp"
+                android:contentDescription="@string/green_circle_desc" />
+
+
             <TextView
                 android:text="@string/first_bus_stop_description"
                 android:layout_width="wrap_content"

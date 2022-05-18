@@ -6,10 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
+import androidx.navigation.Navigation
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.database.LineData
 import com.example.krakowautobusy.database.VehicleType
@@ -48,6 +46,9 @@ class AdapterListSearchPanel(data: ArrayList<com.example.krakowautobusy.database
     }
 
     override fun onClick(v: View) {
+        Log.e("klik","klik")
+        Toast.makeText(context, "not button clicked,  works correctly", Toast.LENGTH_SHORT).show()
+       // Navigation.findNavController(v).navigate(R.id.action_navigation_map_to_detailsFragment);
 
     }
 
