@@ -1,20 +1,24 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.AnimatedVectorDrawable
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.VectorDrawable
 import android.util.Log
+import androidx.core.graphics.drawable.toDrawable
+import androidx.core.graphics.drawable.toIcon
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.ui.map.Drawables
-import com.example.krakowautobusy.ui.map.network.ActualPositionApi
-import com.example.krakowautobusy.ui.map.network.RetrofitHelperBus
-import com.example.krakowautobusy.ui.map.network.RetrofitHelperTram
 import com.google.gson.JsonObject
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.*
-import retrofit2.Call
-import retrofit2.Callback
+import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Polyline
 import retrofit2.Response
 
 
@@ -23,21 +27,15 @@ class ActualPositionVehicles(var drawables: Drawables) {
     private var lastUpdateTram: Long = 0
     private var markers = mutableMapOf<String, Marker>()
     private var trackedRoute = Polyline()
+    private var traveledRoute = Polyline()
 
     private val fullAngle = 360F
     private var enabled = true
     private var trackingVehicle: Marker? = null
-    private val typeVehicleBus = "bus"
-    private val typeVehicleBusFocused = "busFocused"
-    private val typeVehicleTram = "tram"
     val NO_ELEMENT=0
 
 
-
-
-
-
-    fun setEnabled(enabled: Boolean) {//co to kurwa jest nazwa nic nie mówi dobra żartuje ale nic nie mówi
+    fun setEnabled(enabled: Boolean) {
         this.enabled = enabled
     }
 
@@ -64,14 +62,16 @@ class ActualPositionVehicles(var drawables: Drawables) {
                     map,
                     marker,
                     vehicle.path,
-                    GeoPointInterpolator.Linear()
+                    GeoPointInterpolator.Linear(),
+                    traveledRoute
                 )
             }
         } else {
             MarkerAnimation.animateMarkerToHCLinear(
                 map, marker,
                 ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude),
-                GeoPointInterpolator.Linear()
+                GeoPointInterpolator.Linear(),
+                traveledRoute
             )
             marker.rotation = fullAngle - vehicle.heading
         }
@@ -79,13 +79,12 @@ class ActualPositionVehicles(var drawables: Drawables) {
 
 
     private fun fillMarkerData(marker: Marker, icon: Drawable, typeVehicle:String, title:String){
-        marker.icon=icon
+        val lineNumber = title.split(" ")[0]
+        marker.icon= drawNumberOnIcon(icon, lineNumber)
         marker.id=typeVehicle
         marker.title=title
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
     }
-
-
 
 
     private fun drawMarkerVehiclesOnMap(vehicle: Vehicle, map : MapView) {
@@ -97,11 +96,11 @@ class ActualPositionVehicles(var drawables: Drawables) {
         marker.position = locationPoint
         marker.rotation = fullAngle - vehicle.heading.toFloat()
 
-        if (vehicle.category == typeVehicleBus) {
-            fillMarkerData(marker,drawables.busIconDrawable,typeVehicleBus,vehicle.name)
+        if (vehicle.category == VehicleType.BUS.type) {
+            fillMarkerData(marker,drawables.busIconDrawable, VehicleType.BUS.type,vehicle.name)
         } else {
 
-            fillMarkerData(marker,drawables.tramIconDrawable,typeVehicleTram,vehicle.name)
+            fillMarkerData(marker,drawables.tramIconDrawable,VehicleType.TRAM.type,vehicle.name)
         }
 
         markers[vehicle.id] = marker
@@ -140,7 +139,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
 
     private fun drawPathVehicle(idVehicle: String, type: String, map: MapView, marker: Marker) : Boolean{
 
-        if (type == typeVehicleTram) {
+        if (type == VehicleType.TRAM.type) {
             Api.getApi().getTramPath(idVehicle,fun( response: Response<JsonObject>) {
                analisePathVehicleResponse(response,map,marker)
             })
@@ -159,34 +158,52 @@ class ActualPositionVehicles(var drawables: Drawables) {
     ) {
         if (trackingVehicle != null) {
 
-            if (trackingVehicle!!.id == typeVehicleBusFocused) {
+            if (trackingVehicle!!.id == VehicleType.BUS_FOCUSED.type) {
                 trackingVehicle!!.icon = drawables.resizedBusIcon
+                trackingVehicle!!.id = VehicleType.BUS.type
             } else {
                 trackingVehicle!!.icon = drawables.resizedTramIcon
+                trackingVehicle!!.id = VehicleType.TRAM.type
             }
         }
         trackingVehicle = marker
-        if (marker.id == typeVehicleBus) {
-            marker.id = "busFocused"
+        if (marker.id == VehicleType.BUS.type) {
+            marker.id = VehicleType.BUS_FOCUSED.type
             marker.icon = drawables.resizedBusIconTracking
         } else {
-            marker.id = "tramFocused"
+            marker.id = VehicleType.TRAM_FOCUSED.type
             marker.icon = drawables.resizedTramIconTracking
         }
         trackedRoute.actualPoints.clear()
+        traveledRoute.actualPoints.clear()
+        val firstElement = 0;
         pathPoints.forEach {
-            trackedRoute.addPoint(it)
+            if (pathPoints[firstElement].distanceToAsDouble(it)
+                < pathPoints[firstElement].distanceToAsDouble(marker.position)) {
+                traveledRoute.addPoint(it)
+            } else {
+                trackedRoute.addPoint(it)
+            }
         }
         map.invalidate()
     }
 
-    fun createPolyline(polyline: Polyline, width: Float, color: String) {
-        trackedRoute = polyline
+    fun createPolyline(tracked: Polyline, traveled : Polyline, width: Float, color: String) {
+        val colorTraveledRoute = "#FF0000";
+
+        trackedRoute = tracked
         trackedRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
         trackedRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
         trackedRoute.outlinePaint.color = Color.parseColor(color)
         trackedRoute.outlinePaint.strokeWidth = width
         trackedRoute.isGeodesic = true
+
+        traveledRoute = traveled
+        traveledRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
+        traveledRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
+        traveledRoute.outlinePaint.color = Color.parseColor(colorTraveledRoute)
+        traveledRoute.outlinePaint.strokeWidth = width
+        traveledRoute.isGeodesic = true
     }
 
     //to niżej dodać
@@ -216,5 +233,23 @@ class ActualPositionVehicles(var drawables: Drawables) {
           }
       })
 
+    }
+
+    private fun drawNumberOnIcon(icon : Drawable, number : String) : Drawable {
+        val textSize = 20f;
+        val copyIcon = icon.mutate()
+        val paint = Paint()
+        paint.color = Color.BLACK
+        paint.textSize = textSize
+        val bitmap = Bitmap.createBitmap(
+            copyIcon.intrinsicWidth,
+            copyIcon.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        copyIcon.setBounds(0, 0, canvas.width, canvas.height)
+        canvas.drawText(number, 20f, 20f, paint)
+        copyIcon.draw(canvas)
+        return bitmap.toDrawable(Resources.getSystem())
     }
 }
