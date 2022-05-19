@@ -30,7 +30,8 @@ object MarkerAnimation {
             val end = ConvertUnits.convertToGeoPoint(endPoint[pathIterator].y2, endPoint[pathIterator].x2)
             val newPosition: GeoPoint =
                 GeoPointInterpolator.interpolate(fraction, startPosition, end)
-            if (marker.id == "busFocused" || marker.id == "tramFocused") {
+            if (marker.id == VehicleType.TRAM_FOCUSED.type
+                || marker.id == VehicleType.BUS_FOCUSED.type) {
                 polyline.addPoint(startPosition)
             }
             marker.rotation = fullAngle - endPoint[pathIterator].angle
@@ -48,7 +49,8 @@ object MarkerAnimation {
         } else {
             valueAnimator.duration = DURATION_ANIMATION / endPoint.size
         }
-        valueAnimator.repeatCount = endPoint.size - 1
+        val lastPositionElement = endPoint.size - 1;
+        valueAnimator.repeatCount = lastPositionElement
         valueAnimator.start()
 
         return valueAnimator
@@ -68,7 +70,8 @@ object MarkerAnimation {
             val newPosition: GeoPoint =
                 GeoPointInterpolator.interpolate(fraction, startPosition, endPoint)
             marker.position = newPosition
-            if (marker.id == "busFocused" || marker.id == "tramFocused") {
+            if (marker.id == VehicleType.TRAM_FOCUSED.type
+                || marker.id == VehicleType.BUS_FOCUSED.type) {
                 polyline.addPoint(startPosition)
             }
             map.invalidate()

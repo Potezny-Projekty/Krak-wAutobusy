@@ -2,8 +2,10 @@ package com.example.krakowautobusy.ui.map
 
 import android.content.Context
 import android.graphics.*
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.ui.map.vehicledata.Utilities
 
@@ -15,6 +17,7 @@ class Drawables(var context: Context) {
     var userLocationIconDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.location_icon)!!
     var busIconTrackingDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_bus_tracking)!!
     var tramIconTrackingDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_tram_tracking)!!
+
 
     lateinit var resizedBusStopIcon: Drawable
     lateinit var resizedTramIcon: Drawable
@@ -34,4 +37,5 @@ class Drawables(var context: Context) {
         drawables.resizedBusIconTracking = utilities.resizeDrawable(drawables.busIconTrackingDrawable)
         drawables.resizedTramIconTracking = utilities.resizeDrawable(drawables.tramIconTrackingDrawable)
     }
+    
 }
