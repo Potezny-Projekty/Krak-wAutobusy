@@ -12,13 +12,14 @@ import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.animation.doOnEnd
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import com.example.krakowautobusy.BundleChoiceVehicle
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
+import com.example.krakowautobusy.database.VehicleType
 import com.example.krakowautobusy.databinding.FragmentSearchViewBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -114,12 +115,12 @@ class SearchViewFragment : Fragment() {
 
 
         hideListOption()
-        addWatchListenerToSearch()
+        addWatchListenerToInputSearchLineText()
         addCallbackToDeleteIconDeleteText()
         addHandlerToInputText()
         binding.searchList.setOnItemClickListener { parent, view, position, id ->
 Log.e("klik","klikek"+view.findViewById<TextView>(R.id.lineNumber).toString())
-            val bundle = bundleOf("nameLine" to view.findViewById<TextView>(R.id.lineNumber).text.toString().trim().toInt())
+            val bundle = bundleOf(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject to view.findViewById<TextView>(R.id.lineNumber).text.toString().trim().toInt())
 
             Navigation.findNavController(view).navigate(R.id.action_navigation_map_to_detailsFragment,bundle);
             //I tried you use comented line to solwe my problem
@@ -144,67 +145,23 @@ Log.e("klik","klikek"+view.findViewById<TextView>(R.id.lineNumber).toString())
 
 
 
-      binding.searchEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                try{
-            // binding.searchEditText.text.toString().toInt()
-
-                    val dataModels = ArrayList<LineData>()
-                    var xD:ArrayList<com.example.krakowautobusy.database.LineData> =ArrayList<com.example.krakowautobusy.database.LineData>()
-
-                    //rozrzerz to na dodanie obu wyszukiwan
-                  //  val xD= Api.getApi().getInfoAboutLinePatternNumber(binding.searchEditText.text.toString().toInt())
-
-               if(binding.searchEditText.text.toString().toIntOrNull()!=null){
-                   xD= Api.getApi().getInfoAboutLinePatternNumber(binding.searchEditText.text.toString().toInt())
-
-               }else{
-
-               if(binding.searchEditText.text.toString().length>2) {
-                    xD = Api.getApi()
-                       .getInfoAboutLinePatternAnyVehicleStop(binding.searchEditText.text.toString())
-               }
-               }
-               Log.e("searchV",xD.size.toString()+" xD")
-
-                for (x in xD){
-                    Log.e("searchV",x.numberLine.toString())
-                }
-                    //    val  adapter = AdapterListSearchPanel(xD,requireContext())
-adapter.changeDataset(xD)
-                   // binding.searchList.adapter = adapter
-                    adapter.notifyDataSetChanged()
-
-
-                }
-                catch (exp:Exception){
-println(exp.message)
-                    Log.e("searchV",exp.message.toString())
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
     }
 
 
 
 
+
     private fun addDataToSearchView(){
-      val dataModels = ArrayList<LineData>()
+    //  val dataModels = ArrayList<LineData>()
    //  val xD= Api.getApi().getInfoAboutLinePatternNumber(5)
    //     val  adapter = AdapterListSearchPanel(xD,requireContext())
 
       // binding.searchList.adapter = adapter
 
-      dataModels.add(LineData(1,VehicleEnum.BUS,537,"Witkowice","Dworzec Główny Wschód",true))
-      dataModels.add(LineData(2,VehicleEnum.BUS,112,"Os,Podwawelskie","Tyniec Kamieniołom",false))
-      dataModels.add(LineData(3,VehicleEnum.TRAM,5,"Wzgórze Krzesłowickie","Krowodrza Górka",true))
-      dataModels.add(LineData(4,VehicleEnum.TRAM,17,"Czerwone Maki P+R","Dworzec Towarowy",false))
+    //  dataModels.add(LineData(1,VehicleEnum.BUS,537,"Witkowice","Dworzec Główny Wschód",true))
+    //  dataModels.add(LineData(2,VehicleEnum.BUS,112,"Os,Podwawelskie","Tyniec Kamieniołom",false))
+   ////   dataModels.add(LineData(3,VehicleEnum.TRAM,5,"Wzgórze Krzesłowickie","Krowodrza Górka",true))
+    //  dataModels.add(LineData(4,VehicleEnum.TRAM,17,"Czerwone Maki P+R","Dworzec Towarowy",false))
 
 
     }
@@ -449,7 +406,7 @@ println(exp.message)
 
 
 
-    private fun showDeleteTextIconWhenCharAboveOrHide(){
+    private fun showDeleteTextIconWhenIsMinimumOneCharacterOrHide(){
         val deleteIcon=binding.deleteUserWriteTextIcon
         if(binding.searchEditText.text.toString().length>0){
 
@@ -461,19 +418,62 @@ println(exp.message)
 
     }
 
-    private fun addWatchListenerToSearch(){
-        val searchEditText=binding.searchEditText
-        searchEditText.addTextChangedListener(object : TextWatcher {
 
-            override fun afterTextChanged(s: Editable) {}
+    private  fun getMatchNumberLineFromDatabase(numberLinePattern:String):ArrayList<com.example.krakowautobusy.database.LineData>{
+            return Api.getApi().getInfoAboutLinePatternNumber(numberLinePattern.toInt());
+    }
 
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
+    private fun getMatchAnyVehicleStopLineFromDatabase(patternVehicleStop:String):ArrayList<com.example.krakowautobusy.database.LineData>{
+        return Api.getApi().getInfoAboutLinePatternAnyVehicleStop(patternVehicleStop);
+    }
+
+
+    private fun ifWriteNumberLine(patternSerchTextWriteByUser:String):Boolean{
+        if(patternSerchTextWriteByUser.toIntOrNull()!=null){
+            return true
+        }
+        return false
+    }
+
+
+    private fun getLineMatchToUserPattern():ArrayList<com.example.krakowautobusy.database.LineData>{
+        val MINIMUM_CHAR_TO_START_SEARCHING_MATCH_LINE=2
+        val textFromSearchInput=binding.searchEditText.text.toString()
+        var matchLines:ArrayList<com.example.krakowautobusy.database.LineData> =ArrayList<com.example.krakowautobusy.database.LineData>()
+        if(ifWriteNumberLine(textFromSearchInput)){
+            matchLines=getMatchNumberLineFromDatabase(textFromSearchInput)
+        }else{
+
+            if(textFromSearchInput.length>MINIMUM_CHAR_TO_START_SEARCHING_MATCH_LINE){
+                matchLines=getMatchAnyVehicleStopLineFromDatabase(textFromSearchInput)
+            }
+        }
+        return matchLines
+
+    }
+
+    private fun changeDataSetAdapterLineMatchToUserText(){
+        adapter.changeDataset(getLineMatchToUserPattern())
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun addWatchListenerToInputSearchLineText(){
+
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                try{//Sprawdź czy to jest konieczne aby dawać try
+                    changeDataSetAdapterLineMatchToUserText()
+                }
+                catch (_:Exception){
+
+                }
             }
 
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
-                showDeleteTextIconWhenCharAboveOrHide()
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                showDeleteTextIconWhenIsMinimumOneCharacterOrHide()
             }
         })
     }

@@ -58,8 +58,7 @@ class CreateDetailsMapFragment : Fragment() {
 
 
 
-        Toast.makeText(context, arguments?.getInt("lineNumber").toString(), Toast.LENGTH_SHORT).show()
-        Toast.makeText(context, "Reason can not be blank", Toast.LENGTH_SHORT).show();
+
        // binding.lineNumber = arguments?.getString("amount")
 
         return binding.root

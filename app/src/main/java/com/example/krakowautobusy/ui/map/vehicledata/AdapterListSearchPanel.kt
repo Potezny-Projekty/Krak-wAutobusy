@@ -2,32 +2,29 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.navigation.Navigation
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.database.LineData
 import com.example.krakowautobusy.database.VehicleType
 
 
-class AdapterListSearchPanel(data: ArrayList<com.example.krakowautobusy.database.LineData>, context: Context) :
-    ArrayAdapter<com.example.krakowautobusy.database.LineData>(context, R.layout.search_result_field_bus,
-        data as ArrayList<com.example.krakowautobusy.database.LineData?>
+class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
+    ArrayAdapter<LineData>(context, R.layout.search_result_field_bus,
+    data as ArrayList<LineData?>
     ), View.OnClickListener {
-    private var dataSet: ArrayList<com.example.krakowautobusy.database.LineData>
+    private var dataSet: ArrayList<LineData>
     var mContext: Context
 
 
     override fun getCount(): Int {
-        Log.e("searchV",dataSet.size.toString()+" Rozmiar")
         return dataSet.size
     }
 
 
-    fun changeDataset(Linedata:ArrayList<com.example.krakowautobusy.database.LineData>){
+    fun changeDataset(Linedata:ArrayList<LineData>){
         dataSet=Linedata
         notifyDataSetChanged()
         notifyDataSetInvalidated()
@@ -42,13 +39,11 @@ class AdapterListSearchPanel(data: ArrayList<com.example.krakowautobusy.database
         var isFavouriteIcon:ImageView?=null
         var busStopViaRoute:TextView?=null
         var idLine:Int?=null
+        var iconVehicleStopViaRoute:ImageView?=null
 
     }
 
     override fun onClick(v: View) {
-        Log.e("klik","klik")
-        Toast.makeText(context, "not button clicked,  works correctly", Toast.LENGTH_SHORT).show()
-       // Navigation.findNavController(v).navigate(R.id.action_navigation_map_to_detailsFragment);
 
     }
 
@@ -60,8 +55,8 @@ class AdapterListSearchPanel(data: ArrayList<com.example.krakowautobusy.database
     }
 
 
-    override fun getItem(position: Int): LineData? {
-        return dataSet.get(position)
+    override fun getItem(position: Int): LineData {
+        return dataSet[position]
     }
 
 
@@ -74,8 +69,20 @@ class AdapterListSearchPanel(data: ArrayList<com.example.krakowautobusy.database
         viewHolder.startBusStation=view.findViewById(R.id.firstBusStopTextField)
         viewHolder.stopBusStation=view.findViewById(R.id.lastBusStopTextField)
         viewHolder.busStopViaRoute=view.findViewById(R.id.busStopViaRoute)
+        viewHolder.iconVehicleStopViaRoute=view.findViewById(R.id.iconVehicleStopViaRoute)
     }
 
+
+    private fun ifUserWriteNumberShowMiddleVehicleStopIfNotHideMiddleField(vehicleStopViaPotential:String, viewHolder: ViewHolder){
+        if(vehicleStopViaPotential.isNotEmpty()){
+            viewHolder.busStopViaRoute?.visibility =View.VISIBLE
+            viewHolder.iconVehicleStopViaRoute?.visibility =View.VISIBLE
+            viewHolder.busStopViaRoute!!.text =vehicleStopViaPotential
+        }else{
+            viewHolder.busStopViaRoute?.visibility =View.GONE
+            viewHolder.iconVehicleStopViaRoute?.visibility =View.GONE
+        }
+    }
 
     private fun fillViewData(viewHolder: ViewHolder, dataModel:com.example.krakowautobusy.database.LineData){
         viewHolder.lineNumber!!.text= dataModel.numberLine .toString()
@@ -99,12 +106,8 @@ class AdapterListSearchPanel(data: ArrayList<com.example.krakowautobusy.database
         viewHolder.idLine=dataModel.numberLine.toInt()
 
 
+        ifUserWriteNumberShowMiddleVehicleStopIfNotHideMiddleField(dataModel.busStopViaRoute,viewHolder);
 
-        if(dataModel.busStopViaRoute.length>0){
-            viewHolder.busStopViaRoute!!.text=dataModel.busStopViaRoute.toString();
-        }else{//Moze dodaj jak zrobisz tez numery
-           // viewHolder.busStopViaRoute.visibility=View.GONE
-        }
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

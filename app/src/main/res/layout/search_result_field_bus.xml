@@ -73,7 +73,7 @@
                 app:srcCompat="@drawable/ic_baseline_view_headline_24"
                 android:scaleX="0.5"
                 android:scaleY="0.5"
-                android:id="@+id/ic_baseline_view_week_24.xml"
+                android:id="@+id/iconVehicleStopViaRoute"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ic_baseline_view_week_24.xml"
                 android:layout_marginStart="8dp"

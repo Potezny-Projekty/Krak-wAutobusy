@@ -22,6 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/line_info"
+            android:id="@+id/lineNumberTop"
                 android:layout_alignBaseline="@id/back_arrow_details_menu"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -66,6 +67,7 @@
 
         <LinearLayout
                 android:layout_width="match_parent"
+            android:id="@+id/titlex"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
             <include layout="@layout/bus_stop_arrival_box" />
