@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.Animation
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.core.animation.doOnEnd
@@ -19,8 +20,10 @@ import androidx.navigation.Navigation
 import com.example.krakowautobusy.BundleChoiceVehicle
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
+import com.example.krakowautobusy.database.LineData
 import com.example.krakowautobusy.database.VehicleType
 import com.example.krakowautobusy.databinding.FragmentSearchViewBinding
+
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class SearchViewFragment : Fragment() {
@@ -41,9 +44,14 @@ class SearchViewFragment : Fragment() {
     ): View {
         _binding = FragmentSearchViewBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        adapter= AdapterListSearchPanel(arrayListOf<com.example.krakowautobusy.database.LineData>(),requireContext())
-        binding.searchList.adapter=adapter
+
+        addAdapterToSearchLineListView()
         return root
+    }
+
+    private fun addAdapterToSearchLineListView(){
+        adapter= AdapterListSearchPanel(arrayListOf<LineData>(),requireContext())
+        binding.searchList.adapter=adapter
     }
 
     private fun allowAccessKeyboard(){
@@ -51,60 +59,23 @@ class SearchViewFragment : Fragment() {
     }
 
     private fun showListSearchViewAnimation(){
-        val view=binding.allSearchPane
-
-        view.pivotX = 0f
-        view.pivotY = 0f
-
-        view.animate()
-            .scaleY(1f)
-            .setInterpolator(AccelerateDecelerateInterpolator()).duration = ANIM_DURATION_MS/2
-   /*     searchList!!.visibility = View.VISIBLE
-
-        val anim = ValueAnimator.ofInt(searchList.getMeasuredHeight(), -100)
-        anim.addUpdateListener { valueAnimator ->
-            val `val` = valueAnimator.animatedValue as Int
-            val layoutParams: ViewGroup.LayoutParams = searchList.getLayoutParams()
-            layoutParams.height = `val`
-            searchList.setLayoutParams(layoutParams)
-        }
-        anim.duration = 800
-        anim.start()
-
-*/
-
-     //   searchList!!.visibility = View.VISIBLE
-      //  searchList.setAlpha(0.0f);
-
-
-      //  searchList.animate()
-     //       .translationY(searchList.getHeight().toFloat())
-     //       .alpha(1.0f)
-     //       .start()
+        AnimationSearchView.showListSearchViewAnimation(binding.allSearchPane)
     }
 
     private fun hideListSearchViewAnimation(){
-        val view=binding.allSearchPane
-        view.pivotX = 0f;
-        view.pivotY = 0f
-
-        view.animate()
-            .scaleY(0f)
-            .setInterpolator(AccelerateDecelerateInterpolator()).duration = ANIM_DURATION_MS/2
-
-/*
-        val view=binding.allSearchPane
-        view!!.animate()
-            .translationY(0f)
-            .alpha(0.0f)
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    super.onAnimationEnd(animation)
-                    view!!.visibility = View.GONE
-                }
-            })*/
+        AnimationSearchView.hideListSearchViewAnimation(binding.allSearchPane)
     }
 
+
+
+    fun addOnClickListenerToLineOnList(){
+        binding.searchList.setOnItemClickListener { _, view, _, _ ->
+            val bundle = bundleOf(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject to
+                    view.findViewById<TextView>(R.id.lineNumber).text.toString().trim().toInt())
+
+            Navigation.findNavController(view).navigate(R.id.action_navigation_map_to_detailsFragment,bundle);
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -112,61 +83,12 @@ class SearchViewFragment : Fragment() {
         actionWhenSearchPanelClickIcon()
         allowAccessKeyboard()
         initialiseAnimation()
-
-
         hideListOption()
         addWatchListenerToInputSearchLineText()
         addCallbackToDeleteIconDeleteText()
-        addHandlerToInputText()
-        binding.searchList.setOnItemClickListener { parent, view, position, id ->
-Log.e("klik","klikek"+view.findViewById<TextView>(R.id.lineNumber).toString())
-            val bundle = bundleOf(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject to view.findViewById<TextView>(R.id.lineNumber).text.toString().trim().toInt())
-
-            Navigation.findNavController(view).navigate(R.id.action_navigation_map_to_detailsFragment,bundle);
-            //I tried you use comented line to solwe my problem
-            //view.imageViewButton.setOnClickListener { Toast.makeText(this, "button $position is clicked",Toast.LENGTH_SHORT).show() }
-           // Toast.makeText(context, "not button clicked, $position works correctly", Toast.LENGTH_SHORT).show()
-        }
-
+        addOnClickListenerToLineOnList()
 
     }
-
-    private fun addHandlerToInputText(){
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
-
-
-
-
-
-    private fun addDataToSearchView(){
-    //  val dataModels = ArrayList<LineData>()
-   //  val xD= Api.getApi().getInfoAboutLinePatternNumber(5)
-   //     val  adapter = AdapterListSearchPanel(xD,requireContext())
-
-      // binding.searchList.adapter = adapter
-
-    //  dataModels.add(LineData(1,VehicleEnum.BUS,537,"Witkowice","Dworzec Główny Wschód",true))
-    //  dataModels.add(LineData(2,VehicleEnum.BUS,112,"Os,Podwawelskie","Tyniec Kamieniołom",false))
-   ////   dataModels.add(LineData(3,VehicleEnum.TRAM,5,"Wzgórze Krzesłowickie","Krowodrza Górka",true))
-    //  dataModels.add(LineData(4,VehicleEnum.TRAM,17,"Czerwone Maki P+R","Dworzec Towarowy",false))
-
-
-    }
-
-
 
 
     private fun getAccessToViewFromOtherFragmentOrActivity(){
@@ -190,13 +112,7 @@ Log.e("klik","klikek"+view.findViewById<TextView>(R.id.lineNumber).toString())
         bottomNavView?.visibility=View.VISIBLE
         findMyLocationOnMap_FAB?.visibility=View.VISIBLE
         showAllOrFavoriteBusOnMap_FAB?.visibility=View.VISIBLE
-
-
-
     }
-
-
-
 
 
     private fun Fragment.hideKeyboard() {
@@ -217,16 +133,20 @@ Log.e("klik","klikek"+view.findViewById<TextView>(R.id.lineNumber).toString())
 
 
 
-
-
     private fun changeSearchIconToActiveSearchIcon(){
-//        val searchIcon=binding.searchIcon
-       // searchIcon.setImageResource(R.drawable.back_icon_green)
+      //  val searchIcon=binding.searchIcon
+        if(_binding!=null){
+           binding.searchIcon.setImageResource(R.drawable.back_icon_green)
+        }
+    //
     }
 
     private fun changeSearchIconToNoActiveSearchIcon(){
 //        val searchIcon=binding.searchIcon
-     //   searchIcon.setImageResource(R.drawable.ic_baseline_menu_24)
+  //      searchIcon.setImageResource(R.drawable.ic_baseline_menu_24)
+        if(_binding!=null){
+            binding.searchIcon.setImageResource(R.drawable.ic_baseline_menu_24)
+        }
     }
 
 
@@ -236,71 +156,40 @@ Log.e("klik","klikek"+view.findViewById<TextView>(R.id.lineNumber).toString())
         prepareResizeIconSearchAnimation()
     }
 
-    private lateinit var rotateAnimation:ObjectAnimator
-    private lateinit var rotateAnimationReverse:ObjectAnimator
+
     private fun prepareRotateIconSearchAnimation(){
-        val searchIcon=binding.searchIcon
-        val animatorRotateIcon = ObjectAnimator.ofFloat(searchIcon, View.ROTATION, -180f, 0f)
-        animatorRotateIcon.duration = ANIM_DURATION_MS
-        rotateAnimation=animatorRotateIcon
-
-
-
-        val animatorRotateIconReverse = ObjectAnimator.ofFloat(searchIcon, View.ROTATION, 180f, 0f)
-        animatorRotateIconReverse.duration = ANIM_DURATION_MS
-        rotateAnimationReverse=animatorRotateIconReverse
-
+        AnimationSearchView.preparedRotateIconSearchAnimation(binding.searchIcon)
 
     }
 
-    private lateinit var scaleXAnimationScaleUo:ObjectAnimator
-    private lateinit var scaleYAnimationScaleUp:ObjectAnimator
 
-    private lateinit var scaleXAnimationScaleDown:ObjectAnimator
-    private lateinit var scaleYAnimationScaleDown:ObjectAnimator
     private fun prepareResizeIconSearchAnimation(){
-        val searchIcon=binding.searchIcon
-        val scaleY = ObjectAnimator.ofFloat(searchIcon, "scaleY", 0f, 1.5f)
-        val scaleX = ObjectAnimator.ofFloat(searchIcon, "scaleX", 0f, 1.5f)
-        scaleX.duration=ANIM_DURATION_MS
-        scaleY.duration=ANIM_DURATION_MS
-
-        scaleXAnimationScaleUo=scaleX
-        scaleYAnimationScaleUp=scaleY
-
-
-        val scaleYDown = ObjectAnimator.ofFloat(searchIcon, "scaleY", 1.5f, 0f)
-        val scaleXDown = ObjectAnimator.ofFloat(searchIcon, "scaleX", 1.5f, 0f)
-        scaleXDown.duration=ANIM_DURATION_MS
-        scaleYDown.duration=ANIM_DURATION_MS
-        scaleXAnimationScaleDown=scaleXDown
-        scaleYAnimationScaleDown=scaleYDown
-
-
+       AnimationSearchView.prepareResizeIconSearchAnimation(binding.searchIcon)
     }
+
+
 
     private fun runOpenSearchPanelAnimation(){
 
         val ALFA_BACGROUND_WHEN_SHOW_SEARCH_VIEW_PERCENTAGE=40
-
         hideApplicationNavBar()
-
         binding.root.setBackgroundColor(Color.GRAY)
         binding.root.background.alpha=ALFA_BACGROUND_WHEN_SHOW_SEARCH_VIEW_PERCENTAGE
+      //  binding.allSearchPane.alpha=0.9f
 
 
 
-        rotateAnimation.doOnEnd {
+        AnimationSearchView.rotateAnimation.doOnEnd {
 
             changeSearchIconToActiveSearchIcon()
             val animationSet=AnimatorSet()
-            animationSet.playTogether(scaleXAnimationScaleUo,scaleYAnimationScaleUp)
+            animationSet.playTogether(AnimationSearchView. scaleXAnimationScaleUo,AnimationSearchView. scaleYAnimationScaleUp)
             animationSet.start()
 
         }
 
         val animationSet = AnimatorSet()
-        animationSet.playTogether(scaleYAnimationScaleDown, scaleXAnimationScaleDown,rotateAnimation)
+        animationSet.playTogether(AnimationSearchView .scaleYAnimationScaleDown, AnimationSearchView. scaleXAnimationScaleDown,AnimationSearchView.rotateAnimation)
         animationSet.start()
     }
 
@@ -349,13 +238,11 @@ Log.e("klik","klikek"+view.findViewById<TextView>(R.id.lineNumber).toString())
 
 
                 val editTxt=binding.searchEditText
-                if(editTxt !=null){
-                    editTxt.clearFocus()
-                }
+                editTxt.clearFocus()
 
             }
 
-        }catch (e:Exception ){
+        }catch (_:Exception ){
 
         }
 
@@ -363,7 +250,8 @@ Log.e("klik","klikek"+view.findViewById<TextView>(R.id.lineNumber).toString())
 
     }
     private fun addListenerToKeyboard(){
-        requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).viewTreeObserver.addOnGlobalLayoutListener(keyboardLayoutListener);
+        requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).viewTreeObserver.
+        addOnGlobalLayoutListener(keyboardLayoutListener);
 
     }
 
@@ -371,11 +259,11 @@ Log.e("klik","klikek"+view.findViewById<TextView>(R.id.lineNumber).toString())
 
     private fun hideListOption(){
     hideListSearchViewAnimation()
-    //  binding.allSearchPane.visibility=View.GONE
+      binding.allSearchPane.visibility=View.GONE
     }
 
     private fun showListOption(){
-      //  binding.allSearchPane.visibility=View.VISIBLE
+        binding.allSearchPane.visibility=View.VISIBLE
         showListSearchViewAnimation()
     }
 
@@ -389,17 +277,17 @@ Log.e("klik","klikek"+view.findViewById<TextView>(R.id.lineNumber).toString())
 
 
         val animationSet = AnimatorSet()
-        animationSet.playTogether(scaleYAnimationScaleDown, scaleXAnimationScaleDown)
+        animationSet.playTogether(AnimationSearchView.  scaleYAnimationScaleDown,AnimationSearchView.   scaleXAnimationScaleDown)
         animationSet.start()
 
 
-        scaleYAnimationScaleDown.doOnEnd {
+    AnimationSearchView.    scaleYAnimationScaleDown.doOnEnd {
 
             val animationSetEnd=AnimatorSet()
-            animationSetEnd.playTogether(scaleXAnimationScaleUo,scaleYAnimationScaleUp)
+            animationSetEnd.playTogether(AnimationSearchView.  scaleXAnimationScaleUo,AnimationSearchView.  scaleYAnimationScaleUp)
             animationSetEnd.start()
             changeSearchIconToNoActiveSearchIcon()
-            rotateAnimationReverse.start()
+            AnimationSearchView.rotateAnimationReverse.start()
         }
 
     }
@@ -408,7 +296,7 @@ Log.e("klik","klikek"+view.findViewById<TextView>(R.id.lineNumber).toString())
 
     private fun showDeleteTextIconWhenIsMinimumOneCharacterOrHide(){
         val deleteIcon=binding.deleteUserWriteTextIcon
-        if(binding.searchEditText.text.toString().length>0){
+        if(binding.searchEditText.text.toString().isNotEmpty()){
 
             deleteIcon.visibility=View.VISIBLE
         }else{
@@ -419,11 +307,11 @@ Log.e("klik","klikek"+view.findViewById<TextView>(R.id.lineNumber).toString())
     }
 
 
-    private  fun getMatchNumberLineFromDatabase(numberLinePattern:String):ArrayList<com.example.krakowautobusy.database.LineData>{
+    private  fun getMatchNumberLineFromDatabase(numberLinePattern:String):ArrayList<LineData>{
             return Api.getApi().getInfoAboutLinePatternNumber(numberLinePattern.toInt());
     }
 
-    private fun getMatchAnyVehicleStopLineFromDatabase(patternVehicleStop:String):ArrayList<com.example.krakowautobusy.database.LineData>{
+    private fun getMatchAnyVehicleStopLineFromDatabase(patternVehicleStop:String):ArrayList<LineData>{
         return Api.getApi().getInfoAboutLinePatternAnyVehicleStop(patternVehicleStop);
     }
 
@@ -436,10 +324,10 @@ Log.e("klik","klikek"+view.findViewById<TextView>(R.id.lineNumber).toString())
     }
 
 
-    private fun getLineMatchToUserPattern():ArrayList<com.example.krakowautobusy.database.LineData>{
+    private fun getLineMatchToUserPattern():ArrayList<LineData>{
         val MINIMUM_CHAR_TO_START_SEARCHING_MATCH_LINE=2
         val textFromSearchInput=binding.searchEditText.text.toString()
-        var matchLines:ArrayList<com.example.krakowautobusy.database.LineData> =ArrayList<com.example.krakowautobusy.database.LineData>()
+        var matchLines:ArrayList<LineData> =ArrayList<LineData>()
         if(ifWriteNumberLine(textFromSearchInput)){
             matchLines=getMatchNumberLineFromDatabase(textFromSearchInput)
         }else{
@@ -491,18 +379,12 @@ Log.e("klik","klikek"+view.findViewById<TextView>(R.id.lineNumber).toString())
     private fun addAnimIconSearchWhenUserFocusSearchBar(){
 
         val searchEditText=binding.searchEditText
-
-
         searchEditText.setOnFocusChangeListener { _, hasFocus ->
 
 
             if (hasFocus) {
-
                 runOpenSearchPanelAnimation()
-                addDataToSearchView()//skasuj to xD
                 showListOption()
-
-
 
             } else {
 

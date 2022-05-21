@@ -15,7 +15,8 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
         android:layout_margin="4dp"
-        android:background="@drawable/bacground_gray_small_radius"
+        android:background="@drawable/shadowall"
+
             >
 
 
@@ -70,7 +71,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_baseline_view_headline_24"
+                app:srcCompat="@drawable/ic_baseline_arrow_drop_down_circle_24"
                 android:scaleX="0.5"
                 android:scaleY="0.5"
                 android:id="@+id/iconVehicleStopViaRoute"

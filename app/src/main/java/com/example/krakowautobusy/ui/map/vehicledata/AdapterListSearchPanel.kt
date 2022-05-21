@@ -13,7 +13,7 @@ import com.example.krakowautobusy.database.VehicleType
 
 class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
     ArrayAdapter<LineData>(context, R.layout.search_result_field_bus,
-    data as ArrayList<LineData?>
+    data as ArrayList<LineData>
     ), View.OnClickListener {
     private var dataSet: ArrayList<LineData>
     var mContext: Context
@@ -84,7 +84,7 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
         }
     }
 
-    private fun fillViewData(viewHolder: ViewHolder, dataModel:com.example.krakowautobusy.database.LineData){
+    private fun fillViewData(viewHolder: ViewHolder, dataModel:LineData){
         viewHolder.lineNumber!!.text= dataModel.numberLine .toString()
         if(dataModel.isFavourite){
             viewHolder.isFavouriteIcon!!.setImageResource(R.drawable.red_heart_icon)
@@ -113,7 +113,8 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
         var convertView: View? = convertView
-        val dataModel: com.example.krakowautobusy.database.LineData? = getItem(position)
+
+        val dataModel: LineData = getItem(position)
 
         val viewHolder: ViewHolder
 
@@ -132,7 +133,7 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
 
         lastPosition = position
 
-        fillViewData(viewHolder,dataModel!!)
+        fillViewData(viewHolder,dataModel)
 
 
         return convertView!!

@@ -12,73 +12,75 @@ android:orientation="vertical"
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:background="@drawable/squre_small_radius_thin"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_alignParentTop="true"
-    android:id="@+id/search_bar4"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:weightSum="10"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      android:layout_alignParentTop="true"
+      android:id="@+id/search_bar4"
+      android:background="@drawable/shadow"
 
-        android:padding="13dp"
-        android:layout_height="match_parent">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_weight="2"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
-            android:id="@+id/search_icon"
-            android:layout_gravity="center_vertical"
-            app:srcCompat="@drawable/ic_baseline_menu_24"
-            android:layout_height="wrap_content"></ImageView>
+      xmlns:tools="http://schemas.android.com/tools"
+      android:layout_height="wrap_content">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:hint="Znajdź linię"
-            android:layout_marginLeft="15dp"
-            android:id="@+id/search_edit_text"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_weight="6"
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:orientation="horizontal"
+          android:weightSum="10"
 
-            android:background="@android:color/transparent"
-            android:layout_height="wrap_content"></EditText>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_weight="2"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/ic_baseline_close_24"
-            android:id="@+id/deleteUserWriteTextIcon"
-            android:layout_height="wrap_content"></ImageView>
+          android:padding="13dp"
+          android:layout_height="match_parent">
+          <ImageView
+              android:layout_width="wrap_content"
+              android:layout_weight="2"
+              android:scaleX="1.5"
+              android:scaleY="1.5"
+              android:id="@+id/search_icon"
+              android:layout_gravity="center_vertical"
+              app:srcCompat="@drawable/ic_baseline_menu_24"
+              android:layout_height="wrap_content"></ImageView>
 
-    </LinearLayout>
+          <EditText
+              android:layout_width="match_parent"
+              android:hint="Znajdź linię"
+              android:layout_marginLeft="15dp"
+              android:id="@+id/search_edit_text"
+              app:layout_constraintTop_toTopOf="parent"
+              android:layout_weight="6"
 
+              android:background="@android:color/transparent"
+              android:layout_height="wrap_content"></EditText>
+          <ImageView
+              android:layout_width="wrap_content"
+              android:layout_weight="2"
+              android:scaleX="1.5"
+              android:scaleY="1.5"
+              android:visibility="invisible"
+              app:srcCompat="@drawable/ic_baseline_close_24"
+              android:id="@+id/deleteUserWriteTextIcon"
+              android:layout_height="wrap_content"></ImageView>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+      </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:padding="8dp"
-        android:id="@+id/all_search_pane"
-        android:layout_below="@+id/search_bar4"
-        android:background="@drawable/squre_small_radius_thin"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
-        <ListView
-            android:layout_width="match_parent"
-            android:id="@+id/searchList"
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            android:layout_height="wrap_content"></ListView>
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:padding="8dp"
+          android:id="@+id/all_search_pane"
+          android:layout_below="@+id/search_bar4"
+          android:background="@drawable/squre_small_radius_thin"
+          android:orientation="vertical"
+          android:layout_height="wrap_content">
+          <ListView
+              android:layout_width="match_parent"
+              android:id="@+id/searchList"
+              android:divider="@null"
 
-    </LinearLayout>
+              android:layout_height="wrap_content"></ListView>
+
+      </LinearLayout>
 
 
-</RelativeLayout>
+  </RelativeLayout>
