@@ -90,7 +90,7 @@ fun getInfoAboutLinePatternAnyVehicleStop(patternName:String):ArrayList<LineData
 
     fun getInfoAboutLineConcretDirectionLastStopName(
 
-        numberLine: Long,
+        numberLine: Int,
         lastStopName: String
     ): LineData {
 

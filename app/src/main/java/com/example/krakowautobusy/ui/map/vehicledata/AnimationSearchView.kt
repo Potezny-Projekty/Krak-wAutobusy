@@ -17,7 +17,7 @@ class AnimationSearchView {
 
                 view.animate()
                     .scaleY(1f)
-                    .setInterpolator(AccelerateDecelerateInterpolator()).duration = ANIM_DURATION_MS/2
+                    .setInterpolator(AccelerateDecelerateInterpolator()).duration = ANIM_DURATION_MS
                 /*     searchList!!.visibility = View.VISIBLE
 
                      val anim = ValueAnimator.ofInt(searchList.getMeasuredHeight(), -100)
@@ -53,7 +53,7 @@ class AnimationSearchView {
 
             view.animate()
                 .scaleY(0f)
-                .setInterpolator(AccelerateDecelerateInterpolator()).duration = ANIM_DURATION_MS/2
+                .setInterpolator(AccelerateDecelerateInterpolator()).duration = ANIM_DURATION_MS
 
 /*
         val view=binding.allSearchPane

@@ -32,7 +32,7 @@ class Line:LineInteerface {
 
     override fun getInfoAboutLineConcretDirectionName(
         db: SQLiteDatabase,
-        numberLine: Long,
+        numberLine: Int,
         lastStopName: String
     ): LineData {
 

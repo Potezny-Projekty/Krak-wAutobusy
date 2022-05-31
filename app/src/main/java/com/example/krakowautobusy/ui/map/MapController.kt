@@ -50,7 +50,7 @@ class MapController(private var map: MapView, private var context: Context) {
         map.setMultiTouchControls(true)
 
         // setting map scope
-        //createMapScope(map)
+        createMapScope(map)
     }
 
     fun setZoomLevels(minZoomLevel: Double, maxZoomLevel: Double, startingZoom: Double) {

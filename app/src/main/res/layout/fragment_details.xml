@@ -59,7 +59,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/upper_bar" />
 
-    <include layout="@layout/line_info_with_directions_bar" />
+    <include layout="@layout/line_info_with_directions_bar" android:id="@+id/details"   />
 
     <ScrollView
             android:layout_width="match_parent"

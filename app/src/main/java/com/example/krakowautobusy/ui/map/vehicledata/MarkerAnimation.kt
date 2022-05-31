@@ -6,6 +6,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
+import kotlin.math.roundToLong
 
 object MarkerAnimation {
     private const val DURATION_ANIMATION = 6000L
@@ -23,6 +24,7 @@ object MarkerAnimation {
         val valueAnimator = ValueAnimator()
         var pathIterator = 0
         val fullAngle = 360F
+        //val sumOfDistancePath = endPoint.sumOf(PathVehicle::length)
         valueAnimator.addUpdateListener { animation ->
 
             val startPosition = marker.position
@@ -48,6 +50,7 @@ object MarkerAnimation {
             valueAnimator.duration = DURATION_ANIMATION
         } else {
             valueAnimator.duration = DURATION_ANIMATION / endPoint.size
+               // (endPoint[pathIterator].length / sumOfDistancePath).roundToLong() //DURATION_ANIMATION / endPoint.size
         }
         val lastPositionElement = endPoint.size - 1;
         valueAnimator.repeatCount = lastPositionElement

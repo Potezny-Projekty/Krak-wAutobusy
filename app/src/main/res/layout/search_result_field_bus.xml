@@ -71,9 +71,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_baseline_arrow_drop_down_circle_24"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
+                app:srcCompat="@drawable/ic_baseline_arrow_drop_down_24"
+                android:scaleX="1.25"
+                android:scaleY="1.25"
                 android:id="@+id/iconVehicleStopViaRoute"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ic_baseline_view_week_24.xml"

@@ -71,7 +71,13 @@ class SearchViewFragment : Fragment() {
     fun addOnClickListenerToLineOnList(){
         binding.searchList.setOnItemClickListener { _, view, _, _ ->
             val bundle = bundleOf(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject to
-                    view.findViewById<TextView>(R.id.lineNumber).text.toString().trim().toInt())
+                    view.findViewById<TextView>(R.id.lineNumber).text.toString().trim().toInt(),
+                BundleChoiceVehicle.FIRST_STOP_VEHICLE_NAME.nameBundleObject
+            to view.findViewById<TextView>(R.id.firstBusStopTextField).text.toString(),
+                BundleChoiceVehicle.LAST_VEHICLE_STOP_NAME.nameBundleObject to
+                        view.findViewById<TextView>(R.id.lastBusStopTextField).text.toString()
+
+                )
 
             Navigation.findNavController(view).navigate(R.id.action_navigation_map_to_detailsFragment,bundle);
         }
@@ -259,7 +265,7 @@ class SearchViewFragment : Fragment() {
 
     private fun hideListOption(){
     hideListSearchViewAnimation()
-      binding.allSearchPane.visibility=View.GONE
+    //  binding.allSearchPane.visibility=View.GONE
     }
 
     private fun showListOption(){
@@ -282,7 +288,7 @@ class SearchViewFragment : Fragment() {
 
 
     AnimationSearchView.    scaleYAnimationScaleDown.doOnEnd {
-
+      //  binding.allSearchPane.visibility=View.GONE
             val animationSetEnd=AnimatorSet()
             animationSetEnd.playTogether(AnimationSearchView.  scaleXAnimationScaleUo,AnimationSearchView.  scaleYAnimationScaleUp)
             animationSetEnd.start()

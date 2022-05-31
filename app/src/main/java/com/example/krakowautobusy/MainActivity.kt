@@ -12,7 +12,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.krakowautobusy.api.Api
-import com.example.krakowautobusy.database.VehicleStop
 import com.example.krakowautobusy.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
