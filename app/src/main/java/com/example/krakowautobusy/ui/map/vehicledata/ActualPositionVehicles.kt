@@ -5,13 +5,9 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.drawable.AnimatedVectorDrawable
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.VectorDrawable
 import android.util.Log
 import androidx.core.graphics.drawable.toDrawable
-import androidx.core.graphics.drawable.toIcon
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.ui.map.Drawables
 import com.google.gson.JsonObject
@@ -66,6 +62,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
                     traveledRoute
                 )
             }
+            Log.i("POSITION", "${lastPosition == marker.position} | ${lastPosition} = ${marker.position}")
         } else {
             MarkerAnimation.animateMarkerToHCLinear(
                 map, marker,
@@ -176,11 +173,21 @@ class ActualPositionVehicles(var drawables: Drawables) {
         }
         trackedRoute.actualPoints.clear()
         traveledRoute.actualPoints.clear()
-        val firstElement = 0;
+        val firstElement = 0
+        var isRedLine = true
+        var lastAddedPoint = pathPoints[firstElement]
         pathPoints.forEach {
-            if (pathPoints[firstElement].distanceToAsDouble(it)
-                < pathPoints[firstElement].distanceToAsDouble(marker.position)) {
-                traveledRoute.addPoint(it)
+            if (isRedLine) {
+                val distance = lastAddedPoint.distanceToAsDouble(it)
+                val distanceMareker = marker.position.distanceToAsDouble(lastAddedPoint)
+                if (distance > distanceMareker) {
+                    isRedLine = false
+                    traveledRoute.addPoint(marker.position)
+                    trackedRoute.addPoint(marker.position)
+                } else {
+                    traveledRoute.addPoint(it)
+                }
+                lastAddedPoint = it
             } else {
                 trackedRoute.addPoint(it)
             }
@@ -189,7 +196,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
     }
 
     fun createPolyline(tracked: Polyline, traveled : Polyline, width: Float, color: String) {
-        val colorTraveledRoute = "#FF0000";
+        val colorTraveledRoute = "#FF0000"
 
         trackedRoute = tracked
         trackedRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
@@ -236,7 +243,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
     }
 
     private fun drawNumberOnIcon(icon : Drawable, number : String) : Drawable {
-        val textSize = 20f;
+        val textSize = 20f
         val copyIcon = icon.mutate()
         val paint = Paint()
         paint.color = Color.BLACK
