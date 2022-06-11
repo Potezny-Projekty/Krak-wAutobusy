@@ -1,6 +1,7 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.animation.ValueAnimator
+import android.util.Log
 import androidx.core.animation.*
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -52,7 +53,7 @@ object MarkerAnimation {
             valueAnimator.duration = DURATION_ANIMATION / endPoint.size
                // (endPoint[pathIterator].length / sumOfDistancePath).roundToLong() //DURATION_ANIMATION / endPoint.size
         }
-        val lastPositionElement = endPoint.size - 1;
+        val lastPositionElement = endPoint.size - 1
         valueAnimator.repeatCount = lastPositionElement
         valueAnimator.start()
 
