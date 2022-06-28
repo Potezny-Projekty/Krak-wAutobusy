@@ -30,6 +30,22 @@ class Line:LineInteerface {
 
 
 
+    fun returnVehicleStopSequenceFromCursor(
+        cursor: Cursor
+
+    ): SequenceVehicleStopData {
+
+
+
+        return   SequenceVehicleStopData(
+            cursor.getInt(0),cursor.getString(1),cursor.getLong(2),cursor.getLong(3),cursor.getInt(4)
+
+        )
+
+    }
+
+
+
     override fun getInfoAboutLineConcretDirectionName(
         db: SQLiteDatabase,
         numberLine: Int,
@@ -179,9 +195,84 @@ class Line:LineInteerface {
         TODO("Not yet implemented")
     }
 
-    override fun getVehicleStopsLine(db: SQLiteDatabase, idLine: Int): ArrayList<SequenceVehicleStopData> {
-        TODO("Not yet implemented")
+    override fun getVehicleStopsLine(db: SQLiteDatabase, numberLine: Int): ArrayList<SequenceVehicleStopData> {
+        val baseQuery="select DISTINCT VehicleStopSequence.sequenceNumber,VehicleStop.name,VehicleStop.lattitude,VehicleStop.longtitude,VehicleStop.idShort from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=VehicleStopSequence.idVehicleStop where Line.numberLine=${numberLine} order by sequenceNumber"
+
+
+        // val filterCondition = "${LineTable.NUMBER_LINE.nameColumn}=${numberLine} and  ${LineTable.LAST_STOP_ID.nameColumn}=(SELECT Line.lastStop from Line join VehicleStop on VehicleStop.idStopPoint=Line.lastStop where VehicleStop.name like \"%${lastStopName}%\" )"
+// arrayOf(numberLine.toString(),lastStopId.toString())
+        Log.e("searchV",baseQuery+" ||||||||||||")
+        val cursor = db.rawQuery(baseQuery/*+filterCondition*/, null
+        )
+
+        // Log.e("hmm",baseQuery+filterCondition)
+        var linedatas:ArrayList<SequenceVehicleStopData> = ArrayList()
+
+        if (cursor!!.moveToFirst()) {
+
+            do {
+                var vehicleSeq:SequenceVehicleStopData
+
+
+                    vehicleSeq=  returnVehicleStopSequenceFromCursor(cursor)
+linedatas.add(vehicleSeq)
+
+
+            }while(cursor!!.moveToNext())
+
+        }
+        cursor.close()
+        return  linedatas!!;
     }
+
+
+
+
+    override fun getAllLine(db: SQLiteDatabase): ArrayList<LineData> {
+
+        val columnReturns = arrayOf(
+            LineTable.ID_LINE.nameColumn,LineTable.NUMBER_LINE.nameColumn,
+            LineTable.FIRST_STOP_ID.nameColumn,LineTable.LAST_STOP_ID.nameColumn,
+            LineTable.ID_VEHICLE.nameColumn
+        )
+
+
+        val baseQuery="SELECT    Line.idLine,  Line.numberLine,Line.firstStop,Line.lastStop,Line.idVehicle from Line join FavouriteLine on FavouriteLine.idLine=Line.idLine ";
+
+
+        // val filterCondition = "${LineTable.NUMBER_LINE.nameColumn}=${numberLine} and  ${LineTable.LAST_STOP_ID.nameColumn}=(SELECT Line.lastStop from Line join VehicleStop on VehicleStop.idStopPoint=Line.lastStop where VehicleStop.name like \"%${lastStopName}%\" )"
+// arrayOf(numberLine.toString(),lastStopId.toString())
+        Log.e("searchV",baseQuery+" ||||||||||||")
+        val cursor = db.rawQuery(baseQuery/*+filterCondition*/, null
+        )
+
+        // Log.e("hmm",baseQuery+filterCondition)
+        var linedatas:ArrayList<LineData> = ArrayList()
+        var findVehicleStopType: LineData? =null
+        if (cursor!!.moveToFirst()) {
+
+            do {
+                var lineData:LineData
+
+                if(cursor.getInt(4)==VehicleType.BUS.number){
+                    lineData= returnLineFromCursor(cursor,VehicleType.BUS)
+                }else{
+                    lineData=  returnLineFromCursor(cursor,VehicleType.TRAM)
+                }
+                linedatas.add(lineData);
+
+
+            }while(cursor!!.moveToNext())
+
+        }
+        cursor.close()
+        return  linedatas!!;
+
+        //SELECT DISTINCT Line.numberLine,Line.firstStop,Line.lastStop from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=VehicleStopSequence.idVehicleStop where name like "Sło%"
+    }
+
+
+
 
     override fun getAllLineWithAnyVehicleStopFitPattern(db: SQLiteDatabase, nameVehicleStop: String): ArrayList<LineData> {
 

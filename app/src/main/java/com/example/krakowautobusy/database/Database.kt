@@ -22,24 +22,6 @@ class Database(context: Context) :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     companion object {
         val NAME_DATABASE_IN_ASSETS_FOLDER="manu"
         val NAME_DATABASE_OUTPUT="busDatabase"

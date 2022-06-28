@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.krakowautobusy.R
+import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.LineData
 import com.example.krakowautobusy.database.VehicleType
 
@@ -110,6 +111,20 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
 
     }
 
+
+    private fun addOnClickListenerToFavoriteIcon(viewHolder:ViewHolder,lineData: LineData){
+        viewHolder.isFavouriteIcon?.setOnClickListener {
+            lineData.isFavourite=!lineData.isFavourite
+            fillViewData(viewHolder,lineData)
+
+            if(lineData.isFavourite) {
+                Api.getApi().addLineToFavourite(lineData.numberLine.toInt())
+            }else{
+                Api.getApi().removeLinesFromFavourites(lineData.numberLine.toInt())
+            }
+        }
+    }
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
         var convertView: View? = convertView
@@ -134,6 +149,7 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
         lastPosition = position
 
         fillViewData(viewHolder,dataModel)
+        addOnClickListenerToFavoriteIcon(viewHolder,dataModel)
 
 
         return convertView!!

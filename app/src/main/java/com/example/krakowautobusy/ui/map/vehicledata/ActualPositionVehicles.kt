@@ -7,8 +7,10 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.Log
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toDrawable
 import com.example.krakowautobusy.api.Api
+import com.example.krakowautobusy.database.SequenceVehicleStopData
 import com.example.krakowautobusy.ui.map.Drawables
 import com.google.gson.JsonObject
 import org.osmdroid.util.GeoPoint
@@ -49,6 +51,20 @@ class ActualPositionVehicles(var drawables: Drawables) {
         }
     }
 
+    public fun showVehiclesAboutNumberLine(map:MapView,allVehicles: AllVehicles,numberLine:String){
+        val listOfAllVehicle = allVehicles.vehicles
+        listOfAllVehicle
+            .filter { !it.isDeleted && it.name.startsWith(numberLine) }
+            .forEach {
+                if (markers.containsKey(it.id)) {
+                    val drawVehicleMarker = markers[it.id]!!
+                    updateMarkerPosition(drawVehicleMarker, it, map)
+                } else {
+                    drawMarkerVehiclesOnMap(it, map)
+                }
+            }
+    }
+
     private fun updateMarkerPosition(marker : Marker, vehicle: Vehicle, map : MapView) {
         if (vehicle.path.size > NO_ELEMENT) {
             val lastPosition = ConvertUnits.convertToGeoPoint(vehicle.path[vehicle.path.size - 1].y2,
@@ -74,6 +90,36 @@ class ActualPositionVehicles(var drawables: Drawables) {
         }
     }
 
+
+    public fun drawAllVehiclesStopLineOnMap(poz:ArrayList<SequenceVehicleStopData>,map:MapView){
+
+        for(x in poz){
+          val xx=  createMarker(map,x.nameVehicleStop)
+            val locationPoint =
+                ConvertUnits.convertToGeoPoint(x.longitude, x.latitude)
+
+            Log.e("details","Rysuje"+x.nameVehicleStop+" "+locationPoint.latitude+" "+locationPoint.longitude)
+
+            xx.position = locationPoint
+
+            map.overlays.add(xx)
+
+            map.invalidate()
+
+
+        }
+    }
+
+    fun createMarker(map:MapView,namevehicleStop:String):Marker{
+        val marker = Marker(map)
+        //val ut=Utilities(getCo)
+
+        marker.icon= drawables.vehicleStopIcon
+        marker.id="xD"
+        marker.title=namevehicleStop
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+        return marker;
+    }
 
     private fun fillMarkerData(marker: Marker, icon: Drawable, typeVehicle:String, title:String){
         val lineNumber = title.split(" ")[0]
@@ -240,6 +286,29 @@ class ActualPositionVehicles(var drawables: Drawables) {
           }
       })
 
+    }
+
+
+    public fun showNumberLine(map:MapView,numberLine: String){
+        Api.getApi().getBusPosition(lastUpdateBus,
+            fun(response: Response<AllVehicles>) {
+                if (response.isSuccessful && response.body() != null) {
+                    val allBus = response.body()!!
+                    lastUpdateBus = allBus.lastUpdate
+                    showVehiclesAboutNumberLine(map, response.body()!!,numberLine)
+                    Log.i("ERRORR2", allBus.toString())
+                }
+            }
+        )
+
+
+        Api.getApi().getTramPosition(lastUpdateTram, fun(response: Response<AllVehicles>)  {
+            if (response.isSuccessful) {
+                val allTram = response.body()!!
+                lastUpdateTram = allTram.lastUpdate
+                showVehiclesAboutNumberLine(map, allTram,numberLine)
+            }
+        })
     }
 
     private fun drawNumberOnIcon(icon : Drawable, number : String) : Drawable {

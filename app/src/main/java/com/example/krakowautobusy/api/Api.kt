@@ -65,7 +65,9 @@ fun getInfoAboutLinePatternAnyVehicleStop(patternName:String):ArrayList<LineData
 }
 
 
-
+fun getAllLine():ArrayList<LineData>{
+    return lineAccess.getAllLine(database.readableDatabase)
+}
 
 
 
@@ -140,6 +142,11 @@ fun getInfoAboutLinePatternAnyVehicleStop(patternName:String):ArrayList<LineData
     /////// Vehicle Stop API
     public fun getAllVehiclesStop(): ArrayList<VehicleStopData> {
         return vehicleStopAccess.getAllVehicleStop(database.readableDatabase)
+    }
+
+
+    public fun getVehicleStopLines(numberLine: Int):ArrayList<SequenceVehicleStopData>{
+        return lineAccess.getVehicleStopsLine(database.readableDatabase,numberLine)
     }
 
     public fun getVehicleStopById(shortId: Long): VehicleStopData {

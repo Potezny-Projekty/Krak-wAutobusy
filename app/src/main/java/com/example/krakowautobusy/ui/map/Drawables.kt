@@ -17,7 +17,7 @@ class Drawables(var context: Context) {
     var userLocationIconDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.location_icon)!!
     var busIconTrackingDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_bus_tracking)!!
     var tramIconTrackingDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_tram_tracking)!!
-
+    var vehicleStopIcon:Drawable= AppCompatResources.getDrawable(context, R.drawable.przytsanek)!!
 
     lateinit var resizedBusStopIcon: Drawable
     lateinit var resizedTramIcon: Drawable

@@ -1,20 +1,17 @@
 package com.example.krakowautobusy.ui.details
 
+import android.content.Context
 import android.os.Bundle
-
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.BundleChoiceVehicle
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.FragmentDetailsBinding
 import com.example.krakowautobusy.ui.map.CreateDetailsMapFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import org.osmdroid.views.MapView
 
 
 class DetailsFragment : Fragment() {
@@ -26,6 +23,11 @@ class DetailsFragment : Fragment() {
     private  var lineNumber:Int=DEFAULT_VEHICLE_NUMBER;
     private var firstVehicleStopName=""
     private var lastVehicleStopName=""
+    private val LINE_NUMBER_BUNDLE_NAME="lineNumber"
+
+    companion object{
+        var numberLine:Int = 0
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,9 +35,22 @@ class DetailsFragment : Fragment() {
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
 
-    //    Toast.makeText(context, arguments?.getInt("lineNumber").toString(), Toast.LENGTH_SHORT).show()
-        //Toast.makeText(context, "Reason can not be blank", Toast.LENGTH_SHORT).show();
+        messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+    }
+
+
+
+
+    fun messageForMapFragment(numberLine:Int){
+        val result = Bundle()
+        result.putInt("bundleKey",numberLine )
+        requireActivity().supportFragmentManager.setFragmentResult("requestKey", result)
     }
 
     override fun onStart() {
@@ -45,11 +60,8 @@ class DetailsFragment : Fragment() {
         fillViewsDataFromBundle()
 
 
-
-//        var fragment = getFragmentManager()?.findFragmentById(R.id.details_view_map) as CreateDetailsMapFragment;
-  //      fragment.drawVehicleStopLines(444,"asd");
-
     }
+
 
 
     fun getDataFromIntent(){
@@ -61,13 +73,10 @@ class DetailsFragment : Fragment() {
 
     fun fillViewsDataFromBundle(){
         binding.lineNumberTop.text= "$NUMBER_LINE_TOP_TEXT_FORMAT$lineNumber"
-
-      //  var view=binding.details. as LinearLayout;
-           binding.details.lineNumberDetailed.text="$lineNumber"
-           binding.details.currentlyFollowingFirstBusStopData.text="$firstVehicleStopName"
-           binding.details.currentlyFollowingLastBusStopData.text="$lastVehicleStopName"
-     //   binding.infoAboutLineView.view.findViewById<TextView>(R.id.currentlyFollowing_first_bus_stop_data).text="$firstVehicleStopName"
-       // binding.infoAboutLineView.view.findViewById<TextView>(R.id.currentlyFollowing_last_bus_stop_data).text="$lastVehicleStopName"
+        binding.details.lineNumberDetailed.text="$lineNumber"
+        DetailsFragment.numberLine=lineNumber
+        binding.details.currentlyFollowingFirstBusStopData.text="$firstVehicleStopName"
+        binding.details.currentlyFollowingLastBusStopData.text="$lastVehicleStopName"
 
 
     }

@@ -50,7 +50,7 @@
 
     <fragment
             android:layout_width="match_parent"
-
+            android:tag="kks"
             android:layout_height="360dp"
 
             android:id="@+id/details_view_map"

@@ -14,4 +14,7 @@ interface LineInteerface {
     fun getAllLineWithAnyVehicleStopFitPattern(db:SQLiteDatabase, nameVehicleStop:String):ArrayList<LineData>
 
 
+
+
+    fun getAllLine(db: SQLiteDatabase): ArrayList<LineData>
 }

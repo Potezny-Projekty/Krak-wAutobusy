@@ -107,11 +107,12 @@ class CreateMapFragment : Fragment() {
     }
 
     private fun initialSetup() {
-        drawables = Drawables(context as AppCompatActivity)
+
         mapController = MapController(map, requireContext())
         userLocation = UserLocation(context as AppCompatActivity)
         busStopPosition = BusStopPosition(context as AppCompatActivity)
         utilities = Utilities(context as AppCompatActivity)
+        drawables = Drawables(context as AppCompatActivity)
         actualPositionVehicles = ActualPositionVehicles(drawables)
     }
     private fun enableLocalization(){
