@@ -95,7 +95,7 @@ class CreateMapFragment : Fragment() {
         utilities.setZoomLevel(CURRENT_ZOOM_LEVEL.toInt())
 
         mapController.setZoomLevels(MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL, CURRENT_ZOOM_LEVEL)
-        mapController.onZoomChangeListener(drawables, utilities)
+       // mapController.onZoomChangeListener(drawables, utilities)
         mapController.setStartingPoint(STARTING_LATTITUDE, STARTING_LONGTITUDE)
         mapController.drawLocationMarker(userLocation, drawables)
         mapController.drawTrackedRoute(actualPositionVehicles)

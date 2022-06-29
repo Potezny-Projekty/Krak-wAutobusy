@@ -1,13 +1,9 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.util.Log
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toDrawable
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.SequenceVehicleStopData
@@ -26,7 +22,6 @@ class ActualPositionVehicles(var drawables: Drawables) {
     private var markers = mutableMapOf<String, Marker>()
     private var trackedRoute = Polyline()
     private var traveledRoute = Polyline()
-
     private val fullAngle = 360F
     private var enabled = true
     private var trackingVehicle: Marker? = null
@@ -134,8 +129,9 @@ class ActualPositionVehicles(var drawables: Drawables) {
         val locationPoint =
             ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude)
         val marker = Marker(map)
+        val markerToast = MarkerToast(map)
 
-
+        marker.infoWindow = markerToast
         marker.position = locationPoint
         marker.rotation = fullAngle - vehicle.heading.toFloat()
 
@@ -315,17 +311,23 @@ class ActualPositionVehicles(var drawables: Drawables) {
         val textSize = 20f
         val copyIcon = icon.mutate()
         val paint = Paint()
+        val startPositionXText = -50f
+        val startPositionYText = 15f
+        val rotateCanvasToVerticle = -90f;
         paint.color = Color.BLACK
         paint.textSize = textSize
+        paint.textAlign = Paint.Align.CENTER
         val bitmap = Bitmap.createBitmap(
             copyIcon.intrinsicWidth,
             copyIcon.intrinsicHeight,
             Bitmap.Config.ARGB_8888
         )
         val canvas = Canvas(bitmap)
-        copyIcon.setBounds(0, 0, canvas.width, canvas.height)
-        canvas.drawText(number, 20f, 20f, paint)
         copyIcon.draw(canvas)
+        canvas.rotate(rotateCanvasToVerticle)
+        canvas.drawText(number, startPositionXText,
+            startPositionYText, paint)
+        copyIcon.setBounds(0, 0, canvas.width, canvas.height)
         return bitmap.toDrawable(Resources.getSystem())
     }
 }
