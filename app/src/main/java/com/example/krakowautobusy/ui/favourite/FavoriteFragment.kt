@@ -30,6 +30,16 @@ class FavoriteFragment : Fragment() {
     private fun addAdapterToSearchLineListView(){
         adapter= AdapterListSearchPanel(arrayListOf<LineData>(),requireContext())
         binding.listfavouriteLine.adapter=adapter
+
+        adapter.setRefresh {
+            var x=Api.getApi().getAllLine()
+            var xx=x.filter( { s -> s.isFavourite }
+            )
+
+            Log.e("ilex",""+xx.size )
+            adapter.changeDataset(xx as ArrayList<LineData>)
+            adapter.notifyDataSetChanged()
+        }
     }
 
     fun addOnClickListenerToLineOnList(){
@@ -73,6 +83,7 @@ class FavoriteFragment : Fragment() {
         addOnClickListenerToLineOnList()
 
 
+        binding.textFavourite.paint?.isUnderlineText = true
         return root
     }
 

@@ -11,7 +11,7 @@ import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.LineData
 import com.example.krakowautobusy.database.VehicleType
 
-
+typealias FunWithoutParamToVoid = () -> Unit
 class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
     ArrayAdapter<LineData>(context, R.layout.search_result_field_bus,
     data as ArrayList<LineData>
@@ -111,7 +111,11 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
 
     }
 
+    private var  funRefresh:FunWithoutParamToVoid?=null
 
+    public fun setRefresh(x:FunWithoutParamToVoid){
+        funRefresh=x
+    }
     private fun addOnClickListenerToFavoriteIcon(viewHolder:ViewHolder,lineData: LineData){
         viewHolder.isFavouriteIcon?.setOnClickListener {
             lineData.isFavourite=!lineData.isFavourite
@@ -122,6 +126,7 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
             }else{
                 Api.getApi().removeLinesFromFavourites(lineData.numberLine.toInt())
             }
+            funRefresh?.let { it1 -> it1() }
         }
     }
 
@@ -155,3 +160,4 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
         return convertView!!
     }
 }
+

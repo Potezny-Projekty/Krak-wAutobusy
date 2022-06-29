@@ -224,6 +224,12 @@ class SearchViewFragment : Fragment() {
         super.onStart()
         addListenerToKeyboard()
 
+
+        adapter.setRefresh {
+            adapter.changeDataset(getLineMatchToUserPattern())
+            adapter.notifyDataSetChanged()
+        }
+
     }
 
     private var mLastContentHeight = 0
