@@ -8,6 +8,10 @@
     <path android:fillAlpha="0.507" android:fillColor="#000000"
         android:pathData="m102.579,69.688c1.228,-1.928 4.308,-1.923 5.545,0.007L124.427,95.14c1.237,1.931 -0.297,4.34 -2.762,4.337L89.185,99.434c-2.465,-0.003 -4.011,-2.417 -2.783,-4.344z"
         android:strokeAlpha="0.507" android:strokeWidth="3.84735751"/>
+    <path android:fillAlpha="0.9698492" android:fillColor="#fff7cc"
+        android:pathData="m14.866,187.838l0,-73.737c0.139,-4.287 1.937,-6.043 4.308,-6.928l23.918,-0c2.63,0.378 4.703,1.912 5.101,6.928l-0.453,73.902c-1.135,2.566 -1.901,5.531 -4.874,6.104l-23.805,0.165c-2.1,-1.079 -3.82,-2.735 -4.194,-6.433z"
+        android:strokeColor="#000000" android:strokeLineCap="butt"
+        android:strokeLineJoin="miter" android:strokeWidth="2.4964087"/>
     <path android:fillColor="#00000000"
         android:pathData="m126.784,150.689a9.747,12.076 90,0 1,10.458 4.873,9.747 12.076,90 0,1 0,9.747 9.747,12.076 90,0 1,-10.458 4.873l0,-9.747z"
         android:strokeColor="#000000" android:strokeWidth="4.124366"/>

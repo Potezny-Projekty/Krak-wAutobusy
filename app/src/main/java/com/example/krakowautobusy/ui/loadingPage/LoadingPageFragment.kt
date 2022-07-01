@@ -6,13 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.krakowautobusy.R
+import com.example.krakowautobusy.databinding.FragmentLoadingPageBinding
 
 class LoadingPageFragment : Fragment() {
+    private lateinit var binding: FragmentLoadingPageBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-        return inflater.inflate(R.layout.fragment_loading_page, container, false)
+    ): View {
+        binding = FragmentLoadingPageBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+
     }
 }

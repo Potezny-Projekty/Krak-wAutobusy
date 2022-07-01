@@ -55,11 +55,6 @@ class CreateMapFragment : Fragment() {
     private lateinit var mapController: MapController
 
 
-
-    init{//to wyrzucić xD
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -83,10 +78,6 @@ class CreateMapFragment : Fragment() {
             }
         }
         mainHandler.post(updateTextTask)
-
-
-
-
 
         return binding.root
     }

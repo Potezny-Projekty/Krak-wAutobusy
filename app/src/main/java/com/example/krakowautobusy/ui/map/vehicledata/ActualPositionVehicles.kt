@@ -46,7 +46,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
         }
     }
 
-    public fun showVehiclesAboutNumberLine(map:MapView,allVehicles: AllVehicles,numberLine:String){
+    fun showVehiclesAboutNumberLine(map:MapView,allVehicles: AllVehicles,numberLine:String){
         val listOfAllVehicle = allVehicles.vehicles
         listOfAllVehicle
             .filter { !it.isDeleted && it.name.startsWith(numberLine) }
@@ -86,7 +86,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
     }
 
 
-    public fun drawAllVehiclesStopLineOnMap(poz:ArrayList<SequenceVehicleStopData>,map:MapView){
+    fun drawAllVehiclesStopLineOnMap(poz:ArrayList<SequenceVehicleStopData>,map:MapView){
 
         for(x in poz){
           val xx=  createMarker(map,x.nameVehicleStop)
@@ -113,7 +113,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
         marker.id="xD"
         marker.title=namevehicleStop
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-        return marker;
+        return marker
     }
 
     private fun fillMarkerData(marker: Marker, icon: Drawable, typeVehicle:String, title:String){
@@ -285,7 +285,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
     }
 
 
-    public fun showNumberLine(map:MapView,numberLine: String){
+    fun showNumberLine(map:MapView,numberLine: String){
         Api.getApi().getBusPosition(lastUpdateBus,
             fun(response: Response<AllVehicles>) {
                 if (response.isSuccessful && response.body() != null) {
@@ -308,12 +308,12 @@ class ActualPositionVehicles(var drawables: Drawables) {
     }
 
     private fun drawNumberOnIcon(icon : Drawable, number : String) : Drawable {
-        val textSize = 20f
+        val textSize = 9f
         val copyIcon = icon.mutate()
         val paint = Paint()
-        val startPositionXText = -50f
-        val startPositionYText = 15f
-        val rotateCanvasToVerticle = -90f;
+        val startPositionXText = -47f
+        val startPositionYText = 13.25f
+        val rotateCanvasToVerticle = -90f
         paint.color = Color.BLACK
         paint.textSize = textSize
         paint.textAlign = Paint.Align.CENTER
