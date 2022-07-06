@@ -76,4 +76,8 @@
     <path android:fillAlpha="0.507" android:fillColor="#000000"
         android:pathData="m102.49,69.683c1.216,-1.935 4.299,-1.95 5.548,-0.026L124.504,95.002c1.249,1.923 -0.271,4.342 -2.737,4.354L89.272,99.51c-2.466,0.012 -4.028,-2.392 -2.811,-4.327z"
         android:strokeAlpha="0.507" android:strokeWidth="3.84735751"/>
+    <path android:fillColor="#b8f3a3"
+        android:pathData="m14.883,187.814l0,-73.737c0.139,-4.287 1.937,-6.043 4.308,-6.928l23.918,-0c2.63,0.378 4.703,1.912 5.101,6.928l-0.453,73.902c-1.135,2.566 -1.901,5.531 -4.874,6.104l-23.805,0.165c-2.1,-1.079 -3.82,-2.735 -4.194,-6.433z"
+        android:strokeColor="#000000" android:strokeLineCap="butt"
+        android:strokeLineJoin="miter" android:strokeWidth="2.4964087"/>
 </vector>

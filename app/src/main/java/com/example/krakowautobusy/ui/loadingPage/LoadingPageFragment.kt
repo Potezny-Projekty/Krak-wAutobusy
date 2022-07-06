@@ -1,18 +1,30 @@
 package com.example.krakowautobusy.ui.loadingPage
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.example.krakowautobusy.R
+import androidx.appcompat.app.AppCompatActivity
+import com.example.krakowautobusy.MainActivity
+import com.example.krakowautobusy.databinding.FragmentLoadingPageBinding
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
-class LoadingPageFragment : Fragment() {
+class LoadingPageFragment : AppCompatActivity() {
+    private lateinit var binding: FragmentLoadingPageBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        return inflater.inflate(R.layout.fragment_loading_page, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+
+        binding = FragmentLoadingPageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
+
+    override fun onStart() {
+        super.onStart()
+        Executors.newSingleThreadScheduledExecutor().schedule({
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }, 3, TimeUnit.SECONDS)
+        }
+
 }
