@@ -36,9 +36,12 @@ class FavoriteFragment : Fragment() {
             var xx=x.filter( { s -> s.isFavourite }
             )
 
+
             Log.e("ilex",""+xx.size )
             adapter.changeDataset(xx as ArrayList<LineData>)
             adapter.notifyDataSetChanged()
+            setDatasetAdapter()
+
         }
     }
 
@@ -66,6 +69,7 @@ class FavoriteFragment : Fragment() {
         Log.e("ilex",""+xx.size )
         adapter.changeDataset(xx as ArrayList<LineData>)
         adapter.notifyDataSetChanged()
+
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,6 +88,7 @@ class FavoriteFragment : Fragment() {
 
 
         binding.textFavourite.paint?.isUnderlineText = true
+
         return root
     }
 

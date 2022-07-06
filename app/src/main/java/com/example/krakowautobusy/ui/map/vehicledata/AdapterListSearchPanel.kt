@@ -5,11 +5,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
 import android.widget.*
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.LineData
 import com.example.krakowautobusy.database.VehicleType
+
 
 typealias FunWithoutParamToVoid = () -> Unit
 class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
@@ -74,7 +77,7 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
     }
 
 
-    private fun ifUserWriteNumberShowMiddleVehicleStopIfNotHideMiddleField(vehicleStopViaPotential:String, viewHolder: ViewHolder){
+    private fun ifUserWriteNumberShowMiddleVehicleStopIfNotHideMiddleField(vehicleStopViaPotential:String, viewHolder: ViewHolder):ViewHolder{
         if(vehicleStopViaPotential.isNotEmpty()){
             viewHolder.busStopViaRoute?.visibility =View.VISIBLE
             viewHolder.iconVehicleStopViaRoute?.visibility =View.VISIBLE
@@ -83,9 +86,10 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
             viewHolder.busStopViaRoute?.visibility =View.GONE
             viewHolder.iconVehicleStopViaRoute?.visibility =View.GONE
         }
+        return viewHolder
     }
 
-    private fun fillViewData(viewHolder: ViewHolder, dataModel:LineData){
+    private fun fillViewData(viewHolder: ViewHolder, dataModel:LineData):ViewHolder{
         viewHolder.lineNumber!!.text= dataModel.numberLine .toString()
         if(dataModel.isFavourite){
             viewHolder.isFavouriteIcon!!.setImageResource(R.drawable.red_heart_icon)
@@ -107,7 +111,12 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
         viewHolder.idLine=dataModel.numberLine.toInt()
 
 
-        ifUserWriteNumberShowMiddleVehicleStopIfNotHideMiddleField(dataModel.busStopViaRoute,viewHolder);
+
+     return   ifUserWriteNumberShowMiddleVehicleStopIfNotHideMiddleField(dataModel.busStopViaRoute,viewHolder);
+
+
+
+
 
     }
 
@@ -118,8 +127,15 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
     }
     private fun addOnClickListenerToFavoriteIcon(viewHolder:ViewHolder,lineData: LineData){
         viewHolder.isFavouriteIcon?.setOnClickListener {
+
+
             lineData.isFavourite=!lineData.isFavourite
-            fillViewData(viewHolder,lineData)
+         var x=   fillViewData(viewHolder,lineData)
+
+
+           x.lineNumberBox!!.animate()
+                .scaleX(0.5f).setDuration(1000).start()
+
 
             if(lineData.isFavourite) {
                 Api.getApi().addLineToFavourite(lineData.numberLine.toInt())
