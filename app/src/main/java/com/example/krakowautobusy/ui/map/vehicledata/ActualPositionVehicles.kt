@@ -25,6 +25,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
     private val fullAngle = 360F
     private var enabled = true
     private var trackingVehicle: Marker? = null
+    private lateinit var  iconVehicleBeforeTracking : Drawable
     val NO_ELEMENT=0
 
 
@@ -132,6 +133,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
         val markerToast = MarkerToast(map)
 
         marker.infoWindow = markerToast
+        marker.subDescription = vehicle.name
         marker.position = locationPoint
         marker.rotation = fullAngle - vehicle.heading.toFloat()
 
@@ -195,10 +197,11 @@ class ActualPositionVehicles(var drawables: Drawables) {
     private fun drawPathVehicleOnMap(map: MapView, marker: Marker,
                                 pathPoints : ArrayList<GeoPoint>
     ) {
+        iconVehicleBeforeTracking = marker.icon
         if (trackingVehicle != null) {
 
             if (trackingVehicle!!.id == VehicleType.BUS_FOCUSED.type) {
-                trackingVehicle!!.icon = drawables.resizedBusIcon
+                trackingVehicle!!.icon = iconVehicleBeforeTracking
                 trackingVehicle!!.id = VehicleType.BUS.type
             } else {
                 trackingVehicle!!.icon = drawables.resizedTramIcon
@@ -206,12 +209,13 @@ class ActualPositionVehicles(var drawables: Drawables) {
             }
         }
         trackingVehicle = marker
+        val lineNumber = marker.title.split(" ")[0]
         if (marker.id == VehicleType.BUS.type) {
             marker.id = VehicleType.BUS_FOCUSED.type
-            marker.icon = drawables.resizedBusIconTracking
+            marker.icon = drawNumberOnIcon(drawables.resizedBusIconTracking, lineNumber)
         } else {
             marker.id = VehicleType.TRAM_FOCUSED.type
-            marker.icon = drawables.resizedTramIconTracking
+            marker.icon = drawNumberOnIcon(drawables.resizedTramIconTracking, lineNumber)
         }
         trackedRoute.actualPoints.clear()
         traveledRoute.actualPoints.clear()
@@ -308,11 +312,11 @@ class ActualPositionVehicles(var drawables: Drawables) {
     }
 
     private fun drawNumberOnIcon(icon : Drawable, number : String) : Drawable {
-        val textSize = 9f
+        val textSize = 20f
         val copyIcon = icon.mutate()
         val paint = Paint()
         val startPositionXText = -47f
-        val startPositionYText = 13.25f
+        val startPositionYText = 20.5f
         val rotateCanvasToVerticle = -90f
         paint.color = Color.BLACK
         paint.textSize = textSize
@@ -329,5 +333,6 @@ class ActualPositionVehicles(var drawables: Drawables) {
             startPositionYText, paint)
         copyIcon.setBounds(0, 0, canvas.width, canvas.height)
         return bitmap.toDrawable(Resources.getSystem())
+
     }
 }

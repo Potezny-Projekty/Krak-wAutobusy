@@ -78,9 +78,9 @@
             tools:layout="@layout/fragment_no_internet" />
     <fragment
             android:id="@+id/navigation_loading_page"
-            android:name="com.example.krakowautobusy.ui.loadingPage.LoadingPageFragment"
+            android:name="com.example.krakowautobusy.ui.loadingPage.LoadingPageActivity"
             android:label="fragment_loading_page"
-            tools:layout="@layout/fragment_loading_page" />
+            tools:layout="@layout/activity_loading_page" />
 
 
 </navigation>

@@ -25,6 +25,8 @@ import com.example.krakowautobusy.ui.map.vehicledata.*
 import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
 import java.lang.Runnable
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 
 private const val TAG = "CreateMapFragment"
