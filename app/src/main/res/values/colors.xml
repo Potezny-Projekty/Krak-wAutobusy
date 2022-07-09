@@ -18,5 +18,9 @@
     <color name="search_resuld_field_bus_background_color">#FEFEFE</color>
     <color name="currentlyFollowing_last_bus_stop_color">#E92518</color>
     <color name="currentlyFollowing_first_bus_stop_color">#28C05C</color>
+    <color name="light_blue_400">#FF29B6F6</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="gray_400">#FFBDBDBD</color>
+    <color name="gray_600">#FF757575</color>
 
 </resources>

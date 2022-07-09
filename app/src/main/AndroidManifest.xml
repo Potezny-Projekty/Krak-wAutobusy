@@ -25,7 +25,7 @@
             android:windowSoftInputMode="adjustPan|adjustResize|stateVisible"
             />
         <activity
-            android:name=".ui.loadingPage.LoadingPageFragment"
+            android:name=".ui.loadingPage.LoadingPageActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
