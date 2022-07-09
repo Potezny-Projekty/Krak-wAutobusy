@@ -133,7 +133,6 @@ class ActualPositionVehicles(var drawables: Drawables) {
         val markerToast = MarkerToast(map)
 
         marker.infoWindow = markerToast
-        marker.subDescription = vehicle.name
         marker.position = locationPoint
         marker.rotation = fullAngle - vehicle.heading.toFloat()
 
@@ -312,11 +311,13 @@ class ActualPositionVehicles(var drawables: Drawables) {
     }
 
     private fun drawNumberOnIcon(icon : Drawable, number : String) : Drawable {
-        val textSize = 20f
+        val textSize = 18f
         val copyIcon = icon.mutate()
         val paint = Paint()
-        val startPositionXText = -47f
-        val startPositionYText = 20.5f
+        val factoryMoveHeightText = 1.8;
+        val factoryMoveHWidthText = 3;
+        val startPositionXText =  ((copyIcon.intrinsicHeight / factoryMoveHeightText) * -1).toFloat()
+        val startPositionYText = ((copyIcon.intrinsicWidth / factoryMoveHWidthText)).toFloat()
         val rotateCanvasToVerticle = -90f
         paint.color = Color.BLACK
         paint.textSize = textSize
