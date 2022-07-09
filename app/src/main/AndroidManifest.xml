@@ -17,7 +17,7 @@
         android:theme="@style/Theme.KrakowAutobusy"
         android:usesCleartextTraffic="true"
         tools:targetApi="m"
-        android:dataExtractionRules="@xml/data_extraction_rules">
+       >
         <activity
             android:name=".MainActivity"
             android:configChanges="uiMode"

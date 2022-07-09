@@ -64,20 +64,20 @@ class CreateMapFragment : Fragment() {
         Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         map = binding.mapView
 
-        initialSetup()
+      initialSetup()
         setupMapView()
         setupDrawables()
 
-        enableBroadcastReceiver()
-        enableLocalization()
+               enableBroadcastReceiver()
+               enableLocalization()
 
-        updateTextTask = object : Runnable {
-            override fun run() {
-                mapController.drawAllVehicles(actualPositionVehicles)
-                mainHandler.postDelayed(this, RUNNABLE_DELAY)
-            }
-        }
-        mainHandler.post(updateTextTask)
+               updateTextTask = object : Runnable {
+                   override fun run() {
+                       mapController.drawAllVehicles(actualPositionVehicles)
+                       mainHandler.postDelayed(this, RUNNABLE_DELAY)
+                   }
+               }
+               mainHandler.post(updateTextTask)
 
         return binding.root
     }

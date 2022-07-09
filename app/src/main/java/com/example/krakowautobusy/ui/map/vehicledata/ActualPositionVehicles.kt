@@ -308,7 +308,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
     }
 
     private fun drawNumberOnIcon(icon : Drawable, number : String) : Drawable {
-        val textSize = 9f
+        val textSize = 35f
         val copyIcon = icon.mutate()
         val paint = Paint()
         val startPositionXText = -47f
