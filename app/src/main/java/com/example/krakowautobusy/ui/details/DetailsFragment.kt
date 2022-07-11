@@ -35,7 +35,7 @@ class DetailsFragment : Fragment() {
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
 
-        messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
+
         return binding.root
     }
 
@@ -50,6 +50,7 @@ class DetailsFragment : Fragment() {
     fun messageForMapFragment(numberLine:Int){
         val result = Bundle()
         result.putInt("bundleKey",numberLine )
+        result.putString("direction",lastVehicleStopName )
         requireActivity().supportFragmentManager.setFragmentResult("requestKey", result)
     }
 
@@ -58,7 +59,7 @@ class DetailsFragment : Fragment() {
         uncheckedAllNavMenuOption()
         getDataFromIntent()
         fillViewsDataFromBundle()
-
+        messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
 
     }
 

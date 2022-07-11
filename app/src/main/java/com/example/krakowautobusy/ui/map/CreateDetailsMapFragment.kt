@@ -18,9 +18,12 @@ import com.example.krakowautobusy.database.SequenceVehicleStopData
 import com.example.krakowautobusy.databinding.MapActivityBinding
 import com.example.krakowautobusy.ui.details.DetailsFragment
 import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
+import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
+import com.example.krakowautobusy.ui.map.vehicledata.TimeTableData
 import com.example.krakowautobusy.ui.map.vehicledata.Utilities
 import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
+import retrofit2.Response
 
 private const val TAG = "CreateDetailsMapFragment"
 
@@ -84,14 +87,69 @@ class CreateDetailsMapFragment : Fragment() {
     }
 
 
+    fun showTimeTableLine(nameLine:String,direction:String){
+        var zm:Long=0
+        Api.getApi().getBusPosition(zm,
+            fun(response: Response<AllVehicles>) {
+                if (response.isSuccessful && response.body() != null ) {
+                    val allBus = response.body()!!
+                    zm = allBus.lastUpdate
+
+                   for(x in allBus.vehicles){
+                    //   Log.e("ole",nameLine+" "+direction+"| vs |"+x.name+"|")
+                       if(x.name.contains(nameLine.trim()+" "+direction.trim())){
+                           Log.e("ole",x.id+" / "+x.tripId+" "+x.name)
+                           Log.e("ole",nameLine+" "+direction)
+
+
+                           Api.getApi().getTimeTableVehicle(x.tripId,x.id, fun(response: Response<TimeTableData>)  {
+
+                               Log.e("ole",response.errorBody().toString())
+                               if (response.isSuccessful) {
+                                   val ac = response.body()!!
+                                   Log.e("ole",ac.old[0].name+" KUR")
+                               }
+                           })
+
+
+                       }
+                   }
+                  //  showAllVehicle(map, response.body()!!)
+                    Log.i("ERRORR2", allBus.toString())
+                }
+            }
+        )
+
+
+        Api.getApi().getTramPosition(zm, fun(response: Response<AllVehicles>)  {
+            if (response.isSuccessful) {
+                val allTram = response.body()!!
+                zm = allTram.lastUpdate
+
+                for(x in allTram.vehicles){
+                    if(x.name.contains(nameLine)){
+                        Log.e("ole",x.id+" / "+x.tripId)
+                    }
+                }
+               // showAllVehicle(map, allTram)
+            }
+        })
+    }
+
+
     fun readMessageNumberLineFromTopFragment(){
         requireActivity().supportFragmentManager
             .setFragmentResultListener(BUNDLE_NUMBER_LINE_REQUEST_KEY, this
             ) { _, bundle ->
 
                 val result = bundle.getInt(BUNDLE_NUMBER_LINE_KEY)
+                val direction = bundle.getString("direction")
                 var lineData = Api.getApi().getVehicleStopLines(result);
                 actualPositionVehicles.drawAllVehiclesStopLineOnMap(lineData, map);
+
+                if (direction != null) {
+                    showTimeTableLine(result.toString(),direction)
+                }
 
 
                 updateTextTask = object : Runnable {

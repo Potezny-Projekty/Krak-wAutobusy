@@ -8,16 +8,15 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.krakowautobusy.BundleChoiceVehicle
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.LineData
-
 import com.example.krakowautobusy.databinding.FragmentFavoriteBinding
 import com.example.krakowautobusy.ui.map.vehicledata.AdapterListSearchPanel
+import com.example.krakowautobusy.ui.map.vehicledata.SearchViewFragment
 
 class FavoriteFragment : Fragment() {
 
@@ -26,10 +25,11 @@ class FavoriteFragment : Fragment() {
 
     private val binding get() = _binding!!
     private lateinit var   adapter :AdapterListSearchPanel;
+    private lateinit var   adapter2 :AdapterListSearchPanel;
 
     private fun addAdapterToSearchLineListView(){
-        adapter= AdapterListSearchPanel(arrayListOf<LineData>(),requireContext())
-        binding.listfavouriteLine.adapter=adapter
+
+       binding.listfavouriteLine.adapter=adapter
 
         adapter.setRefresh {
             var x=Api.getApi().getAllLine()
@@ -38,9 +38,8 @@ class FavoriteFragment : Fragment() {
 
 
             Log.e("ilex",""+xx.size )
-            adapter.changeDataset(xx as ArrayList<LineData>)
-            adapter.notifyDataSetChanged()
-            setDatasetAdapter()
+
+           setDatasetAdapter()
 
         }
     }
@@ -61,12 +60,51 @@ class FavoriteFragment : Fragment() {
         }
     }
 
+
+
+    private fun KURWA(){
+
+        var xx= childFragmentManager.findFragmentById(R.id.detailFragment) as SearchViewFragment
+        xx.setRefreshFun {
+            Log.e("kurwa","JEGO MAĆ2")
+            setDatasetAdapter()
+        }
+        //adapter.setRefresh {
+         //   Log.e("kurwa","JEGO MAĆ2")
+        //    setDatasetAdapter()
+      //  }
+
+      //  adapter.setFunRefresh2 {
+      //      Log.e("kurwa","JEGO MAĆ2")
+      //      setDatasetAdapter()
+     //   }
+
+    //    xx.getAdapter().setRefresh {
+    //       Log.e("kurwa","JEGO MAĆ2")
+   //         setDatasetAdapter()
+    //    }
+
+    //    xx.setRefreshFun {
+    //        Log.e("kurwa","JEGO MAĆ")
+    //        setDatasetAdapter()
+    //    }
+     // var x=  requireFragmentManager().findFragmentById(R.id.detailFragment) as SearchViewFragment?
+    //    x!!.setRefreshFun {
+      //      setDatasetAdapter()
+       // }
+    }
+
     private fun setDatasetAdapter(){
+
+
+     //   adapter2= AdapterListSearchPanel(arrayListOf<LineData>(),requireContext())
+     //   binding.listfavouriteLine.adapter=adapter
         var x=Api.getApi().getAllLine()
        var xx=x.filter( { s -> s.isFavourite }
         )
 
-        Log.e("ilex",""+xx.size )
+        Log.e("ilex","("+xx.size )
+
         adapter.changeDataset(xx as ArrayList<LineData>)
         adapter.notifyDataSetChanged()
 
@@ -81,7 +119,8 @@ class FavoriteFragment : Fragment() {
 
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        adapter= AdapterListSearchPanel(arrayListOf<LineData>(),requireContext())
+        KURWA()
         addAdapterToSearchLineListView()
         setDatasetAdapter()
         addOnClickListenerToLineOnList()

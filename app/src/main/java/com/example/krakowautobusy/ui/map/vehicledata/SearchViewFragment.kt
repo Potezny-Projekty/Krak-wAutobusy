@@ -35,6 +35,9 @@ class SearchViewFragment : Fragment() {
     private var findMyLocationOnMap_FAB:com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton?=null
     val ANIM_DURATION_MS=800L
 
+    private   var refreshH: RefreshHandler? = null;
+
+
     private lateinit var   adapter :AdapterListSearchPanel;
 
     private val binding get() = _binding!!
@@ -47,6 +50,12 @@ class SearchViewFragment : Fragment() {
 
         addAdapterToSearchLineListView()
         return root
+    }
+
+
+    public fun setRefreshFun(zm:RefreshHandler ){
+        refreshH=zm
+      //  adapter.setRefresh(zm)
     }
 
     private fun addAdapterToSearchLineListView(){
@@ -123,6 +132,11 @@ class SearchViewFragment : Fragment() {
 
     private fun Fragment.hideKeyboard() {
         view?.let { activity?.hideKeyboard(it) }
+
+      //  if(refreshH!=null){
+      //      refreshH();
+      //  }
+
     }
     private fun Context.hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -228,6 +242,12 @@ class SearchViewFragment : Fragment() {
         adapter.setRefresh {
             adapter.changeDataset(getLineMatchToUserPattern())
             adapter.notifyDataSetChanged()
+
+
+            refreshH?.let { it() }
+
+
+
         }
 
     }
@@ -352,7 +372,17 @@ class SearchViewFragment : Fragment() {
 
     }
 
+    public fun getAdapter():AdapterListSearchPanel{
+        return adapter;
+
+    }
+
     private fun changeDataSetAdapterLineMatchToUserText(){
+       // if(refreshH!=null){
+//
+       //     refreshH()
+      //  }
+
         adapter.changeDataset(getLineMatchToUserPattern())
         adapter.notifyDataSetChanged()
     }
@@ -388,6 +418,8 @@ class SearchViewFragment : Fragment() {
     }
 
 
+
+
     private fun addAnimIconSearchWhenUserFocusSearchBar(){
 
         val searchEditText=binding.searchEditText
@@ -415,3 +447,5 @@ class SearchViewFragment : Fragment() {
         _binding = null
     }
 }
+
+typealias RefreshHandler = () -> Unit

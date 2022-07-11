@@ -18,9 +18,17 @@ class LoadingPageActivity : AppCompatActivity() {
         binding = ActivityLoadingPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
+    private fun hideAppTitleBar() {
+        supportActionBar?.hide()
+
+
+
+
+    }
 
     override fun onStart() {
         super.onStart()
+        hideAppTitleBar()
         Executors.newSingleThreadScheduledExecutor().schedule({
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

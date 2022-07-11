@@ -5,7 +5,10 @@ import android.content.Context
 import com.example.krakowautobusy.database.*
 import com.example.krakowautobusy.networkttss.PositionVehicle
 import com.example.krakowautobusy.networkttss.PositionVehicleInterface
+import com.example.krakowautobusy.networkttss.TimeTableVehicle
+import com.example.krakowautobusy.networkttss.TimeTableVehicleInterface
 import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
+import com.example.krakowautobusy.ui.map.vehicledata.TimeTableData
 import com.google.gson.JsonObject
 import retrofit2.Response
 
@@ -13,6 +16,7 @@ class Api {
     private val vehicleStopAccess: VehicleStopInterface = VehicleStop()
     private val favouriteLineAccess: FavouriteLineInterface = FavouriteLine()
     private val positionVehicleAccess: PositionVehicleInterface = PositionVehicle()
+    private val timeTableVehicleAcess: TimeTableVehicleInterface = TimeTableVehicle()
     private val lineAccess:LineInteerface=Line()
     private var context: Context
     private var database: Database
@@ -117,6 +121,12 @@ fun getAllLine():ArrayList<LineData>{
         positionVehicleAccess.getBusPath(idBus,combine)
     }
 
+
+    public fun getTimeTableVehicle(tripId:String,
+                                   vehicleId:String,
+                                   combine:(Response<TimeTableData>)->Unit){
+        timeTableVehicleAcess.getBusVehicleTimeTable(vehicleId,tripId,combine)
+    }
 
 
 

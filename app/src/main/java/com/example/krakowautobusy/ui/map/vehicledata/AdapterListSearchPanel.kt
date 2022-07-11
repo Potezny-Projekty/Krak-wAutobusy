@@ -2,6 +2,7 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,8 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
     ), View.OnClickListener {
     private var dataSet: ArrayList<LineData>
     var mContext: Context
+
+    private var listView:ViewGroup?=null
 
 
     override fun getCount(): Int {
@@ -52,6 +55,8 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
     }
 
     private var lastPosition = -1
+    private  var  funRefresh: FunWithoutParamToVoid? = null
+    private  var  funRefresh2: FunWithoutParamToVoid? = null
 
     init {
         dataSet = data
@@ -89,8 +94,64 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
         return viewHolder
     }
 
+
+    private fun findIndexClickIcon(numberLine:Int,isFavourite:Boolean){
+        for(i in 0 until dataSet.size){
+            if(dataSet[i].numberLine==numberLine.toLong()){
+                Log.e("kosmos",i.toString()+"")
+
+            var elem=    listView?.let { getView(i,null, it) }
+
+                if (elem != null) {
+                    Log.e("kosmos",i.toString()+"ANIMUJE")
+                 var a=   elem.findViewById(R.id.heartIcon) as ImageView
+
+                    var aa=elem.findViewById(R.id.lineNumber) as TextView?
+                    aa?.text="KURWA"
+                // Log.e("kosmos",a.text.toString()+" :D")
+                if(isFavourite){
+                        a!!.animate()
+                            .scaleX(1.2f).setDuration(400).start()
+
+                        a!!.animate()
+                            .scaleY(1.2f).setDuration(400).withEndAction {
+                                a.animate().scaleX(1.0f).setDuration(400).start()
+                                a.animate().scaleY(1.0f).setDuration(400).withEndAction {
+                                    funRefresh?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
+                                    funRefresh2?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
+                                }
+                            }
+                    }else{
+
+                        a!!.animate()
+                            .scaleX(0.8f).setDuration(400).start()
+
+                        a!!.animate()
+                            .scaleY(0.8f).setDuration(400).withEndAction {
+                                a.animate().scaleX(1.0f).setDuration(400).start()
+                                a.animate().scaleY(1.0f).setDuration(400).withEndAction {
+                                    funRefresh?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
+                                    funRefresh2?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
+                                }
+                            }
+
+
+                    }
+
+
+                }
+
+            }
+
+        }
+    }
+
     private fun fillViewData(viewHolder: ViewHolder, dataModel:LineData):ViewHolder{
         viewHolder.lineNumber!!.text= dataModel.numberLine .toString()
+
+
+
+
         if(dataModel.isFavourite){
             viewHolder.isFavouriteIcon!!.setImageResource(R.drawable.red_heart_icon)
         }else{
@@ -120,34 +181,70 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
 
     }
 
-    private var  funRefresh:FunWithoutParamToVoid?=null
 
+ public fun setFunRefresh2(x:FunWithoutParamToVoid){
+     funRefresh2=x
+ }
     public fun setRefresh(x:FunWithoutParamToVoid){
         funRefresh=x
     }
     private fun addOnClickListenerToFavoriteIcon(viewHolder:ViewHolder,lineData: LineData){
         viewHolder.isFavouriteIcon?.setOnClickListener {
-
+Log.e("kurwa","JEGO MAĆ 3")
 
             lineData.isFavourite=!lineData.isFavourite
-         var x=   fillViewData(viewHolder,lineData)
+           var x=   fillViewData(viewHolder,lineData)
 
 
-           x.lineNumberBox!!.animate()
-                .scaleX(0.5f).setDuration(1000).start()
+
 
 
             if(lineData.isFavourite) {
+                findIndexClickIcon(lineData.numberLine.toInt(),true)
                 Api.getApi().addLineToFavourite(lineData.numberLine.toInt())
+
+
+                it!!.animate()
+                    .scaleX(1.2f).setDuration(400).start()
+
+                it!!.animate()
+                    .scaleY(1.2f).setDuration(400).withEndAction {
+                        it.animate().scaleX(1.0f).setDuration(400).start()
+                        it.animate().scaleY(1.0f).setDuration(400).withEndAction {
+                            funRefresh?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
+                            funRefresh2?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
+                        }
+                    }
+
+
             }else{
+                findIndexClickIcon(lineData.numberLine.toInt(),false)
                 Api.getApi().removeLinesFromFavourites(lineData.numberLine.toInt())
+
+
+
+
+
+                it!!.animate()
+                    .scaleX(0.8f).setDuration(400).start()
+
+                it!!.animate()
+                    .scaleY(0.8f).setDuration(400).withEndAction {
+                        it.animate().scaleX(1.0f).setDuration(400).start()
+                        it.animate().scaleY(1.0f).setDuration(400).withEndAction {
+                            funRefresh?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
+                            funRefresh2?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
+                        }
+                    }
             }
-            funRefresh?.let { it1 -> it1() }
+            Log.e("kurwa","...KURWA")
+
+
         }
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-
+        listView=parent
         var convertView: View? = convertView
 
         val dataModel: LineData = getItem(position)
