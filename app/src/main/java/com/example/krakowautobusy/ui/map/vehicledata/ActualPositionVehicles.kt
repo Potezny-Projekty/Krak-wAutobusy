@@ -131,7 +131,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
             ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude)
         val marker = Marker(map)
         val markerToast = MarkerToast(map)
-
+        marker.setInfoWindowAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
         marker.infoWindow = markerToast
         marker.position = locationPoint
         marker.rotation = fullAngle - vehicle.heading.toFloat()
@@ -196,25 +196,25 @@ class ActualPositionVehicles(var drawables: Drawables) {
     private fun drawPathVehicleOnMap(map: MapView, marker: Marker,
                                 pathPoints : ArrayList<GeoPoint>
     ) {
-        iconVehicleBeforeTracking = marker.icon
         if (trackingVehicle != null) {
 
             if (trackingVehicle!!.id == VehicleType.BUS_FOCUSED.type) {
                 trackingVehicle!!.icon = iconVehicleBeforeTracking
                 trackingVehicle!!.id = VehicleType.BUS.type
             } else {
-                trackingVehicle!!.icon = drawables.resizedTramIcon
+                trackingVehicle!!.icon = iconVehicleBeforeTracking
                 trackingVehicle!!.id = VehicleType.TRAM.type
             }
         }
         trackingVehicle = marker
         val lineNumber = marker.title.split(" ")[0]
+        iconVehicleBeforeTracking = marker.icon
         if (marker.id == VehicleType.BUS.type) {
             marker.id = VehicleType.BUS_FOCUSED.type
-            marker.icon = drawNumberOnIcon(drawables.resizedBusIconTracking, lineNumber)
+            marker.icon = drawNumberOnIcon(drawables.busIconTrackingDrawable , lineNumber)
         } else {
             marker.id = VehicleType.TRAM_FOCUSED.type
-            marker.icon = drawNumberOnIcon(drawables.resizedTramIconTracking, lineNumber)
+            marker.icon = drawNumberOnIcon(drawables.tramIconTrackingDrawable, lineNumber)
         }
         trackedRoute.actualPoints.clear()
         traveledRoute.actualPoints.clear()
@@ -314,8 +314,8 @@ class ActualPositionVehicles(var drawables: Drawables) {
         val textSize = 18f
         val copyIcon = icon.mutate()
         val paint = Paint()
-        val factoryMoveHeightText = 1.8;
-        val factoryMoveHWidthText = 3;
+        val factoryMoveHeightText = 1.8
+        val factoryMoveHWidthText = 3
         val startPositionXText =  ((copyIcon.intrinsicHeight / factoryMoveHeightText) * -1).toFloat()
         val startPositionYText = ((copyIcon.intrinsicWidth / factoryMoveHWidthText)).toFloat()
         val rotateCanvasToVerticle = -90f
