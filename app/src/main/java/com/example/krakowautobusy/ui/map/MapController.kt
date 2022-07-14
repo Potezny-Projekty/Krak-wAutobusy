@@ -1,14 +1,9 @@
 package com.example.krakowautobusy.ui.map
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.appcompat.content.res.AppCompatResources
-import com.example.krakowautobusy.R
 import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.BusStopPosition
 import com.example.krakowautobusy.ui.map.vehicledata.UserLocation
@@ -75,6 +70,7 @@ class MapController(private var map: MapView, private var context: Context) {
     }
 
     fun drawAllVehicles(actualPositionVehicles: ActualPositionVehicles) {
+        actualPositionVehicles.lodaIconIntoMap()
         actualPositionVehicles.getActualPosition(map)
     }
 

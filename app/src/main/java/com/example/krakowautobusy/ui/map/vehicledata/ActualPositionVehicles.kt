@@ -4,6 +4,9 @@ import android.content.res.Resources
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toDrawable
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.SequenceVehicleStopData
@@ -131,16 +134,21 @@ class ActualPositionVehicles(var drawables: Drawables) {
             ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude)
         val marker = Marker(map)
         val markerToast = MarkerToast(map)
+        markerToast.view.setOnClickListener {
+            //TODO Move to DetailFragment
+            Log.i("TOAST", "WORK")
+        }
         marker.setInfoWindowAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
         marker.infoWindow = markerToast
         marker.position = locationPoint
         marker.rotation = fullAngle - vehicle.heading.toFloat()
 
         if (vehicle.category == VehicleType.BUS.type) {
-            fillMarkerData(marker,drawables.busIconDrawable, VehicleType.BUS.type,vehicle.name)
+            fillMarkerData(marker,drawables.busIconDrawable
+                , VehicleType.BUS.type,vehicle.name)
         } else {
-
-            fillMarkerData(marker,drawables.tramIconDrawable,VehicleType.TRAM.type,vehicle.name)
+            fillMarkerData(marker,drawables.tramIconDrawable,
+                VehicleType.TRAM.type,vehicle.name)
         }
 
         markers[vehicle.id] = marker
@@ -148,6 +156,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
         marker.setOnMarkerClickListener { markerTracing, mapView ->
             markerTracing.showInfoWindow()
             drawPathVehicle(vehicle.id, vehicle.category, mapView, marker)
+
         }
     }
 
@@ -189,7 +198,6 @@ class ActualPositionVehicles(var drawables: Drawables) {
             })
 
         }
-
         return true
     }
 
@@ -211,11 +219,12 @@ class ActualPositionVehicles(var drawables: Drawables) {
         iconVehicleBeforeTracking = marker.icon
         if (marker.id == VehicleType.BUS.type) {
             marker.id = VehicleType.BUS_FOCUSED.type
-            marker.icon = drawNumberOnIcon(drawables.busIconTrackingDrawable , lineNumber)
+            marker.icon = drawNumberOnIcon(drawables.busIconTrackingDrawable, lineNumber)
         } else {
             marker.id = VehicleType.TRAM_FOCUSED.type
             marker.icon = drawNumberOnIcon(drawables.tramIconTrackingDrawable, lineNumber)
         }
+
         trackedRoute.actualPoints.clear()
         traveledRoute.actualPoints.clear()
         val firstElement = 0
@@ -315,9 +324,9 @@ class ActualPositionVehicles(var drawables: Drawables) {
         val copyIcon = icon.mutate()
         val paint = Paint()
         val factoryMoveHeightText = 1.8
-        val factoryMoveHWidthText = 3
+        val factoryMoveWidthText = 3
         val startPositionXText =  ((copyIcon.intrinsicHeight / factoryMoveHeightText) * -1).toFloat()
-        val startPositionYText = ((copyIcon.intrinsicWidth / factoryMoveHWidthText)).toFloat()
+        val startPositionYText = ((copyIcon.intrinsicWidth / factoryMoveWidthText)).toFloat()
         val rotateCanvasToVerticle = -90f
         paint.color = Color.BLACK
         paint.textSize = textSize
@@ -336,4 +345,11 @@ class ActualPositionVehicles(var drawables: Drawables) {
         return bitmap.toDrawable(Resources.getSystem())
 
     }
+
+    fun lodaIconIntoMap() {
+        val lineNumber = "10"
+        drawNumberOnIcon(drawables.busIconTrackingDrawable, lineNumber)
+        drawNumberOnIcon(drawables.tramIconTrackingDrawable, lineNumber)
+    }
+
 }
