@@ -3,7 +3,9 @@ package com.example.krakowautobusy.ui.map.vehicledata
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TimeTableData (val actual:ArrayList<StopData>,val old:ArrayList<StopData>)
+data class TimeTableData (val actual:ArrayList<StatusData>,val old:ArrayList<StatusData>)
+
+data class AllTableTimeData(var data:ArrayList<StatusData>)
 
 @Serializable
 data class StopData (val name:String)

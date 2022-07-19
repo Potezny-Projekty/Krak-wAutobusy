@@ -61,27 +61,18 @@
 
     <include layout="@layout/line_info_with_directions_bar" android:id="@+id/details"   />
 
-    <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
         <LinearLayout
                 android:layout_width="match_parent"
             android:id="@+id/titlex"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-            <include layout="@layout/bus_stop_arrival_box" />
-            <include layout="@layout/bus_stop_arrival_box" />
-            <include layout="@layout/bus_stop_arrival_box" />
-            <include layout="@layout/bus_stop_arrival_box" />
-            <include layout="@layout/bus_stop_arrival_box" />
-            <include layout="@layout/bus_stop_arrival_box" />
-            <include layout="@layout/bus_stop_arrival_box" />
-            <include layout="@layout/bus_stop_arrival_box" />
-            <include layout="@layout/bus_stop_arrival_box" />
-            <include layout="@layout/bus_stop_arrival_box" />
+          <ListView
+              android:layout_width="match_parent"
+              android:id="@+id/listTimeTable"
+              android:layout_height="match_parent"></ListView>
         </LinearLayout>
-    </ScrollView>
+
 
 
 </LinearLayout>

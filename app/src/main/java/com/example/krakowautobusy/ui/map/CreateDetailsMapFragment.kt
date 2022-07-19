@@ -72,6 +72,7 @@ class CreateDetailsMapFragment : Fragment() {
 
 
 
+
         return binding.root
     }
 
@@ -86,7 +87,7 @@ class CreateDetailsMapFragment : Fragment() {
 
     }
 
-
+//to wyciać
     fun showTimeTableLine(nameLine:String,direction:String){
         var zm:Long=0
         Api.getApi().getBusPosition(zm,
@@ -102,12 +103,18 @@ class CreateDetailsMapFragment : Fragment() {
                            Log.e("ole",nameLine+" "+direction)
 
 
-                           Api.getApi().getTimeTableVehicle(x.tripId,x.id, fun(response: Response<TimeTableData>)  {
 
+                           Api.getApi().getTimeTableVehicle(x.tripId,x.id, fun(response: Response<TimeTableData>)  {
+                               Log.e("ole",response.raw().request().url().toString())
+                               //Log.e("ole",response.raw().request(). toString())
+                               Log.e("ole",response.raw().request().headers() .toString())
                                Log.e("ole",response.errorBody().toString())
+                               Log.e("ole",response.message(). toString())
+                               Log.e("ole",response.headers().toString()  )
                                if (response.isSuccessful) {
                                    val ac = response.body()!!
-                                   Log.e("ole",ac.old[0].name+" KUR")
+
+                                //   Log.e("ole",ac.old[0].name+" KUR")
                                }
                            })
 

@@ -9,9 +9,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.krakowautobusy.BundleChoiceVehicle
 import com.example.krakowautobusy.R
+import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.databinding.FragmentDetailsBinding
+import com.example.krakowautobusy.ui.map.AdapterTimeTableListView
 import com.example.krakowautobusy.ui.map.CreateDetailsMapFragment
+import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
+import com.example.krakowautobusy.ui.map.vehicledata.StatusData
+import com.example.krakowautobusy.ui.map.vehicledata.StopData
+import com.example.krakowautobusy.ui.map.vehicledata.TimeTableData
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import retrofit2.Response
 
 
 class DetailsFragment : Fragment() {
@@ -24,7 +31,7 @@ class DetailsFragment : Fragment() {
     private var firstVehicleStopName=""
     private var lastVehicleStopName=""
     private val LINE_NUMBER_BUNDLE_NAME="lineNumber"
-
+    private var adapterListTimeTable:AdapterTimeTableListView?=null
     companion object{
         var numberLine:Int = 0
     }
@@ -45,7 +52,69 @@ class DetailsFragment : Fragment() {
     }
 
 
+    fun showTimeTableLine(nameLine:String,direction:String){
+        var zm:Long=0
+        Log.e("ole","KURWA")
+        Api.getApi().getBusPosition(zm,
+            fun(response: Response<AllVehicles>) {
+                if (response.isSuccessful && response.body() != null ) {
+                    val allBus = response.body()!!
+                    zm = allBus.lastUpdate
+                    Log.e("ole","KURWA2")
+                    for(x in allBus.vehicles){
 
+                           Log.e("ole",nameLine+" "+direction+"| vs |"+x.name+"|")
+                        if(x.name.contains(nameLine.trim()+" "+direction.trim())){
+                            Log.e("ole",x.id+" / "+x.tripId+" "+x.name)
+                            Log.e("ole",nameLine+" "+direction)
+
+
+
+                            Api.getApi().getTimeTableVehicle(x.tripId,x.id, fun(response: Response<TimeTableData>)  {
+                                Log.e("ole",response.raw().request().url().toString())
+                                //Log.e("ole",response.raw().request(). toString())
+                                Log.e("ole",response.raw().request().headers() .toString())
+                                Log.e("ole",response.errorBody().toString())
+                                Log.e("ole",response.message(). toString())
+                                Log.e("ole",response.headers().toString()  )
+                                if (response.isSuccessful) {
+                                    val ac = response.body()!!
+                                  //  ac.actual.addAll(ac.old)
+                                    Log.e("oleK",ac.actual.size .toString())
+                                    for(x in ac.actual){
+                                        Log.e("oleK",x.actualTime)
+                                    }
+                                    ac.old.addAll(ac.actual)
+                                    adapterListTimeTable?.changeDataset(ac.old)
+
+                                 //   Log.e("ole",ac.old[0].name+" KUR")
+                                }
+                            })
+
+
+                        }
+                    }
+                    //  showAllVehicle(map, response.body()!!)
+                    Log.i("ERRORR2", allBus.toString())
+                }
+            }
+        )
+
+
+        Api.getApi().getTramPosition(zm, fun(response: Response<AllVehicles>)  {
+            if (response.isSuccessful) {
+                val allTram = response.body()!!
+                zm = allTram.lastUpdate
+
+                for(x in allTram.vehicles){
+                    if(x.name.contains(nameLine)){
+                        Log.e("ole",x.id+" / "+x.tripId)
+                    }
+                }
+                // showAllVehicle(map, allTram)
+            }
+        })
+    }
 
     fun messageForMapFragment(numberLine:Int){
         val result = Bundle()
@@ -61,6 +130,10 @@ class DetailsFragment : Fragment() {
         fillViewsDataFromBundle()
         messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
 
+        adapterListTimeTable=AdapterTimeTableListView(ArrayList<StatusData>(),requireContext())
+        binding.listTimeTable.adapter=adapterListTimeTable
+        Log.e("ole", numberLine.toString()+" "+lastVehicleStopName)
+        showTimeTableLine(numberLine.toString(),lastVehicleStopName)
     }
 
 
