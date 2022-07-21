@@ -158,7 +158,7 @@
     </GridLayout>
 
     <Button
-            android:text="@string/change_direction_button"
+            android:text="Zmień pojazd"
             android:textSize="9sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
