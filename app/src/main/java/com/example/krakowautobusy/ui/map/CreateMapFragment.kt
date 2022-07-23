@@ -69,7 +69,7 @@ class CreateMapFragment : Fragment() {
         initialSetup()
         setupMapView()
         //setupDrawables()
-
+        
         enableBroadcastReceiver()
         enableLocalization()
 

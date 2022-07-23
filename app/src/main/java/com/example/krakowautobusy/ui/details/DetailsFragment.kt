@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import com.example.krakowautobusy.BundleChoiceVehicle
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.FragmentDetailsBinding
 import com.example.krakowautobusy.ui.map.CreateDetailsMapFragment
+import com.example.krakowautobusy.ui.map.vehicledata.Vehicle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -35,7 +37,12 @@ class DetailsFragment : Fragment() {
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
 
-        messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
+        setFragmentResultListener("details") { requestKey, bundle ->
+            val vehicleName = bundle.getString("vehicle")
+            // Do something with the result
+            Log.i("TTTTTTT", vehicleName.toString())
+        }
+        //messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
         return binding.root
     }
 
