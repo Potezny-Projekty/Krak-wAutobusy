@@ -11,12 +11,9 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentResultListener
 import com.example.krakowautobusy.BuildConfig
 import com.example.krakowautobusy.api.Api
-import com.example.krakowautobusy.database.SequenceVehicleStopData
 import com.example.krakowautobusy.databinding.MapActivityBinding
-import com.example.krakowautobusy.ui.details.DetailsFragment
 import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.TimeTableData
@@ -104,7 +101,7 @@ class CreateDetailsMapFragment : Fragment() {
 
 
 
-                           Api.getApi().getTimeTableVehicle(x.tripId,x.id, fun(response: Response<TimeTableData>)  {
+                           Api.getApi().getTimeTableBus(x.tripId,x.id, fun(response: Response<TimeTableData>)  {
                                Log.e("ole",response.raw().request().url().toString())
                                //Log.e("ole",response.raw().request(). toString())
                                Log.e("ole",response.raw().request().headers() .toString())

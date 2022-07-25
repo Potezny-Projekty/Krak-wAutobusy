@@ -122,12 +122,17 @@ fun getAllLine():ArrayList<LineData>{
     }
 
 
-    public fun getTimeTableVehicle(tripId:String,
-                                   vehicleId:String,
-                                   combine:(Response<TimeTableData>)->Unit){
+    public fun getTimeTableBus(tripId:String,
+                               vehicleId:String,
+                               combine:(Response<TimeTableData>)->Unit){
         timeTableVehicleAcess.getBusVehicleTimeTable(vehicleId,tripId,combine)
     }
 
+    public fun getTimeTableTram(tripId:String,
+                               vehicleId:String,
+                               combine:(Response<TimeTableData>)->Unit){
+        timeTableVehicleAcess.getTramVehicleTimeTable(vehicleId,tripId,combine)
+    }
 
 
     public fun getTramPosition(
