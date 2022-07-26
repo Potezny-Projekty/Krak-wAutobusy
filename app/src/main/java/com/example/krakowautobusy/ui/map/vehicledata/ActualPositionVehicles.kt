@@ -1,10 +1,20 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.content.res.Resources
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.findFragment
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.findNavController
+import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.SequenceVehicleStopData
 import com.example.krakowautobusy.ui.map.Drawables
@@ -14,12 +24,13 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 import retrofit2.Response
+import kotlin.collections.set
 
 
 class ActualPositionVehicles(var drawables: Drawables) {
     private var lastUpdateBus: Long = 0
     private var lastUpdateTram: Long = 0
-    private var markers = mutableMapOf<String, Marker>()
+    private var markers = mutableMapOf<String, VehicleMarker>()
     private var trackedRoute = Polyline()
     private var traveledRoute = Polyline()
     private val fullAngle = 360F
@@ -27,7 +38,6 @@ class ActualPositionVehicles(var drawables: Drawables) {
     private var trackingVehicle: Marker? = null
     private lateinit var  iconVehicleBeforeTracking : Drawable
     val NO_ELEMENT=0
-
 
     fun setEnabled(enabled: Boolean) {
         this.enabled = enabled
@@ -47,7 +57,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
         }
     }
 
-    fun showVehiclesAboutNumberLine(map:MapView,allVehicles: AllVehicles,numberLine:String){
+    fun showVehiclesAboutNumberLine(map:MapView, allVehicles: AllVehicles,numberLine:String){
         val listOfAllVehicle = allVehicles.vehicles
         listOfAllVehicle
             .filter { !it.isDeleted && it.name.startsWith(numberLine) }
@@ -61,7 +71,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
             }
     }
 
-    private fun updateMarkerPosition(marker : Marker, vehicle: Vehicle, map : MapView) {
+    private fun updateMarkerPosition(marker : VehicleMarker, vehicle: Vehicle, map : MapView) {
         if (vehicle.path.size > NO_ELEMENT) {
             val lastPosition = ConvertUnits.convertToGeoPoint(vehicle.path[vehicle.path.size - 1].y2,
                 vehicle.path[vehicle.path.size - 1].x2 )
@@ -117,7 +127,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
         return marker
     }
 
-    private fun fillMarkerData(marker: Marker, icon: Drawable, typeVehicle:String, title:String){
+    private fun fillMarkerData(marker: VehicleMarker, icon: Drawable, typeVehicle:String, title:String){
         val lineNumber = title.split(" ")[0]
         marker.icon= drawNumberOnIcon(icon, lineNumber)
         marker.id=typeVehicle
@@ -129,18 +139,25 @@ class ActualPositionVehicles(var drawables: Drawables) {
     private fun drawMarkerVehiclesOnMap(vehicle: Vehicle, map : MapView) {
         val locationPoint =
             ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude)
-        val marker = Marker(map)
+        val marker = VehicleMarker(map, vehicle)
         val markerToast = MarkerToast(map)
+        markerToast.view.setOnClickListener {
+            val mapFragment = map.findFragment<Fragment>()
+            mapFragment.setFragmentResult("details", bundleOf(Pair("vehicle", vehicle.name)))
+            map.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment)
+
+        }
         marker.setInfoWindowAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
         marker.infoWindow = markerToast
         marker.position = locationPoint
         marker.rotation = fullAngle - vehicle.heading.toFloat()
 
         if (vehicle.category == VehicleType.BUS.type) {
-            fillMarkerData(marker,drawables.busIconDrawable, VehicleType.BUS.type,vehicle.name)
+            fillMarkerData(marker,drawables.busIconDrawable
+                , VehicleType.BUS.type,vehicle.name)
         } else {
-
-            fillMarkerData(marker,drawables.tramIconDrawable,VehicleType.TRAM.type,vehicle.name)
+            fillMarkerData(marker,drawables.tramIconDrawable,
+                VehicleType.TRAM.type,vehicle.name)
         }
 
         markers[vehicle.id] = marker
@@ -148,12 +165,13 @@ class ActualPositionVehicles(var drawables: Drawables) {
         marker.setOnMarkerClickListener { markerTracing, mapView ->
             markerTracing.showInfoWindow()
             drawPathVehicle(vehicle.id, vehicle.category, mapView, marker)
+
         }
     }
 
 
 
-    private fun analisePathVehicleResponse(response: Response<JsonObject>, map: MapView, marker: Marker){
+    private fun analisePathVehicleResponse(response: Response<JsonObject>, map: MapView, marker: VehicleMarker){
         val FIRST_RESPONSE_ELEM=0
         val PATH="paths"
         val WAY_POINT="wayPoints"
@@ -177,7 +195,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
         drawPathVehicleOnMap(map, marker, geoPoints)
     }
 
-    private fun drawPathVehicle(idVehicle: String, type: String, map: MapView, marker: Marker) : Boolean{
+    private fun drawPathVehicle(idVehicle: String, type: String, map: MapView, marker: VehicleMarker) : Boolean{
 
         if (type == VehicleType.TRAM.type) {
             Api.getApi().getTramPath(idVehicle,fun( response: Response<JsonObject>) {
@@ -189,11 +207,10 @@ class ActualPositionVehicles(var drawables: Drawables) {
             })
 
         }
-
         return true
     }
 
-    private fun drawPathVehicleOnMap(map: MapView, marker: Marker,
+    private fun drawPathVehicleOnMap(map: MapView, marker: VehicleMarker,
                                 pathPoints : ArrayList<GeoPoint>
     ) {
         if (trackingVehicle != null) {
@@ -211,11 +228,12 @@ class ActualPositionVehicles(var drawables: Drawables) {
         iconVehicleBeforeTracking = marker.icon
         if (marker.id == VehicleType.BUS.type) {
             marker.id = VehicleType.BUS_FOCUSED.type
-            marker.icon = drawNumberOnIcon(drawables.busIconTrackingDrawable , lineNumber)
+            marker.icon = drawNumberOnIcon(drawables.busIconTrackingDrawable, lineNumber)
         } else {
             marker.id = VehicleType.TRAM_FOCUSED.type
             marker.icon = drawNumberOnIcon(drawables.tramIconTrackingDrawable, lineNumber)
         }
+
         trackedRoute.actualPoints.clear()
         traveledRoute.actualPoints.clear()
         val firstElement = 0
@@ -315,9 +333,9 @@ class ActualPositionVehicles(var drawables: Drawables) {
         val copyIcon = icon.mutate()
         val paint = Paint()
         val factoryMoveHeightText = 1.8
-        val factoryMoveHWidthText = 3
+        val factoryMoveWidthText = 3
         val startPositionXText =  ((copyIcon.intrinsicHeight / factoryMoveHeightText) * -1).toFloat()
-        val startPositionYText = ((copyIcon.intrinsicWidth / factoryMoveHWidthText)).toFloat()
+        val startPositionYText = ((copyIcon.intrinsicWidth / factoryMoveWidthText)).toFloat()
         val rotateCanvasToVerticle = -90f
         paint.color = Color.BLACK
         paint.textSize = textSize
@@ -336,4 +354,11 @@ class ActualPositionVehicles(var drawables: Drawables) {
         return bitmap.toDrawable(Resources.getSystem())
 
     }
+
+    fun lodaIconIntoMap() {
+        val lineNumber = "10"
+        drawNumberOnIcon(drawables.busIconTrackingDrawable, lineNumber)
+        drawNumberOnIcon(drawables.tramIconTrackingDrawable, lineNumber)
+    }
+
 }

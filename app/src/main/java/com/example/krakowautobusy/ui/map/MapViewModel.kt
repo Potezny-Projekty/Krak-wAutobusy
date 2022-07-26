@@ -3,11 +3,19 @@ package com.example.krakowautobusy.ui.map
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.krakowautobusy.ui.map.vehicledata.Vehicle
 
 class MapViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "Map"
+    private val mutableSelectedVehicle = MutableLiveData<Vehicle>()
+    val selectedVehicle: LiveData<Vehicle> get() = mutableSelectedVehicle
+
+    init{
+        selectItem(Vehicle())
     }
-    val text: LiveData<String> = _text
+
+    fun selectItem(vehicle: Vehicle) {
+        mutableSelectedVehicle.value = vehicle
+    }
+
 }

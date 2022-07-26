@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import com.example.krakowautobusy.BundleChoiceVehicle
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
@@ -16,6 +17,8 @@ import com.example.krakowautobusy.ui.map.AdapterTimeTableListView
 import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.StatusData
 import com.example.krakowautobusy.ui.map.vehicledata.TimeTableData
+import com.example.krakowautobusy.ui.map.CreateDetailsMapFragment
+import com.example.krakowautobusy.ui.map.vehicledata.Vehicle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -43,7 +46,7 @@ class DetailsFragment : Fragment() {
     val REFRESH_TIME_TABLE_AFTER_DOWNLOAD_DATA_ALL_LINES_WITH_NUMBER_MS=5000L
     val DELAY_CHANGE_VEHICLE_FOLLOW_FOR_UPDATE_DATA_MS=300L
     val DELAY_REFRESH_ALL_VEHICLE_MS=15000L
-    
+
     val mainHandler = Handler(Looper.getMainLooper())
     var vehicles:ArrayList<IdVehicle> = ArrayList<IdVehicle>()
     var choiceIndex:Int=0
@@ -58,6 +61,16 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
+        setFragmentResultListener("details") { requestKey, bundle ->
+            val vehicleName = bundle.getString("vehicle")
+            // Do something with the result
+            Log.i("TTTTTTT", vehicleName.toString())
+        }
+        //messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
+
+
+
 
 
         return binding.root

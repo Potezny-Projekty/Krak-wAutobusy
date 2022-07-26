@@ -40,9 +40,7 @@ class MapFragment : Fragment() {
         val root: View = binding.root
 
         val textView: TextView = binding.textHome
-        mapViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+
 
         addControllerToMap()
         addCallbackClickShowAllOrOneVehicles()
