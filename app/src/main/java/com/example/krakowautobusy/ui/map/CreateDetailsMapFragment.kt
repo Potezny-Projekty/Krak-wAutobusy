@@ -11,9 +11,13 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.example.krakowautobusy.BuildConfig
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.databinding.MapActivityBinding
+import com.example.krakowautobusy.ui.ActualTimeTableShowData
 import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.TimeTableData
@@ -66,12 +70,18 @@ class CreateDetailsMapFragment : Fragment() {
         actualPositionVehicles = ActualPositionVehicles(drawables)
         mapController.drawTrackedRoute(actualPositionVehicles)
         readMessageNumberLineFromTopFragment()
-
+        setActualCHoiceBusToColor()
 
 
 
         return binding.root
     }
+
+
+
+
+
+
 
 
     public fun drawVehicleStopLines(numberLine:Int){
@@ -138,6 +148,16 @@ class CreateDetailsMapFragment : Fragment() {
                // showAllVehicle(map, allTram)
             }
         })
+    }
+
+
+    private val viewModel: ActualTimeTableShowData by activityViewModels()
+
+    fun setActualCHoiceBusToColor(){
+        viewModel.actualShowVehicleId.observe(viewLifecycleOwner, Observer<String> { data ->
+            actualPositionVehicles.colorOnMapActualTimeTableVehicle(data,map);
+        })
+
     }
 
 

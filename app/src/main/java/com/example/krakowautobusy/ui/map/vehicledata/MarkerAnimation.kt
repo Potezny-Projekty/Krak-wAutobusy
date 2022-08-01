@@ -7,6 +7,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
+import java.lang.Exception
 import kotlin.math.roundToLong
 
 object MarkerAnimation {
@@ -35,7 +36,13 @@ object MarkerAnimation {
                 GeoPointInterpolator.interpolate(fraction, startPosition, end)
             if (marker.id == VehicleType.TRAM_FOCUSED.type
                 || marker.id == VehicleType.BUS_FOCUSED.type) {
-                polyline.addPoint(startPosition)
+
+                try{
+                    polyline.addPoint(startPosition)
+                }catch (exp:Exception){
+
+                }
+
             }
             marker.rotation = fullAngle - endPoint[pathIterator].angle
             marker.position = newPosition

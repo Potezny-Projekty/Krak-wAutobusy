@@ -40,12 +40,30 @@
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-master/Krak-wAutobusy-master/app/src/main/res/layout/fragment_no_internet.xml" value="0.128125" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-master/Krak-wAutobusy-master/app/src/main/res/layout/fragment_search_view.xml" value="0.15678824721377912" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy-master/Krak-wAutobusy-master/app/src/main/res/layout/search_result_field_bus.xml" value="0.2069402228976697" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable-v24/red_circle.xml" value="0.5435" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable-v24/round_rect_shape_currently_following.xml" value="0.5435" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/bus_icon.xml" value="0.326" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/bus_stop_svgrepo_com.xml" value="0.326" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/green_circle.xml" value="0.326" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/ic_baseline_arrow_drop_down_circle_24.xml" value="0.326" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.326" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/ic_icon_bus_icon.xml" value="0.326" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/ic_icon_tram_icon.xml" value="0.326" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/squre_small_radius_thin.xml" value="0.5435" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/yellowcircle.xml" value="0.5435" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/activity_loading_page.xml" value="0.55" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/activity_main.xml" value="0.3109375" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/activity_marker_toast.xml" value="0.55" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/bus_stop_arrival_box.xml" value="0.5182291666666666" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/favourite_empty.xml" value="0.55" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/favourite_with_content.xml" value="0.55" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/fragment_details.xml" value="0.5182291666666666" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/fragment_map.xml" value="0.3109375" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/fragment_search_view.xml" value="0.36096014492753625" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/line_info_with_directions_bar.xml" value="0.40677083333333336" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/map_activity.xml" value="0.55" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/search_result_field_bus.xml" value="0.55" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/tost_show_allvehivles_orone.xml" value="0.55" />
       </map>
     </option>
   </component>

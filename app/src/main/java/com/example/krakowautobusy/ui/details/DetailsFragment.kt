@@ -4,15 +4,18 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import com.example.krakowautobusy.BundleChoiceVehicle
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.databinding.FragmentDetailsBinding
+import com.example.krakowautobusy.ui.ActualTimeTableShowData
 import com.example.krakowautobusy.ui.map.AdapterTimeTableListView
 import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.StatusData
@@ -29,7 +32,7 @@ import retrofit2.Response
 class DetailsFragment : Fragment() {
 
 
-    data class IdVehicle(val tripId:String,val vehicleId:String)
+    data class IdVehicle(val tripId:String,val vehicleId:String,val direction:String)
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
@@ -52,6 +55,11 @@ class DetailsFragment : Fragment() {
     var choiceIndex:Int=0
     //var actualBus:ArrayList<StatusData>=ArrayList<StatusData>()
 
+
+
+    private var vehicleNameFromMaps:String?=null
+    private var tripIdFromMaps:String?=null
+    private var vehicleIdFromMaps:String?=null
     companion object{
         var numberLine:Int = 0
     }
@@ -61,11 +69,13 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
-        messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
+        messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));//to obczaj
         setFragmentResultListener("details") { requestKey, bundle ->
-            val vehicleName = bundle.getString("vehicle")
+            vehicleNameFromMaps = bundle.getString("vehicle")
+            tripIdFromMaps=bundle.getString("tripId")
+            vehicleIdFromMaps=bundle.getString("vehicleId")
             // Do something with the result
-            Log.i("TTTTTTT", vehicleName.toString())
+           // Log.i("TTTTTTT", vehicleName.toString())
         }
         //messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
 
@@ -105,10 +115,15 @@ class DetailsFragment : Fragment() {
                 vehicleId = vehicles[choiceIndex].vehicleId
             }
         }
+
+        if(vehicles.size>0) {
+            viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId;
+        }
+
     }
 
 
-
+    private val viewModel: ActualTimeTableShowData by activityViewModels()
 
     fun changeIndexChoiceVehicleFollow()= runBlocking {
         withContext(Dispatchers.Default) {
@@ -121,10 +136,33 @@ class DetailsFragment : Fragment() {
             mainHandler.removeCallbacks(refreshTimeTableAfterDownloadDataRunable)
             mainHandler.post { refreshListVehicleRunnable }
             mainHandler.postDelayed(refreshTimeTableAfterDownloadDataRunable,DELAY_CHANGE_VEHICLE_FOLLOW_FOR_UPDATE_DATA_MS)
+         //   Log.e("KURWICA",vehicles[0].tripId)
+
+
         }
+        viewModel.actualShowVehicleId.value=vehicles[choiceIndex].vehicleId;
+
     }
 
 
+
+    fun setFirstVehicleAndLastInViews(actualDirection:String){
+        Log.e("kurwa2",actualDirection)
+        binding.details.currentlyFollowingFirstBusStopData.text="$firstVehicleStopName"
+        binding.details.currentlyFollowingLastBusStopData.text="$lastVehicleStopName"
+
+        Log.e("kurwa2",actualDirection+" / "+firstVehicleStopName)
+
+        if(actualDirection.trim().contains(firstVehicleStopName.trim())){
+            Log.e("kurwa2","TRUE")
+            binding.details.currentlyFollowingFirstBusStopData.text="$lastVehicleStopName"
+            binding.details.currentlyFollowingLastBusStopData.text="$firstVehicleStopName"
+        }else{
+            Log.e("kurwa2","FAOSE")
+            binding.details.currentlyFollowingFirstBusStopData.text="$firstVehicleStopName"
+            binding.details.currentlyFollowingLastBusStopData.text="$lastVehicleStopName"
+        }
+    }
 
     fun downloadBusDataAndFilterFitToActualNumberChoice(nameLine: String,direction: String){
         var e_=0L
@@ -137,8 +175,10 @@ class DetailsFragment : Fragment() {
                     e_ = allBus.lastUpdate
 
                     for(x in allBus.vehicles){
+
                         if(x.name.contains(nameLine.trim()+" "+direction.trim())) {
-                            listBaseDataVehiclesWithSpecificNumberLine.add(IdVehicle(x.tripId, x.id))
+
+                            listBaseDataVehiclesWithSpecificNumberLine.add(IdVehicle(x.tripId, x.id,x.name))
                         }
                     }
 
@@ -148,7 +188,7 @@ class DetailsFragment : Fragment() {
                     var fitNumberButNotDirection:ArrayList<IdVehicle> = ArrayList<IdVehicle>()
                     for(x in allBus.vehicles){
                         if(x.name.contains(nameLine.trim()) and (!x.name.contains(direction.trim()))) {
-                            fitNumberButNotDirection.add(IdVehicle(x.tripId, x.id))
+                            fitNumberButNotDirection.add(IdVehicle(x.tripId, x.id,x.name))
                         }
                     }
                     var listVehicleFitNumberButNotDirection=fitNumberButNotDirection.sortedWith(compareBy { it.tripId.toLong() })
@@ -164,6 +204,18 @@ class DetailsFragment : Fragment() {
                 updateAllVehicleBaseData(listBaseDataVehiclesWithSpecificNumberLine)
             }
         )
+
+
+        if(vehicleNameFromMaps!=null){
+            for (i in 0..vehicles.size) {
+                if(vehicles[i].tripId.equals(tripIdFromMaps)) //dodaj tez drugie autobusy czy tramwaje
+                {
+                    choiceIndex=i;
+                    break;
+                }
+            }
+            vehicleNameFromMaps=null
+        }
     }
 
     fun downloadTramDataAndFilterFitToActualNumberChoice(nameLine: String,direction: String){
@@ -178,7 +230,7 @@ class DetailsFragment : Fragment() {
 
                     for(x in allBus.vehicles){
                         if(x.name.contains(nameLine.trim()+" "+direction.trim())) {
-                            listBaseDataVehiclesWithSpecificNumberLine.add(IdVehicle(x.tripId, x.id))
+                            listBaseDataVehiclesWithSpecificNumberLine.add(IdVehicle(x.tripId, x.id,x.name))
                         }
                     }
 
@@ -188,7 +240,7 @@ class DetailsFragment : Fragment() {
                     var fitNumberButNotDirection:ArrayList<IdVehicle> = ArrayList<IdVehicle>()
                     for(x in allBus.vehicles){
                         if(x.name.contains(nameLine.trim()) and (!x.name.contains(direction.trim()))) {
-                            fitNumberButNotDirection.add(IdVehicle(x.tripId, x.id))
+                            fitNumberButNotDirection.add(IdVehicle(x.tripId, x.id,x.name))
                         }
                     }
                     var listVehicleFitNumberButNotDirection=fitNumberButNotDirection.sortedWith(compareBy { it.tripId.toLong() })
@@ -204,6 +256,18 @@ class DetailsFragment : Fragment() {
                 updateAllVehicleBaseData(listBaseDataVehiclesWithSpecificNumberLine)
             }
         )
+
+
+        if(vehicleNameFromMaps!=null){
+            for (i in 0..vehicles.size) {
+                if(vehicles[i].tripId.equals(tripIdFromMaps)) //dodaj tez drugie autobusy czy tramwaje
+                {
+                    choiceIndex=i;
+                    break;
+                }
+            }
+            vehicleNameFromMaps=null
+        }
     }
 
     fun refreshAllVehiclesBaseData(nameLine:String, direction:String){
@@ -224,6 +288,8 @@ class DetailsFragment : Fragment() {
 
             if (response.isSuccessful) {
                 val ChoiceVehicleTimeTable = response.body()!!
+
+
                 if(ChoiceVehicleTimeTable.actual.size>0 || ChoiceVehicleTimeTable.old.size>0) {
                     ChoiceVehicleTimeTable.old.addAll(ChoiceVehicleTimeTable.actual)
                     adapterListTimeTable?.changeDataset(ChoiceVehicleTimeTable.old)
@@ -240,6 +306,7 @@ class DetailsFragment : Fragment() {
                 if(ChoiceVehicleTimeTable.actual.size>0 || ChoiceVehicleTimeTable.old.size>0) {
                     ChoiceVehicleTimeTable.old.addAll(ChoiceVehicleTimeTable.actual)
                     adapterListTimeTable?.changeDataset(ChoiceVehicleTimeTable.old)
+                 //   viewModel.actualShowVehicleId.value=vehicles[choiceIndex].vehicleId;
                 }
 
             }
@@ -289,6 +356,7 @@ class DetailsFragment : Fragment() {
     fun refreshDataTimeTable(){
         refreshAllVehiclesBaseData(numberLine.toString(),lastVehicleStopName)
         refreshTimeTable()
+     //   viewModel.actualShowVehicleId.value=vehicles[choiceIndex].vehicleId;
     }
 
 
@@ -308,7 +376,9 @@ class DetailsFragment : Fragment() {
         binding.details.currentlyFollowingLastBusStopData.text="$lastVehicleStopName"
 
         binding.details.changeDirectionButton.setOnClickListener {
+
                changeIndexChoiceVehicleFollow()
+            setFirstVehicleAndLastInViews(vehicles[choiceIndex].direction)
         }
 
     }

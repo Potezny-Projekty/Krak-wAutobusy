@@ -46,10 +46,10 @@ class UserLocation(var activity: AppCompatActivity){
     var latitude: Double = 50.06173293019267
     var longtitude: Double = 19.937894523426294
 
-    fun a(){
-        requestPermissions()
-        requestLocation()
-    }
+     //fun a(){
+     //    requestPermissions()
+    //     requestLocation()
+    //   }
 
     fun getLocationUpdates(map: MapView) {
 

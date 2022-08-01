@@ -143,7 +143,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
         val markerToast = MarkerToast(map)
         markerToast.view.setOnClickListener {
             val mapFragment = map.findFragment<Fragment>()
-            mapFragment.setFragmentResult("details", bundleOf(Pair("vehicle", vehicle.name)))
+            mapFragment.setFragmentResult("details", bundleOf(Pair("vehicle", vehicle.name), Pair("tripId", vehicle.tripId.toString()), Pair("vehicleId", vehicle.id.toString())))
             map.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment)
 
         }
@@ -167,6 +167,16 @@ class ActualPositionVehicles(var drawables: Drawables) {
             drawPathVehicle(vehicle.id, vehicle.category, mapView, marker)
 
         }
+    }
+
+
+    public fun colorOnMapActualTimeTableVehicle(vehicleId:String,map:MapView){
+        val marker=markers[vehicleId]
+        marker?.showInfoWindow()
+        if (marker != null) {
+            drawPathVehicle(vehicleId, "TRAM", map, marker)
+        }
+
     }
 
 

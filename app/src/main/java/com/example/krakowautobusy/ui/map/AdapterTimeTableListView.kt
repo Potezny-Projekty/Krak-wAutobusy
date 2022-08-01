@@ -1,21 +1,27 @@
 package com.example.krakowautobusy.ui.map
 
 import android.content.Context
+import android.graphics.Color
+import android.text.Html
+import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.text.color
 import com.example.krakowautobusy.R
-import com.example.krakowautobusy.api.Api
-import com.example.krakowautobusy.database.LineData
-import com.example.krakowautobusy.database.VehicleType
-import com.example.krakowautobusy.ui.map.vehicledata.AllTableTimeData
 import com.example.krakowautobusy.ui.map.vehicledata.StatusData
 import com.example.krakowautobusy.ui.map.vehicledata.StopData
+import java.lang.Math.abs
+import java.text.SimpleDateFormat
+import java.time.Duration
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class AdapterTimeTableListView (data: ArrayList<StatusData>, context: Context) :
@@ -86,15 +92,50 @@ class AdapterTimeTableListView (data: ArrayList<StatusData>, context: Context) :
 
 
     private fun fillViewData(viewHolder: ViewHolder, dataModel: StatusData):ViewHolder{
-        viewHolder.sequenceNumber!!.text= dataModel.stop_seq_num .toString()
+        viewHolder.sequenceNumber!!.text="%-3s".format( dataModel.stop_seq_num .toString())
         viewHolder.nameBusStop!!.text=dataModel.stop.name
+        if(dataModel.stop.name.length>30){
+            viewHolder.nameBusStop!!.text=dataModel.stop.name.substring(0,30)+"..."
+        }
         viewHolder.timeBusStop!!.text=dataModel.actualTime
         Log.e("bananek","|"+dataModel.status+"|")
         if(dataModel.status .equals ("PREDICTED")){
             viewHolder.iconStatus!!.setBackgroundResource(R.drawable.green_circle)
+            var x=(Html.fromHtml("<font color=orange>(+" + 7 + ")</font>"+   viewHolder.timeBusStop!!.text));
+
+           // val actualLocalTime=LocalDateTime.now()
+            //val localTime=LocalDateTime.parse(viewHolder.timeBusStop!!.text)
+           // Duration.between(actualLocalTime, localTime).toMillis();
+
+           val hours= (Calendar.getInstance().getTime().hours)- viewHolder.timeBusStop!!.text.split(":")[0].toInt()
+           val minutes=  viewHolder.timeBusStop!!.text.split(":")[1].toInt()-Calendar.getInstance().getTime().minutes
+
+            Log.e("czas",Calendar.getInstance().getTime().hours.toString()+" / "+Calendar.getInstance().getTime().minutes.toString())
+            var diff=0
+          if(hours!=0) {
+              diff = (hours * 60) - minutes
+              diff = abs(diff)
+          }else{
+               diff=minutes
+          }
+
+
+            //   val localDateTime = LocalDateTime.parse(viewHolder.timeBusStop!!.text.toString())
+
+
+            val phoneCodeColor = ContextCompat.getColor(context, R.color.clear_btn_color)
+            val text = SpannableStringBuilder()
+                .color(Color.GRAY) { append("%-6s".format("(+"+(diff)+") ")) }.color(Color.BLACK){append(viewHolder.timeBusStop!!.text)}
+
+
+
+
+            viewHolder.timeBusStop!!.text=text
         }else if(dataModel.status .equals( "DEPARTED")){
             viewHolder.iconStatus!!.setBackgroundResource(R.drawable.red_circle)
             Log.e("bananek","|KURWA"+"|")
+        }else{
+            viewHolder.iconStatus!!.setBackgroundResource(R.drawable.yellowcircle)
         }
 
 
@@ -114,6 +155,8 @@ return viewHolder
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+
+   //     if (convertView != null) return convertView;
         listView=parent
         var convertView: View? = convertView
 
