@@ -14,6 +14,9 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.example.krakowautobusy.BuildConfig
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.databinding.MapActivityBinding
@@ -42,14 +45,11 @@ class CreateMapFragment : Fragment() {
     private lateinit var userLocation: UserLocation
     private lateinit var drawables: Drawables
     private lateinit var utilities: Utilities
-
-    private lateinit var updateTextTask: Runnable
-    val mainHandler = Handler(Looper.getMainLooper())
+    private val viewModel: MapViewModel by viewModels({requireParentFragment()})
 
     private val MIN_ZOOM_LEVEL = 13.0
     private val MAX_ZOOM_LEVEL = 20.0
     private val CURRENT_ZOOM_LEVEL = 14.0
-    private val RUNNABLE_DELAY: Long = 7000
 
     private val STARTING_LATTITUDE = 50.06173293019267
     private val STARTING_LONGTITUDE = 19.937894523426294
@@ -71,15 +71,12 @@ class CreateMapFragment : Fragment() {
         //setupDrawables()
         
         enableBroadcastReceiver()
-        enableLocalization()
+        //enableLocalization()
 
-        updateTextTask = object : Runnable {
-            override fun run() {
-                mapController.drawAllVehicles(actualPositionVehicles)
-                mainHandler.postDelayed(this, RUNNABLE_DELAY)
-            }
-        }
-        mainHandler.post(updateTextTask)
+        viewModel.setMyLocation.observe(viewLifecycleOwner, Observer {
+            enableLocalization()
+            mapController.drawLocationMarker(userLocation, drawables)
+        })
 
         return binding.root
     }
@@ -90,8 +87,9 @@ class CreateMapFragment : Fragment() {
         mapController.setZoomLevels(MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL, CURRENT_ZOOM_LEVEL)
        // mapController.onZoomChangeListener(drawables, utilities)
         mapController.setStartingPoint(STARTING_LATTITUDE, STARTING_LONGTITUDE)
-        mapController.drawLocationMarker(userLocation, drawables)
-        mapController.drawTrackedRoute(actualPositionVehicles)
+        //mapController.drawLocationMarker(userLocation, drawables)
+        //mapController.drawTrackedRoute(actualPositionVehicles)
+        mapController.startShowingVehiclesOnTheMap(viewModel.isFavourit, viewLifecycleOwner)
 
     }
 
@@ -136,7 +134,7 @@ class CreateMapFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mainHandler.removeCallbacks(updateTextTask)
+        mapController.removeCallback()
         Log.i(TAG, "OnDestroyVewCalled")
     }
 

@@ -27,23 +27,28 @@ import retrofit2.Response
 import kotlin.collections.set
 
 
-class ActualPositionVehicles(var drawables: Drawables) {
-    private var lastUpdateBus: Long = 0
-    private var lastUpdateTram: Long = 0
+open class ActualPositionVehicles(var drawables: Drawables) {
+    var lastUpdateBus: Long = 0
+    var lastUpdateTram: Long = 0
     private var markers = mutableMapOf<String, VehicleMarker>()
-    private var trackedRoute = Polyline()
-    private var traveledRoute = Polyline()
+    protected var trackedRoute : Polyline
+    protected var traveledRoute : Polyline
     private val fullAngle = 360F
     private var enabled = true
-    private var trackingVehicle: Marker? = null
-    private lateinit var  iconVehicleBeforeTracking : Drawable
+    protected var trackingVehicle: Marker? = null
+    protected lateinit var iconVehicleBeforeTracking : Drawable
     val NO_ELEMENT=0
+
+    init {
+        trackedRoute = createTrackedPolyline()
+        traveledRoute = createTraveledPolyline()
+    }
 
     fun setEnabled(enabled: Boolean) {
         this.enabled = enabled
     }
 
-    private fun showAllVehicle(map: MapView, allVehicles: AllVehicles) {
+    open fun showAllVehicle(map: MapView, allVehicles: AllVehicles) {
         val listOfAllVehicle = allVehicles.vehicles
         listOfAllVehicle
             .filter { !it.isDeleted }
@@ -52,9 +57,10 @@ class ActualPositionVehicles(var drawables: Drawables) {
                     val drawVehicleMarker = markers[it.id]!!
                     updateMarkerPosition(drawVehicleMarker, it, map)
                 } else {
-                    drawMarkerVehiclesOnMap(it, map)
+                    markers[it.id] = drawMarkerVehiclesOnMap(it, map)
             }
         }
+        Log.i("POZYCJA", "TO Nie sa ulubione ULUBIONE")
     }
 
     fun showVehiclesAboutNumberLine(map:MapView, allVehicles: AllVehicles,numberLine:String){
@@ -71,7 +77,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
             }
     }
 
-    private fun updateMarkerPosition(marker : VehicleMarker, vehicle: Vehicle, map : MapView) {
+    protected fun updateMarkerPosition(marker : VehicleMarker, vehicle: Vehicle, map : MapView) {
         if (vehicle.path.size > NO_ELEMENT) {
             val lastPosition = ConvertUnits.convertToGeoPoint(vehicle.path[vehicle.path.size - 1].y2,
                 vehicle.path[vehicle.path.size - 1].x2 )
@@ -127,7 +133,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
         return marker
     }
 
-    private fun fillMarkerData(marker: VehicleMarker, icon: Drawable, typeVehicle:String, title:String){
+    protected fun fillMarkerData(marker: VehicleMarker, icon: Drawable, typeVehicle:String, title:String){
         val lineNumber = title.split(" ")[0]
         marker.icon= drawNumberOnIcon(icon, lineNumber)
         marker.id=typeVehicle
@@ -136,7 +142,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
     }
 
 
-    private fun drawMarkerVehiclesOnMap(vehicle: Vehicle, map : MapView) {
+    protected fun drawMarkerVehiclesOnMap(vehicle: Vehicle, map : MapView) : VehicleMarker {
         val locationPoint =
             ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude)
         val marker = VehicleMarker(map, vehicle)
@@ -160,18 +166,18 @@ class ActualPositionVehicles(var drawables: Drawables) {
                 VehicleType.TRAM.type,vehicle.name)
         }
 
-        markers[vehicle.id] = marker
         map.overlays.add(marker)
         marker.setOnMarkerClickListener { markerTracing, mapView ->
             markerTracing.showInfoWindow()
             drawPathVehicle(vehicle.id, vehicle.category, mapView, marker)
-
         }
+
+        return marker
     }
 
 
 
-    private fun analisePathVehicleResponse(response: Response<JsonObject>, map: MapView, marker: VehicleMarker){
+    protected fun analisePathVehicleResponse(response: Response<JsonObject>, map: MapView, marker: VehicleMarker){
         val FIRST_RESPONSE_ELEM=0
         val PATH="paths"
         val WAY_POINT="wayPoints"
@@ -195,7 +201,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
         drawPathVehicleOnMap(map, marker, geoPoints)
     }
 
-    private fun drawPathVehicle(idVehicle: String, type: String, map: MapView, marker: VehicleMarker) : Boolean{
+    protected fun drawPathVehicle(idVehicle: String, type: String, map: MapView, marker: VehicleMarker) : Boolean{
 
         if (type == VehicleType.TRAM.type) {
             Api.getApi().getTramPath(idVehicle,fun( response: Response<JsonObject>) {
@@ -210,19 +216,10 @@ class ActualPositionVehicles(var drawables: Drawables) {
         return true
     }
 
-    private fun drawPathVehicleOnMap(map: MapView, marker: VehicleMarker,
+    protected fun drawPathVehicleOnMap(map: MapView, marker: VehicleMarker,
                                 pathPoints : ArrayList<GeoPoint>
     ) {
-        if (trackingVehicle != null) {
-
-            if (trackingVehicle!!.id == VehicleType.BUS_FOCUSED.type) {
-                trackingVehicle!!.icon = iconVehicleBeforeTracking
-                trackingVehicle!!.id = VehicleType.BUS.type
-            } else {
-                trackingVehicle!!.icon = iconVehicleBeforeTracking
-                trackingVehicle!!.id = VehicleType.TRAM.type
-            }
-        }
+        removeTrackedVehicle()
         trackingVehicle = marker
         val lineNumber = marker.title.split(" ")[0]
         iconVehicleBeforeTracking = marker.icon
@@ -234,8 +231,6 @@ class ActualPositionVehicles(var drawables: Drawables) {
             marker.icon = drawNumberOnIcon(drawables.tramIconTrackingDrawable, lineNumber)
         }
 
-        trackedRoute.actualPoints.clear()
-        traveledRoute.actualPoints.clear()
         val firstElement = 0
         var isRedLine = true
         var lastAddedPoint = pathPoints[firstElement]
@@ -258,53 +253,34 @@ class ActualPositionVehicles(var drawables: Drawables) {
         map.invalidate()
     }
 
-    fun createPolyline(tracked: Polyline, traveled : Polyline, width: Float, color: String) {
-        val colorTraveledRoute = "#FF0000"
-
-        trackedRoute = tracked
+    protected fun createTrackedPolyline() : Polyline {
+        val routeColor = "#39DD00"
+        val width = 10.0f
+        val trackedRoute = Polyline()
         trackedRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
         trackedRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
-        trackedRoute.outlinePaint.color = Color.parseColor(color)
+        trackedRoute.outlinePaint.color = Color.parseColor(routeColor)
         trackedRoute.outlinePaint.strokeWidth = width
         trackedRoute.isGeodesic = true
+        return trackedRoute
+    }
 
-        traveledRoute = traveled
+    protected fun createTraveledPolyline() : Polyline {
+        val colorTraveledRoute = "#FF0000"
+        val width = 10.0f
+        val traveledRoute = Polyline()
         traveledRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
         traveledRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
         traveledRoute.outlinePaint.color = Color.parseColor(colorTraveledRoute)
         traveledRoute.outlinePaint.strokeWidth = width
         traveledRoute.isGeodesic = true
+        return traveledRoute
     }
 
     //to niżej dodać
     fun checkIsResponseExist(){
 
     }
-
-    fun getActualPosition(map : MapView){
-      //  combine: (responseFun: Response<AllVehicles>) -> Unit
-      Api.getApi().getBusPosition(lastUpdateBus,
-          fun(response: Response<AllVehicles>) {
-              if (response.isSuccessful && response.body() != null) {
-                  val allBus = response.body()!!
-                  lastUpdateBus = allBus.lastUpdate
-                  showAllVehicle(map, response.body()!!)
-                  Log.i("ERRORR2", allBus.toString())
-              }
-          }
-        )
-
-
-      Api.getApi().getTramPosition(lastUpdateTram, fun(response: Response<AllVehicles>)  {
-          if (response.isSuccessful) {
-              val allTram = response.body()!!
-              lastUpdateTram = allTram.lastUpdate
-              showAllVehicle(map, allTram)
-          }
-      })
-
-    }
-
 
     fun showNumberLine(map:MapView,numberLine: String){
         Api.getApi().getBusPosition(lastUpdateBus,
@@ -328,7 +304,7 @@ class ActualPositionVehicles(var drawables: Drawables) {
         })
     }
 
-    private fun drawNumberOnIcon(icon : Drawable, number : String) : Drawable {
+    protected fun drawNumberOnIcon(icon : Drawable, number : String) : Drawable {
         val textSize = 18f
         val copyIcon = icon.mutate()
         val paint = Paint()
@@ -359,6 +335,45 @@ class ActualPositionVehicles(var drawables: Drawables) {
         val lineNumber = "10"
         drawNumberOnIcon(drawables.busIconTrackingDrawable, lineNumber)
         drawNumberOnIcon(drawables.tramIconTrackingDrawable, lineNumber)
+    }
+
+    fun changeVehicleOnFavoriteVehicles(map: MapView, isFavourite : Boolean) {
+        if (isFavourite) {
+            map.overlays.clear()
+            markers.clear()
+        } else {
+
+        }
+    }
+
+    fun addPolylineIntoMap(map: MapView) {
+        map.overlays.add(trackedRoute)
+        map.overlays.add(traveledRoute)
+    }
+
+    open fun hiddenMarkers(map: MapView) {
+        map.overlays.removeAll(markers.values)
+        map.invalidate()
+    }
+
+    open fun showMarkers(map: MapView) {
+        map.overlays.addAll(markers.values)
+        map.invalidate()
+    }
+
+    fun removeTrackedVehicle() {
+        if (trackingVehicle != null) {
+            if (trackingVehicle!!.id == VehicleType.BUS_FOCUSED.type) {
+                trackingVehicle!!.icon = iconVehicleBeforeTracking
+                trackingVehicle!!.id = VehicleType.BUS.type
+            } else {
+                trackingVehicle!!.icon = iconVehicleBeforeTracking
+                trackingVehicle!!.id = VehicleType.TRAM.type
+            }
+            trackingVehicle!!.infoWindow.close()
+            trackedRoute.actualPoints.clear()
+            traveledRoute.actualPoints.clear()
+        }
     }
 
 }

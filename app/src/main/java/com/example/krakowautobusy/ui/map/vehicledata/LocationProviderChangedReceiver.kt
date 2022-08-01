@@ -9,7 +9,8 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import org.osmdroid.views.MapView
 
-class LocationProviderChangedReceiver(private var map: MapView, private var userLocation: UserLocation) : BroadcastReceiver() {
+class LocationProviderChangedReceiver(private var map: MapView,
+                                      private var userLocation: UserLocation) : BroadcastReceiver() {
 
     private var isGpsEnabled: Boolean = false
     private var isNetworkEnabled: Boolean = false

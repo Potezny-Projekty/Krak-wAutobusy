@@ -8,11 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import com.example.krakowautobusy.BundleChoiceVehicle
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.FragmentDetailsBinding
-import com.example.krakowautobusy.ui.map.CreateDetailsMapFragment
-import com.example.krakowautobusy.ui.map.vehicledata.Vehicle
+import com.example.krakowautobusy.ui.map.MapViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -26,6 +26,7 @@ class DetailsFragment : Fragment() {
     private var firstVehicleStopName=""
     private var lastVehicleStopName=""
     private val LINE_NUMBER_BUNDLE_NAME="lineNumber"
+    private val viewModel: MapViewModel by viewModels()
 
     companion object{
         var numberLine:Int = 0
@@ -41,6 +42,10 @@ class DetailsFragment : Fragment() {
             val vehicleName = bundle.getString("vehicle")
             // Do something with the result
             Log.i("TTTTTTT", vehicleName.toString())
+        }
+
+        binding.extendedFab2.setOnClickListener{
+            viewModel.setMyLocation
         }
         //messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
         return binding.root

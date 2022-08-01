@@ -13,7 +13,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
             android:id="@+id/upper_bar"
             android:layout_marginBottom="8dp">
 
@@ -48,16 +47,38 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <fragment
-            android:layout_width="match_parent"
-            android:tag="kks"
-            android:layout_height="360dp"
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="8dp">
+
+        <fragment
             android:id="@+id/details_view_map"
-            tools:context=".MapsActivity"
             android:name="com.example.krakowautobusy.ui.map.CreateDetailsMapFragment"
+            android:layout_width="match_parent"
+
+            android:layout_height="360dp"
+            android:tag="kks"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/upper_bar" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:context=".MapsActivity" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/extended_fab2"
+        style="@style/FloatingButton"
+
+        android:contentDescription="@string/yourLocation"
+
+        app:icon="@drawable/location_icon"
+        app:layout_constraintBottom_toBottomOf="@id/details_view_map"
+        app:layout_constraintEnd_toEndOf="@id/details_view_map"
+        app:shapeAppearanceOverlay="@drawable/location_icon" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include layout="@layout/line_info_with_directions_bar" android:id="@+id/details"   />
 
@@ -82,6 +103,5 @@
             <include layout="@layout/bus_stop_arrival_box" />
         </LinearLayout>
     </ScrollView>
-
 
 </LinearLayout>
