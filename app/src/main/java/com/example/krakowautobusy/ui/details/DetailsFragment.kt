@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import com.example.krakowautobusy.BundleChoiceVehicle
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
@@ -22,6 +23,7 @@ import com.example.krakowautobusy.ui.map.vehicledata.StatusData
 import com.example.krakowautobusy.ui.map.vehicledata.TimeTableData
 import com.example.krakowautobusy.ui.map.CreateDetailsMapFragment
 import com.example.krakowautobusy.ui.map.vehicledata.Vehicle
+import com.example.krakowautobusy.ui.map.MapViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -42,6 +44,7 @@ class DetailsFragment : Fragment() {
     private var firstVehicleStopName=""
     private var lastVehicleStopName=""
     private val LINE_NUMBER_BUNDLE_NAME="lineNumber"
+    private val viewModel: MapViewModel by viewModels()
     private var adapterListTimeTable:AdapterTimeTableListView?=null
     private lateinit var refreshTimeTableAfterDownloadDataRunable:Runnable
     private lateinit var refreshListVehicleRunnable: Runnable
@@ -77,12 +80,11 @@ class DetailsFragment : Fragment() {
             // Do something with the result
            // Log.i("TTTTTTT", vehicleName.toString())
         }
+
+        binding.extendedFab2.setOnClickListener{
+            viewModel.setMyLocation
+        }
         //messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
-
-
-
-
-
         return binding.root
     }
 

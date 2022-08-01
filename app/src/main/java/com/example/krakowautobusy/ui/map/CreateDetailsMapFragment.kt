@@ -11,6 +11,9 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -19,6 +22,7 @@ import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.databinding.MapActivityBinding
 import com.example.krakowautobusy.ui.ActualTimeTableShowData
 import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
+import com.example.krakowautobusy.ui.map.vehicledata.UserLocation
 import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.TimeTableData
 import com.example.krakowautobusy.ui.map.vehicledata.Utilities
@@ -36,6 +40,7 @@ class CreateDetailsMapFragment : Fragment() {
 
     private lateinit var drawables: Drawables
     private lateinit var utilities: Utilities
+    private lateinit var userLocation: UserLocation
 
     private val STARTING_LATTITUDE = 50.06173293019267
     private val STARTING_LONGTITUDE = 19.937894523426294
@@ -48,6 +53,8 @@ class CreateDetailsMapFragment : Fragment() {
     private lateinit var actualPositionVehicles:ActualPositionVehicles
     private lateinit var updateTextTask: Runnable
     val mainHandler = Handler(Looper.getMainLooper())
+    private val viewModel: MapViewModel by viewModels({requireParentFragment()})
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +64,7 @@ class CreateDetailsMapFragment : Fragment() {
         binding = MapActivityBinding.inflate(inflater, container, false)
         Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         map = binding.mapView
-
+        userLocation = UserLocation(context as AppCompatActivity)
         drawables = Drawables(context as AppCompatActivity)
         utilities = Utilities(context as AppCompatActivity)
         drawables.resizeIcons(drawables, utilities, map.zoomLevel)
@@ -68,20 +75,17 @@ class CreateDetailsMapFragment : Fragment() {
         mapController.setStartingPoint(STARTING_LATTITUDE,STARTING_LONGTITUDE)
         mapController.setZoomLevels(MIN_ZOOM_LEVEL,MAX_ZOOM_LEVEL,CURRENT_ZOOM_LEVEL)
         actualPositionVehicles = ActualPositionVehicles(drawables)
-        mapController.drawTrackedRoute(actualPositionVehicles)
+        //mapController.drawTrackedRoute(actualPositionVehicles)
         readMessageNumberLineFromTopFragment()
         setActualCHoiceBusToColor()
 
-
+        viewModel.setMyLocation.observe(viewLifecycleOwner, Observer {
+            enableLocalization()
+            mapController.drawLocationMarker(userLocation, drawables)
+        })
 
         return binding.root
     }
-
-
-
-
-
-
 
 
     public fun drawVehicleStopLines(numberLine:Int){
@@ -91,72 +95,6 @@ class CreateDetailsMapFragment : Fragment() {
         Log.e("vvv",x.nameVehicleStop)
     }
 
-
-    }
-
-//to wyciać
-    fun showTimeTableLine(nameLine:String,direction:String){
-        var zm:Long=0
-        Api.getApi().getBusPosition(zm,
-            fun(response: Response<AllVehicles>) {
-                if (response.isSuccessful && response.body() != null ) {
-                    val allBus = response.body()!!
-                    zm = allBus.lastUpdate
-
-                   for(x in allBus.vehicles){
-                    //   Log.e("ole",nameLine+" "+direction+"| vs |"+x.name+"|")
-                       if(x.name.contains(nameLine.trim()+" "+direction.trim())){
-                           Log.e("ole",x.id+" / "+x.tripId+" "+x.name)
-                           Log.e("ole",nameLine+" "+direction)
-
-
-
-                           Api.getApi().getTimeTableBus(x.tripId,x.id, fun(response: Response<TimeTableData>)  {
-                               Log.e("ole",response.raw().request().url().toString())
-                               //Log.e("ole",response.raw().request(). toString())
-                               Log.e("ole",response.raw().request().headers() .toString())
-                               Log.e("ole",response.errorBody().toString())
-                               Log.e("ole",response.message(). toString())
-                               Log.e("ole",response.headers().toString()  )
-                               if (response.isSuccessful) {
-                                   val ac = response.body()!!
-
-                                //   Log.e("ole",ac.old[0].name+" KUR")
-                               }
-                           })
-
-
-                       }
-                   }
-                  //  showAllVehicle(map, response.body()!!)
-                    Log.i("ERRORR2", allBus.toString())
-                }
-            }
-        )
-
-
-        Api.getApi().getTramPosition(zm, fun(response: Response<AllVehicles>)  {
-            if (response.isSuccessful) {
-                val allTram = response.body()!!
-                zm = allTram.lastUpdate
-
-                for(x in allTram.vehicles){
-                    if(x.name.contains(nameLine)){
-                        Log.e("ole",x.id+" / "+x.tripId)
-                    }
-                }
-               // showAllVehicle(map, allTram)
-            }
-        })
-    }
-
-
-    private val viewModel: ActualTimeTableShowData by activityViewModels()
-
-    fun setActualCHoiceBusToColor(){
-        viewModel.actualShowVehicleId.observe(viewLifecycleOwner, Observer<String> { data ->
-            actualPositionVehicles.colorOnMapActualTimeTableVehicle(data,map);
-        })
 
     }
 
@@ -178,7 +116,7 @@ class CreateDetailsMapFragment : Fragment() {
 
                 updateTextTask = object : Runnable {
                     override fun run() {
-                        actualPositionVehicles.showNumberLine(map, result.toString())
+                        //actualPositionVehicles.showNumberLine(map, result.toString())
                         mainHandler.postDelayed(this, 4000)
                     }
                 }
@@ -187,6 +125,12 @@ class CreateDetailsMapFragment : Fragment() {
                 map.invalidate()
 
             }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun enableLocalization(){
+        userLocation.getLocationUpdates(map)
+        userLocation.startLocationUpdates()
     }
 
     override fun onResume() {

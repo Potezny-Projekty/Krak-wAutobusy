@@ -2,12 +2,15 @@ package com.example.krakowautobusy.ui.map
 
 import android.content.Context
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
-import com.example.krakowautobusy.ui.map.vehicledata.BusStopPosition
-import com.example.krakowautobusy.ui.map.vehicledata.UserLocation
-import com.example.krakowautobusy.ui.map.vehicledata.Utilities
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import com.example.krakowautobusy.api.Api
+import com.example.krakowautobusy.ui.map.vehicledata.*
 import org.osmdroid.events.MapListener
 import org.osmdroid.events.ScrollEvent
 import org.osmdroid.events.ZoomEvent
@@ -17,7 +20,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import org.osmdroid.views.overlay.Polyline
+import retrofit2.Response
 
 private const val TAG = "MapController"
 @Suppress("DEPRECATION")
@@ -29,11 +32,12 @@ class MapController(private var map: MapView, private var context: Context) {
     private val STARTING_POINT3 = GeoPoint(50.32107434126593, 20.379321439500526)
     private val STARTING_POINT4 = GeoPoint(49.87252834809176, 20.461999509306546)
 
+    private val RUNNABLE_DELAY: Long = 7000
+
     private val mapController = map.controller
-    private val trackedRoute = Polyline()
-    private val traveledRoute = Polyline()
-    private val routeWidth = 10.0f
-    private val routeColor = "#39DD00"
+    private lateinit var updateTextTask: Runnable
+    val mainHandler = Handler(Looper.getMainLooper())
+    private val drawables: Drawables = Drawables(context)
 
     init {
         map.setTileSource(TileSourceFactory.MAPNIK)
@@ -63,15 +67,9 @@ class MapController(private var map: MapView, private var context: Context) {
         userLocation.drawLocationMarker(map, drawables.userLocationIconDrawable)
     }
 
-    fun drawTrackedRoute(actualPositionVehicles: ActualPositionVehicles) {
-        map.overlays.add(trackedRoute)
-        map.overlays.add(traveledRoute)
-        actualPositionVehicles.createPolyline(trackedRoute, traveledRoute, routeWidth, routeColor)
-    }
-
     fun drawAllVehicles(actualPositionVehicles: ActualPositionVehicles) {
-        actualPositionVehicles.lodaIconIntoMap()
-        actualPositionVehicles.getActualPosition(map)
+        //actualPositionVehicles.lodaIconIntoMap()
+        //actualPositionVehicles.getActualPosition(map)
     }
 
     fun drawAllBusStops(drawables: Drawables) {
@@ -136,5 +134,66 @@ class MapController(private var map: MapView, private var context: Context) {
                 }
             },
         )
+    }
+
+    fun startShowingVehiclesOnTheMap(isFavourite : LiveData<Boolean>,
+                                     viewLifecycleOwner : LifecycleOwner) {
+        val actualPositionVehicle = ActualPositionVehicles(drawables)
+        actualPositionVehicle.addPolylineIntoMap(map)
+        val actualPositionFavouriteVehicle =
+            ActualPositionFavouriteVehicle(drawables)
+        actualPositionFavouriteVehicle.addPolylineIntoMap(map)
+        var actualPositionAllOrFavouriteVehicle = actualPositionVehicle
+        actualPositionAllOrFavouriteVehicle.lodaIconIntoMap()
+        isFavourite.observe(viewLifecycleOwner, Observer {
+            Log.i("MAPPPA", it.toString())
+            actualPositionAllOrFavouriteVehicle.hiddenMarkers(map)
+            actualPositionAllOrFavouriteVehicle.removeTrackedVehicle()
+            actualPositionAllOrFavouriteVehicle = if (it) {
+                actualPositionFavouriteVehicle
+            } else {
+                actualPositionVehicle
+            }
+            showAllBus(actualPositionAllOrFavouriteVehicle)
+            showAllTram(actualPositionAllOrFavouriteVehicle)
+            actualPositionAllOrFavouriteVehicle.showMarkers(map)
+        })
+
+        updateTextTask = object : Runnable {
+            override fun run() {
+                showAllBus(actualPositionAllOrFavouriteVehicle)
+                showAllTram(actualPositionAllOrFavouriteVehicle)
+                Log.i("POZYCJA", actualPositionAllOrFavouriteVehicle.toString())
+                mainHandler.postDelayed(this, RUNNABLE_DELAY)
+            }
+        }
+        mainHandler.post(updateTextTask)
+    }
+
+
+    private fun showAllTram(actualPositionTram: ActualPositionVehicles) {
+        return Api.getApi().getTramPosition(actualPositionTram.lastUpdateTram, fun(response: Response<AllVehicles>)  {
+            if (response.isSuccessful) {
+                val allTram = response.body()!!
+                actualPositionTram.lastUpdateTram = allTram.lastUpdate
+                actualPositionTram.showAllVehicle(map, allTram)
+            }
+        })
+    }
+
+    private fun showAllBus(actualPositionBus: ActualPositionVehicles) {
+        return Api.getApi().getBusPosition(actualPositionBus.lastUpdateBus,
+            fun(response: Response<AllVehicles>) {
+                if (response.isSuccessful && response.body() != null) {
+                    val allBus = response.body()!!
+                    actualPositionBus.lastUpdateBus = allBus.lastUpdate
+                    actualPositionBus.showAllVehicle(map, allBus)
+                }
+            }
+        )
+    }
+
+    fun removeCallback() {
+        mainHandler.removeCallbacks(updateTextTask)
     }
 }
