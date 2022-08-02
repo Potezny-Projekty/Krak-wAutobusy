@@ -16,7 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+
 import com.example.krakowautobusy.BuildConfig
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.databinding.MapActivityBinding
@@ -77,7 +77,7 @@ class CreateDetailsMapFragment : Fragment() {
         actualPositionVehicles = ActualPositionVehicles(drawables)
         //mapController.drawTrackedRoute(actualPositionVehicles)
         readMessageNumberLineFromTopFragment()
-        setActualCHoiceBusToColor()
+      //  setActualCHoiceBusToColor()
 
         viewModel.setMyLocation.observe(viewLifecycleOwner, Observer {
             enableLocalization()
@@ -110,13 +110,13 @@ class CreateDetailsMapFragment : Fragment() {
                 actualPositionVehicles.drawAllVehiclesStopLineOnMap(lineData, map);
 
                 if (direction != null) {
-                    showTimeTableLine(result.toString(),direction)
+                  //  showTimeTableLine(result.toString(),direction)
                 }
 
 
                 updateTextTask = object : Runnable {
                     override fun run() {
-                        //actualPositionVehicles.showNumberLine(map, result.toString())
+                        actualPositionVehicles.showNumberLine(map, result.toString())
                         mainHandler.postDelayed(this, 4000)
                     }
                 }

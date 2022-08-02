@@ -44,7 +44,7 @@ class DetailsFragment : Fragment() {
     private var firstVehicleStopName=""
     private var lastVehicleStopName=""
     private val LINE_NUMBER_BUNDLE_NAME="lineNumber"
-    private val viewModel: MapViewModel by viewModels()
+    private val mapViewModel: MapViewModel by viewModels()
     private var adapterListTimeTable:AdapterTimeTableListView?=null
     private lateinit var refreshTimeTableAfterDownloadDataRunable:Runnable
     private lateinit var refreshListVehicleRunnable: Runnable
@@ -82,9 +82,9 @@ class DetailsFragment : Fragment() {
         }
 
         binding.extendedFab2.setOnClickListener{
-            viewModel.setMyLocation
+            mapViewModel.setMyLocation
         }
-        //messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
+       // messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
         return binding.root
     }
 

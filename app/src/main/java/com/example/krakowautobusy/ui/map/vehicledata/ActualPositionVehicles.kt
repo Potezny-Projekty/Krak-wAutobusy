@@ -153,7 +153,9 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             map.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment)
 
         }
-        marker.setInfoWindowAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+        marker.setInfoWindowAnchor(Marker.ANCHOR_BOTTOM, Marker.ANCHOR_CENTER)
+     //   marker.setInf
+
         marker.infoWindow = markerToast
         marker.position = locationPoint
         marker.rotation = fullAngle - vehicle.heading.toFloat()
