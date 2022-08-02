@@ -30,7 +30,7 @@ import kotlin.collections.set
 open class ActualPositionVehicles(var drawables: Drawables) {
     var lastUpdateBus: Long = 0
     var lastUpdateTram: Long = 0
-    private var markers = mutableMapOf<String, VehicleMarker>()
+    protected var markers = mutableMapOf<String, VehicleMarker>()
     protected var trackedRoute : Polyline
     protected var traveledRoute : Polyline
     private val fullAngle = 360F
@@ -72,7 +72,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
                     val drawVehicleMarker = markers[it.id]!!
                     updateMarkerPosition(drawVehicleMarker, it, map)
                 } else {
-                    drawMarkerVehiclesOnMap(it, map)
+                    markers[it.id] = drawMarkerVehiclesOnMap(it, map)
                 }
             }
     }

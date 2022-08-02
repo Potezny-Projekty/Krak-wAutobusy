@@ -7,7 +7,6 @@ import com.example.krakowautobusy.ui.map.Drawables
 import org.osmdroid.views.MapView
 
 class ActualPositionFavouriteVehicle(drawables: Drawables) : ActualPositionVehicles(drawables) {
-   private val markers = mutableMapOf<MarkerId, VehicleMarker>()
 
 
    override fun showAllVehicle(map: MapView, allVehicles: AllVehicles) {
@@ -16,15 +15,15 @@ class ActualPositionFavouriteVehicle(drawables: Drawables) : ActualPositionVehic
       listOfAllVehicle
          .filter { !it.isDeleted }
          .forEach {
-            val markerId = MarkerId(it.name, it.id)
-            if (markers.containsKey(markerId)) {
-               val drawVehicleMarker = markers[markerId]!!
+            if (markers.containsKey(it.id)) {
+               val drawVehicleMarker = markers[it.id]!!
                updateMarkerPosition(drawVehicleMarker, it, map)
             } else {
                val lineNumber = it.name.split(" ")[0].toInt()
                favouriteVehicles.forEach { favouriteLineData ->
                   if (favouriteLineData.numberLine == lineNumber) {
-                     markers[markerId] = drawMarkerVehiclesOnMap(it, map)
+                     markers[it.id] = drawMarkerVehiclesOnMap(it, map)
+                     return
                   }
                }
             }
