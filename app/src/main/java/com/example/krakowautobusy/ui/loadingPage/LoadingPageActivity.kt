@@ -1,7 +1,10 @@
 package com.example.krakowautobusy.ui.loadingPage
 
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.krakowautobusy.MainActivity
 import com.example.krakowautobusy.R
@@ -26,6 +29,7 @@ class LoadingPageActivity : AppCompatActivity() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onStart() {
         super.onStart()
         hideAppTitleBar()

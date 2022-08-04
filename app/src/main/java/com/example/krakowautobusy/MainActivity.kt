@@ -1,11 +1,15 @@
 package com.example.krakowautobusy
 
+import android.net.*
+import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -27,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         // w listBusMasz
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Api.buildApi(applicationContext)
@@ -67,16 +72,50 @@ class MainActivity : AppCompatActivity() {
         for(x in api.getInfoAboutLinePatternNumber(5)){
                  Log.e("testbaza",x.firstStopName.  toString()+"/"+x.lastStopName+"/"+x.numberLine)
                }
+        checkConnectWithInternet(navController)
+
     }
 
 
 
     private fun hideAppTitleBar() {
         supportActionBar?.hide()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun checkConnectWithInternet(
+        navController: NavController
+    ) {
+        val connectivityManager = getSystemService(ConnectivityManager::class.java)
+                as ConnectivityManager
+        val networkRequest = NetworkRequest.Builder()
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+            .build()
 
 
+        val networkCallback = object : ConnectivityManager.NetworkCallback() {
+            // network is available for use
+            override fun onAvailable(network: Network) {
+                super.onAvailable(network)
+                Log.i("INTERNET", "onAvailable")
+                runOnUiThread{
+                    navController.navigate(R.id.action_navigation_no_internet_to_navigation_map)
+                }
 
+            }
 
+            // lost network connection
+            override fun onLost(network: Network) {
+                super.onLost(network)
+                Log.i("INTERNET", "onLost")
+                runOnUiThread{
+                    navController.navigate(R.id.action_global_navigation_no_internet)
+                }
+            }
+        }
+        connectivityManager.requestNetwork(networkRequest, networkCallback)
     }
 
 

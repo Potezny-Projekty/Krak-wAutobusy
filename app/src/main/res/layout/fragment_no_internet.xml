@@ -8,16 +8,17 @@
         android:id="@+id/no_internet_fragment">
 
     <ImageView
-            android:src="@drawable/no_internet_icon"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:id="@+id/no_internet_icon"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="96dp"
-            tools:ignore="ImageContrastCheck"
-            android:contentDescription="@string/no_internet_icon_desc" />
+        android:id="@+id/no_internet_icon"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="248dp"
+        android:contentDescription="@string/no_internet_icon_desc"
+        android:src="@drawable/no_internet_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ImageContrastCheck" />
 
     <TextView
             android:text="@string/no_internet_text"
@@ -33,25 +34,4 @@
             android:gravity="center"
             android:textColor="@color/red" />
 
-    <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
-            android:indeterminateDrawable="@drawable/rotating_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/refresh_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="32dp" />
-
-    <Button
-            android:text="@string/refresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/refresh_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="32dp"
-            android:backgroundTint="@color/greenmain" />
 </androidx.constraintlayout.widget.ConstraintLayout>

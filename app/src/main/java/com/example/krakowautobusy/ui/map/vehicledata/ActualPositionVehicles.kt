@@ -349,18 +349,12 @@ open class ActualPositionVehicles(var drawables: Drawables) {
         drawNumberOnIcon(drawables.tramIconTrackingDrawable, lineNumber)
     }
 
-    fun changeVehicleOnFavoriteVehicles(map: MapView, isFavourite : Boolean) {
-        if (isFavourite) {
-            map.overlays.clear()
-            markers.clear()
-        } else {
-
-        }
-    }
 
     fun addPolylineIntoMap(map: MapView) {
-        map.overlays.add(trackedRoute)
-        map.overlays.add(traveledRoute)
+        val firstElement = 0;
+        val secondElement = 1;
+        map.overlays.add(firstElement, trackedRoute)
+        map.overlays.add(secondElement ,traveledRoute)
     }
 
     open fun hiddenMarkers(map: MapView) {
