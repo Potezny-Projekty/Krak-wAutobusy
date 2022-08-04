@@ -31,6 +31,22 @@
 
         </TextView>
 
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/red_heart_icon"
+            android:id="@+id/heartIcon"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+
+            android:layout_marginRight="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            />
+
         <ImageView
                 app:srcCompat="@drawable/back_icon_green"
                 android:layout_width="wrap_content"
@@ -54,7 +70,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="0dp">
 
         <fragment
             android:id="@+id/details_view_map"
@@ -68,7 +84,7 @@
             tools:context=".MapsActivity" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/extended_fab2"
+        android:id="@+id/locationfab"
         style="@style/FloatingButton"
 
         android:contentDescription="@string/yourLocation"

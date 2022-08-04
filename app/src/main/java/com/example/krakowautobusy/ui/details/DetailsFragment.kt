@@ -1,6 +1,7 @@
 package com.example.krakowautobusy.ui.details
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -81,9 +82,18 @@ class DetailsFragment : Fragment() {
            // Log.i("TTTTTTT", vehicleName.toString())
         }
 
-        binding.extendedFab2.setOnClickListener{
+        binding.locationfab.setOnClickListener{
             mapViewModel.setMyLocation
+            it.setBackgroundColor(Color.rgb(224,224,224))
+            it.animate()
+                .scaleX(1.05f).scaleY(1.05f).setDuration(300).withEndAction {
+                    it.animate().scaleX(1.0f).scaleY(1.0f).start()
+                    it.setBackgroundColor(Color.WHITE)
+                }.start()
         }
+
+
+
        // messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
         return binding.root
     }

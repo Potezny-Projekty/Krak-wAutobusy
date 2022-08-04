@@ -7,10 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.Animation
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.core.animation.doOnEnd
@@ -21,7 +18,6 @@ import com.example.krakowautobusy.BundleChoiceVehicle
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.LineData
-import com.example.krakowautobusy.database.VehicleType
 import com.example.krakowautobusy.databinding.FragmentSearchViewBinding
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -109,7 +105,7 @@ class SearchViewFragment : Fragment() {
     private fun getAccessToViewFromOtherFragmentOrActivity(){
         if(bottomNavView == null){
             bottomNavView=requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
-            findMyLocationOnMap_FAB=requireActivity().findViewById<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>(R.id.extended_fab2)
+            findMyLocationOnMap_FAB=requireActivity().findViewById<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>(R.id.locationfab)
             showAllOrFavoriteBusOnMap_FAB=requireActivity().findViewById<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>(R.id.Map_showAllVehiclesOrFavorite)
         }
 

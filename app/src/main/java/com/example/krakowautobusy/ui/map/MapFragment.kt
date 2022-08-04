@@ -1,5 +1,6 @@
 package com.example.krakowautobusy.ui.map
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -49,6 +50,8 @@ class MapFragment : Fragment() {
         addControllerToMap()
         addCallbackClickShowAllOrOneVehicles()
 
+
+
         return root
     }
 
@@ -88,7 +91,31 @@ class MapFragment : Fragment() {
             //view.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment)
             viewModel.isFavouritMap()
         }
-        binding.extendedFab2.setOnClickListener { view: View ->
+        binding.locationfab.setOnClickListener { view: View ->
+            viewModel.isSetLocation()
+        }
+
+
+
+        binding.MapShowAllVehiclesOrFavorite.setOnClickListener{
+            mapViewModel.setMyLocation
+            it.setBackgroundColor(Color.rgb(224,224,224))
+            it.animate()
+                .scaleX(1.05f).scaleY(1.05f).setDuration(300).withEndAction {
+                    it.animate().scaleX(1.0f).scaleY(1.0f).start()
+                    it.setBackgroundColor(Color.WHITE)
+                }.start()
+            viewModel.isFavouritMap()
+        }
+
+        binding.locationfab.setOnClickListener{
+            mapViewModel.setMyLocation
+            it.setBackgroundColor(Color.rgb(224,224,224))
+            it.animate()
+                .scaleX(1.05f).scaleY(1.05f).setDuration(300).withEndAction {
+                    it.animate().scaleX(1.0f).scaleY(1.0f).start()
+                    it.setBackgroundColor(Color.WHITE)
+                }.start()
             viewModel.isSetLocation()
         }
 

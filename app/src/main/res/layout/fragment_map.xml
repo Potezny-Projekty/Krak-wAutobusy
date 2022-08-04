@@ -52,13 +52,13 @@
         app:shapeAppearanceOverlay="@drawable/bus_icon"
         app:icon="@drawable/bus_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/extended_fab2"
+        app:layout_constraintBottom_toTopOf="@id/locationfab"
         style="@style/FloatingButton"
         tools:ignore="SmallSp" />
 
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/extended_fab2"
+        android:id="@+id/locationfab"
         android:contentDescription="@string/yourLocation"
 
         app:shapeAppearanceOverlay="@drawable/location_icon"
