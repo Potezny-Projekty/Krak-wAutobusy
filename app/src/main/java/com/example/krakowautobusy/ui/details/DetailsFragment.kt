@@ -152,6 +152,7 @@ class DetailsFragment : Fragment() {
 
 
         }
+        Log.e("qweqwe","Wyb"+vehicles[choiceIndex].vehicleId)
         viewModel.actualShowVehicleId.value=vehicles[choiceIndex].vehicleId;
 
     }
@@ -318,7 +319,7 @@ class DetailsFragment : Fragment() {
                 if(ChoiceVehicleTimeTable.actual.size>0 || ChoiceVehicleTimeTable.old.size>0) {
                     ChoiceVehicleTimeTable.old.addAll(ChoiceVehicleTimeTable.actual)
                     adapterListTimeTable?.changeDataset(ChoiceVehicleTimeTable.old)
-                 //   viewModel.actualShowVehicleId.value=vehicles[choiceIndex].vehicleId;
+                   viewModel.actualShowVehicleId.value=vehicles[choiceIndex].vehicleId;
                 }
 
             }
@@ -368,7 +369,7 @@ class DetailsFragment : Fragment() {
     fun refreshDataTimeTable(){
         refreshAllVehiclesBaseData(numberLine.toString(),lastVehicleStopName)
         refreshTimeTable()
-     //   viewModel.actualShowVehicleId.value=vehicles[choiceIndex].vehicleId;
+//        viewModel.actualShowVehicleId.value=vehicles[choiceIndex].vehicleId;
     }
 
 

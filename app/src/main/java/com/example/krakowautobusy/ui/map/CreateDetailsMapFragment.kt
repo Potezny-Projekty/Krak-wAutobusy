@@ -54,6 +54,7 @@ class CreateDetailsMapFragment : Fragment() {
     private lateinit var updateTextTask: Runnable
     val mainHandler = Handler(Looper.getMainLooper())
     private val viewModel: MapViewModel by viewModels({requireParentFragment()})
+    private val vieModelMy:ActualTimeTableShowData by activityViewModels()
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -75,9 +76,10 @@ class CreateDetailsMapFragment : Fragment() {
         mapController.setStartingPoint(STARTING_LATTITUDE,STARTING_LONGTITUDE)
         mapController.setZoomLevels(MIN_ZOOM_LEVEL,MAX_ZOOM_LEVEL,CURRENT_ZOOM_LEVEL)
         actualPositionVehicles = ActualPositionVehicles(drawables)
-        //mapController.drawTrackedRoute(actualPositionVehicles)
+      //  mapController.drawTrackedRoute(actualPositionVehicles)
         readMessageNumberLineFromTopFragment()
-      //  setActualCHoiceBusToColor()
+        setActualCHoiceBusToColor()
+
 
         viewModel.setMyLocation.observe(viewLifecycleOwner, Observer {
             enableLocalization()
@@ -87,6 +89,14 @@ class CreateDetailsMapFragment : Fragment() {
         return binding.root
     }
 
+
+
+    fun setActualCHoiceBusToColor(){
+        vieModelMy.actualShowVehicleId.observe(viewLifecycleOwner, Observer<String> { data ->
+            actualPositionVehicles.colorOnMapActualTimeTableVehicle(data,map);
+        })
+
+    }
 
     public fun drawVehicleStopLines(numberLine:Int){
      var lineData=   Api.getApi().getVehicleStopLines(numberLine);

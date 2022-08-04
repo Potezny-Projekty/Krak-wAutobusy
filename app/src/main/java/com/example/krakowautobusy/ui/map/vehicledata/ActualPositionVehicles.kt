@@ -180,9 +180,21 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
     public fun colorOnMapActualTimeTableVehicle(vehicleId:String,map:MapView){
         val marker=markers[vehicleId]
+
+        for( x in markers){
+            Log.e("qweqwe2",x.key+" ")
+        }
         marker?.showInfoWindow()
+    //    map.overlays.add(marker)
+        addPolylineIntoMap(map)
+        Log.e("qweqwe","Jestem")
+        Log.e("qweqwe",vehicleId.toString())
         if (marker != null) {
             drawPathVehicle(vehicleId, "TRAM", map, marker)
+            drawPathVehicle(vehicleId, "BUS", map, marker)
+
+        }else{
+            Log.e("qweqwe","Jestem NULL")
         }
 
     }
