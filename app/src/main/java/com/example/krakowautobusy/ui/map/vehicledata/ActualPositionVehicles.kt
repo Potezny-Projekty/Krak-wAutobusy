@@ -153,9 +153,8 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             map.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment)
 
         }
-        marker.setInfoWindowAnchor(Marker.ANCHOR_BOTTOM, Marker.ANCHOR_CENTER)
-     //   marker.setInf
 
+        marker.setInfoWindowAnchor(Marker.ANCHOR_TOP,  Marker.ANCHOR_CENTER)
         marker.infoWindow = markerToast
         marker.position = locationPoint
         marker.rotation = fullAngle - vehicle.heading.toFloat()
@@ -329,11 +328,11 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     }
 
     protected fun drawNumberOnIcon(icon : Drawable, number : String) : Drawable {
-        val textSize = 18f
+        val textSize = 24f
         val copyIcon = icon.mutate()
         val paint = Paint()
-        val factoryMoveHeightText = 1.8
-        val factoryMoveWidthText = 3
+        val factoryMoveHeightText = 2
+        val factoryMoveWidthText = 3.3
         val startPositionXText =  ((copyIcon.intrinsicHeight / factoryMoveHeightText) * -1).toFloat()
         val startPositionYText = ((copyIcon.intrinsicWidth / factoryMoveWidthText)).toFloat()
         val rotateCanvasToVerticle = -90f

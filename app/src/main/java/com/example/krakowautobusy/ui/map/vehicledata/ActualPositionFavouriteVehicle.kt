@@ -1,8 +1,6 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
-import android.util.Log
 import com.example.krakowautobusy.api.Api
-import com.example.krakowautobusy.database.FavouriteLineData
 import com.example.krakowautobusy.ui.map.Drawables
 import org.osmdroid.views.MapView
 
@@ -19,11 +17,14 @@ class ActualPositionFavouriteVehicle(drawables: Drawables) : ActualPositionVehic
                val drawVehicleMarker = markers[it.id]!!
                updateMarkerPosition(drawVehicleMarker, it, map)
             } else {
-               val lineNumber = it.name.split(" ")[0].toInt()
-               favouriteVehicles.forEach { favouriteLineData ->
-                  if (favouriteLineData.numberLine == lineNumber) {
-                     markers[it.id] = drawMarkerVehiclesOnMap(it, map)
-                     return
+               val firstElement = 0
+               val lineNumber = it.name.split(" ")[firstElement].toIntOrNull()
+               if (lineNumber != null) {
+                  favouriteVehicles.forEach { favouriteLineData ->
+                     if (favouriteLineData.numberLine == lineNumber) {
+                        markers[it.id] = drawMarkerVehiclesOnMap(it, map)
+                        return
+                     }
                   }
                }
             }

@@ -39,6 +39,7 @@
     <string name="favourite_empty_hint">Aktualnie nie masz żadnej ulubionej linii, znajdź ją aby dodać ją do ulubionych</string>
     <string name="empty_favourite_icon">Empty favourite icon</string>
     <string name="favourite"><u>Ulubione</u></string>
+    <string name="marker_toast">Marker Toast</string>
 
 
 </resources>

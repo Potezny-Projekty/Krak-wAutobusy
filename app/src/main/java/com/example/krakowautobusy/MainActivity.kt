@@ -1,12 +1,11 @@
 package com.example.krakowautobusy
 
+import android.content.Context
 import android.net.*
-import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
@@ -31,7 +30,6 @@ class MainActivity : AppCompatActivity() {
         // w listBusMasz
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Api.buildApi(applicationContext)
@@ -82,28 +80,30 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+
     fun checkConnectWithInternet(
         navController: NavController
     ) {
-        val connectivityManager = getSystemService(ConnectivityManager::class.java)
-                as ConnectivityManager
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkRequest = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
             .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
             .build()
 
-
         val networkCallback = object : ConnectivityManager.NetworkCallback() {
             // network is available for use
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
                 Log.i("INTERNET", "onAvailable")
-                runOnUiThread{
-                    navController.navigate(R.id.action_navigation_no_internet_to_navigation_map)
+                runOnUiThread {
+                    Log.i("DESTINATION", navController.currentDestination.toString())
+                    val currentDestination = navController.currentDestination!!
+                    if (currentDestination.id == R.id.navigation_no_internet) {
+                        navController.navigate(R.id.action_navigation_no_internet_to_navigation_map)
+                    }
                 }
-
             }
 
             // lost network connection
@@ -114,9 +114,24 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.action_global_navigation_no_internet)
                 }
             }
+
+            override fun onUnavailable() {
+                super.onUnavailable()
+                Log.i("INTERNET", "onUnavailable")
+            }
+
+        }
+
+        if (!verifyAvailableNetwork(connectivityManager)) {
+            navController.navigate(R.id.action_global_navigation_no_internet)
         }
         connectivityManager.requestNetwork(networkRequest, networkCallback)
     }
 
+
+    private fun verifyAvailableNetwork(connectivityManager : ConnectivityManager):Boolean{
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return  networkInfo!=null && networkInfo.isConnected
+    }
 
 }
