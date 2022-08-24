@@ -26,10 +26,11 @@ import com.example.krakowautobusy.ui.map.CreateDetailsMapFragment
 import com.example.krakowautobusy.ui.map.vehicledata.Vehicle
 import com.example.krakowautobusy.ui.map.MapViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import retrofit2.Response
+import java.lang.Runnable
+import java.util.concurrent.atomic.AtomicInteger
+import kotlin.system.measureTimeMillis
 
 
 class DetailsFragment : Fragment() {
@@ -107,9 +108,14 @@ class DetailsFragment : Fragment() {
 
 
     fun updateAllVehicleBaseData(baseDataVeh:ArrayList<IdVehicle>) = runBlocking {
+        vehicles=baseDataVeh
+        Log.e("kk","Aktualizacja")
+        refreshTimeTable()//hmm
         withContext(Dispatchers.Default) {
-            vehicles=baseDataVeh;
+
+
         }
+        refreshChoiceFollowIndexVehicle()
     }
 
     var tripID:String="";
@@ -118,19 +124,23 @@ class DetailsFragment : Fragment() {
     val NO_ELEM=0
     val DEFAULT_CHOICE_VEHICLE_INDEX=0
     fun refreshChoiceFollowIndexVehicle()= runBlocking {
-        withContext(Dispatchers.Default) {
-            if(vehicles.size>NO_ELEM) {
-                if(choiceIndex>vehicles.size-1){
-                    choiceIndex=DEFAULT_CHOICE_VEHICLE_INDEX
-                }
-                tripID = vehicles[choiceIndex].tripId
-                vehicleId = vehicles[choiceIndex].vehicleId
+
+        if(vehicles.size>NO_ELEM) {
+            if(choiceIndex>vehicles.size-1){
+                choiceIndex=DEFAULT_CHOICE_VEHICLE_INDEX
+                Log.e("kk","Kurwa default")
             }
+            tripID = vehicles[choiceIndex].tripId
+            vehicleId = vehicles[choiceIndex].vehicleId
+            Log.e("kk","UPDate"+tripID+"/"+vehicleId+"?"+choiceIndex)
         }
 
-        if(vehicles.size>0) {
-            viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId;
+
+        withContext(Dispatchers.Default) {
+
         }
+
+
 
     }
 
@@ -138,11 +148,17 @@ class DetailsFragment : Fragment() {
     private val viewModel: ActualTimeTableShowData by activityViewModels()
 
     fun changeIndexChoiceVehicleFollow()= runBlocking {
+
+        choiceIndex+=1;
+        Log.e("kk","Indeks:"+choiceIndex+" size "+vehicles.size)
+        if(choiceIndex>=vehicles.size){
+            choiceIndex=DEFAULT_CHOICE_VEHICLE_INDEX
+        }
         withContext(Dispatchers.Default) {
-            choiceIndex+=1;
-                if(choiceIndex>vehicles.size-1){
-                    choiceIndex=DEFAULT_CHOICE_VEHICLE_INDEX
-                }
+
+
+            refreshChoiceFollowIndexVehicle()
+
 
             mainHandler.removeCallbacks(refreshListVehicleRunnable)
             mainHandler.removeCallbacks(refreshTimeTableAfterDownloadDataRunable)
@@ -152,9 +168,18 @@ class DetailsFragment : Fragment() {
 
 
         }
-        Log.e("qweqwe","Wyb"+vehicles[choiceIndex].vehicleId)
-        viewModel.actualShowVehicleId.value=vehicles[choiceIndex].vehicleId;
 
+        if(vehicles.size>0) {
+            viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId;
+        }
+
+
+        //<ci-1
+
+        if(vehicles.size>choiceIndex) {
+//        Log.e("qweqwe","Wyb"+vehicles[choiceIndex].vehicleId)
+            viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId;
+        }
     }
 
 
@@ -177,13 +202,15 @@ class DetailsFragment : Fragment() {
         }
     }
 
+
+    //Kierunek się nie zgadza xD
     fun downloadBusDataAndFilterFitToActualNumberChoice(nameLine: String,direction: String){
         var e_=0L
         var listBaseDataVehiclesWithSpecificNumberLine:ArrayList<IdVehicle> = ArrayList<IdVehicle>()
         Api.getApi().getBusPosition(e_,
             fun(response: Response<AllVehicles>) {
                 if (response.isSuccessful && response.body() != null ) {
-
+                    Log.e("kk","wczesny update")
                     val allBus = response.body()!!
                     e_ = allBus.lastUpdate
 
@@ -213,8 +240,11 @@ class DetailsFragment : Fragment() {
                     }
 
 
+                    Log.e("kk","Specyficzny : "+listBaseDataVehiclesWithSpecificNumberLine.size)
+
                 }
                 updateAllVehicleBaseData(listBaseDataVehiclesWithSpecificNumberLine)
+                refreshChoiceFollowIndexVehicle()
             }
         )
 
@@ -290,22 +320,32 @@ class DetailsFragment : Fragment() {
                 downloadTramDataAndFilterFitToActualNumberChoice(nameLine,direction)
                 mainHandler.postDelayed(this, DELAY_REFRESH_ALL_VEHICLE_MS)
             }
+
+
         }
         mainHandler.post(refreshListVehicleRunnable)
     }
 
 
-    fun refreshTimeTableDataSet(){
-        refreshChoiceFollowIndexVehicle()
-        Api.getApi().getTimeTableBus(tripID,vehicleId, fun(response: Response<TimeTableData>)  {
 
+
+
+    fun refreshTimeTableDataSet(){
+     //   refreshChoiceFollowIndexVehicle()
+        Api.getApi().getTimeTableBus(tripID,vehicleId, fun(response: Response<TimeTableData>)  {
+           Log.e("akt","Ponrano"+tripID+"/ "+vehicleId)
+            Log.e("akt",response.body().toString())
             if (response.isSuccessful) {
                 val ChoiceVehicleTimeTable = response.body()!!
-
-
+                Log.e("akt","Ponrano2")
                 if(ChoiceVehicleTimeTable.actual.size>0 || ChoiceVehicleTimeTable.old.size>0) {
+                    Log.e("akt","Ponrano3")
                     ChoiceVehicleTimeTable.old.addAll(ChoiceVehicleTimeTable.actual)
+                    refreshChoiceFollowIndexVehicle()
+                    Log.e("akt",(adapterListTimeTable==null).toString())
+                    Log.e("akt",ChoiceVehicleTimeTable.old.size.toString())
                     adapterListTimeTable?.changeDataset(ChoiceVehicleTimeTable.old)
+                //    refreshChoiceFollowIndexVehicle()
                 }
 
             }
@@ -319,6 +359,7 @@ class DetailsFragment : Fragment() {
                 if(ChoiceVehicleTimeTable.actual.size>0 || ChoiceVehicleTimeTable.old.size>0) {
                     ChoiceVehicleTimeTable.old.addAll(ChoiceVehicleTimeTable.actual)
                     adapterListTimeTable?.changeDataset(ChoiceVehicleTimeTable.old)
+                    refreshChoiceFollowIndexVehicle()
                    viewModel.actualShowVehicleId.value=vehicles[choiceIndex].vehicleId;
                 }
 
@@ -375,7 +416,7 @@ class DetailsFragment : Fragment() {
 
 
     fun getDataFromIntent(){
-      lineNumber=  arguments?.getInt(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject)!!.toInt()
+        lineNumber=  arguments?.getInt(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject)!!.toInt()
         firstVehicleStopName=arguments?.getString(BundleChoiceVehicle.FIRST_STOP_VEHICLE_NAME.nameBundleObject).toString()
         lastVehicleStopName=arguments?.getString(BundleChoiceVehicle.LAST_VEHICLE_STOP_NAME.nameBundleObject).toString()
     }
@@ -390,8 +431,14 @@ class DetailsFragment : Fragment() {
 
         binding.details.changeDirectionButton.setOnClickListener {
 
+
+            Log.e("kk","qw")
                changeIndexChoiceVehicleFollow()
-            setFirstVehicleAndLastInViews(vehicles[choiceIndex].direction)
+               if(vehicles.size>choiceIndex){
+
+               setFirstVehicleAndLastInViews(vehicles[choiceIndex].direction)
+        }
+
         }
 
     }

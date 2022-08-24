@@ -177,26 +177,29 @@ open class ActualPositionVehicles(var drawables: Drawables) {
         return marker
     }
 
-
+  var actualShow:String=""
     public fun colorOnMapActualTimeTableVehicle(vehicleId:String,map:MapView){
-        val marker=markers[vehicleId]
+        if(actualShow!=vehicleId.toString()) {
+            val marker = markers[vehicleId]
 
-        for( x in markers){
-            Log.e("qweqwe2",x.key+" ")
+            for (x in markers) {
+                Log.e("qweqwe2", x.key + " ")
+            }
+            marker?.showInfoWindow()
+            //    map.overlays.add(marker)
+            addPolylineIntoMap(map)
+            Log.e("qweqwe", "Jestem")
+            Log.e("qweqwe", vehicleId.toString())
+            if (marker != null) {
+                drawPathVehicle(vehicleId, "TRAM", map, marker)
+                drawPathVehicle(vehicleId, "BUS", map, marker)
+
+            } else {
+                Log.e("qweqwe", "Jestem NULL")
+            }
+
+            actualShow=vehicleId
         }
-        marker?.showInfoWindow()
-    //    map.overlays.add(marker)
-        addPolylineIntoMap(map)
-        Log.e("qweqwe","Jestem")
-        Log.e("qweqwe",vehicleId.toString())
-        if (marker != null) {
-            drawPathVehicle(vehicleId, "TRAM", map, marker)
-            drawPathVehicle(vehicleId, "BUS", map, marker)
-
-        }else{
-            Log.e("qweqwe","Jestem NULL")
-        }
-
     }
 
 
@@ -237,6 +240,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             })
 
         }
+
         return true
     }
 
