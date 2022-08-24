@@ -17,7 +17,7 @@ object MarkerAnimation {
 
     fun animateMarkerToHC(
         map: MapView,
-        marker: Marker,
+        marker: VehicleMarker,
         endPoint: ArrayList<PathVehicle>,
         GeoPointInterpolator: GeoPointInterpolator,
         polyline: Polyline
@@ -44,6 +44,7 @@ object MarkerAnimation {
                 }
 
             }
+            marker.changeMarkerIcon()
             marker.rotation = fullAngle - endPoint[pathIterator].angle
             marker.position = newPosition
             map.invalidate()
