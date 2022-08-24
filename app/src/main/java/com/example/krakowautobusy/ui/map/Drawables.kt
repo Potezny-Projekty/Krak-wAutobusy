@@ -13,10 +13,14 @@ import com.example.krakowautobusy.ui.map.vehicledata.Utilities
 class Drawables(var context: Context) {
     var busStopIconDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.bus_icon)!!
     var tramIconDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_tram_icon)!!
+    var tramIconMirrorDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_tram_icon_mirror)!!
     var busIconDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_bus_icon)!!
+    var busIconMirrorDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_bus_icon_mirror)!!
     var userLocationIconDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.location_icon)!!
     var busIconTrackingDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_bus_tracking)!!
+    var busIconTrackingMirrorDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_bus_tracking_mirror)!!
     var tramIconTrackingDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_tram_tracking)!!
+    var tramIconTrackingMirrorDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_tram_tracking_mirror)!!
     var vehicleStopIcon:Drawable= AppCompatResources.getDrawable(context, R.drawable.przytsanek)!!
 
     lateinit var resizedBusStopIcon: Drawable

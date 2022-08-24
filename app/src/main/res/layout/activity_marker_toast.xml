@@ -5,10 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
+        android:id="@+id/imageToast"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/ic_speech_bubble"
-        />
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_speech_bubble"
+        android:contentDescription="@string/marker_toast" />
 
 </LinearLayout>

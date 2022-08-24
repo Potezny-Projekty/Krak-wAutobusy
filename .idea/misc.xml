@@ -84,6 +84,14 @@
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/map_activity.xml" value="0.55" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/search_result_field_bus.xml" value="0.55" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/tost_show_allvehivles_orone.xml" value="0.55" />
+        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/ic_icon_bus_icon.xml" value="0.2115" />
+        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/ic_icon_bus_icon_mirror.xml" value="0.1" />
+        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/ic_icon_bus_tracking.xml" value="0.2115" />
+        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/ic_icon_tram_icon.xml" value="0.124" />
+        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/ic_speech_bubble.xml" value="0.1" />
+        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/activity_marker_toast.xml" value="0.33" />
+        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/fragment_no_internet.xml" value="0.1" />
+        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/map_activity.xml" value="0.1" />
       </map>
     </option>
   </component>
