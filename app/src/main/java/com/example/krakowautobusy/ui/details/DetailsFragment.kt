@@ -79,11 +79,11 @@ class DetailsFragment : Fragment() {
             tripIdFromMaps=bundle.getString("tripId")
             vehicleIdFromMaps=bundle.getString("vehicleId")
             // Do something with the result
-           // Log.i("TTTTTTT", vehicleName.toString())
+            // Log.i("TTTTTTT", vehicleName.toString())
         }
 
         binding.locationfab.setOnClickListener{
-            mapViewModel.setMyLocation
+            mapViewModel.isSetLocation()
             it.setBackgroundColor(Color.rgb(224,224,224))
             it.animate()
                 .scaleX(1.05f).scaleY(1.05f).setDuration(300).withEndAction {

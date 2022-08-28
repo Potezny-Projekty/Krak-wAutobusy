@@ -16,7 +16,10 @@ class Drawables(var context: Context) {
     var tramIconMirrorDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_tram_icon_mirror)!!
     var busIconDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_bus_icon)!!
     var busIconMirrorDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_bus_icon_mirror)!!
+
     var userLocationIconDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.location_icon)!!
+    var userLocationGrayIconDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.location_icon_gray)!!
+
     var busIconTrackingDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_bus_tracking)!!
     var busIconTrackingMirrorDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_bus_tracking_mirror)!!
     var tramIconTrackingDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_tram_tracking)!!

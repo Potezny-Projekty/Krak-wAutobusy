@@ -63,8 +63,8 @@ class MapController(private var map: MapView, private var context: Context) {
         mapController.setCenter(startingPoint)
     }
 
-    fun drawLocationMarker(userLocation: UserLocation, drawables: Drawables) {
-        userLocation.drawLocationMarker(map, drawables.userLocationIconDrawable)
+    fun createLocationMarker(userLocation: UserLocation, drawables: Drawables) {
+        userLocation.createLocationMarker(map, drawables.userLocationIconDrawable)
     }
 
     fun drawAllVehicles(actualPositionVehicles: ActualPositionVehicles) {
@@ -195,5 +195,17 @@ class MapController(private var map: MapView, private var context: Context) {
 
     fun removeCallback() {
         mainHandler.removeCallbacks(updateTextTask)
+    }
+
+    fun addLocationMarkerToMap(userLocation: UserLocation) {
+        map.overlays.add(userLocation.locationMarker)
+    }
+
+    fun removeLocationMarkerFromMap(userLocation: UserLocation) {
+        map.overlays.remove(userLocation.locationMarker)
+    }
+
+    fun loadingIcon(actualPositionVehicles: ActualPositionVehicles) {
+        actualPositionVehicles.lodaIconIntoMap()
     }
 }

@@ -83,16 +83,15 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:context=".MapsActivity" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/locationfab"
-        style="@style/FloatingButton"
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/locationfab"
+            style="@style/FloatingButtonGrey"
 
-        android:contentDescription="@string/yourLocation"
+            android:contentDescription="@string/yourLocation"
 
-        app:icon="@drawable/location_icon"
-        app:layout_constraintBottom_toBottomOf="@id/details_view_map"
-        app:layout_constraintEnd_toEndOf="@id/details_view_map"
-        app:shapeAppearanceOverlay="@drawable/location_icon" />
+            app:icon="@drawable/location_icon"
+            app:layout_constraintBottom_toBottomOf="@id/details_view_map"
+            app:layout_constraintEnd_toEndOf="@id/details_view_map" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,5 +1,7 @@
 package com.example.krakowautobusy.ui.map
 
+import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -87,38 +91,42 @@ class MapFragment : Fragment() {
 //                HowShowVehicles.ALL
 //            }
 //        }
-        binding.MapShowAllVehiclesOrFavorite.setOnClickListener { view: View ->
-            //view.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment)
-            viewModel.isFavouritMap()
-        }
-        binding.locationfab.setOnClickListener { view: View ->
-            viewModel.isSetLocation()
-        }
-
-
+        val colorGray = "#FF757575"
+        val colorGreen = "#32CD32"
 
         binding.MapShowAllVehiclesOrFavorite.setOnClickListener{
-            mapViewModel.setMyLocation
+            viewModel.isFavouritMap()
+            if (mapViewModel.isFavourit.value!!) {
+                binding.MapShowAllVehiclesOrFavorite.iconTint =
+                    ColorStateList.valueOf(Color.parseColor(colorGreen))
+            } else {
+                binding.MapShowAllVehiclesOrFavorite.iconTint =
+                    ColorStateList.valueOf(Color.parseColor(colorGray))
+            }
             it.setBackgroundColor(Color.rgb(224,224,224))
             it.animate()
                 .scaleX(1.05f).scaleY(1.05f).setDuration(300).withEndAction {
                     it.animate().scaleX(1.0f).scaleY(1.0f).start()
                     it.setBackgroundColor(Color.WHITE)
                 }.start()
-            viewModel.isFavouritMap()
         }
 
         binding.locationfab.setOnClickListener{
-            mapViewModel.setMyLocation
+            mapViewModel.isSetLocation()
+            if (mapViewModel.setMyLocation.value!!) {
+                binding.locationfab.iconTint =
+                    ColorStateList.valueOf(Color.parseColor(colorGreen))
+            } else {
+                binding.locationfab.iconTint =
+                    ColorStateList.valueOf(Color.parseColor(colorGray))
+            }
             it.setBackgroundColor(Color.rgb(224,224,224))
             it.animate()
                 .scaleX(1.05f).scaleY(1.05f).setDuration(300).withEndAction {
                     it.animate().scaleX(1.0f).scaleY(1.0f).start()
                     it.setBackgroundColor(Color.WHITE)
                 }.start()
-            viewModel.isSetLocation()
         }
-
 
     }
 
