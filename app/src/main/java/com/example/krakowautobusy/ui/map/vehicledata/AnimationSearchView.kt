@@ -52,7 +52,9 @@ class AnimationSearchView {
             view.pivotY = 0f
 
             view.animate()
-                .scaleY(0f)
+                .scaleY(0f).withEndAction {
+                    view.visibility = View.GONE
+                }
                 .setInterpolator(AccelerateDecelerateInterpolator()).duration = ANIM_DURATION_MS
 
 /*
