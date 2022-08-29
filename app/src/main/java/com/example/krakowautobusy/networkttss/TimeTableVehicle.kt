@@ -37,7 +37,9 @@ class TimeTableVehicle :TimeTableVehicleInterface {
         return retrofitAp.getTimeTableVehicles(idTrip,idVehicle).enqueue(object:
             Callback<TimeTableData> {
             override fun onResponse(call: Call<TimeTableData>, response: Response<TimeTableData>) {
-                callbackResponse(response)
+                if(response.body()!=null && response.isSuccessful) {
+                    callbackResponse(response)
+                }
             }
 
 
@@ -54,7 +56,16 @@ class TimeTableVehicle :TimeTableVehicleInterface {
         return retrofitAp.getTimeTableVehicles(idTrip,idVehicle).enqueue(object:
             Callback<TimeTableData> {
             override fun onResponse(call: Call<TimeTableData>, response: Response<TimeTableData>) {
-                callbackResponse(response)
+
+                //if(response!=null && response.isSuccessful){
+
+                if(response.body()!=null && response.isSuccessful) {
+                    callbackResponse(response)
+                }
+
+                //}
+
+
             }
 
 

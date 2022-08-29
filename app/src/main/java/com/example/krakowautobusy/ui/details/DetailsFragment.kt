@@ -28,6 +28,7 @@ import com.example.krakowautobusy.ui.map.MapViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.*
 import retrofit2.Response
+import java.lang.Exception
 import java.lang.Runnable
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.system.measureTimeMillis
@@ -37,7 +38,6 @@ class DetailsFragment : Fragment() {
 
 
     data class IdVehicle(val tripId:String,val vehicleId:String,val direction:String)
-
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private val DEFAULT_VEHICLE_NUMBER=0;
@@ -74,11 +74,34 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
-        messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));//to obczaj
+        //messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));//to obczaj
+
+
+            if(arguments!=null) {
+                if(requireArguments().size()>1){
+
+                  //  Log.e("szczegoly",":D"+requireArguments().getInt(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject)+" / "+ arguments!!.size())
+                    messageForMapFragment(requireArguments().getInt(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject))
+                    vehicleNameFromMaps=requireArguments().getInt(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject).toString()
+                    tripIdFromMaps=requireArguments().getString("tripId").toString()
+
+
+                  //  vehicleIdFromMaps=requireArguments().getString("vehicleId").toString()
+                }else {
+                    messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));//to obczaj
+                }
+
+
+            }
+
         setFragmentResultListener("details") { requestKey, bundle ->
             vehicleNameFromMaps = bundle.getString("vehicle")
+            vehicleNameFromMaps?.let { Log.e("szczegoly", it) }
             tripIdFromMaps=bundle.getString("tripId")
             vehicleIdFromMaps=bundle.getString("vehicleId")
+            messageForMapFragment(vehicleNameFromMaps!!.toInt());//to obczaj
+           // messageForMapFragment(vehicleNameFromMaps!!.toInt());//to obczaj
+
             // Do something with the result
            // Log.i("TTTTTTT", vehicleName.toString())
         }
@@ -108,8 +131,10 @@ class DetailsFragment : Fragment() {
 
 
     fun updateAllVehicleBaseData(baseDataVeh:ArrayList<IdVehicle>) = runBlocking {
-        vehicles=baseDataVeh
-        Log.e("kk","Aktualizacja")
+        if(baseDataVeh.size>0) {
+            vehicles = baseDataVeh
+        }
+        Log.e("kk","Aktualizacja"+vehicles.size)
         refreshTimeTable()//hmm
         withContext(Dispatchers.Default) {
 
@@ -154,16 +179,18 @@ class DetailsFragment : Fragment() {
         if(choiceIndex>=vehicles.size){
             choiceIndex=DEFAULT_CHOICE_VEHICLE_INDEX
         }
+
+        refreshChoiceFollowIndexVehicle()
+
+
+      //  mainHandler.removeCallbacks(refreshListVehicleRunnable)
+        mainHandler.removeCallbacks(refreshTimeTableAfterDownloadDataRunable)
+      //  mainHandler.post { refreshListVehicleRunnable }
+        mainHandler.postDelayed(refreshTimeTableAfterDownloadDataRunable,DELAY_CHANGE_VEHICLE_FOLLOW_FOR_UPDATE_DATA_MS)
         withContext(Dispatchers.Default) {
 
 
-            refreshChoiceFollowIndexVehicle()
 
-
-            mainHandler.removeCallbacks(refreshListVehicleRunnable)
-            mainHandler.removeCallbacks(refreshTimeTableAfterDownloadDataRunable)
-            mainHandler.post { refreshListVehicleRunnable }
-            mainHandler.postDelayed(refreshTimeTableAfterDownloadDataRunable,DELAY_CHANGE_VEHICLE_FOLLOW_FOR_UPDATE_DATA_MS)
          //   Log.e("KURWICA",vehicles[0].tripId)
 
 
@@ -191,7 +218,7 @@ class DetailsFragment : Fragment() {
 
         Log.e("kurwa2",actualDirection+" / "+firstVehicleStopName)
 
-        if(actualDirection.trim().contains(firstVehicleStopName.trim())){
+        if(actualDirection.trim().replace(" ","").contains(firstVehicleStopName.trim().replace(" ",""))){
             Log.e("kurwa2","TRUE")
             binding.details.currentlyFollowingFirstBusStopData.text="$lastVehicleStopName"
             binding.details.currentlyFollowingLastBusStopData.text="$firstVehicleStopName"
@@ -221,18 +248,21 @@ class DetailsFragment : Fragment() {
                             listBaseDataVehiclesWithSpecificNumberLine.add(IdVehicle(x.tripId, x.id,x.name))
                         }
                     }
+                    Log.e("kurwa9","1:"+listBaseDataVehiclesWithSpecificNumberLine.size)
 
 
                     var sortedBusWithSpecificNumberLine = listBaseDataVehiclesWithSpecificNumberLine.sortedWith(compareBy { it.tripId.toLong() })
 
                     var fitNumberButNotDirection:ArrayList<IdVehicle> = ArrayList<IdVehicle>()
                     for(x in allBus.vehicles){
-                        if(x.name.contains(nameLine.trim()) and (!x.name.contains(direction.trim()))) {
+                        Log.e("kurwa7",x.name.replace("[^0-9]".toRegex(), "")+" vs "+nameLine+"   = "+x.name.replace("[^0-9]".toRegex(), "").contains(nameLine.trim()))
+                        //if(x.name.replace("[^0-9]".toRegex(), "").contains(nameLine.trim()) and (!x.name.contains(direction.trim())) and (nameLine.trim().length==x.name.replace("[^0-9]".toRegex(), "").length))
+                        if(x.name.replace("[^0-9]".toRegex(), "").contains(nameLine.trim()) and (!x.name.contains(direction.trim())) and (nameLine.trim().length==x.name.replace("[^0-9]".toRegex(), "").length)) {
                             fitNumberButNotDirection.add(IdVehicle(x.tripId, x.id,x.name))
                         }
                     }
                     var listVehicleFitNumberButNotDirection=fitNumberButNotDirection.sortedWith(compareBy { it.tripId.toLong() })
-
+                    Log.e("kurwa9","2:"+listVehicleFitNumberButNotDirection.size)
                     if(sortedBusWithSpecificNumberLine.isNotEmpty() || listVehicleFitNumberButNotDirection.isNotEmpty()){
                         listBaseDataVehiclesWithSpecificNumberLine.clear()
                         listBaseDataVehiclesWithSpecificNumberLine.addAll(sortedBusWithSpecificNumberLine)
@@ -250,15 +280,20 @@ class DetailsFragment : Fragment() {
 
 
         if(vehicleNameFromMaps!=null){
-            for (i in 0..vehicles.size) {
+
+            Log.e("szczegoly"," "+vehicles.size)
+            if(vehicles.size>0){
+            for (i in 0..vehicles.size-1) {
                 if(vehicles[i].tripId.equals(tripIdFromMaps)) //dodaj tez drugie autobusy czy tramwaje
                 {
+                    Log.e("szczegoly"," dd"+vehicles[i].direction)
+                //    lastVehicleStopName= vehicles[i].direction;
                     choiceIndex=i;
                     break;
                 }
             }
             vehicleNameFromMaps=null
-        }
+        }}
     }
 
     fun downloadTramDataAndFilterFitToActualNumberChoice(nameLine: String,direction: String){
@@ -277,17 +312,30 @@ class DetailsFragment : Fragment() {
                         }
                     }
 
-
+                    Log.e("kurwa10","1:"+listBaseDataVehiclesWithSpecificNumberLine.size)
                     var sortedTramWithSpecificNumberLine = listBaseDataVehiclesWithSpecificNumberLine.sortedWith(compareBy { it.tripId.toLong() })
 
                     var fitNumberButNotDirection:ArrayList<IdVehicle> = ArrayList<IdVehicle>()
                     for(x in allBus.vehicles){
-                        if(x.name.contains(nameLine.trim()) and (!x.name.contains(direction.trim()))) {
+                        Log.e("kurwa6",x.name.replace("[^0-9]".toRegex(), "")+" vs "+nameLine+"   = "+x.name.replace("[^0-9]".toRegex(), "").contains(nameLine.trim())+"          &&   "
+                        +nameLine.trim().length+" vs "+x.name.replace("[^0-9]".toRegex(), "").length+ "  =  "+
+                                (nameLine.trim().length==x.name.replace("[^0-9]".toRegex(), "").length).toString()
+
+                        )
+                        //string.replace("[^0-9]".toRegex(), "")
+                        Log.e("kurwa5",x.name.replace("[^0-9]".toRegex(), "")+":"+nameLine.trim()+"         |  "+
+                                (!x.name.contains(direction.trim()))+"       |        "+nameLine.trim().length+"/"+x.name.replace("[^0-9]".toRegex(), "").length
+                        )
+                        if(x.name.replace("[^0-9]".toRegex(), "").contains(nameLine.trim())
+                            and (!x.name.contains(direction.trim()))
+                            and (nameLine.trim().length==x.name.replace("[^0-9]".toRegex(), "").length)) {
+                            Log.e("kurwa6","PASUJEeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+
                             fitNumberButNotDirection.add(IdVehicle(x.tripId, x.id,x.name))
                         }
                     }
                     var listVehicleFitNumberButNotDirection=fitNumberButNotDirection.sortedWith(compareBy { it.tripId.toLong() })
-
+                    Log.e("kurwa10","1:"+listVehicleFitNumberButNotDirection.size)
                     if(sortedTramWithSpecificNumberLine.isNotEmpty() || listVehicleFitNumberButNotDirection.isNotEmpty()){
                         listBaseDataVehiclesWithSpecificNumberLine.clear()
                         listBaseDataVehiclesWithSpecificNumberLine.addAll(sortedTramWithSpecificNumberLine)
@@ -302,15 +350,19 @@ class DetailsFragment : Fragment() {
 
 
         if(vehicleNameFromMaps!=null){
-            for (i in 0..vehicles.size) {
-                if(vehicles[i].tripId.equals(tripIdFromMaps)) //dodaj tez drugie autobusy czy tramwaje
-                {
-                    choiceIndex=i;
-                    break;
+            if(vehicles.size>0) {
+                for (i in 0..vehicles.size-1) {
+                    if (vehicles[i].tripId.equals(tripIdFromMaps)) //dodaj tez drugie autobusy czy tramwaje
+                    {
+                        lastVehicleStopName= vehicles[i].direction;
+                       // binding.details.currentlyFollowingFirstBusStopData.text="$firstVehicleStopName"
+                       // binding.details.currentlyFollowingLastBusStopData.text="$lastVehicleStopName"
+                        choiceIndex = i;
+                        break;
+                    }
                 }
-            }
-            vehicleNameFromMaps=null
-        }
+                vehicleNameFromMaps = null
+            }        }
     }
 
     fun refreshAllVehiclesBaseData(nameLine:String, direction:String){
@@ -333,6 +385,7 @@ class DetailsFragment : Fragment() {
     fun refreshTimeTableDataSet(){
      //   refreshChoiceFollowIndexVehicle()
         Api.getApi().getTimeTableBus(tripID,vehicleId, fun(response: Response<TimeTableData>)  {
+            viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId;
            Log.e("akt","Ponrano"+tripID+"/ "+vehicleId)
             Log.e("akt",response.body().toString())
             if (response.isSuccessful) {
@@ -353,7 +406,7 @@ class DetailsFragment : Fragment() {
 
 
         Api.getApi().getTimeTableTram(tripID,vehicleId, fun(response: Response<TimeTableData>)  {
-
+            viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId;
             if (response.isSuccessful) {
                 val ChoiceVehicleTimeTable = response.body()!!
                 if(ChoiceVehicleTimeTable.actual.size>0 || ChoiceVehicleTimeTable.old.size>0) {
@@ -370,7 +423,7 @@ class DetailsFragment : Fragment() {
         refreshTimeTableAfterDownloadDataRunable = object : Runnable {
             override fun run() {
                 refreshTimeTableDataSet()
-                mainHandler.postDelayed(this, REFRESH_TIME_TABLE_AFTER_DOWNLOAD_DATA_ALL_LINES_WITH_NUMBER_MS)
+               mainHandler.postDelayed(this, REFRESH_TIME_TABLE_AFTER_DOWNLOAD_DATA_ALL_LINES_WITH_NUMBER_MS)
                 }
             }
 
@@ -395,7 +448,12 @@ class DetailsFragment : Fragment() {
         uncheckedAllNavMenuOption()
         getDataFromIntent()
         fillViewsDataFromBundle()
-        messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
+
+        if(arguments!=null && requireArguments().size()>0) {
+            messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
+        }
+
+
         addAdapterToListViewTimeTable()
         refreshDataTimeTable()
 
@@ -416,9 +474,37 @@ class DetailsFragment : Fragment() {
 
 
     fun getDataFromIntent(){
-        lineNumber=  arguments?.getInt(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject)!!.toInt()
-        firstVehicleStopName=arguments?.getString(BundleChoiceVehicle.FIRST_STOP_VEHICLE_NAME.nameBundleObject).toString()
-        lastVehicleStopName=arguments?.getString(BundleChoiceVehicle.LAST_VEHICLE_STOP_NAME.nameBundleObject).toString()
+
+
+        if(arguments!=null && requireArguments().size()>0) {
+            lineNumber =
+                arguments?.getInt(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject).toString()
+                    .toInt()
+            firstVehicleStopName =
+                arguments?.getString(BundleChoiceVehicle.FIRST_STOP_VEHICLE_NAME.nameBundleObject)
+                    .toString()
+            lastVehicleStopName =
+                arguments?.getString(BundleChoiceVehicle.LAST_VEHICLE_STOP_NAME.nameBundleObject)
+                    .toString()
+
+            if(firstVehicleStopName.length==0){
+                try {
+                    Log.e(
+                        "kurwa3",
+                        Api.getApi().getInfoAboutLineConcretDirectionLastStopName(
+                            lineNumber,
+                            lastVehicleStopName
+                        ).lastStopName
+                    )
+                    firstVehicleStopName = Api.getApi()
+                        .getInfoAboutLineConcretDirectionLastStopName(
+                            lineNumber,
+                            lastVehicleStopName
+                        ).firstStopName
+                }catch (exp:Exception){}
+            }
+        }
+
     }
 
 

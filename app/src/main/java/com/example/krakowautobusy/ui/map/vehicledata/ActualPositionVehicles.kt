@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.widget.TextView
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.scale
 import androidx.core.os.bundleOf
@@ -14,7 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import com.example.krakowautobusy.BundleChoiceVehicle
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.SequenceVehicleStopData
@@ -77,7 +80,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     fun showVehiclesAboutNumberLine(map:MapView, allVehicles: AllVehicles,numberLine:String){
         val listOfAllVehicle = allVehicles.vehicles
         listOfAllVehicle
-            .filter { !it.isDeleted && it.name.startsWith(numberLine) }
+            .filter { !it.isDeleted && it.name.startsWith(numberLine) && it.name.replace("[^0-9]".toRegex(), "").length==numberLine.length }
             .forEach {
                 if (markers.containsKey(it.id)) {
                     val drawVehicleMarker = markers[it.id]!!
@@ -170,8 +173,31 @@ open class ActualPositionVehicles(var drawables: Drawables) {
         val markerToast = MarkerToast(map)
         markerToast.view.setOnClickListener {
             val mapFragment = map.findFragment<Fragment>()
-            mapFragment.setFragmentResult("details", bundleOf(Pair("vehicle", vehicle.name), Pair("tripId", vehicle.tripId.toString()), Pair("vehicleId", vehicle.id.toString())))
-            map.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment)
+
+            Log.e("szczegoly",vehicle.name+" "+vehicle.tripId)
+           // mapFragment.setFragmentResult("details", bundleOf(Pair("vehicle", vehicle.name), Pair("tripId", vehicle.tripId.toString()), Pair("vehicleId", vehicle.id.toString())))
+          //  map.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment)
+
+
+            val bundle = bundleOf(
+                BundleChoiceVehicle.LINE_NUMBER.nameBundleObject to
+                  vehicle.name.toString().split(' ')[0].trim().toInt(),
+                BundleChoiceVehicle.FIRST_STOP_VEHICLE_NAME.nameBundleObject
+                        to "",
+                BundleChoiceVehicle.LAST_VEHICLE_STOP_NAME.nameBundleObject to
+                        vehicle.name.toString().substringAfter(" ").toString() ,"tripId" to vehicle.tripId
+
+
+            )
+
+            map.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment,bundle);
+
+
+
+
+
+
+
 
         }
 
@@ -227,7 +253,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             for (x in markers) {
                 Log.e("qweqwe2", x.key + " ")
             }
-            marker?.showInfoWindow()
+          //  marker?.showInfoWindow()
             //    map.overlays.add(marker)
             addPolylineIntoMap(map)
             Log.e("qweqwe", "Jestem")
@@ -256,10 +282,10 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
         Log.i("ERRORR2", response.raw().toString())
         val geoPoints = ArrayList<GeoPoint>()
-        val jsonObjectValue = response.body()!!
-        jsonObjectValue.getAsJsonArray(PATH)[FIRST_RESPONSE_ELEM]
-            .asJsonObject.getAsJsonArray(WAY_POINT)
-            .forEach {
+        val jsonObjectValue = response.body()
+        jsonObjectValue?.getAsJsonArray(PATH)?.get(FIRST_RESPONSE_ELEM)
+            ?.asJsonObject?.getAsJsonArray(WAY_POINT)
+            ?.forEach {
                 geoPoints.add(
                     ConvertUnits.convertToGeoPoint(
                         it.asJsonObject[LATITUDE].asLong,
@@ -278,6 +304,8 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             })
         } else {
             Api.getApi().getBusPath(idVehicle,fun( response: Response<JsonObject>) {
+
+
                 analisePathVehicleResponse(response,map,marker)
             })
 
@@ -288,6 +316,8 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     protected fun drawPathVehicleOnMap(map: MapView, marker: VehicleMarker,
                                 pathPoints : ArrayList<GeoPoint>
     ) {
+
+        if(pathPoints.size>0 && marker.icon!=null){
         removeTrackedVehicle()
         trackingVehicle = marker
         iconVehicleBeforeTracking = marker.icon
@@ -312,7 +342,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             }
         }
         map.invalidate()
-    }
+    }}
 
     protected fun createTrackedPolyline() : Polyline {
         val routeColor = "#39DD00"
@@ -424,7 +454,8 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     fun removeTrackedVehicle() {
         if (trackingVehicle != null) {
             trackingVehicle!!.switchedBetweenTrackingAndStandardIcon()
-            trackingVehicle!!.infoWindow.close()
+
+            trackingVehicle?.infoWindow?.close()
             trackedRoute.actualPoints.clear()
             traveledRoute.actualPoints.clear()
         }
