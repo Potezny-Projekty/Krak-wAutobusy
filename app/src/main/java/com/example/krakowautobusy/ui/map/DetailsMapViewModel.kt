@@ -6,12 +6,11 @@ import androidx.lifecycle.ViewModel
 
 class DetailsMapViewModel : ViewModel() {
 
-    private val mutableSetMyLocation = MutableLiveData<Boolean>()
+    private val mutableSetMyLocation = MutableLiveData<Boolean>().apply {
+        value = false
+    }
     val setMyLocation: LiveData<Boolean> get() = mutableSetMyLocation
 
-    init{
-        mutableSetMyLocation.value = false
-    }
 
     fun isSetLocation() {
         mutableSetMyLocation.value = mutableSetMyLocation.value == false

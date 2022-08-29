@@ -85,11 +85,10 @@
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/locationfab"
-            style="@style/FloatingButtonGrey"
-
             android:contentDescription="@string/yourLocation"
-
+            app:shapeAppearanceOverlay="@drawable/location_icon"
             app:icon="@drawable/location_icon"
+            style="@style/FloatingButtonGrey"
             app:layout_constraintBottom_toBottomOf="@id/details_view_map"
             app:layout_constraintEnd_toEndOf="@id/details_view_map" />
 

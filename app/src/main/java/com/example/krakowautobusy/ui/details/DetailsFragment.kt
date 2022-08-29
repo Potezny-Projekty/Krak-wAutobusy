@@ -1,6 +1,7 @@
 package com.example.krakowautobusy.ui.details
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -23,6 +24,7 @@ import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.StatusData
 import com.example.krakowautobusy.ui.map.vehicledata.TimeTableData
 import com.example.krakowautobusy.ui.map.CreateDetailsMapFragment
+import com.example.krakowautobusy.ui.map.DetailsMapViewModel
 import com.example.krakowautobusy.ui.map.vehicledata.Vehicle
 import com.example.krakowautobusy.ui.map.MapViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -45,7 +47,7 @@ class DetailsFragment : Fragment() {
     private var firstVehicleStopName=""
     private var lastVehicleStopName=""
     private val LINE_NUMBER_BUNDLE_NAME="lineNumber"
-    private val mapViewModel: MapViewModel by viewModels()
+    private val mapViewModel: DetailsMapViewModel by viewModels()
     private var adapterListTimeTable:AdapterTimeTableListView?=null
     private lateinit var refreshTimeTableAfterDownloadDataRunable:Runnable
     private lateinit var refreshListVehicleRunnable: Runnable
@@ -82,8 +84,18 @@ class DetailsFragment : Fragment() {
             // Log.i("TTTTTTT", vehicleName.toString())
         }
 
+        val colorGray = "#FF757575"
+        val colorGreen = "#32CD32"
+
         binding.locationfab.setOnClickListener{
             mapViewModel.isSetLocation()
+            if (mapViewModel.setMyLocation.value!!) {
+                binding.locationfab.iconTint =
+                    ColorStateList.valueOf(Color.parseColor(colorGreen))
+            } else {
+                binding.locationfab.iconTint =
+                    ColorStateList.valueOf(Color.parseColor(colorGray))
+            }
             it.setBackgroundColor(Color.rgb(224,224,224))
             it.animate()
                 .scaleX(1.05f).scaleY(1.05f).setDuration(300).withEndAction {
