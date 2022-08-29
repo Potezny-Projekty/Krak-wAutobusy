@@ -529,6 +529,12 @@ class DetailsFragment : Fragment() {
 
     }
 
+    override fun onStop() {
+        super.onStop()
+          mainHandler.removeCallbacks(refreshListVehicleRunnable)
+        mainHandler.removeCallbacks(refreshTimeTableAfterDownloadDataRunable)
+    }
+
     fun uncheckedAllNavMenuOption() {
         val navView: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         navView.menu.setGroupCheckable(0, true, false)
