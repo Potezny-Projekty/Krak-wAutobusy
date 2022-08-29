@@ -201,6 +201,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
         }
 
+
         marker.setInfoWindowAnchor(Marker.ANCHOR_TOP,  Marker.ANCHOR_CENTER)
         marker.infoWindow = markerToast
         marker.position = locationPoint
@@ -429,8 +430,17 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
     fun lodaIconIntoMap() {
         val lineNumber = "10"
+        //Drawables Bus
         drawNumberOnIcon(drawables.busIconTrackingDrawable, lineNumber, 0f)
+        drawNumberOnIcon(drawables.busIconTrackingMirrorDrawable, lineNumber, 0f)
+        drawNumberOnIcon(drawables.busIconMirrorDrawable, lineNumber, 0f)
+        drawNumberOnIcon(drawables.busIconDrawable, lineNumber, 0f)
+
+        //Drawables Tram
         drawNumberOnIcon(drawables.tramIconTrackingDrawable, lineNumber, 0f)
+        drawNumberOnIcon(drawables.tramIconTrackingMirrorDrawable, lineNumber, 0f)
+        drawNumberOnIcon(drawables.tramIconMirrorDrawable, lineNumber, 0f)
+        drawNumberOnIcon(drawables.tramIconDrawable, lineNumber, 0f)
     }
 
 

@@ -2,9 +2,6 @@ package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
@@ -45,6 +42,9 @@ class UserLocation(var activity: AppCompatActivity){
 
     var latitude: Double = 50.06173293019267
     var longtitude: Double = 19.937894523426294
+
+    var locationMarker : Marker? = null
+
 
      //fun a(){
      //    requestPermissions()
@@ -162,19 +162,16 @@ class UserLocation(var activity: AppCompatActivity){
         )
     }
 
-    fun drawLocationMarker(map: MapView, busIcon: Drawable) {
+    fun createLocationMarker(map: MapView, locationMarkerDrawable: Drawable) {
         val marker = Marker(map)
         val locationPoint = GeoPoint(latitude, longtitude)
-
         Log.i(TAG, "Drawing initial marker, pos: $latitude, $longtitude")
-
-        marker.icon = busIcon
+        marker.icon = locationMarkerDrawable
         marker.title = "Twoja pozycja"
         marker.id = "location"
         marker.position = locationPoint
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-        map.overlays.add(marker)
-        map.invalidate()
+        locationMarker = marker
     }
 
     fun updateLocationMarkerPosition(map: MapView) {

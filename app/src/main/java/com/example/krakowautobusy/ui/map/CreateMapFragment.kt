@@ -5,8 +5,6 @@ import android.content.IntentFilter
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,10 +13,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.example.krakowautobusy.BuildConfig
-import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.databinding.MapActivityBinding
 import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.BusStopPosition
@@ -27,9 +23,6 @@ import com.example.krakowautobusy.ui.map.vehicledata.Utilities
 import com.example.krakowautobusy.ui.map.vehicledata.*
 import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
-import java.lang.Runnable
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 
 
 private const val TAG = "CreateMapFragment"
@@ -72,10 +65,16 @@ class CreateMapFragment : Fragment() {
         
         enableBroadcastReceiver()
         //enableLocalization()
+        mapController.createLocationMarker(userLocation, drawables)
 
         viewModel.setMyLocation.observe(viewLifecycleOwner, Observer {
-            enableLocalization()
-            mapController.drawLocationMarker(userLocation, drawables)
+            if (it) {
+                enableLocalization()
+                mapController.addLocationMarkerToMap(userLocation)
+            } else {
+                disableLocaliztaion()
+                mapController.removeLocationMarkerFromMap(userLocation)
+            }
         })
 
         return binding.root
@@ -110,6 +109,11 @@ class CreateMapFragment : Fragment() {
         userLocation.getLocationUpdates(map)
         userLocation.startLocationUpdates()
     }
+
+    private fun disableLocaliztaion() {
+        userLocation.stopLocationUpdates()
+    }
+
     private fun enableBroadcastReceiver(){
         val br: BroadcastReceiver = LocationProviderChangedReceiver(map,userLocation)
         val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
@@ -118,8 +122,6 @@ class CreateMapFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        userLocation.startLocationUpdates()
-        actualPositionVehicles.setEnabled(true)
         Log.i(TAG, "onResumeCalled")
         map.onResume()
     }

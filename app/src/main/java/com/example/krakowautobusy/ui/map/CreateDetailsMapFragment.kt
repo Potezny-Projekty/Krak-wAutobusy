@@ -11,11 +11,9 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
 
 import com.example.krakowautobusy.BuildConfig
 import com.example.krakowautobusy.api.Api
@@ -23,12 +21,9 @@ import com.example.krakowautobusy.databinding.MapActivityBinding
 import com.example.krakowautobusy.ui.ActualTimeTableShowData
 import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.UserLocation
-import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
-import com.example.krakowautobusy.ui.map.vehicledata.TimeTableData
 import com.example.krakowautobusy.ui.map.vehicledata.Utilities
 import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
-import retrofit2.Response
 
 private const val TAG = "CreateDetailsMapFragment"
 
@@ -72,18 +67,25 @@ class CreateDetailsMapFragment : Fragment() {
 
         val mapController = MapController(map, requireContext())
 
-
+        mapController.createLocationMarker(userLocation, drawables)
         mapController.setStartingPoint(STARTING_LATTITUDE,STARTING_LONGTITUDE)
         mapController.setZoomLevels(MIN_ZOOM_LEVEL,MAX_ZOOM_LEVEL,CURRENT_ZOOM_LEVEL)
         actualPositionVehicles = ActualPositionVehicles(drawables)
       //  mapController.drawTrackedRoute(actualPositionVehicles)
         readMessageNumberLineFromTopFragment()
         setActualCHoiceBusToColor()
+        mapController.loadingIcon(actualPositionVehicles)
+        mapController.createLocationMarker(userLocation, drawables)
 
 
         viewModel.setMyLocation.observe(viewLifecycleOwner, Observer {
-            enableLocalization()
-            mapController.drawLocationMarker(userLocation, drawables)
+            if (it) {
+                enableLocalization()
+                mapController.addLocationMarkerToMap(userLocation)
+            } else {
+                disableLocaliztaion()
+                mapController.removeLocationMarkerFromMap(userLocation)
+            }
         })
 
         return binding.root
@@ -161,5 +163,10 @@ class CreateDetailsMapFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun disableLocaliztaion() {
+        userLocation.stopLocationUpdates()
     }
 }

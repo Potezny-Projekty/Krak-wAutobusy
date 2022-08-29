@@ -11,11 +11,11 @@ class MapViewModel : ViewModel() {
     private val mutableIsFavourit = MutableLiveData<Boolean>().apply {
         value = false
     }
-    val isFavourit: LiveData<Boolean> get() = mutableIsFavourit.apply {
+    val isFavourit: LiveData<Boolean> get() = mutableIsFavourit
+
+    private val mutableSetMyLocation = MutableLiveData<Boolean>().apply {
         value = false
     }
-
-    private val mutableSetMyLocation = MutableLiveData<Boolean>()
     val setMyLocation: LiveData<Boolean> get() = mutableSetMyLocation
 
     fun isFavouritMap() {

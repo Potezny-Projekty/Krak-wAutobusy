@@ -53,7 +53,7 @@
         app:icon="@drawable/bus_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/locationfab"
-        style="@style/FloatingButton"
+        style="@style/FloatingButtonGrey"
         tools:ignore="SmallSp" />
 
 
@@ -66,6 +66,6 @@
         app:icon="@drawable/location_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        style="@style/FloatingButton"
+        style="@style/FloatingButtonGrey"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
