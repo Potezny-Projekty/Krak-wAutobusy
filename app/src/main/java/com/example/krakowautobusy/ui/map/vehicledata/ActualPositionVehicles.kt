@@ -1,5 +1,6 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -7,6 +8,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.view.MotionEvent
 import android.widget.TextView
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.scale
@@ -166,40 +168,34 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     protected fun drawMarkerVehiclesOnMap(vehicle: Vehicle, map : MapView) : VehicleMarker {
         val locationPoint =
             ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude)
         val marker = VehicleMarker(map, vehicle)
         val markerToast = MarkerToast(map)
-        markerToast.view.setOnClickListener {
-            val mapFragment = map.findFragment<Fragment>()
+        markerToast.view.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                val mapFragment = map.findFragment<Fragment>()
+                val bundle = bundleOf(
+                    BundleChoiceVehicle.LINE_NUMBER.nameBundleObject to
+                            vehicle.name.toString().split(' ')[0].trim().toInt(),
+                    BundleChoiceVehicle.FIRST_STOP_VEHICLE_NAME.nameBundleObject
+                            to "",
+                    BundleChoiceVehicle.LAST_VEHICLE_STOP_NAME.nameBundleObject to
+                            vehicle.name.toString().substringAfter(" ").toString() ,"tripId" to vehicle.tripId
 
-            Log.e("szczegoly",vehicle.name+" "+vehicle.tripId)
+
+                )
+
+                map.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment,bundle);
+            }
+            true
+        }
+           // Log.e("szczegoly",vehicle.name+" "+vehicle.tripId)
            // mapFragment.setFragmentResult("details", bundleOf(Pair("vehicle", vehicle.name), Pair("tripId", vehicle.tripId.toString()), Pair("vehicleId", vehicle.id.toString())))
           //  map.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment)
 
-
-            val bundle = bundleOf(
-                BundleChoiceVehicle.LINE_NUMBER.nameBundleObject to
-                  vehicle.name.toString().split(' ')[0].trim().toInt(),
-                BundleChoiceVehicle.FIRST_STOP_VEHICLE_NAME.nameBundleObject
-                        to "",
-                BundleChoiceVehicle.LAST_VEHICLE_STOP_NAME.nameBundleObject to
-                        vehicle.name.toString().substringAfter(" ").toString() ,"tripId" to vehicle.tripId
-
-
-            )
-
-            map.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment,bundle);
-
-
-
-
-
-
-
-
-        }
 
 
         marker.setInfoWindowAnchor(Marker.ANCHOR_TOP,  Marker.ANCHOR_CENTER)
@@ -217,6 +213,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
         map.overlays.add(marker)
         marker.setOnMarkerClickListener { markerTracing, mapView ->
+            marker.adjustPositionInfowWindowRelativeToRotationIcon()
             markerTracing.showInfoWindow()
             drawPathVehicle(vehicle.id, vehicle.category, mapView, marker)
         }
@@ -305,8 +302,6 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             })
         } else {
             Api.getApi().getBusPath(idVehicle,fun( response: Response<JsonObject>) {
-
-
                 analisePathVehicleResponse(response,map,marker)
             })
 

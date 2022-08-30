@@ -48,7 +48,7 @@ class CreateDetailsMapFragment : Fragment() {
     private lateinit var actualPositionVehicles:ActualPositionVehicles
     private lateinit var updateTextTask: Runnable
     val mainHandler = Handler(Looper.getMainLooper())
-    private val viewModel: MapViewModel by viewModels({requireParentFragment()})
+    private val viewModel: DetailsMapViewModel by viewModels({requireParentFragment()})
     private val vieModelMy:ActualTimeTableShowData by activityViewModels()
 
     @RequiresApi(Build.VERSION_CODES.M)
