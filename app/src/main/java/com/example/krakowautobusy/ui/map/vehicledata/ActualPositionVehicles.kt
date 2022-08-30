@@ -154,11 +154,13 @@ open class ActualPositionVehicles(var drawables: Drawables) {
         marker.setVehicleIconMirror(icons.vehicleIconMirror, lineNumber)
         marker.setVehicleTrackedIcon(icons.vehicleTrackedIcon, lineNumber)
         marker.setVehicleTrackedIconMirror(icons.vehicleTrackedIconMirror, lineNumber)
+
         if (marker.rotation < halfAngle) {
             marker.icon = marker.vehicleIconMirror
         } else {
             marker.icon = marker.vehicleIcon
         }
+
         marker.id=typeVehicle
         marker.title=title
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
