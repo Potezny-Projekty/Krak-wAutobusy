@@ -1,5 +1,6 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -7,6 +8,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.view.MotionEvent
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.scale
 import androidx.core.os.bundleOf
@@ -163,16 +165,19 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     protected fun drawMarkerVehiclesOnMap(vehicle: Vehicle, map : MapView) : VehicleMarker {
         val locationPoint =
             ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude)
         val marker = VehicleMarker(map, vehicle)
         val markerToast = MarkerToast(map)
-        markerToast.view.setOnClickListener {
+        markerToast.view.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
             val mapFragment = map.findFragment<Fragment>()
             mapFragment.setFragmentResult("details", bundleOf(Pair("vehicle", vehicle.name), Pair("tripId", vehicle.tripId.toString()), Pair("vehicleId", vehicle.id.toString())))
             map.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment)
-
+            }
+            true
         }
 
 
@@ -191,6 +196,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
         map.overlays.add(marker)
         marker.setOnMarkerClickListener { markerTracing, mapView ->
+            marker.adjustPositionInfowWindowRelativeToRotationIcon()
             markerTracing.showInfoWindow()
             drawPathVehicle(vehicle.id, vehicle.category, mapView, marker)
         }

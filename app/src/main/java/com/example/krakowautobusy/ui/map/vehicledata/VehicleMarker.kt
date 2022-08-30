@@ -6,7 +6,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.core.graphics.drawable.toDrawable
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
@@ -88,22 +87,46 @@ class VehicleMarker(mapView: MapView?, val vehicle : Vehicle) : Marker(mapView) 
 
 
     fun changeMarkerIcon() {
-        val halfAngle = 180
         if (isTracked) {
-            if (rotation < halfAngle && !isMirror) {
-                icon = vehicleTrackedIconMirror
-                isMirror = true
-            } else if (rotation > halfAngle && isMirror) {
-                icon = vehicleTrackedIcon
-                isMirror = false
-            }
+            changeBetweenMirrorAndNonMirrorIcon(vehicleTrackedIcon,
+                vehicleTrackedIconMirror)
+            adjustPositionInfowWindowRelativeToRotationIcon()
         } else {
-            if (rotation < halfAngle && !isMirror) {
-                icon = vehicleIconMirror
-                isMirror = true
-            } else if (rotation > halfAngle && isMirror) {
-                icon = vehicleIcon
-                isMirror = false
+            changeBetweenMirrorAndNonMirrorIcon(vehicleIcon,
+                vehicleIconMirror)
+        }
+    }
+
+    private fun changeBetweenMirrorAndNonMirrorIcon(vehicleIcon : Drawable,
+                                                    vehicleIconMirror : Drawable) {
+        val halfAngle = 180
+        if (rotation < halfAngle && !isMirror) {
+            icon = vehicleIconMirror
+            isMirror = true
+        } else if (rotation > halfAngle && isMirror) {
+            icon = vehicleIcon
+            isMirror = false
+        }
+    }
+
+    fun adjustPositionInfowWindowRelativeToRotationIcon() {
+        val angle45 = 45
+        val angle315 = 315
+        val angle135 = 135
+        val angle225 = 225
+
+        when {
+            rotation < angle45 || rotation > angle315 -> {
+                setInfoWindowAnchor(ANCHOR_CENTER, ANCHOR_TOP)
+            }
+            rotation < angle135 -> {
+                setInfoWindowAnchor(ANCHOR_BOTTOM, ANCHOR_CENTER)
+            }
+            rotation < angle225 -> {
+                setInfoWindowAnchor(ANCHOR_CENTER, ANCHOR_BOTTOM)
+            }
+            else -> {
+                setInfoWindowAnchor(ANCHOR_TOP, ANCHOR_CENTER)
             }
         }
     }
