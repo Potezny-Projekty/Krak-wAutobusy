@@ -13,10 +13,7 @@ import android.widget.TextView
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.scale
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.findFragment
-import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.*
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.krakowautobusy.BundleChoiceVehicle
@@ -24,6 +21,7 @@ import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.SequenceVehicleStopData
 import com.example.krakowautobusy.ui.map.Drawables
+import com.example.krakowautobusy.ui.map.MapViewModel
 import com.google.gson.JsonObject
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -31,7 +29,10 @@ import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 import retrofit2.Response
 import kotlin.collections.set
-
+import androidx.fragment.app.viewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 
 open class ActualPositionVehicles(var drawables: Drawables) {
     var lastUpdateBus: Long = 0
@@ -46,6 +47,15 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     val tramDrawable : VehicleDrawables
     val busDrawable : VehicleDrawables
     val NO_ELEMENT=0
+
+    companion object{
+        public val actualVehicleIdClick = MutableLiveData<String>().apply {
+            value = ""
+        }
+    }
+
+
+
 
     init {
         trackedRoute = createTrackedPolyline()
@@ -71,6 +81,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             .forEach {
                 if (markers.containsKey(it.id)) {
                     val drawVehicleMarker = markers[it.id]!!
+
                     updateMarkerPosition(drawVehicleMarker, it, map)
                 } else {
                     markers[it.id] = drawMarkerVehiclesOnMap(it, map)
@@ -85,6 +96,17 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             .filter { !it.isDeleted && it.name.startsWith(numberLine) && it.name.replace("[^0-9]".toRegex(), "").length==numberLine.length }
             .forEach {
                 if (markers.containsKey(it.id)) {
+
+                    markers[it.id]!!.setOnMarkerClickListener { markerTracing, mapView ->
+                       // drawMarkerVehiclesOnMap(it,mapView)
+                        colorOnMapActualTimeTableVehicle(it.id,mapView)
+                        actualVehicleIdClick.value=it.id
+
+
+                        true
+                    }
+
+
                     val drawVehicleMarker = markers[it.id]!!
                     updateMarkerPosition(drawVehicleMarker, it, map)
                 } else {
@@ -244,28 +266,36 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     }
 
   var actualShow:String=""
+    var x=false
     public fun colorOnMapActualTimeTableVehicle(vehicleId:String,map:MapView){
-        if(actualShow!=vehicleId.toString()) {
+       if(actualShow!=vehicleId.toString()) {
             val marker = markers[vehicleId]
 
-            for (x in markers) {
-                Log.e("qweqwe2", x.key + " ")
-            }
-          //  marker?.showInfoWindow()
-            //    map.overlays.add(marker)
-            addPolylineIntoMap(map)
-            Log.e("qweqwe", "Jestem")
-            Log.e("qweqwe", vehicleId.toString())
+         //   for (x in markers) {
+          //      Log.e("qweqwe2", x.key + " ")
+       //     }
+
+           if(!x){
+               x=true
+               addPolylineIntoMap(map)
+           }
+
+         //   Log.e("qweqwe", "Jestem")
+         //   Log.e("qweqwe", vehicleId.toString())
             if (marker != null) {
                 drawPathVehicle(vehicleId, "TRAM", map, marker)
                 drawPathVehicle(vehicleId, "BUS", map, marker)
 
-            } else {
-                Log.e("qweqwe", "Jestem NULL")
-            }
+
+
+
+            } //else {
+            //    Log.e("qweqwe", "Jestem NULL")
+          //  }
 
             actualShow=vehicleId
         }
+
     }
 
 

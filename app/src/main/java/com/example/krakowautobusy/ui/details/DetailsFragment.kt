@@ -14,19 +14,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.example.krakowautobusy.BundleChoiceVehicle
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.databinding.FragmentDetailsBinding
 import com.example.krakowautobusy.ui.ActualTimeTableShowData
 import com.example.krakowautobusy.ui.map.AdapterTimeTableListView
-import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
-import com.example.krakowautobusy.ui.map.vehicledata.StatusData
-import com.example.krakowautobusy.ui.map.vehicledata.TimeTableData
 import com.example.krakowautobusy.ui.map.CreateDetailsMapFragment
 import com.example.krakowautobusy.ui.map.DetailsMapViewModel
-import com.example.krakowautobusy.ui.map.vehicledata.Vehicle
 import com.example.krakowautobusy.ui.map.MapViewModel
+import com.example.krakowautobusy.ui.map.vehicledata.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.*
 import retrofit2.Response
@@ -128,7 +126,24 @@ class DetailsFragment : Fragment() {
                 }.start()
         }
 
+        val nameObserver = Observer<String> { newName ->
+            Log.e("ez",newName)
 
+            for(i in 0..vehicles.size-1){
+                if(vehicles[i].vehicleId==newName){
+                    tripID = vehicles[i].tripId
+                    vehicleId = vehicles[i].vehicleId
+                    choiceIndex=i
+                }
+            }
+
+
+
+        }
+
+        ActualPositionVehicles.actualVehicleIdClick.observe(viewLifecycleOwner,nameObserver
+
+        )
 
        // messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
         return binding.root
