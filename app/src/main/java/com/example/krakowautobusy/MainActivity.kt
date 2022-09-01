@@ -17,6 +17,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.osmdroid.bonuspack.routing.OSRMRoadManager
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
 
         StrictMode.setThreadPolicy(policy)
+
 
         // w listBusMasz
     }
