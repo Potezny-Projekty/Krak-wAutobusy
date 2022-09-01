@@ -72,10 +72,6 @@ class MapController(private var map: MapView, private var context: Context) {
         //actualPositionVehicles.getActualPosition(map)
     }
 
-    fun drawAllBusStops(drawables: Drawables) {
-        val busStopPosition = BusStopPosition(context)
-        busStopPosition.showAllBusStops(map, drawables)
-    }
 
     private fun createMapScope(map: MapView) {
         val arrayList: ArrayList<GeoPoint> = ArrayList()
@@ -137,8 +133,8 @@ class MapController(private var map: MapView, private var context: Context) {
     }
 
     fun startShowingVehiclesOnTheMap(isFavourite : LiveData<Boolean>,
-                                     viewLifecycleOwner : LifecycleOwner) {
-        val actualPositionVehicle = ActualPositionVehicles(drawables)
+                                     viewLifecycleOwner : LifecycleOwner,
+                                     actualPositionVehicle: ActualPositionVehicles) {
         actualPositionVehicle.addPolylineIntoMap(map)
         val actualPositionFavouriteVehicle =
             ActualPositionFavouriteVehicle(drawables)
@@ -197,6 +193,10 @@ class MapController(private var map: MapView, private var context: Context) {
         mainHandler.removeCallbacks(updateTextTask)
     }
 
+    fun luchCallback() {
+        mainHandler.post(updateTextTask)
+    }
+
     fun addLocationMarkerToMap(userLocation: UserLocation) {
         map.overlays.add(userLocation.locationMarker)
     }
@@ -208,4 +208,34 @@ class MapController(private var map: MapView, private var context: Context) {
     fun loadingIcon(actualPositionVehicles: ActualPositionVehicles) {
         actualPositionVehicles.lodaIconIntoMap()
     }
+
+    fun removeShowingAllVehicles(actualPositionVehicles: ActualPositionVehicles) {
+        actualPositionVehicles.hiddenMarkers(map)
+        removeCallback()
+
+    }
+
+    fun removeShowingBusStops(busStopPosition: BusStopPosition) {
+        busStopPosition.hiddenAllBusStops(map)
+        luchCallback()
+    }
+
+    fun showAllBusStops(busStopPosition: BusStopPosition) {
+        busStopPosition.showAllBusStops(map)
+    }
+
+
+    fun createAllBusStopsMarker(busStopPosition: BusStopPosition) {
+        busStopPosition.createAllBusStopsMarkers(map)
+    }
+
+    fun showAllVehicleMarker(actualPositionVehicles: ActualPositionVehicles) {
+        actualPositionVehicles.showMarkers(map)
+    }
+
+    fun removeTrackedVehicle(actualPositionVehicles: ActualPositionVehicles) {
+        actualPositionVehicles.removeTrackedVehicle()
+    }
+
+
 }

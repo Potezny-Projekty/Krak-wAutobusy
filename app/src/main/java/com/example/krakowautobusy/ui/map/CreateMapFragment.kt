@@ -16,13 +16,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.krakowautobusy.BuildConfig
 import com.example.krakowautobusy.databinding.MapActivityBinding
-import com.example.krakowautobusy.ui.map.vehicledata.ActualPositionVehicles
-import com.example.krakowautobusy.ui.map.vehicledata.BusStopPosition
-import com.example.krakowautobusy.ui.map.vehicledata.UserLocation
-import com.example.krakowautobusy.ui.map.vehicledata.Utilities
 import com.example.krakowautobusy.ui.map.vehicledata.*
 import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
+
 
 
 private const val TAG = "CreateMapFragment"
@@ -50,6 +47,7 @@ class CreateMapFragment : Fragment() {
     private lateinit var mapController: MapController
 
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,10 +60,11 @@ class CreateMapFragment : Fragment() {
         initialSetup()
         setupMapView()
         //setupDrawables()
-        
         enableBroadcastReceiver()
         //enableLocalization()
         mapController.createLocationMarker(userLocation, drawables)
+        mapController.createAllBusStopsMarker(busStopPosition)
+
 
         viewModel.setMyLocation.observe(viewLifecycleOwner, Observer {
             if (it) {
@@ -74,6 +73,19 @@ class CreateMapFragment : Fragment() {
             } else {
                 disableLocaliztaion()
                 mapController.removeLocationMarkerFromMap(userLocation)
+            }
+        })
+
+        viewModel.showBusStops.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                mapController.removeShowingAllVehicles(actualPositionVehicles)
+                mapController.showAllBusStops(busStopPosition)
+                mapController.removeCallback()
+
+            } else {
+                mapController.removeShowingBusStops(busStopPosition)
+                mapController.luchCallback()
+                mapController.showAllVehicleMarker(actualPositionVehicles)
             }
         })
 
@@ -88,7 +100,8 @@ class CreateMapFragment : Fragment() {
         mapController.setStartingPoint(STARTING_LATTITUDE, STARTING_LONGTITUDE)
         //mapController.drawLocationMarker(userLocation, drawables)
         //mapController.drawTrackedRoute(actualPositionVehicles)
-        mapController.startShowingVehiclesOnTheMap(viewModel.isFavourit, viewLifecycleOwner)
+        mapController.startShowingVehiclesOnTheMap(viewModel.isFavourit,
+            viewLifecycleOwner, actualPositionVehicles)
 
     }
 
@@ -100,10 +113,11 @@ class CreateMapFragment : Fragment() {
 
         mapController = MapController(map, requireContext())
         userLocation = UserLocation(context as AppCompatActivity)
-        busStopPosition = BusStopPosition(context as AppCompatActivity)
         utilities = Utilities(context as AppCompatActivity)
         drawables = Drawables(context as AppCompatActivity)
         actualPositionVehicles = ActualPositionVehicles(drawables)
+        busStopPosition = BusStopPosition(drawables.vehicleStopIcon)
+
     }
     private fun enableLocalization(){
         userLocation.getLocationUpdates(map)

@@ -2,68 +2,47 @@ package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.Database
 import com.example.krakowautobusy.database.VehicleStop
 import com.example.krakowautobusy.database.VehicleStopData
-import com.example.krakowautobusy.database.VehicleStopInterface
-import com.example.krakowautobusy.ui.map.Drawables
-
-import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.Marker
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
-class BusStopPosition(private var context: Context) {
 
-    private var busStopData: ArrayList<VehicleStopData>
-    private var busStopPositionArray: ArrayList<GeoPoint> = ArrayList()
+class BusStopPosition(private val busStopIconDrawable : Drawable) {
 
-    init {
-        busStopData = getBusStopData()
-        busStopPositionArray = calculateBusStopPos()
+    private val busStopMarkers: ArrayList<BusStopMarker> = ArrayList()
+
+
+    fun createAllBusStopsMarkers(map : MapView) {
+        Executors.newSingleThreadScheduledExecutor().schedule({
+            val busStopData = Api.getApi().getAllVehiclesStop()
+            busStopData.forEach {
+                busStopMarkers.add(createBusStopMarker(map, it))
+            }
+        },0, TimeUnit.SECONDS)
     }
 
-    fun showAllBusStops(map: MapView,icon: Drawables) {
-        for ((index, elem) in busStopData.withIndex()) {
-            val startingPoint = busStopPositionArray[index]
+    private fun createBusStopMarker(map : MapView,
+                                    vehicleStopData: VehicleStopData) : BusStopMarker {
+         val marker = BusStopMarker(map, vehicleStopData)
+        marker.position = ConvertUnits.convertToGeoPoint(vehicleStopData.latitude,
+            vehicleStopData.longitude)
+        marker.icon = busStopIconDrawable
+        marker.snippet = vehicleStopData.name
 
-            val marker = Marker(map)
-            marker.position = startingPoint
-            marker.icon = icon.busStopIconDrawable
-            marker.title = elem.name + " " + elem.idShort
-            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-            marker.id = "busStop"
-            map.overlays.add(marker)
-        }
-        map.invalidate()
+        return marker
     }
 
-    private fun calculateBusStopPos(): ArrayList<GeoPoint> {
-        for (elem in busStopData) {
-            busStopPositionArray.add(
-                GeoPoint(
-                    (elem.latitude / 3600000f).toDouble(),
-                    (elem.longitude / 3600000f).toDouble()
-                )
-            )
-        }
-        return busStopPositionArray
+    fun showAllBusStops(map : MapView) {
+        map.overlays.addAll(busStopMarkers)
     }
 
-    fun showBusStop(icon: Drawable, latitude: Double, longtitude: Double,map: MapView) {
-        val startingPoint = GeoPoint(latitude, longtitude)
-
-        val marker = Marker(map)
-        marker.position = startingPoint
-        marker.icon = icon
-        marker.title = "Test Marker"
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-        map.overlays.add(marker)
-
-        map.invalidate()
+    fun hiddenAllBusStops(map : MapView) {
+        map.overlays.removeAll(busStopMarkers)
+        busStopMarkers[0].closeInfoWindow()
     }
-    private fun getBusStopData(): ArrayList<VehicleStopData> {
-        val connection = VehicleStop()
-        val instance = Database.getInstance(context)
-        return connection.getAllVehicleStop(instance.readableDatabase)
-    }
+
 }

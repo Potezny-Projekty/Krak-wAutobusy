@@ -24,7 +24,7 @@ class Drawables(var context: Context) {
     var busIconTrackingMirrorDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_bus_tracking_mirror)!!
     var tramIconTrackingDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_tram_tracking)!!
     var tramIconTrackingMirrorDrawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_icon_tram_tracking_mirror)!!
-    var vehicleStopIcon:Drawable= AppCompatResources.getDrawable(context, R.drawable.przytsanek)!!
+    var vehicleStopIcon:Drawable= AppCompatResources.getDrawable(context, R.drawable.ic_bus_stop)!!
 
     lateinit var resizedBusStopIcon: Drawable
     lateinit var resizedTramIcon: Drawable

@@ -9,6 +9,7 @@ import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.MotionEvent
+import androidx.appcompat.content.res.AppCompatResources
 import android.widget.TextView
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.scale
@@ -179,11 +180,13 @@ open class ActualPositionVehicles(var drawables: Drawables) {
         marker.setVehicleIconMirror(icons.vehicleIconMirror, lineNumber)
         marker.setVehicleTrackedIcon(icons.vehicleTrackedIcon, lineNumber)
         marker.setVehicleTrackedIconMirror(icons.vehicleTrackedIconMirror, lineNumber)
+
         if (marker.rotation < halfAngle) {
             marker.icon = marker.vehicleIconMirror
         } else {
             marker.icon = marker.vehicleIcon
         }
+
         marker.id=typeVehicle
         marker.title=title
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
@@ -214,10 +217,6 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             }
             true
         }
-           // Log.e("szczegoly",vehicle.name+" "+vehicle.tripId)
-           // mapFragment.setFragmentResult("details", bundleOf(Pair("vehicle", vehicle.name), Pair("tripId", vehicle.tripId.toString()), Pair("vehicleId", vehicle.id.toString())))
-          //  map.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment)
-
 
 
         marker.setInfoWindowAnchor(Marker.ANCHOR_TOP,  Marker.ANCHOR_CENTER)
@@ -494,6 +493,10 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             trackedRoute.actualPoints.clear()
             traveledRoute.actualPoints.clear()
         }
+    }
+
+    fun drawAllBusStopsOnMap() {
+
     }
 
 }

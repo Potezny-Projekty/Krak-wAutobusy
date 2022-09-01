@@ -128,6 +128,16 @@ class MapFragment : Fragment() {
                 }.start()
         }
 
+        binding.busStopButton.setOnClickListener {
+            mapViewModel.isShowBusStops()
+            it.setBackgroundColor(Color.rgb(224,224,224))
+            it.animate()
+                .scaleX(1.05f).scaleY(1.05f).setDuration(300).withEndAction {
+                    it.animate().scaleX(1.0f).scaleY(1.0f).start()
+                    it.setBackgroundColor(Color.WHITE)
+                }.start()
+        }
+
     }
 
     override fun onStart() {
