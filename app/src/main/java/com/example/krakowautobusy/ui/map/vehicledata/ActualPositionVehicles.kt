@@ -9,6 +9,7 @@ import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.MotionEvent
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.scale
 import androidx.core.os.bundleOf
@@ -442,6 +443,10 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             trackedRoute.actualPoints.clear()
             traveledRoute.actualPoints.clear()
         }
+    }
+
+    fun drawAllBusStopsOnMap() {
+
     }
 
 }

@@ -18,6 +18,15 @@ class MapViewModel : ViewModel() {
     }
     val setMyLocation: LiveData<Boolean> get() = mutableSetMyLocation
 
+    private val mutableShowBusStops = MutableLiveData<Boolean>().apply {
+        value = false
+    }
+    val showBusStops: LiveData<Boolean> get() = mutableShowBusStops
+
+    fun isShowBusStops() {
+        mutableShowBusStops.value = mutableShowBusStops.value == false
+    }
+
     fun isFavouritMap() {
         mutableIsFavourit.value = mutableIsFavourit.value == false
     }

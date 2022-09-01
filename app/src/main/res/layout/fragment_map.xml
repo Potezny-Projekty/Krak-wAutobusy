@@ -42,7 +42,14 @@
     </fragment>
 
 
-
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/busStopButton"
+        style="@style/FloatingButtonGrey"
+        app:shapeAppearanceOverlay="@drawable/ic_bus_stop"
+        android:contentDescription="@string/showBusStops"
+        app:icon="@drawable/ic_bus_stop"
+        app:layout_constraintBottom_toTopOf="@id/Map_showAllVehiclesOrFavorite"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

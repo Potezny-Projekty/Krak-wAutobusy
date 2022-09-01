@@ -18,4 +18,5 @@ interface ActualPositionRetrofitApi {
     @FormUrlEncoded
     @POST("geoserviceDispatcher/services/pathinfo/vehicle")
     fun getPathVehicleFromUrl(@Field("id") id: String): Call<JsonObject>
+    
 }
