@@ -237,5 +237,8 @@ class MapController(private var map: MapView, private var context: Context) {
         actualPositionVehicles.removeTrackedVehicle()
     }
 
+    fun setOSMRoadManager(actualPositionVehicles: ActualPositionVehicles) {
+        actualPositionVehicles.setRoadManager(map)
+    }
 
 }

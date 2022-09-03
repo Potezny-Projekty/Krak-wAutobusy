@@ -9,31 +9,27 @@ import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.MotionEvent
-import androidx.appcompat.content.res.AppCompatResources
-import android.widget.TextView
 import androidx.core.graphics.drawable.toDrawable
-import androidx.core.graphics.scale
 import androidx.core.os.bundleOf
 import androidx.fragment.app.*
-import androidx.navigation.Navigation
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
 import com.example.krakowautobusy.BundleChoiceVehicle
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.SequenceVehicleStopData
 import com.example.krakowautobusy.ui.map.Drawables
-import com.example.krakowautobusy.ui.map.MapViewModel
 import com.google.gson.JsonObject
+import org.osmdroid.bonuspack.routing.OSRMRoadManager
+import org.osmdroid.bonuspack.routing.RoadManager
+import org.osmdroid.config.Configuration
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 import retrofit2.Response
 import kotlin.collections.set
-import androidx.fragment.app.viewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+
 
 open class ActualPositionVehicles(var drawables: Drawables) {
     var lastUpdateBus: Long = 0
@@ -48,6 +44,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     val tramDrawable : VehicleDrawables
     val busDrawable : VehicleDrawables
     val NO_ELEMENT=0
+    private lateinit var roadManager : OSRMRoadManager
 
     companion object{
         public val actualVehicleIdClick = MutableLiveData<String>().apply {
@@ -120,6 +117,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
         if (vehicle.path.size > NO_ELEMENT) {
             val lastPosition = ConvertUnits.convertToGeoPoint(vehicle.path[vehicle.path.size - 1].y2,
                 vehicle.path[vehicle.path.size - 1].x2 )
+            Log.i("VEHICLEPOSITION", "last position :${lastPosition}, marker Position ${marker.position}")
             if (lastPosition != marker.position) {
                 MarkerAnimation.animateMarkerToHC(
                     map,
@@ -129,11 +127,18 @@ open class ActualPositionVehicles(var drawables: Drawables) {
                     traveledRoute
                 )
             }
-            Log.i("POSITION", "${lastPosition == marker.position} | ${lastPosition} = ${marker.position}")
         } else {
-            MarkerAnimation.animateMarkerToHCLinear(
-                map, marker,
-                ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude),
+            val points = ArrayList<GeoPoint>()
+            points.add(marker.position)
+            points.add(ConvertUnits
+                .convertToGeoPoint(vehicle.latitude,
+                    vehicle.longitude))
+            val road = roadManager.getRoad(points)
+            val path = road.mRouteHigh
+            MarkerAnimation.animateMarkerToHC(
+                map,
+                marker,
+                path,
                 GeoPointInterpolator.Linear(),
                 traveledRoute
             )
@@ -497,6 +502,11 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
     fun drawAllBusStopsOnMap() {
 
+    }
+
+    fun setRoadManager(map: MapView) {
+        roadManager =
+            OSRMRoadManager(map.context, Configuration.getInstance().userAgentValue)
     }
 
 }

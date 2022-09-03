@@ -1,7 +1,10 @@
 package com.example.krakowautobusy
 
 import android.content.Context
-import android.net.*
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
@@ -17,7 +20,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-
+import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,8 +30,6 @@ class MainActivity : AppCompatActivity() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
 
         StrictMode.setThreadPolicy(policy)
-        
-
         // w listBusMasz
     }
 
