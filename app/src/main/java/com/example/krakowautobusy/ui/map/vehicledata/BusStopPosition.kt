@@ -2,6 +2,7 @@ package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import androidx.appcompat.content.res.AppCompatResources
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.VehicleStopData
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeUnit
 
 class BusStopPosition(private val busStopIconDrawable : Drawable) {
 
-    private var busStopMarkers: RadiusMarkerClusterer? = null
+    private var busStopMarkers: BusStopMarkerClusterer? = null
 
 
     fun createAllBusStopsMarkers(map : MapView) {

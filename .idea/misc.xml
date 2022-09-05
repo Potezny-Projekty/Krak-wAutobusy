@@ -104,6 +104,8 @@
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.1" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/ic_baseline_view_headline_24.xml" value="0.1" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/ic_baseline_view_week_24.xml" value="0.1" />
+        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/ic_bus_stop.xml" value="0.2115" />
+        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/ic_cluster_bus_stop_foreground.xml" value="0.22" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.1" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/ic_gray_hert_icon.xml" value="0.1" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.1" />
@@ -125,6 +127,7 @@
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/fragment_no_internet.xml" value="0.1" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/line_info_with_directions_bar.xml" value="0.16259057971014493" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/map_activity.xml" value="0.1" />
+        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/mipmap-anydpi-v26/ic_cluster_bus_stop.xml" value="0.1" />
       </map>
     </option>
   </component>
