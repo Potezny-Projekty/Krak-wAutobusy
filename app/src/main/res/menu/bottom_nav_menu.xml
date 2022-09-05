@@ -8,7 +8,12 @@
 
     <item
         android:id="@+id/navigation_favorite"
-        android:icon="@drawable/favorite_icon"
-        android:title="@string/title_favorite" />
+        android:icon="@drawable/bus_icon"
+        android:title="Linie" />
+
+    <item
+        android:id="@+id/navigation_favoritevehiclestop"
+        android:icon="@drawable/ic_bus_stop"
+        android:title="Przystanki" />
 
 </menu>

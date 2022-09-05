@@ -128,6 +128,10 @@ open class ActualPositionVehicles(var drawables: Drawables) {
                 )
             }
         } else {
+
+
+
+        /*
             val points = ArrayList<GeoPoint>()
             points.add(marker.position)
             points.add(ConvertUnits
@@ -142,7 +146,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
                 GeoPointInterpolator.Linear(),
                 traveledRoute
             )
-            marker.rotation = fullAngle - vehicle.heading
+            marker.rotation = fullAngle - vehicle.heading*/
         }
     }
 
@@ -287,7 +291,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
          //   Log.e("qweqwe", "Jestem")
          //   Log.e("qweqwe", vehicleId.toString())
             if (marker != null) {
-                drawPathVehicle(vehicleId, "TRAM", map, marker)
+                drawPathVehicle(vehicleId, "tram", map, marker)
                 drawPathVehicle(vehicleId, "BUS", map, marker)
 
 

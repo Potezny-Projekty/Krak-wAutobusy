@@ -37,7 +37,7 @@ class CreateMapFragment : Fragment() {
     private lateinit var utilities: Utilities
     private val viewModel: MapViewModel by viewModels({requireParentFragment()})
 
-    private val MIN_ZOOM_LEVEL = 13.0
+    private val MIN_ZOOM_LEVEL = 4.0
     private val MAX_ZOOM_LEVEL = 20.0
     private val CURRENT_ZOOM_LEVEL = 14.0
 

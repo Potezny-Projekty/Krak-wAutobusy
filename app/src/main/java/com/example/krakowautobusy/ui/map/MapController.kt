@@ -49,7 +49,7 @@ class MapController(private var map: MapView, private var context: Context) {
         map.setMultiTouchControls(true)
 
         // setting map scope
-        createMapScope(map)
+       // createMapScope(map)
     }
 
     fun setZoomLevels(minZoomLevel: Double, maxZoomLevel: Double, startingZoom: Double) {
@@ -198,6 +198,7 @@ class MapController(private var map: MapView, private var context: Context) {
     }
 
     fun addLocationMarkerToMap(userLocation: UserLocation) {
+        mapController.setZoom(15)
         map.overlays.add(userLocation.locationMarker)
     }
 

@@ -74,6 +74,43 @@
 
 
         </fragment>
+
+
+
+        <fragment
+            android:id="@+id/navigation_favoritevehiclestop"
+            android:name="com.example.krakowautobusy.ui.vehiclestop.FavouriteVehicleStop"
+            android:label="Ulubione przystanki"
+            tools:layout="@layout/fragment_favourite_vehicle_stop">
+
+
+            <action
+
+                android:id="@+id/action_navigation_favourite_to_detailsFragment"
+                app:destination="@id/navigation_details" />
+            <action
+
+                android:id="@+id/action_navigate_to_details_vehiclestop"
+                app:destination="@id/navigation_detailed_lines" />
+
+
+        </fragment>
+
+
+        <fragment
+            android:id="@+id/navigation_detailed_lines"
+            android:name="com.example.krakowautobusy.ui.map.vehicledata.VehicleStopDetails"
+            android:label="Szczegóły przystanku"
+            tools:layout="@layout/fragment_vehicle_stop_details">
+
+        </fragment>
+
+
+
+
+
+
+
         <fragment
             android:id="@+id/navigation_loading_page"
             android:name="com.example.krakowautobusy.ui.loadingPage.LoadingPageActivity"
