@@ -90,7 +90,7 @@ object MarkerAnimation {
             val end = endPoint[pathIterator]
             val newPosition: GeoPoint =
                 GeoPointInterpolator.interpolate(fraction, startPosition, end)
-            if (marker.icon == marker.vehicleTrackedIcon || marker.icon == marker.vehicleTrackedIcon) {
+            if (marker.icon == marker.vehicleTrackedIcon || marker.icon == marker.vehicleTrackedIconMirror) {
 
                 try{
                     polyline.addPoint(startPosition)
