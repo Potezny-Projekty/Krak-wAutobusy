@@ -44,7 +44,6 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     val tramDrawable : VehicleDrawables
     val busDrawable : VehicleDrawables
     val NO_ELEMENT=0
-    private lateinit var roadManager : OSRMRoadManager
 
     companion object{
         public val actualVehicleIdClick = MutableLiveData<String>().apply {
@@ -127,28 +126,14 @@ open class ActualPositionVehicles(var drawables: Drawables) {
                     traveledRoute
                 )
             }
-        } else {
-            val points = ArrayList<GeoPoint>()
-            points.add(marker.position)
-            points.add(ConvertUnits
-                .convertToGeoPoint(vehicle.latitude,
-                    vehicle.longitude))
-            val road = roadManager.getRoad(points)
-            val path = road.mRouteHigh
-            MarkerAnimation.animateMarkerToHC(
-                map,
-                marker,
-                path,
-                GeoPointInterpolator.Linear(),
-                traveledRoute
-            )
-            marker.rotation = fullAngle - vehicle.heading
         }
     }
 
 
     fun drawAllVehiclesStopLineOnMap(poz:ArrayList<SequenceVehicleStopData>,map:MapView){
-
+        val  busStopMarkers = BusStopMarkerClusterer(map.context)
+        val busStopMarkerCollectionRadiusForClustering = 10
+        busStopMarkers.setRadius(busStopMarkerCollectionRadiusForClustering)
         for(x in poz){
           val xx=  createMarker(map,x.nameVehicleStop)
             val locationPoint =
@@ -157,13 +142,10 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             Log.e("details","Rysuje"+x.nameVehicleStop+" "+locationPoint.latitude+" "+locationPoint.longitude)
 
             xx.position = locationPoint
-
-            map.overlays.add(xx)
-
-            map.invalidate()
-
-
+            busStopMarkers.add(xx)
         }
+        map.overlays.add(busStopMarkers)
+        map.invalidate()
     }
 
     fun createMarker(map:MapView,namevehicleStop:String):Marker{
@@ -499,14 +481,4 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             traveledRoute.actualPoints.clear()
         }
     }
-
-    fun drawAllBusStopsOnMap() {
-
-    }
-
-    fun setRoadManager(map: MapView) {
-        roadManager =
-            OSRMRoadManager(map.context, Configuration.getInstance().userAgentValue)
-    }
-
 }

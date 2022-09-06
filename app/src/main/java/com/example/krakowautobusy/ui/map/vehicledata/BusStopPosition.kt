@@ -18,7 +18,7 @@ class BusStopPosition(private val busStopIconDrawable : Drawable) {
 
 
     fun createAllBusStopsMarkers(map : MapView) {
-        val busStopMarkerCollectionRadiusForClustering = 170
+        val busStopMarkerCollectionRadiusForClustering = 200
         Executors.newSingleThreadScheduledExecutor().schedule({
             val busStopData = Api.getApi().getAllVehiclesStop()
             busStopMarkers = BusStopMarkerClusterer(map.context)

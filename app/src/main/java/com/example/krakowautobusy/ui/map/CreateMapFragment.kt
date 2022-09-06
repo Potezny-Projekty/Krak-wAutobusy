@@ -64,7 +64,6 @@ class CreateMapFragment : Fragment() {
         //enableLocalization()
         mapController.createLocationMarker(userLocation, drawables)
         mapController.createAllBusStopsMarker(busStopPosition)
-        mapController.setOSMRoadManager(actualPositionVehicles)
 
         viewModel.setMyLocation.observe(viewLifecycleOwner, Observer {
             if (it) {
