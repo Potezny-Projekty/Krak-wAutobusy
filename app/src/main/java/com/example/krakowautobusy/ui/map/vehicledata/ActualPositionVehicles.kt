@@ -20,9 +20,6 @@ import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.SequenceVehicleStopData
 import com.example.krakowautobusy.ui.map.Drawables
 import com.google.gson.JsonObject
-import org.osmdroid.bonuspack.routing.OSRMRoadManager
-import org.osmdroid.bonuspack.routing.RoadManager
-import org.osmdroid.config.Configuration
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
@@ -131,8 +128,8 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
 
     fun drawAllVehiclesStopLineOnMap(poz:ArrayList<SequenceVehicleStopData>,map:MapView){
-        val  busStopMarkers = BusStopMarkerClusterer(map.context)
-        val busStopMarkerCollectionRadiusForClustering = 10
+        val  busStopMarkers = BusStopMarkerClusterDetails(map.context)
+        val busStopMarkerCollectionRadiusForClustering = 20
         busStopMarkers.setRadius(busStopMarkerCollectionRadiusForClustering)
         for(x in poz){
           val xx=  createMarker(map,x.nameVehicleStop)

@@ -1,12 +1,9 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.VehicleStopData
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
-import org.osmdroid.bonuspack.utils.BonusPackHelper
 import org.osmdroid.views.MapView
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -21,7 +18,7 @@ class BusStopPosition(private val busStopIconDrawable : Drawable) {
         val busStopMarkerCollectionRadiusForClustering = 200
         Executors.newSingleThreadScheduledExecutor().schedule({
             val busStopData = Api.getApi().getAllVehiclesStop()
-            busStopMarkers = BusStopMarkerClusterer(map.context)
+            busStopMarkers = BusStopMarkerCluster(map.context)
             busStopData.forEach {
                 busStopMarkers!!.add(createBusStopMarker(map, it))
             }

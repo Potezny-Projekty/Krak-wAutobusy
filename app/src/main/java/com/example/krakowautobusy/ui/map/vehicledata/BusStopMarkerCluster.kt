@@ -15,7 +15,7 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow
 
-class BusStopMarkerClusterer(ctx: Context) : RadiusMarkerClusterer(ctx) {
+class BusStopMarkerCluster(ctx: Context) : RadiusMarkerClusterer(ctx) {
     private val mDensityDpi = ctx.resources.displayMetrics.densityDpi;
 
 
