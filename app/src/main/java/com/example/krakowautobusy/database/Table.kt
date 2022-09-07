@@ -24,10 +24,15 @@ enum class VehicleStopTable(val nameColumn: String,val indexColumn:Int) {
 
 }
 
+enum class FavouriteVehicleStops(val nameColumn:String,val indexColumn: Int){
+    ID_FAVOURITE_VEHICLE_STOP("FavouriteVehicleStop.IdFavouriteVehicleStop",0),
+    ID_VEHICLE_STOP("FavouriteVehicleStop.IdVehicleStop",1)
+}
+
 
 
 enum class TableName(val nameTable:String){
-    FAVOURITE_LINE("FavouriteLine"),LINE("Line"),VEHICLE_STOP("VehicleStop")
+    FAVOURITE_LINE("FavouriteLine"),LINE("Line"),VEHICLE_STOP("VehicleStop"),FAVOURITE_VEHICLE_STOP("FavouriteVehicleStop")
 }
 
 val TABLE_NO_ELEMENT=0

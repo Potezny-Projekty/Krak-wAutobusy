@@ -6,6 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.krakowautobusy.R
+import com.example.krakowautobusy.api.Api
+import com.example.krakowautobusy.database.LineData
+import com.example.krakowautobusy.databinding.FragmentFavouriteVehicleStopBinding
+import com.example.krakowautobusy.databinding.FragmentMapBinding
+import com.example.krakowautobusy.databinding.FragmentVehicleStopDetailsBinding
+import com.example.krakowautobusy.ui.map.MapViewModel
+import com.example.krakowautobusy.ui.map.vehicledata.AdapterListSearchVehicleStop
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,12 +29,19 @@ class FavouriteVehicleStop : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private val binding get() = _binding!!
+
+
+    private var _binding: FragmentFavouriteVehicleStopBinding? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+
     }
 
     override fun onCreateView(
@@ -35,7 +49,17 @@ class FavouriteVehicleStop : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favourite_vehicle_stop, container, false)
+        _binding = FragmentFavouriteVehicleStopBinding.inflate(inflater, container, false)
+        addAdapterToListFavouriteVehicleStop()
+        val root: View = binding.root
+        return root
+    }
+
+
+
+    fun addAdapterToListFavouriteVehicleStop(){
+        binding.favouriteVehicleStopList.adapter=AdapterListSearchVehicleStop(Api.getApi().getAllFavouriteVehicleStop(),requireContext())
+
     }
 
     companion object {

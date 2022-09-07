@@ -134,11 +134,11 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
         viewHolder.lineNumber!!.text= dataModel.name .toString()
 
 
-        /*if(dataModel.isFavourite){
+        if(dataModel.isFavourite){
             viewHolder.isFavourite!!.setImageResource(R.drawable.red_heart_icon)
         }else{
             viewHolder.isFavourite!!.setImageResource(R.drawable.ic_gray_hert_icon)
-        }*/
+        }
 
 
         /*if(dataModel.typeVehicle== VehicleType.BUS){
@@ -170,9 +170,11 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
     }
     private fun addOnClickListenerToFavoriteIcon(viewHolder:ViewHolder,lineData: VehicleStopData){
         viewHolder.isFavourite?.setOnClickListener {
-            Log.e("kurwa","JEGO MAĆ 3")
+            Log.e("kurwa","JEGO MAĆ 3"+lineData.idVehicleStop)
 
-           /* lineData.isFavourite=!lineData.isFavourite
+
+
+            lineData.isFavourite=!lineData.isFavourite
             var x=   fillViewData(viewHolder,lineData)
 
 
@@ -180,11 +182,12 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
 
 
             if(lineData.isFavourite) {
-                findIndexClickIcon(lineData.numberLine.toInt(),true)
-                Api.getApi().addLineToFavourite(lineData.numberLine.toInt())
+              //  findIndexClickIcon(lineData.numberLine.toInt(),true)
+              //  Api.getApi().addLineToFavourite(lineData.numberLine.toInt())
+                Api.getApi().addVehicleStopToFavoriteById(lineData.idVehicleStop.toString())
 
 
-                it!!.animate()
+                /*it!!.animate()
                     .scaleX(1.2f).setDuration(400).start()
 
                 it!!.animate()
@@ -194,15 +197,15 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
                             funRefresh?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
                             funRefresh2?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
                         }
-                    }
+                    }*/
 
 
             }else{
-                findIndexClickIcon(lineData.numberLine.toInt(),false)
-                Api.getApi().removeLinesFromFavourites(lineData.numberLine.toInt())
+             //   findIndexClickIcon(lineData.numberLine.toInt(),false)
+              //  Api.getApi().removeLinesFromFavourites(lineData.numberLine.toInt())
 
 
-
+/*
 
 
                 it!!.animate()
@@ -215,10 +218,10 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
                             funRefresh?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
                             funRefresh2?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
                         }
-                    }
+                    }*/
             }
             Log.e("kurwa","...KURWA")
-*/
+            Api.getApi().removeVehicleStopFromFavouriteById(lineData.idVehicleStop.toString())
 
         }
     }

@@ -2,6 +2,7 @@ package com.example.krakowautobusy.api
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import com.example.krakowautobusy.database.*
 import com.example.krakowautobusy.networkttss.PositionVehicle
 import com.example.krakowautobusy.networkttss.PositionVehicleInterface
@@ -18,6 +19,7 @@ class Api {
     private val positionVehicleAccess: PositionVehicleInterface = PositionVehicle()
     private val timeTableVehicleAcess: TimeTableVehicleInterface = TimeTableVehicle()
     private val lineAccess:LineInteerface=Line()
+    private val FavouritevehicleStopAcess:FavouriteVehicleStopInterface=FavouriteVehicleStop()
     private var context: Context
     private var database: Database
 
@@ -53,6 +55,36 @@ class Api {
     }
 
 
+    /////////////////////////Favourite VehicleStop
+
+    fun getAllFavouriteVehicleStop():ArrayList<VehicleStopData>{
+        return FavouritevehicleStopAcess.getAllFavouriteVehicleStop(database.readableDatabase)
+    }
+
+    fun isVehicleStopFavourite( nameVehicleStop: String):Boolean{
+        return FavouritevehicleStopAcess.isVehicleStopFavourite(database.readableDatabase,nameVehicleStop)
+    }
+
+    fun addVehicleStopToFavorite( nameVehicleStop: String){
+        return FavouritevehicleStopAcess.addVehicleStopToFavorite(database.readableDatabase,nameVehicleStop)
+    }
+
+    fun removeVehicleStopFromFavourite( nameVehicleStop: String){
+        return FavouritevehicleStopAcess.removeVehicleStopFromFavourite(database.readableDatabase,nameVehicleStop)
+    }
+
+
+    fun isVehicleStopFavouriteById(IdVehicleStop: String):Boolean{
+        return FavouritevehicleStopAcess.isVehicleStopFavouriteById(database.readableDatabase,IdVehicleStop)
+    }
+
+    fun addVehicleStopToFavoriteById( IdVehicleStop: String){
+        return FavouritevehicleStopAcess.addVehicleStopToFavoriteById(database.readableDatabase,IdVehicleStop)
+    }
+
+    fun removeVehicleStopFromFavouriteById( IdVehicleStop: String){
+        return FavouritevehicleStopAcess.removeVehicleStopFromFavouriteById(database.readableDatabase,IdVehicleStop)
+    }
 
 
 
@@ -171,6 +203,10 @@ fun getAllLine():ArrayList<LineData>{
 
     fun getNameVehicleStopByID(idVehicleStop: Int):String{
         return vehicleStopAccess.findNameBusStopById(database.readableDatabase,idVehicleStop);
+    }
+
+    fun  getVehicleStopIdByName( nameVehicleStop: String):String{
+        return vehicleStopAccess.getVehicleStopIdByName(database.readableDatabase,nameVehicleStop);
     }
 
     ///////Favourite Line API

@@ -59,6 +59,7 @@
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/ic_gray_hert_icon.xml" value="0.5165" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.5165" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/ic_icon_bus_icon.xml" value="0.326" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/ic_icon_bus_icon_mirror.xml" value="0.28" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/ic_icon_bus_tracking.xml" value="0.5165" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/ic_icon_tram_icon.xml" value="0.326" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/ic_icon_tram_tracking.xml" value="0.5165" />
@@ -67,6 +68,11 @@
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/ic_speech_bubble.xml" value="0.5165" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/icon.xml" value="0.5165" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/location_icon.xml" value="0.5165" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/red_heart_icon.xml" value="0.28" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/rysunek_1_strzalk.xml" value="0.28" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/shadow.xml" value="0.28" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/shadowall.xml" value="0.28" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/squere_small_radius.xml" value="0.28" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/squre_small_radius_thin.xml" value="0.5435" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/yellowcircle.xml" value="0.5435" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/layout/activity_loading_page.xml" value="0.55" />
