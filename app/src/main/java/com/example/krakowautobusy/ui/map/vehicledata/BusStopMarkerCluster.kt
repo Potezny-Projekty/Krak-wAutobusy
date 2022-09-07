@@ -22,8 +22,8 @@ class BusStopMarkerCluster(ctx: Context) : RadiusMarkerClusterer(ctx) {
     init {
         val clusterIconD: Drawable = AppCompatResources.getDrawable(ctx,
             R.drawable.cluster_icon_bus_stop)!!
-       /* val clusterIconD: Drawable = AppCompatResources.getDrawable(ctx,
-            R.drawable.cluster)!!*/
+        /* val clusterIconD: Drawable = AppCompatResources.getDrawable(ctx,
+             R.drawable.cluster)!!*/
         val clusterIcon = (clusterIconD as BitmapDrawable).bitmap
         setIcon(clusterIcon)
         mTextPaint.color = Color.BLACK

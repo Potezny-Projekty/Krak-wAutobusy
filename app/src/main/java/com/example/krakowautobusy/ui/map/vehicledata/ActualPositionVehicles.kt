@@ -146,7 +146,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
     fun drawAllVehiclesStopLineOnMap(poz:ArrayList<SequenceVehicleStopData>,map:MapView){
         val  busStopMarkers = BusStopMarkerClusterDetails(map.context)
-        val busStopMarkerCollectionRadiusForClustering = 20
+        val busStopMarkerCollectionRadiusForClustering = 60
         busStopMarkers.setRadius(busStopMarkerCollectionRadiusForClustering)
         for(x in poz){
           val xx=  createMarker(map,x.nameVehicleStop)
