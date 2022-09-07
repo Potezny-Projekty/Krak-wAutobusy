@@ -20,9 +20,6 @@ import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.SequenceVehicleStopData
 import com.example.krakowautobusy.ui.map.Drawables
 import com.google.gson.JsonObject
-import org.osmdroid.bonuspack.routing.OSRMRoadManager
-import org.osmdroid.bonuspack.routing.RoadManager
-import org.osmdroid.config.Configuration
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
@@ -44,7 +41,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     val tramDrawable : VehicleDrawables
     val busDrawable : VehicleDrawables
     val NO_ELEMENT=0
-    private lateinit var roadManager : OSRMRoadManager
+
 
     companion object{
         public val actualVehicleIdClick = MutableLiveData<String>().apply {
@@ -128,11 +125,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
                 )
             }
         } else {
-
-
-
-        /*
-            val points = ArrayList<GeoPoint>()
+           /* val points = ArrayList<GeoPoint>()
             points.add(marker.position)
             points.add(ConvertUnits
                 .convertToGeoPoint(vehicle.latitude,
@@ -152,7 +145,9 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
 
     fun drawAllVehiclesStopLineOnMap(poz:ArrayList<SequenceVehicleStopData>,map:MapView){
-
+        val  busStopMarkers = BusStopMarkerClusterDetails(map.context)
+        val busStopMarkerCollectionRadiusForClustering = 20
+        busStopMarkers.setRadius(busStopMarkerCollectionRadiusForClustering)
         for(x in poz){
           val xx=  createMarker(map,x.nameVehicleStop)
             val locationPoint =
@@ -161,13 +156,10 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             Log.e("details","Rysuje"+x.nameVehicleStop+" "+locationPoint.latitude+" "+locationPoint.longitude)
 
             xx.position = locationPoint
-
-            map.overlays.add(xx)
-
-            map.invalidate()
-
-
+            busStopMarkers.add(xx)
         }
+        map.overlays.add(busStopMarkers)
+        map.invalidate()
     }
 
     fun createMarker(map:MapView,namevehicleStop:String):Marker{
@@ -503,14 +495,4 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             traveledRoute.actualPoints.clear()
         }
     }
-
-    fun drawAllBusStopsOnMap() {
-
-    }
-
-    fun setRoadManager(map: MapView) {
-        roadManager =
-            OSRMRoadManager(map.context, Configuration.getInstance().userAgentValue)
-    }
-
 }
