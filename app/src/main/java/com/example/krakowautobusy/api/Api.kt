@@ -66,11 +66,11 @@ class Api {
     }
 
     fun addVehicleStopToFavorite( nameVehicleStop: String){
-        return FavouritevehicleStopAcess.addVehicleStopToFavorite(database.readableDatabase,nameVehicleStop)
+        return FavouritevehicleStopAcess.addVehicleStopToFavorite(database.writableDatabase,nameVehicleStop)
     }
 
     fun removeVehicleStopFromFavourite( nameVehicleStop: String){
-        return FavouritevehicleStopAcess.removeVehicleStopFromFavourite(database.readableDatabase,nameVehicleStop)
+        return FavouritevehicleStopAcess.removeVehicleStopFromFavourite(database.writableDatabase,nameVehicleStop)
     }
 
 
@@ -79,11 +79,11 @@ class Api {
     }
 
     fun addVehicleStopToFavoriteById( IdVehicleStop: String){
-        return FavouritevehicleStopAcess.addVehicleStopToFavoriteById(database.readableDatabase,IdVehicleStop)
+        return FavouritevehicleStopAcess.addVehicleStopToFavoriteById(database.writableDatabase,IdVehicleStop)
     }
 
     fun removeVehicleStopFromFavouriteById( IdVehicleStop: String){
-        return FavouritevehicleStopAcess.removeVehicleStopFromFavouriteById(database.readableDatabase,IdVehicleStop)
+        return FavouritevehicleStopAcess.removeVehicleStopFromFavouriteById(database.writableDatabase,IdVehicleStop)
     }
 
 

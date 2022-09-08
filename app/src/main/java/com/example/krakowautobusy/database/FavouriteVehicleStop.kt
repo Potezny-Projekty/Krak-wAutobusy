@@ -153,12 +153,19 @@ class FavouriteVehicleStop :FavouriteVehicleStopInterface {
             }
             db.insert(TableName.FAVOURITE_VEHICLE_STOP.nameTable,null,vehicleStop)
         }
+        Log.e("kurwap","Insert")
     }
 
     override fun removeVehicleStopFromFavouriteById(db: SQLiteDatabase, IdVehicleStop: String) {
-        val removeCondition = "${FavouriteVehicleStops.ID_FAVOURITE_VEHICLE_STOP .nameColumn}=?"
+        val removeCondition = "${FavouriteVehicleStops.ID_VEHICLE_STOP .nameColumn}=?"
+        Log.e("kurwap","Delete from FavouriteVehicleStop where idVehicleStop="+IdVehicleStop)
+      //  db.rawQuery("Delete from FavouriteVehicleStop where IdVehicleStop="+IdVehicleStop,null)
 
         db.delete(TableName.FAVOURITE_VEHICLE_STOP.nameTable,  removeCondition, arrayOf( IdVehicleStop))
+
+// val removeCondition = "${FavouriteLineTable.ID_LINE.nameColumn}=?"
+//
+//        db.delete(TableName.FAVOURITE_LINE.nameTable,  removeCondition, arrayOf( idLine.toString()))
     }
 
 }

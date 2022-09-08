@@ -1,6 +1,7 @@
 package com.example.krakowautobusy.ui.vehiclestop
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +9,14 @@ import android.view.ViewGroup
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.LineData
+import com.example.krakowautobusy.database.VehicleStopData
 import com.example.krakowautobusy.databinding.FragmentFavouriteVehicleStopBinding
 import com.example.krakowautobusy.databinding.FragmentMapBinding
 import com.example.krakowautobusy.databinding.FragmentVehicleStopDetailsBinding
 import com.example.krakowautobusy.ui.map.MapViewModel
 import com.example.krakowautobusy.ui.map.vehicledata.AdapterListSearchVehicleStop
+import com.example.krakowautobusy.ui.map.vehicledata.SearchViewFragment
+import com.example.krakowautobusy.ui.map.vehicledata.SearchViewVehicleStop
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,13 +56,32 @@ class FavouriteVehicleStop : Fragment() {
         _binding = FragmentFavouriteVehicleStopBinding.inflate(inflater, container, false)
         addAdapterToListFavouriteVehicleStop()
         val root: View = binding.root
+        KURWA()
         return root
     }
 
 
 
     fun addAdapterToListFavouriteVehicleStop(){
-        binding.favouriteVehicleStopList.adapter=AdapterListSearchVehicleStop(Api.getApi().getAllFavouriteVehicleStop(),requireContext())
+        binding.favouriteVehicleStopList.adapter =AdapterListSearchVehicleStop(Api.getApi().getAllFavouriteVehicleStop(),requireContext())
+        binding.favouriteVehicleStopList.deferNotifyDataSetChanged()
+
+
+    }
+
+    fun KURWA(){
+        var xx= childFragmentManager.findFragmentById(R.id.detailFragment) as SearchViewVehicleStop
+        xx.setRefreshFun {
+            Log.e("kurwap","JEGO MAĆ2")
+            setDatasetAdapter()
+        }
+    }
+
+
+    fun setDatasetAdapter(){
+        Log.e("kurwap","JEGO MAĆ2"+Api.getApi().getAllFavouriteVehicleStop().size)
+        (binding.favouriteVehicleStopList.adapter as AdapterListSearchVehicleStop).changeDataset(Api.getApi().getAllFavouriteVehicleStop() as ArrayList<VehicleStopData>)
+        (binding.favouriteVehicleStopList.adapter as AdapterListSearchVehicleStop).notifyDataSetChanged()
 
     }
 

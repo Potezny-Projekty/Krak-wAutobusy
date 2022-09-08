@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.view.inputmethod.InputMethodManager
@@ -143,6 +144,8 @@ class SearchViewVehicleStop : Fragment() {
         //      refreshH();
         //  }
 
+        //refreshH?.let { it() }
+
     }
     private fun Context.hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -243,9 +246,10 @@ class SearchViewVehicleStop : Fragment() {
     override fun onStart() {
         super.onStart()
         addListenerToKeyboard()
-
+        Log.e("kurwap","c1")
 
         adapter.setRefresh {
+            Log.e("kurwap","1")
             adapter.changeDataset(getLineMatchToUserPattern())
             adapter.notifyDataSetChanged()
 

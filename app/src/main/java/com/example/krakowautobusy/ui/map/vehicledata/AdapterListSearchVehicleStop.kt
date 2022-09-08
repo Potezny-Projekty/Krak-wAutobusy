@@ -163,7 +163,9 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
 
     }
 
-
+  fun pp(){
+      funRefresh?.let { it1 -> it1(); Log.e("kurwap", "wołam") }
+  }
 
     public fun setRefresh(x:FunWithoutParamToVoid){
         funRefresh=x
@@ -184,6 +186,7 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
             if(lineData.isFavourite) {
               //  findIndexClickIcon(lineData.numberLine.toInt(),true)
               //  Api.getApi().addLineToFavourite(lineData.numberLine.toInt())
+                Log.e("kurwap","...]"+lineData.idVehicleStop.toString())
                 Api.getApi().addVehicleStopToFavoriteById(lineData.idVehicleStop.toString())
 
 
@@ -199,12 +202,13 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
                         }
                     }*/
 
-
+                Log.e("kurwap","...KURWA22")
             }else{
              //   findIndexClickIcon(lineData.numberLine.toInt(),false)
               //  Api.getApi().removeLinesFromFavourites(lineData.numberLine.toInt())
 
-
+                Log.e("kurwap","...KURWA23")
+                Api.getApi().removeVehicleStopFromFavouriteById(lineData.idVehicleStop.toString())
 /*
 
 
@@ -220,8 +224,10 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
                         }
                     }*/
             }
-            Log.e("kurwa","...KURWA")
-            Api.getApi().removeVehicleStopFromFavouriteById(lineData.idVehicleStop.toString())
+         //  notifyDataSetChanged()
+           pp()
+
+         //   funRefresh?.let { it1 -> it1() }
 
         }
     }
