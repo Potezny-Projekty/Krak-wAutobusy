@@ -34,6 +34,7 @@ class ActualPositionFavouriteVehicle(drawables: Drawables) : ActualPositionVehic
 
    override fun hiddenMarkers(map: MapView) {
       map.overlays.removeAll(markers.values)
+      markers.clear()
       map.invalidate()
    }
 

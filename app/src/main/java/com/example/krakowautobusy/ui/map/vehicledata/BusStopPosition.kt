@@ -5,16 +5,17 @@ import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.VehicleStopData
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.FolderOverlay
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 
-class BusStopPosition(private val busStopIconDrawable : Drawable) {
+open class BusStopPosition(private val busStopIconDrawable : Drawable) {
 
     private var busStopMarkers: RadiusMarkerClusterer? = null
 
 
-    fun createAllBusStopsMarkers(map : MapView) {
+    open fun createAllBusStopsMarkers(map : MapView) {
         val busStopMarkerCollectionRadiusForClustering = 200
         Executors.newSingleThreadScheduledExecutor().schedule({
             val busStopData = Api.getApi().getAllVehiclesStop()
@@ -26,7 +27,7 @@ class BusStopPosition(private val busStopIconDrawable : Drawable) {
         },0, TimeUnit.SECONDS)
     }
 
-    private fun createBusStopMarker(map : MapView,
+    protected fun createBusStopMarker(map : MapView,
                                     vehicleStopData: VehicleStopData) : BusStopMarker {
 
          val marker = BusStopMarker(map, vehicleStopData)
@@ -38,13 +39,14 @@ class BusStopPosition(private val busStopIconDrawable : Drawable) {
         return marker
     }
 
-    fun showAllBusStops(map : MapView) {
+    open fun showAllBusStops(map : MapView) {
         map.overlays.add(busStopMarkers)
+        map.invalidate()
     }
 
-    fun hiddenAllBusStops(map : MapView) {
+    open fun hiddenAllBusStops(map : MapView) {
         map.overlays.remove(busStopMarkers)
-
+        map.invalidate()
     }
 
 }

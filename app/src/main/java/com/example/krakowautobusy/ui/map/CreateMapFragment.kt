@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.krakowautobusy.BuildConfig
@@ -31,11 +32,15 @@ class CreateMapFragment : Fragment() {
     private lateinit var binding: MapActivityBinding
 
     private lateinit var actualPositionVehicles: ActualPositionVehicles
+    private lateinit var actualPositionAllOrFavouriteVehicle: ActualPositionVehicles
+    private lateinit var actualPositionFavouriteVehicle: ActualPositionFavouriteVehicle
     private lateinit var busStopPosition: BusStopPosition
+    private lateinit var busStopPositionOrFavouriteBusStopPosition: BusStopPosition
+    private lateinit var busStopPositionFavourite: BusStopPositionFavourite
     private lateinit var userLocation: UserLocation
     private lateinit var drawables: Drawables
     private lateinit var utilities: Utilities
-    private val viewModel: MapViewModel by viewModels({requireParentFragment()})
+    private val viewModel: MapViewModel by activityViewModels()
 
     private val MIN_ZOOM_LEVEL = 4.0
     private val MAX_ZOOM_LEVEL = 20.0
@@ -53,10 +58,10 @@ class CreateMapFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.i(TAG, "onCreateView")
         binding = MapActivityBinding.inflate(inflater, container, false)
-        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         map = binding.mapView
-
+        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         initialSetup()
         setupMapView()
         //setupDrawables()
@@ -76,19 +81,39 @@ class CreateMapFragment : Fragment() {
         })
 
         viewModel.showBusStops.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                mapController.removeShowingAllVehicles(actualPositionVehicles)
-                mapController.removeTrackedVehicle(actualPositionVehicles)
-                mapController.showAllBusStops(busStopPosition)
-                mapController.removeCallback()
-
-            } else {
-                mapController.removeShowingBusStops(busStopPosition)
-                mapController.luchCallback()
-                mapController.showAllVehicleMarker(actualPositionVehicles)
-            }
+            switchBetweenBusStopsAndVehicle(it)
         })
 
+        mapController.loadMarkerIntoMap(actualPositionAllOrFavouriteVehicle)
+        mapController.loadMarkerIntoMap(actualPositionFavouriteVehicle)
+
+        viewModel.isFavourit.observe(viewLifecycleOwner, Observer {
+            if (viewModel.showBusStops.value!!) {
+                busStopPositionOrFavouriteBusStopPosition.hiddenAllBusStops(map)
+                if (it) {
+                    busStopPositionOrFavouriteBusStopPosition = busStopPositionFavourite
+                    actualPositionAllOrFavouriteVehicle = actualPositionFavouriteVehicle
+                } else {
+                    busStopPositionOrFavouriteBusStopPosition = busStopPosition
+                    actualPositionAllOrFavouriteVehicle = actualPositionVehicles
+                }
+                busStopPositionOrFavouriteBusStopPosition.showAllBusStops(map)
+            } else {
+                actualPositionAllOrFavouriteVehicle.hiddenMarkers(map)
+                actualPositionAllOrFavouriteVehicle.removeTrackedVehicle()
+                if (it) {
+                    busStopPositionOrFavouriteBusStopPosition = busStopPositionFavourite
+                    actualPositionAllOrFavouriteVehicle = actualPositionFavouriteVehicle
+                } else {
+                    busStopPositionOrFavouriteBusStopPosition = busStopPosition
+                    actualPositionAllOrFavouriteVehicle = actualPositionVehicles
+                }
+                actualPositionAllOrFavouriteVehicle.showMarkers(map)
+                mapController.showAllBus(actualPositionAllOrFavouriteVehicle)
+                mapController.showAllTram(actualPositionAllOrFavouriteVehicle)
+            }
+        })
+        switchBetweenBusStopsAndVehicle(viewModel.showBusStops.value!!)
         return binding.root
     }
 
@@ -100,8 +125,7 @@ class CreateMapFragment : Fragment() {
         mapController.setStartingPoint(STARTING_LATTITUDE, STARTING_LONGTITUDE)
         //mapController.drawLocationMarker(userLocation, drawables)
         //mapController.drawTrackedRoute(actualPositionVehicles)
-        mapController.startShowingVehiclesOnTheMap(viewModel.isFavourit,
-            viewLifecycleOwner, actualPositionVehicles)
+        mapController.startShowVehicle(actualPositionAllOrFavouriteVehicle)
 
     }
 
@@ -116,7 +140,16 @@ class CreateMapFragment : Fragment() {
         utilities = Utilities(context as AppCompatActivity)
         drawables = Drawables(context as AppCompatActivity)
         actualPositionVehicles = ActualPositionVehicles(drawables)
+        actualPositionFavouriteVehicle = ActualPositionFavouriteVehicle(drawables)
         busStopPosition = BusStopPosition(drawables.vehicleStopIcon)
+        busStopPositionFavourite = BusStopPositionFavourite(drawables.vehicleStopIcon)
+        if (viewModel.isFavourit.value!!) {
+            busStopPositionOrFavouriteBusStopPosition = busStopPositionFavourite
+            actualPositionAllOrFavouriteVehicle = actualPositionFavouriteVehicle
+        } else {
+            busStopPositionOrFavouriteBusStopPosition = busStopPosition
+            actualPositionAllOrFavouriteVehicle = actualPositionVehicles
+        }
 
     }
     private fun enableLocalization(){
@@ -138,13 +171,14 @@ class CreateMapFragment : Fragment() {
         super.onResume()
         Log.i(TAG, "onResumeCalled")
         map.onResume()
+
     }
 
     override fun onPause() {
         super.onPause()
         Log.i(TAG, "onPauseCalled")
         userLocation.stopLocationUpdates()
-        actualPositionVehicles.setEnabled(false)
+        actualPositionAllOrFavouriteVehicle.setEnabled(false)
         map.onPause()
     }
 
@@ -157,5 +191,20 @@ class CreateMapFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         Log.i(TAG, "OnDestroyCalled")
+    }
+
+    private fun switchBetweenBusStopsAndVehicle(isBusStops : Boolean) {
+        if (isBusStops) {
+            mapController.removeShowingAllVehicles(actualPositionAllOrFavouriteVehicle)
+            mapController.removeTrackedVehicle(actualPositionAllOrFavouriteVehicle)
+            mapController.showAllBusStops(busStopPositionOrFavouriteBusStopPosition)
+            mapController.removeCallback()
+
+        } else {
+            mapController.removeShowingBusStops(busStopPositionOrFavouriteBusStopPosition)
+            mapController.luchCallback()
+            mapController.showAllVehicleMarker(actualPositionAllOrFavouriteVehicle)
+
+        }
     }
 }

@@ -9,11 +9,13 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +24,7 @@ import com.example.krakowautobusy.BuildConfig
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.databinding.FragmentMapBinding
 import com.example.krakowautobusy.databinding.MapActivityBinding
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 
@@ -29,10 +32,9 @@ class MapFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private lateinit var mapViewModel: MapViewModel
     private var _binding: FragmentMapBinding? = null
     private var showVehiclesOnMap = HowShowVehicles.ALL
-    private val viewModel: MapViewModel by viewModels()
+    private val viewModel: MapViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,15 +43,12 @@ class MapFragment : Fragment() {
         savedInstanceState: Bundle?
 
     ): View {
-        mapViewModel =
-            ViewModelProvider(this).get(MapViewModel::class.java)
-
+        Log.i("MapFragment", "OnCreateView")
         _binding = FragmentMapBinding.inflate(inflater, container, false)
 
         val root: View = binding.root
 
         val textView: TextView = binding.textHome
-
 
         addControllerToMap()
         addCallbackClickShowAllOrOneVehicles()
@@ -82,27 +81,12 @@ class MapFragment : Fragment() {
     }
 
     private fun addCallbackClickShowAllOrOneVehicles() {
-//        binding.MapShowAllVehiclesOrFavorite.setOnClickListener {
-//            showVehiclesOnMap = if (showVehiclesOnMap == HowShowVehicles.ALL) {
-//                showToast(getString(R.string.show_favorite_vehicles))
-//                HowShowVehicles.FAVORITE
-//            } else {
-//                showToast(getString(R.string.show_all_vehicles))
-//                HowShowVehicles.ALL
-//            }
-//        }
-        val colorGray = "#FF757575"
-        val colorGreen = "#32CD32"
+        setIconOnMapShowAllVehiclesOrFavoriteButton(binding.MapShowAllVehiclesOrFavorite)
+        setIconbusStopButtonButton(binding.busStopButton)
 
         binding.MapShowAllVehiclesOrFavorite.setOnClickListener{
             viewModel.isFavouritMap()
-            if (mapViewModel.isFavourit.value!!) {
-                binding.MapShowAllVehiclesOrFavorite.iconTint =
-                    ColorStateList.valueOf(Color.parseColor(colorGreen))
-            } else {
-                binding.MapShowAllVehiclesOrFavorite.iconTint =
-                    ColorStateList.valueOf(Color.parseColor(colorGray))
-            }
+            setIconOnMapShowAllVehiclesOrFavoriteButton(binding.MapShowAllVehiclesOrFavorite)
             it.setBackgroundColor(Color.rgb(224,224,224))
             it.animate()
                 .scaleX(1.05f).scaleY(1.05f).setDuration(300).withEndAction {
@@ -112,14 +96,8 @@ class MapFragment : Fragment() {
         }
 
         binding.locationfab.setOnClickListener{
-            mapViewModel.isSetLocation()
-            if (mapViewModel.setMyLocation.value!!) {
-                binding.locationfab.iconTint =
-                    ColorStateList.valueOf(Color.parseColor(colorGreen))
-            } else {
-                binding.locationfab.iconTint =
-                    ColorStateList.valueOf(Color.parseColor(colorGray))
-            }
+            viewModel.isSetLocation()
+            setIconOnMapShowAllVehiclesOrFavoriteButton(binding.locationfab)
             it.setBackgroundColor(Color.rgb(224,224,224))
             it.animate()
                 .scaleX(1.05f).scaleY(1.05f).setDuration(300).withEndAction {
@@ -129,7 +107,8 @@ class MapFragment : Fragment() {
         }
 
         binding.busStopButton.setOnClickListener {
-            mapViewModel.isShowBusStops()
+            viewModel.isShowBusStops()
+            setIconbusStopButtonButton(binding.busStopButton)
             it.setBackgroundColor(Color.rgb(224,224,224))
             it.animate()
                 .scaleX(1.05f).scaleY(1.05f).setDuration(300).withEndAction {
@@ -140,8 +119,33 @@ class MapFragment : Fragment() {
 
     }
 
+    private fun setIconOnMapShowAllVehiclesOrFavoriteButton(button: ExtendedFloatingActionButton) {
+        val colorGray = "#FF757575"
+        val colorGreen = "#32CD32"
+        if (viewModel.isFavourit.value!!) {
+            binding.MapShowAllVehiclesOrFavorite.iconTint =
+                ColorStateList.valueOf(Color.parseColor(colorGreen))
+        } else {
+            binding.MapShowAllVehiclesOrFavorite.iconTint =
+                ColorStateList.valueOf(Color.parseColor(colorGray))
+        }
+    }
+
+    private fun setIconbusStopButtonButton(button: ExtendedFloatingActionButton) {
+        val iconBus = AppCompatResources
+            .getDrawable(requireContext(), R.drawable.bus_icon)!!
+        val iconBusStop = AppCompatResources
+            .getDrawable(requireContext(), R.drawable.ic_bus_stop)!!
+        if (viewModel.showBusStops.value!!) {
+            binding.busStopButton.icon = iconBus
+        } else {
+            binding.busStopButton.icon = iconBusStop
+        }
+    }
+
     override fun onStart() {
         super.onStart()
+        Log.i("MapFragment", "onStart")
     }
 
     private fun addControllerToMap() {
@@ -151,5 +155,6 @@ class MapFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        Log.i("MapFragment", "onDestroyView")
     }
 }
