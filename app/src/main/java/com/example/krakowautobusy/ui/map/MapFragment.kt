@@ -83,6 +83,7 @@ class MapFragment : Fragment() {
     private fun addCallbackClickShowAllOrOneVehicles() {
         setIconOnMapShowAllVehiclesOrFavoriteButton(binding.MapShowAllVehiclesOrFavorite)
         setIconbusStopButtonButton(binding.busStopButton)
+        changeColorOfLocationButton(binding.locationfab)
 
         binding.MapShowAllVehiclesOrFavorite.setOnClickListener{
             viewModel.isFavouritMap()
@@ -97,7 +98,7 @@ class MapFragment : Fragment() {
 
         binding.locationfab.setOnClickListener{
             viewModel.isSetLocation()
-            setIconOnMapShowAllVehiclesOrFavoriteButton(binding.locationfab)
+            changeColorOfLocationButton(binding.locationfab)
             it.setBackgroundColor(Color.rgb(224,224,224))
             it.animate()
                 .scaleX(1.05f).scaleY(1.05f).setDuration(300).withEndAction {
@@ -123,10 +124,22 @@ class MapFragment : Fragment() {
         val colorGray = "#FF757575"
         val colorGreen = "#32CD32"
         if (viewModel.isFavourit.value!!) {
-            binding.MapShowAllVehiclesOrFavorite.iconTint =
+            button.iconTint =
                 ColorStateList.valueOf(Color.parseColor(colorGreen))
         } else {
-            binding.MapShowAllVehiclesOrFavorite.iconTint =
+            button.iconTint =
+                ColorStateList.valueOf(Color.parseColor(colorGray))
+        }
+    }
+
+    private fun changeColorOfLocationButton(button: ExtendedFloatingActionButton) {
+        val colorGray = "#FF757575"
+        val colorGreen = "#32CD32"
+        if (viewModel.setMyLocation.value!!) {
+            button.iconTint =
+                ColorStateList.valueOf(Color.parseColor(colorGreen))
+        } else {
+            button.iconTint =
                 ColorStateList.valueOf(Color.parseColor(colorGray))
         }
     }
@@ -137,9 +150,9 @@ class MapFragment : Fragment() {
         val iconBusStop = AppCompatResources
             .getDrawable(requireContext(), R.drawable.ic_bus_stop)!!
         if (viewModel.showBusStops.value!!) {
-            binding.busStopButton.icon = iconBus
+            button.icon = iconBus
         } else {
-            binding.busStopButton.icon = iconBusStop
+            button.icon = iconBusStop
         }
     }
 

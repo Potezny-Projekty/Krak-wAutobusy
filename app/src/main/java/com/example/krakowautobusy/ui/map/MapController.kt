@@ -157,10 +157,12 @@ class MapController(private var map: MapView, private var context: Context) {
     }
 
     fun removeCallback() {
+        Log.i("CALLBACK", "REMOVE")
         mainHandler.removeCallbacks(updateTextTask)
     }
 
     fun luchCallback() {
+        Log.i("CALLBACK", "LUNCH")
         mainHandler.post(updateTextTask)
     }
 
@@ -179,13 +181,10 @@ class MapController(private var map: MapView, private var context: Context) {
 
     fun removeShowingAllVehicles(actualPositionVehicles: ActualPositionVehicles) {
         actualPositionVehicles.hiddenMarkers(map)
-        removeCallback()
-
     }
 
     fun removeShowingBusStops(busStopPosition: BusStopPosition) {
         busStopPosition.hiddenAllBusStops(map)
-        luchCallback()
     }
 
     fun showAllBusStops(busStopPosition: BusStopPosition) {

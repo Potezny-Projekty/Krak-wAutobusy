@@ -70,6 +70,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     }
 
     open fun showAllVehicle(map: MapView, allVehicles: AllVehicles) {
+        Log.i("ACTUALPOSITOO",  "ALL VEHICLE")
         val listOfAllVehicle = allVehicles.vehicles
         listOfAllVehicle
             .filter { !it.isDeleted }

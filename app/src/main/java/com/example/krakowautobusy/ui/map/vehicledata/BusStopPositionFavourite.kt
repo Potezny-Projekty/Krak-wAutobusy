@@ -26,6 +26,7 @@ class BusStopPositionFavourite(busStopIconDrawable: Drawable) :
     }
 
     override fun hiddenAllBusStops(map: MapView) {
+        busStops.closeAllInfoWindows()
         map.overlays.removeAll(busStops.items)
         map.invalidate()
     }

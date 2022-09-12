@@ -1,5 +1,6 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
+import android.util.Log
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.ui.map.Drawables
 import org.osmdroid.views.MapView
@@ -8,6 +9,7 @@ class ActualPositionFavouriteVehicle(drawables: Drawables) : ActualPositionVehic
 
 
    override fun showAllVehicle(map: MapView, allVehicles: AllVehicles) {
+      Log.i("ACTUALPOSITOO",  "FAVOURITE")
       val listOfAllVehicle = allVehicles.vehicles
       val favouriteVehicles = Api.getApi().getAllFavouriteLine()
       listOfAllVehicle

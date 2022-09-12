@@ -69,6 +69,7 @@ class CreateMapFragment : Fragment() {
         //enableLocalization()
         mapController.createLocationMarker(userLocation, drawables)
         mapController.createAllBusStopsMarker(busStopPosition)
+        switchBetweenBusStopsAndVehicle(viewModel.showBusStops.value!!)
 
         viewModel.setMyLocation.observe(viewLifecycleOwner, Observer {
             if (it) {
@@ -84,7 +85,7 @@ class CreateMapFragment : Fragment() {
             switchBetweenBusStopsAndVehicle(it)
         })
 
-        mapController.loadMarkerIntoMap(actualPositionAllOrFavouriteVehicle)
+        mapController.loadMarkerIntoMap(actualPositionVehicles)
         mapController.loadMarkerIntoMap(actualPositionFavouriteVehicle)
 
         viewModel.isFavourit.observe(viewLifecycleOwner, Observer {
@@ -99,6 +100,7 @@ class CreateMapFragment : Fragment() {
                 }
                 busStopPositionOrFavouriteBusStopPosition.showAllBusStops(map)
             } else {
+                mapController.removeCallback()
                 actualPositionAllOrFavouriteVehicle.hiddenMarkers(map)
                 actualPositionAllOrFavouriteVehicle.removeTrackedVehicle()
                 if (it) {
@@ -108,12 +110,12 @@ class CreateMapFragment : Fragment() {
                     busStopPositionOrFavouriteBusStopPosition = busStopPosition
                     actualPositionAllOrFavouriteVehicle = actualPositionVehicles
                 }
+               /* mapController.showAllBus(actualPositionAllOrFavouriteVehicle)
+                mapController.showAllTram(actualPositionAllOrFavouriteVehicle)*/
                 actualPositionAllOrFavouriteVehicle.showMarkers(map)
-                mapController.showAllBus(actualPositionAllOrFavouriteVehicle)
-                mapController.showAllTram(actualPositionAllOrFavouriteVehicle)
+                mapController.startShowVehicle(actualPositionAllOrFavouriteVehicle)
             }
         })
-        switchBetweenBusStopsAndVehicle(viewModel.showBusStops.value!!)
         return binding.root
     }
 
@@ -171,7 +173,6 @@ class CreateMapFragment : Fragment() {
         super.onResume()
         Log.i(TAG, "onResumeCalled")
         map.onResume()
-
     }
 
     override fun onPause() {
@@ -195,16 +196,15 @@ class CreateMapFragment : Fragment() {
 
     private fun switchBetweenBusStopsAndVehicle(isBusStops : Boolean) {
         if (isBusStops) {
+            mapController.removeCallback()
             mapController.removeShowingAllVehicles(actualPositionAllOrFavouriteVehicle)
             mapController.removeTrackedVehicle(actualPositionAllOrFavouriteVehicle)
             mapController.showAllBusStops(busStopPositionOrFavouriteBusStopPosition)
-            mapController.removeCallback()
 
         } else {
+            mapController.startShowVehicle(actualPositionAllOrFavouriteVehicle)
             mapController.removeShowingBusStops(busStopPositionOrFavouriteBusStopPosition)
-            mapController.luchCallback()
             mapController.showAllVehicleMarker(actualPositionAllOrFavouriteVehicle)
-
         }
     }
 }

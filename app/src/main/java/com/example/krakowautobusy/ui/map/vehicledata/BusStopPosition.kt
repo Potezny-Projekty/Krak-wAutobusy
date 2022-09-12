@@ -17,14 +17,12 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
 
     open fun createAllBusStopsMarkers(map : MapView) {
         val busStopMarkerCollectionRadiusForClustering = 200
-        Executors.newSingleThreadScheduledExecutor().schedule({
-            val busStopData = Api.getApi().getAllVehiclesStop()
-            busStopMarkers = BusStopMarkerCluster(map.context)
-            busStopData.forEach {
-                busStopMarkers!!.add(createBusStopMarker(map, it))
-            }
-           busStopMarkers!!.setRadius(busStopMarkerCollectionRadiusForClustering)
-        },0, TimeUnit.SECONDS)
+        val busStopData = Api.getApi().getAllVehiclesStop()
+        busStopMarkers = BusStopMarkerCluster(map.context)
+        busStopData.forEach {
+            busStopMarkers!!.add(createBusStopMarker(map, it))
+        }
+       busStopMarkers!!.setRadius(busStopMarkerCollectionRadiusForClustering)
     }
 
     protected fun createBusStopMarker(map : MapView,
