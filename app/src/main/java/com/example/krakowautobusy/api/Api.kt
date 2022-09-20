@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import com.example.krakowautobusy.database.*
-import com.example.krakowautobusy.networkttss.PositionVehicle
-import com.example.krakowautobusy.networkttss.PositionVehicleInterface
-import com.example.krakowautobusy.networkttss.TimeTableVehicle
-import com.example.krakowautobusy.networkttss.TimeTableVehicleInterface
+import com.example.krakowautobusy.networkttss.*
 import com.example.krakowautobusy.ui.map.vehicledata.AllVehicles
 import com.example.krakowautobusy.ui.map.vehicledata.TimeTableData
 import com.google.gson.JsonObject
@@ -18,6 +15,7 @@ class Api {
     private val favouriteLineAccess: FavouriteLineInterface = FavouriteLine()
     private val positionVehicleAccess: PositionVehicleInterface = PositionVehicle()
     private val timeTableVehicleAcess: TimeTableVehicleInterface = TimeTableVehicle()
+    private val departVehicleAccess:DeparturesVehicleInterface=DeparturesVehicles()
     private val lineAccess:LineInteerface=Line()
     private val FavouritevehicleStopAcess:FavouriteVehicleStopInterface=FavouriteVehicleStop()
     private var context: Context
@@ -53,6 +51,26 @@ class Api {
         }
 
     }
+
+
+    ///////////////////////Depart Vehicles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /////////////////////////Favourite VehicleStop
@@ -108,7 +126,15 @@ fun getAllLine():ArrayList<LineData>{
 
 
 ///////////////////  Position Vehicle API
+public fun getTramDepartures(idStopPoint:String,
+                           combine:(Response<Departures>)->Unit){
+    departVehicleAccess.getTramVehicleDepart(idStopPoint,combine)
+}
 
+    public fun getBusDepartures(idStopPoint:String,
+                               combine:(Response<Departures>)->Unit){
+        departVehicleAccess.getBusVehicleDepart(idStopPoint,combine)
+    }
 
 
 

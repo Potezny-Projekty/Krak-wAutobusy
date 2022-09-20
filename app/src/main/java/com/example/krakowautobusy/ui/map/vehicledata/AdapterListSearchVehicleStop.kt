@@ -133,7 +133,7 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
     private fun fillViewData(viewHolder: ViewHolder, dataModel: VehicleStopData):ViewHolder{
         viewHolder.lineNumber!!.text= dataModel.name .toString()
 
-
+        Log.e("ojej",dataModel.idStopPoint.toString()+"/"+dataModel.idShort)
         if(dataModel.isFavourite){
             viewHolder.isFavourite!!.setImageResource(R.drawable.red_heart_icon)
         }else{
@@ -164,10 +164,12 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
     }
 
   fun pp(){
+      Log.e("kurwap","..a"+(funRefresh==null))
       funRefresh?.let { it1 -> it1(); Log.e("kurwap", "wołam") }
   }
 
     public fun setRefresh(x:FunWithoutParamToVoid){
+        Log.e("kurwap","Odpalam event"+(x==null))
         funRefresh=x
     }
     private fun addOnClickListenerToFavoriteIcon(viewHolder:ViewHolder,lineData: VehicleStopData){
@@ -225,7 +227,8 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
                     }*/
             }
          //  notifyDataSetChanged()
-           pp()
+            Log.e("kurwap","Before:"+(funRefresh==null))
+            pp()
 
          //   funRefresh?.let { it1 -> it1() }
 

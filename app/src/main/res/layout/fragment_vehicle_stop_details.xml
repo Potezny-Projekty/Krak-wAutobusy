@@ -7,8 +7,11 @@
     tools:context=".ui.map.vehicledata.VehicleStopDetails">
 
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="#fafafa"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
 
@@ -39,7 +42,9 @@
             app:srcCompat="@drawable/red_heart_icon"
             android:id="@+id/heartIcon"
             android:layout_weight="1"
+
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
 
             android:layout_marginRight="8dp"
             app:layout_constraintTop_toTopOf="parent"
@@ -76,27 +81,83 @@
         android:paddingLeft="20dp"
         android:textSize="16dp"
         android:textColor="#000"
+        android:visibility="invisible"
         android:id="@+id/textFavourite"
 
         app:layout_constraintTop_toBottomOf="@id/upper_bar"
         android:layout_height="wrap_content"></TextView>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:text="15:22"
+        android:layout_width="200dp"
+        android:text="17:22"
+        app:layout_constraintBottom_toTopOf="@id/ca"
+        android:padding="5dp"
+        android:layout_marginBottom="5dp"
+        android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
-
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:paddingLeft="20dp"
-        android:textSize="36dp"
-        android:textColor="#000"
-        android:id="@+id/textFavourite3"
-
-        app:layout_constraintTop_toBottomOf="@id/textFavourite"
+        android:layout_marginTop="100dp"
+        android:id="@+id/cac"
+        android:textStyle="bold"
+        android:background="#B0B0B0"
+        android:textColor="#fff"
         android:layout_height="wrap_content"></TextView>
+
+    <TextView
+        android:layout_width="200dp"
+        android:text="Wtorek"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="5dp"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="100dp"
+        android:id="@+id/ca"
+        android:background="#B0B0B0"
+        android:textColor="#fff"
+        android:layout_height="wrap_content"></TextView>
+    <TextView
+        android:layout_width="200dp"
+        android:text="17.11.2022"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/ca"
+        android:padding="5dp"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="5dp"
+        android:background="#B0B0B0"
+        android:textColor="#fff"
+        android:layout_height="wrap_content"></TextView>
+
+
+
+
+    <TextClock
+        android:layout_width="wrap_content"
+        android:format12Hour="@null"
+        android:format24Hour="HH:mm:ss"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@id/aa2"
+        app:layout_constraintTop_toBottomOf="@id/aa2"
+        app:layout_constraintStart_toStartOf="@id/aa2"
+
+        android:layout_height="wrap_content"></TextClock>
+
+
+    <AnalogClock
+
+        android:id="@+id/aa2"
+        android:layout_width="118dp"
+        android:layout_height="98dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/upper_bar" />
+
     <ImageView
         android:layout_width="100dp"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/upper_bar"
         android:src="@drawable/ic_bus_stop"
         app:layout_constraintEnd_toEndOf="parent"
@@ -105,15 +166,23 @@
         android:layout_marginRight="16dp"
         android:layout_height="100dp"></ImageView>
 
-    <include android:layout_marginBottom="490dp"  app:layout_constraintBottom_toBottomOf="parent" layout="@layout/one_time_stop_on_vehiclestop"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"></include>
-    <include android:layout_marginBottom="440dp"  app:layout_constraintBottom_toBottomOf="parent" layout="@layout/one_time_stop_on_vehiclestop"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"></include>
-    <include android:layout_marginBottom="400dp"  app:layout_constraintBottom_toBottomOf="parent" layout="@layout/one_time_stop_on_vehiclestop"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"></include>
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/listdetailed"
+        android:layout_marginTop="40dp"
+
+        android:dividerHeight="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/aa2"
+        android:layout_height="wrap_content"></ListView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:text="(*) Przewidywany czas odjazdu"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"></TextView>
+
+
 
 
 

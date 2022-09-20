@@ -6,6 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.navigation.Navigation
+import com.example.krakowautobusy.BundleChoiceVehicle
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.LineData
@@ -45,7 +49,33 @@ class FavouriteVehicleStop : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
+       // KURWA()
+    }
 
+    override fun onStart() {
+        super.onStart()
+        KURWA()
+    }
+
+
+    fun addOnClickListenerToVehicleStop(){
+        binding.favouriteVehicleStopList.setOnItemClickListener { parent, view, position, _ ->
+            val selectedItem = parent.getItemAtPosition(position) as VehicleStopData
+            Log.e("ojej",""+selectedItem.idStopPoint+'/'+selectedItem.idShort)
+
+
+            val bundle = bundleOf(
+                Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
+                        selectedItem.idVehicleStop.toString(),
+               Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
+                       selectedItem.name,
+                Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
+                        selectedItem.idStopPoint.toString()
+
+            )
+                                                                                                            //bundle
+            Navigation.findNavController(view).navigate(R.id.action_navigate_to_details_vehiclestop,bundle);
+        }
     }
 
     override fun onCreateView(
@@ -54,16 +84,22 @@ class FavouriteVehicleStop : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentFavouriteVehicleStopBinding.inflate(inflater, container, false)
-        addAdapterToListFavouriteVehicleStop()
-        val root: View = binding.root
         KURWA()
+        addAdapterToListFavouriteVehicleStop()
+        addOnClickListenerToVehicleStop()
+        val root: View = binding.root
+
         return root
     }
 
 
 
     fun addAdapterToListFavouriteVehicleStop(){
-        binding.favouriteVehicleStopList.adapter =AdapterListSearchVehicleStop(Api.getApi().getAllFavouriteVehicleStop(),requireContext())
+
+        var adapter=AdapterListSearchVehicleStop(Api.getApi().getAllFavouriteVehicleStop(),requireContext())
+        adapter.setRefresh {    Log.e("kurwap","JEGO MAĆ2")
+            setDatasetAdapter() }
+        binding.favouriteVehicleStopList.adapter =adapter
         binding.favouriteVehicleStopList.deferNotifyDataSetChanged()
 
 
@@ -75,6 +111,8 @@ class FavouriteVehicleStop : Fragment() {
             Log.e("kurwap","JEGO MAĆ2")
             setDatasetAdapter()
         }
+
+
     }
 
 

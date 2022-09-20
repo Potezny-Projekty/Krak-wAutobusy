@@ -1,11 +1,19 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.krakowautobusy.R
+import androidx.fragment.app.Fragment
+import com.example.krakowautobusy.api.Api
+import com.example.krakowautobusy.databinding.FragmentVehicleStopDetailsBinding
+import com.example.krakowautobusy.ui.vehiclestop.AdapterListViewDepatures
+import com.example.krakowautobusy.ui.vehiclestop.Bundle_Vehicle_Stop
+import java.text.SimpleDateFormat
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,11 +25,27 @@ private const val ARG_PARAM2 = "param2"
  * Use the [VehicleStopDetails.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+
+//!! USUN TIMERY PO ONCLOSE
+//ACTUAL TIM TO TERAZ
 class VehicleStopDetails : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
+    private val binding get() = _binding!!
+    private lateinit var  adapter:AdapterListViewDepatures
+
+    val mainHandler = Handler(Looper.getMainLooper())
+    val mainHandler2 = Handler(Looper.getMainLooper())
+    private var _binding: FragmentVehicleStopDetailsBinding? = null
+
+
+
+    private lateinit var timerRefreshDepartureList:Runnable
+    private val TIMER_REFRESH_DEPARTURE_LIST=10500L
+    private var idStopPoint:String=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -29,14 +53,105 @@ class VehicleStopDetails : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
+    fun refreshListDepeartures(){
+        timerRefreshDepartureList = object : Runnable {
+            override fun run() {
+                refreshListDepeartures()
+
+
+                Api.getApi().getBusDepartures(idStopPoint
+                ) { response ->
+                    Log.e("ojej","Rozmiar:"+response.body()!!.actual.size)
+                    //  for(x in response.body()!!.actual){
+                    //     Log.e("ojej",x.plannedTime.toString())
+                    //  }
+                  //  adapter= AdapterListViewDepatures(response.body()!!.actual,requireContext())
+                    adapter.changeDataset(response.body()!!.actual)
+                    binding.listdetailed.adapter=adapter
+
+
+                }
+
+
+
+                mainHandler.postDelayed(this,TIMER_REFRESH_DEPARTURE_LIST )
+
+            }
+        }
+
+        mainHandler.postDelayed(timerRefreshDepartureList,TIMER_REFRESH_DEPARTURE_LIST)
+    }
+
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_vehicle_stop_details, container, false)
+        _binding = FragmentVehicleStopDetailsBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+        fillViewDataFromBundle()
+        addDeparturesToListView(requireArguments().getString(Bundle_Vehicle_Stop.ID_STOP_POINT .nameBundle).toString())
+       idStopPoint=Bundle_Vehicle_Stop.ID_STOP_POINT .nameBundle
+        Log.e("aax",":"+idStopPoint)
+
+        refreshListDepeartures()
+        return root
     }
+
+    override fun onStop() {
+        super.onStop()
+        mainHandler.removeCallbacksAndMessages(null);
+      //  mainHandler2.removeCallbacksAndMessages(null);
+    }
+
+    fun addDeparturesToListView(idstopPoint:String){
+    addAdapter(idstopPoint)
+
+    /*    Api.getApi().getBusDepartures(idstopPoint
+        ) { response ->
+            Log.e("ojej","Rozmiar:"+response.body()!!.actual.size)
+            for(x in response.body()!!.actual){
+                Log.e("ojej",x.plannedTime.toString())
+            }
+
+        }*/
+
+    }
+
+    fun addAdapter(idstopPoint:String){
+        Log.e("aax",idstopPoint)
+        Api.getApi().getBusDepartures(idstopPoint
+        ) { response ->
+            Log.e("ojej","Rozmiar:"+response.body()!!.actual.size)
+          //  for(x in response.body()!!.actual){
+           //     Log.e("ojej",x.plannedTime.toString())
+          //  }
+            adapter= AdapterListViewDepatures(response.body()!!.actual,requireContext())
+            adapter.changeDataset(response.body()!!.actual)
+           binding.listdetailed.adapter=adapter
+
+
+        }
+    }
+
+
+
+
+
+
+    fun fillViewDataFromBundle( ){
+
+        binding.lineNumberTop.text= requireArguments().getString(Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle).toString()
+
+
+    }
+
+
+
+
 
     companion object {
         /**
