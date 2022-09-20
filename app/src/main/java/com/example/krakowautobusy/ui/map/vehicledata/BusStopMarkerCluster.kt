@@ -20,10 +20,10 @@ class BusStopMarkerCluster(ctx: Context) : RadiusMarkerClusterer(ctx) {
 
 
     init {
-        val clusterIconD: Drawable = AppCompatResources.getDrawable(ctx,
-            R.drawable.cluster_icon_bus_stop)!!
-        /* val clusterIconD: Drawable = AppCompatResources.getDrawable(ctx,
-             R.drawable.cluster)!!*/
+       // val clusterIconD: Drawable = AppCompatResources.getDrawable(ctx,
+        //    R.drawable.cluster_icon_bus_stop)!!
+         val clusterIconD: Drawable = AppCompatResources.getDrawable(ctx,
+             R.drawable.cluster)!!
         val clusterIcon = (clusterIconD as BitmapDrawable).bitmap
         setIcon(clusterIcon)
         mTextPaint.color = Color.BLACK
@@ -44,14 +44,14 @@ class BusStopMarkerCluster(ctx: Context) : RadiusMarkerClusterer(ctx) {
         iconCanvas.drawBitmap(mClusterIcon, 0.0f, 0.0f, null as Paint?)
         val text = "" + cluster!!.size
         val textHeight = (mTextPaint.descent() + mTextPaint.ascent()).toInt()
-        iconCanvas.drawText(
-            text, mTextAnchorU * finalIcon.width.toFloat(), mTextAnchorV * finalIcon.height
-                .toFloat() + (textHeight / 2).toFloat(), mTextPaint
-        )
-        /* iconCanvas.drawText(
+      //  iconCanvas.drawText(
+        //    text, mTextAnchorU * finalIcon.width.toFloat(), mTextAnchorV * finalIcon.height
+        //        .toFloat() + (textHeight / 2).toFloat(), mTextPaint
+       // )
+         iconCanvas.drawText(
             text, mTextAnchorU * finalIcon.width.toFloat(), mTextAnchorV * finalIcon.height
                 .toFloat() - (textHeight * 2.5).toFloat(), mTextPaint
-        )*/
+        )
         marker.icon = BitmapDrawable(mapView!!.context.resources, finalIcon)
         return marker
     }

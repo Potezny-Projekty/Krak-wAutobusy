@@ -25,6 +25,7 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 import retrofit2.Response
+import java.lang.Exception
 import kotlin.collections.set
 
 
@@ -70,44 +71,63 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     }
 
     open fun showAllVehicle(map: MapView, allVehicles: AllVehicles) {
-        val listOfAllVehicle = allVehicles.vehicles
-        listOfAllVehicle
-            .filter { !it.isDeleted }
-            .forEach {
-                if (markers.containsKey(it.id)) {
-                    val drawVehicleMarker = markers[it.id]!!
 
-                    updateMarkerPosition(drawVehicleMarker, it, map)
-                } else {
-                    markers[it.id] = drawMarkerVehiclesOnMap(it, map)
-            }
+        try {
+            Log.i("ACTUALPOSITOO", "ALL VEHICLE")
+            val listOfAllVehicle = allVehicles.vehicles
+            listOfAllVehicle
+                .filter { !it.isDeleted }
+                .forEach {
+                    if (markers.containsKey(it.id)) {
+                        val drawVehicleMarker = markers[it.id]!!
+
+                        updateMarkerPosition(drawVehicleMarker, it, map)
+                    } else {
+                        markers[it.id] = drawMarkerVehiclesOnMap(it, map)
+                    }
+                }
+            Log.i("POZYCJA", "TO Nie sa ulubione ULUBIONE")
+
+        }catch(exp:Exception){
+
         }
-        Log.i("POZYCJA", "TO Nie sa ulubione ULUBIONE")
     }
 
+
+
     fun showVehiclesAboutNumberLine(map:MapView, allVehicles: AllVehicles,numberLine:String){
-        val listOfAllVehicle = allVehicles.vehicles
-        listOfAllVehicle
-            .filter { !it.isDeleted && it.name.startsWith(numberLine) && it.name.replace("[^0-9]".toRegex(), "").length==numberLine.length }
-            .forEach {
-                if (markers.containsKey(it.id)) {
-
-                    markers[it.id]!!.setOnMarkerClickListener { markerTracing, mapView ->
-                       // drawMarkerVehiclesOnMap(it,mapView)
-                        colorOnMapActualTimeTableVehicle(it.id,mapView)
-                        actualVehicleIdClick.value=it.id
-
-
-                        true
-                    }
-
-
-                    val drawVehicleMarker = markers[it.id]!!
-                    updateMarkerPosition(drawVehicleMarker, it, map)
-                } else {
-                    markers[it.id] = drawMarkerVehiclesOnMapAboutNumberLine(it, map)
+        try {
+            val listOfAllVehicle = allVehicles.vehicles
+            listOfAllVehicle
+                .filter {
+                    !it.isDeleted && it.name.startsWith(numberLine) && it.name.replace(
+                        "[^0-9]".toRegex(),
+                        ""
+                    ).length == numberLine.length
                 }
-            }
+                .forEach {
+                    if (markers.containsKey(it.id)) {
+
+                        markers[it.id]!!.setOnMarkerClickListener { markerTracing, mapView ->
+                            // drawMarkerVehiclesOnMap(it,mapView)
+                            colorOnMapActualTimeTableVehicle(it.id, mapView)
+                            actualVehicleIdClick.value = it.id
+
+
+                            true
+                        }
+
+
+                        val drawVehicleMarker = markers[it.id]!!
+                        updateMarkerPosition(drawVehicleMarker, it, map)
+                    } else {
+                        markers[it.id] = drawMarkerVehiclesOnMapAboutNumberLine(it, map)
+                    }
+                }
+
+        }catch (exp:Exception){
+
+        }
     }
 
     protected fun updateMarkerPosition(marker : VehicleMarker, vehicle: Vehicle, map : MapView) {
@@ -194,53 +214,66 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     }
 
 
+
     @SuppressLint("ClickableViewAccessibility")
-    protected fun drawMarkerVehiclesOnMap(vehicle: Vehicle, map : MapView) : VehicleMarker {
-        val locationPoint =
-            ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude)
-        val marker = VehicleMarker(map, vehicle)
-        val markerToast = MarkerToast(map)
-        markerToast.view.setOnTouchListener { v, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                val mapFragment = map.findFragment<Fragment>()
-                val bundle = bundleOf(
-                    BundleChoiceVehicle.LINE_NUMBER.nameBundleObject to
-                            vehicle.name.toString().split(' ')[0].trim().toInt(),
-                    BundleChoiceVehicle.FIRST_STOP_VEHICLE_NAME.nameBundleObject
-                            to "",
-                    BundleChoiceVehicle.LAST_VEHICLE_STOP_NAME.nameBundleObject to
-                            vehicle.name.toString().substringAfter(" ").toString() ,"tripId" to vehicle.tripId
+    protected fun  drawMarkerVehiclesOnMap(vehicle: Vehicle, map : MapView) : VehicleMarker {
 
 
-                )
 
-                map.findNavController().navigate(R.id.action_navigation_map_to_detailsFragment,bundle);
+
+
+            val locationPoint =
+                ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude)
+            val marker = VehicleMarker(map, vehicle)
+            val markerToast = MarkerToast(map)
+            markerToast.view.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    val mapFragment = map.findFragment<Fragment>()
+                    val bundle = bundleOf(
+                        BundleChoiceVehicle.LINE_NUMBER.nameBundleObject to
+                                vehicle.name.toString().split(' ')[0].trim().toInt(),
+                        BundleChoiceVehicle.FIRST_STOP_VEHICLE_NAME.nameBundleObject
+                                to "",
+                        BundleChoiceVehicle.LAST_VEHICLE_STOP_NAME.nameBundleObject to
+                                vehicle.name.toString().substringAfter(" ").toString(),
+                        "tripId" to vehicle.tripId
+
+
+                    )
+
+                    map.findNavController()
+                        .navigate(R.id.action_navigation_map_to_detailsFragment, bundle);
+                }
+                true
             }
-            true
-        }
 
 
-        marker.setInfoWindowAnchor(Marker.ANCHOR_TOP,  Marker.ANCHOR_CENTER)
-        marker.infoWindow = markerToast
-        marker.position = locationPoint
-        marker.rotation = fullAngle - vehicle.heading.toFloat()
+            marker.setInfoWindowAnchor(Marker.ANCHOR_TOP, Marker.ANCHOR_CENTER)
+            marker.infoWindow = markerToast
+            marker.position = locationPoint
+            marker.rotation = fullAngle - vehicle.heading.toFloat()
 
-        if (vehicle.category == VehicleType.BUS.type) {
-            fillMarkerData(marker,busDrawable
-                , VehicleType.BUS.type,vehicle.name)
-        } else {
-            fillMarkerData(marker,tramDrawable,
-                VehicleType.TRAM.type,vehicle.name)
-        }
+            if (vehicle.category == VehicleType.BUS.type) {
+                fillMarkerData(
+                    marker, busDrawable, VehicleType.BUS.type, vehicle.name
+                )
+            } else {
+                fillMarkerData(
+                    marker, tramDrawable,
+                    VehicleType.TRAM.type, vehicle.name
+                )
+            }
 
-        map.overlays.add(marker)
-        marker.setOnMarkerClickListener { markerTracing, mapView ->
-            marker.adjustPositionInfowWindowRelativeToRotationIcon()
-            markerTracing.showInfoWindow()
-            drawPathVehicle(vehicle.id, vehicle.category, mapView, marker)
-        }
+            map.overlays.add(marker)
+            marker.setOnMarkerClickListener { markerTracing, mapView ->
+                marker.adjustPositionInfowWindowRelativeToRotationIcon()
+                markerTracing.showInfoWindow()
+                drawPathVehicle(vehicle.id, vehicle.category, mapView, marker)
+            }
+            return marker
 
-        return marker
+
+
     }
 
     protected fun drawMarkerVehiclesOnMapAboutNumberLine(vehicle: Vehicle, map : MapView) : VehicleMarker {

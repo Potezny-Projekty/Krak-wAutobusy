@@ -1,6 +1,7 @@
 package com.example.krakowautobusy.ui.map
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -132,42 +133,8 @@ class MapController(private var map: MapView, private var context: Context) {
         )
     }
 
-    fun startShowingVehiclesOnTheMap(isFavourite : LiveData<Boolean>,
-                                     viewLifecycleOwner : LifecycleOwner,
-                                     actualPositionVehicle: ActualPositionVehicles) {
-        actualPositionVehicle.addPolylineIntoMap(map)
-        val actualPositionFavouriteVehicle =
-            ActualPositionFavouriteVehicle(drawables)
-        actualPositionFavouriteVehicle.addPolylineIntoMap(map)
-        var actualPositionAllOrFavouriteVehicle = actualPositionVehicle
-        actualPositionAllOrFavouriteVehicle.lodaIconIntoMap()
-        isFavourite.observe(viewLifecycleOwner, Observer {
-            Log.i("MAPPPA", it.toString())
-            actualPositionAllOrFavouriteVehicle.hiddenMarkers(map)
-            actualPositionAllOrFavouriteVehicle.removeTrackedVehicle()
-            actualPositionAllOrFavouriteVehicle = if (it) {
-                actualPositionFavouriteVehicle
-            } else {
-                actualPositionVehicle
-            }
-            showAllBus(actualPositionAllOrFavouriteVehicle)
-            showAllTram(actualPositionAllOrFavouriteVehicle)
-            actualPositionAllOrFavouriteVehicle.showMarkers(map)
-        })
 
-        updateTextTask = object : Runnable {
-            override fun run() {
-                showAllBus(actualPositionAllOrFavouriteVehicle)
-                showAllTram(actualPositionAllOrFavouriteVehicle)
-                Log.i("POZYCJA", actualPositionAllOrFavouriteVehicle.toString())
-                mainHandler.postDelayed(this, RUNNABLE_DELAY)
-            }
-        }
-        mainHandler.post(updateTextTask)
-    }
-
-
-    private fun showAllTram(actualPositionTram: ActualPositionVehicles) {
+    fun showAllTram(actualPositionTram: ActualPositionVehicles) {
         return Api.getApi().getTramPosition(actualPositionTram.lastUpdateTram, fun(response: Response<AllVehicles>)  {
             if (response.isSuccessful) {
                 val allTram = response.body()!!
@@ -177,7 +144,7 @@ class MapController(private var map: MapView, private var context: Context) {
         })
     }
 
-    private fun showAllBus(actualPositionBus: ActualPositionVehicles) {
+    fun showAllBus(actualPositionBus: ActualPositionVehicles) {
         return Api.getApi().getBusPosition(actualPositionBus.lastUpdateBus,
             fun(response: Response<AllVehicles>) {
                 if (response.isSuccessful && response.body() != null) {
@@ -190,10 +157,12 @@ class MapController(private var map: MapView, private var context: Context) {
     }
 
     fun removeCallback() {
+        Log.i("CALLBACK", "REMOVE")
         mainHandler.removeCallbacks(updateTextTask)
     }
 
     fun luchCallback() {
+        Log.i("CALLBACK", "LUNCH")
         mainHandler.post(updateTextTask)
     }
 
@@ -212,13 +181,10 @@ class MapController(private var map: MapView, private var context: Context) {
 
     fun removeShowingAllVehicles(actualPositionVehicles: ActualPositionVehicles) {
         actualPositionVehicles.hiddenMarkers(map)
-        removeCallback()
-
     }
 
     fun removeShowingBusStops(busStopPosition: BusStopPosition) {
         busStopPosition.hiddenAllBusStops(map)
-        luchCallback()
     }
 
     fun showAllBusStops(busStopPosition: BusStopPosition) {
@@ -237,4 +203,23 @@ class MapController(private var map: MapView, private var context: Context) {
     fun removeTrackedVehicle(actualPositionVehicles: ActualPositionVehicles) {
         actualPositionVehicles.removeTrackedVehicle()
     }
+
+    fun startShowVehicle(actualPositionVehicle: ActualPositionVehicles) {
+
+        updateTextTask = object : Runnable {
+            override fun run() {
+                showAllBus(actualPositionVehicle)
+                showAllTram(actualPositionVehicle)
+                mainHandler.postDelayed(this, RUNNABLE_DELAY)
+            }
+        }
+        mainHandler.post(updateTextTask)
+
+    }
+
+    fun loadMarkerIntoMap(actualPositionVehicle: ActualPositionVehicles) {
+        actualPositionVehicle.addPolylineIntoMap(map)
+        actualPositionVehicle.lodaIconIntoMap()
+    }
+
 }
