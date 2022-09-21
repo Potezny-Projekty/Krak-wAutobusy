@@ -10,6 +10,7 @@ import com.example.krakowautobusy.ui.vehiclestop.Bundle_Vehicle_Stop
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.FolderOverlay
+import org.osmdroid.views.overlay.Marker
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -17,6 +18,7 @@ import java.util.concurrent.TimeUnit
 open class BusStopPosition(private val busStopIconDrawable : Drawable) {
 
     private var busStopMarkers: RadiusMarkerClusterer? = null
+    private var trackedBusStops : Marker? = null
 
 
     open fun createAllBusStopsMarkers(map : MapView) {
@@ -35,6 +37,12 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
          val marker = BusStopMarker(map, vehicleStopData)
         marker.position = ConvertUnits.convertToGeoPoint(vehicleStopData.latitude,
             vehicleStopData.longitude)
+
+        marker.setOnMarkerClickListener { marker, mapView ->
+            trackedBusStops = marker
+            marker.showInfoWindow()
+            true
+        }
 
         marker.infoWindow.view.setOnClickListener({
 /*
@@ -67,6 +75,7 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
 
     open fun hiddenAllBusStops(map : MapView) {
         map.overlays.remove(busStopMarkers)
+        trackedBusStops?.closeInfoWindow()
         map.invalidate()
     }
 

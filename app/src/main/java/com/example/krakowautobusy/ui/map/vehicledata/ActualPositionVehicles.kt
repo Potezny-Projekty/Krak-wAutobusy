@@ -80,7 +80,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
                 .forEach {
                     if (markers.containsKey(it.id)) {
                         val drawVehicleMarker = markers[it.id]!!
-
+                        drawVehicleMarker.drawPathVehicle(this, map)
                         updateMarkerPosition(drawVehicleMarker, it, map)
                     } else {
                         markers[it.id] = drawMarkerVehiclesOnMap(it, map)
@@ -119,6 +119,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
 
                         val drawVehicleMarker = markers[it.id]!!
+                        drawVehicleMarker.drawPathVehicle(this, map)
                         updateMarkerPosition(drawVehicleMarker, it, map)
                     } else {
                         markers[it.id] = drawMarkerVehiclesOnMapAboutNumberLine(it, map)
@@ -354,6 +355,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
                     )
                 )
             }
+        marker.pathVehicle = geoPoints
         drawPathVehicleOnMap(map, marker, geoPoints)
     }
 
@@ -372,7 +374,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
         return true
     }
 
-    protected fun drawPathVehicleOnMap(map: MapView, marker: VehicleMarker,
+    fun drawPathVehicleOnMap(map: MapView, marker: VehicleMarker,
                                 pathPoints : ArrayList<GeoPoint>
     ) {
 
