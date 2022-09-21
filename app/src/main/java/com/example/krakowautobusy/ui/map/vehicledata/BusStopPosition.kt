@@ -1,8 +1,15 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.graphics.drawable.Drawable
+import android.util.Log
+import android.view.View
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import com.example.krakowautobusy.MainActivity
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.database.VehicleStopData
@@ -14,7 +21,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 
-open class BusStopPosition(private val busStopIconDrawable : Drawable) {
+open class BusStopPosition(private val busStopIconDrawable : Drawable,private val navView: View) {
 
     private var busStopMarkers: RadiusMarkerClusterer? = null
 
@@ -29,30 +36,66 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
        busStopMarkers!!.setRadius(busStopMarkerCollectionRadiusForClustering)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     protected fun createBusStopMarker(map : MapView,
-                                    vehicleStopData: VehicleStopData) : BusStopMarker {
-
+                                      vehicleStopData: VehicleStopData) : BusStopMarker {
+        Log.e("blad","blad2")
          val marker = BusStopMarker(map, vehicleStopData)
         marker.position = ConvertUnits.convertToGeoPoint(vehicleStopData.latitude,
             vehicleStopData.longitude)
 
-        marker.infoWindow.view.setOnClickListener({
-/*
+        /*marker.setOnMarkerClickListener( { a, b ->
+            Log.e("blad","blad")
             val bundle = bundleOf(
                 Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
-                        selectedItem.idVehicleStop.toString(),
+                        marker.busStop.idVehicleStop,
                 Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
-                        selectedItem.name,
+                        marker.busStop.name,
                 Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
-                        selectedItem.idStopPoint.toString()
+                        marker.busStop.idStopPoint
 
             )
             //bundle
-            Navigation.findNavController(view).navigate(R.id.action_navigate_to_details_vehiclestop,bundle);
+            Navigation.findNavController(navView)
+                .navigate(R.id.actionnavigatedetailesstop, bundle);
 
-            */
 
-        })
+            true})*/
+
+        marker.infoWindow.view.setOnTouchListener {x,y->
+            Log.e("blad","blad")
+            val bundle = bundleOf(
+                Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
+                        marker.busStop.idVehicleStop,
+                Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
+                        marker.busStop.name,
+                Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
+                        marker.busStop.idStopPoint
+
+            )
+            //bundle
+
+
+            Navigation.findNavController(x)
+                .navigate(R.id.actionnavigatedetailesstop, bundle);
+
+
+            true
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         marker.icon = busStopIconDrawable
         marker.title = vehicleStopData.name

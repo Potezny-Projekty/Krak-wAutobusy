@@ -29,6 +29,7 @@ class SearchViewFragment : Fragment() {
 
     private var showAllOrFavoriteBusOnMap_FAB:com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton?=null
     private var findMyLocationOnMap_FAB:com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton?=null
+    private var showVehicleStopOrVehicles_FAB:com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton?=null
     val ANIM_DURATION_MS=800L
 
     private   var refreshH: RefreshHandler? = null;
@@ -107,6 +108,7 @@ class SearchViewFragment : Fragment() {
             bottomNavView=requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
             findMyLocationOnMap_FAB=requireActivity().findViewById<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>(R.id.locationfab)
             showAllOrFavoriteBusOnMap_FAB=requireActivity().findViewById<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>(R.id.Map_showAllVehiclesOrFavorite)
+            showVehicleStopOrVehicles_FAB=requireActivity().findViewById(R.id.busStopButton)
         }
 
     }
@@ -116,6 +118,7 @@ class SearchViewFragment : Fragment() {
         bottomNavView?.visibility=View.GONE
         findMyLocationOnMap_FAB?.visibility=View.GONE
         showAllOrFavoriteBusOnMap_FAB?.visibility=View.GONE
+        showVehicleStopOrVehicles_FAB?.visibility=View.GONE
     }
 
     private fun showApplicationNavBar(){
@@ -123,6 +126,7 @@ class SearchViewFragment : Fragment() {
         bottomNavView?.visibility=View.VISIBLE
         findMyLocationOnMap_FAB?.visibility=View.VISIBLE
         showAllOrFavoriteBusOnMap_FAB?.visibility=View.VISIBLE
+        showVehicleStopOrVehicles_FAB?.visibility=View.VISIBLE
     }
 
 

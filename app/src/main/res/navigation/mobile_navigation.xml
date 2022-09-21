@@ -55,6 +55,10 @@
                 android:id="@+id/action_navigation_map_to_navigation_loading_page"
                 app:destination="@id/navigation_loading_page" />
 
+            <action
+                android:id="@+id/actionnavigatedetailesstop"
+                app:destination="@id/navigation_detailed_lines" />
+
         </fragment>
         <fragment
             android:id="@+id/navigation_favorite"
@@ -97,11 +101,16 @@
         </fragment>
 
 
+
         <fragment
             android:id="@+id/navigation_detailed_lines"
             android:name="com.example.krakowautobusy.ui.map.vehicledata.VehicleStopDetails"
             android:label="Szczegóły przystanku"
             tools:layout="@layout/fragment_vehicle_stop_details">
+
+            <action
+                android:id="@+id/actionnavigatedetailesstop"
+                app:destination="@id/navigation_detailed_lines" />
 
         </fragment>
 

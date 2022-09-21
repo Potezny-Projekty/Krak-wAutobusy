@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.databinding.FragmentVehicleStopDetailsBinding
 import com.example.krakowautobusy.ui.vehiclestop.AdapterListViewDepatures
@@ -98,6 +99,15 @@ class VehicleStopDetails : Fragment() {
         Log.e("aax",":"+idStopPoint)
 
         refreshListDepeartures()
+
+
+        binding.backArrowDetailsMenu.setOnClickListener {
+            mainHandler.removeCallbacks(timerRefreshDepartureList)
+            findNavController().popBackStack()
+        }
+
+
+
         return root
     }
 

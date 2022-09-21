@@ -143,8 +143,8 @@ class CreateMapFragment : Fragment() {
         drawables = Drawables(context as AppCompatActivity)
         actualPositionVehicles = ActualPositionVehicles(drawables)
         actualPositionFavouriteVehicle = ActualPositionFavouriteVehicle(drawables)
-        busStopPosition = BusStopPosition(drawables.vehicleStopIcon)
-        busStopPositionFavourite = BusStopPositionFavourite(drawables.vehicleStopIcon)
+        busStopPosition = BusStopPosition(drawables.vehicleStopIcon,binding.root)
+        busStopPositionFavourite = BusStopPositionFavourite(drawables.vehicleStopIcon,binding.root)
         if (viewModel.isFavourit.value!!) {
             busStopPositionOrFavouriteBusStopPosition = busStopPositionFavourite
             actualPositionAllOrFavouriteVehicle = actualPositionFavouriteVehicle

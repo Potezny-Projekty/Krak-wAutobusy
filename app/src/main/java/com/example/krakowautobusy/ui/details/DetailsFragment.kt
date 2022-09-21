@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.krakowautobusy.BundleChoiceVehicle
 import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
@@ -145,7 +146,14 @@ class DetailsFragment : Fragment() {
 
         )
 
-       // messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
+
+        binding.backArrowDetailsMenu.setOnClickListener {
+            mainHandler.removeCallbacks(refreshListVehicleRunnable)
+            mainHandler.removeCallbacks(refreshTimeTableAfterDownloadDataRunable)
+            findNavController().popBackStack()
+        }
+
+        // messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
         return binding.root
     }
 

@@ -1,13 +1,14 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.graphics.drawable.Drawable
+import android.view.View
 import com.example.krakowautobusy.api.Api
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.FolderOverlay
 import org.osmdroid.views.overlay.Overlay
 
-class BusStopPositionFavourite(busStopIconDrawable: Drawable) :
-    BusStopPosition(busStopIconDrawable) {
+class BusStopPositionFavourite(busStopIconDrawable: Drawable,view: View) :
+    BusStopPosition(busStopIconDrawable,view) {
         private val busStops : FolderOverlay = FolderOverlay()
 
     override fun createAllBusStopsMarkers(map: MapView) {
