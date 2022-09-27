@@ -30,6 +30,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.*
 import retrofit2.Response
 import java.lang.Exception
+import java.lang.IllegalStateException
 import java.lang.Runnable
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.system.measureTimeMillis
@@ -151,6 +152,29 @@ class DetailsFragment : Fragment() {
             mainHandler.removeCallbacks(refreshListVehicleRunnable)
             mainHandler.removeCallbacks(refreshTimeTableAfterDownloadDataRunable)
             findNavController().popBackStack()
+        }
+
+
+
+        binding.heartIcon.setOnClickListener {
+            if(Api.getApi().isLineFavourite(numberLine)){
+                Api.getApi().removeLinesFromFavourites(numberLine)
+                binding.heartIcon.setImageResource(R.drawable.ic_gray_hert_icon);
+
+            }else {
+                binding.heartIcon.setImageResource(R.drawable.red_heart_icon);
+                Api.getApi().addLineToFavourite(numberLine)
+            }
+        }
+
+
+        if(Api.getApi().isLineFavourite(numberLine)){
+
+            binding.heartIcon.setImageResource(R.drawable.red_heart_icon);
+
+        }else {
+            binding.heartIcon.setImageResource(R.drawable.ic_gray_hert_icon);
+
         }
 
         // messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
@@ -418,41 +442,57 @@ class DetailsFragment : Fragment() {
 
 
     fun refreshTimeTableDataSet(){
-     //   refreshChoiceFollowIndexVehicle()
-        Api.getApi().getTimeTableBus(tripID,vehicleId, fun(response: Response<TimeTableData>)  {
-            viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId;
-           Log.e("akt","Ponrano"+tripID+"/ "+vehicleId)
-            Log.e("akt",response.body().toString())
-            if (response.isSuccessful) {
-                val ChoiceVehicleTimeTable = response.body()!!
-                Log.e("akt","Ponrano2")
-                if(ChoiceVehicleTimeTable.actual.size>0 || ChoiceVehicleTimeTable.old.size>0) {
-                    Log.e("akt","Ponrano3")
-                    ChoiceVehicleTimeTable.old.addAll(ChoiceVehicleTimeTable.actual)
-                    refreshChoiceFollowIndexVehicle()
-                    Log.e("akt",(adapterListTimeTable==null).toString())
-                    Log.e("akt",ChoiceVehicleTimeTable.old.size.toString())
-                    adapterListTimeTable?.changeDataset(ChoiceVehicleTimeTable.old)
-                //    refreshChoiceFollowIndexVehicle()
+
+        try {
+            //   refreshChoiceFollowIndexVehicle()
+            Api.getApi().getTimeTableBus(tripID, vehicleId, fun(response: Response<TimeTableData>) {
+
+                var activity=getActivity()
+                if(activity!=null&&isAdded()){
+                    // ur code here
+
+
+                viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId;
+                Log.e("akt", "Ponrano" + tripID + "/ " + vehicleId)
+                Log.e("akt", response.body().toString())
+                if (response.isSuccessful) {
+                    val ChoiceVehicleTimeTable = response.body()!!
+                    Log.e("akt", "Ponrano2")
+                    if (ChoiceVehicleTimeTable.actual.size > 0 || ChoiceVehicleTimeTable.old.size > 0) {
+                        Log.e("akt", "Ponrano3")
+                        ChoiceVehicleTimeTable.old.addAll(ChoiceVehicleTimeTable.actual)
+                        refreshChoiceFollowIndexVehicle()
+                        Log.e("akt", (adapterListTimeTable == null).toString())
+                        Log.e("akt", ChoiceVehicleTimeTable.old.size.toString())
+                        adapterListTimeTable?.changeDataset(ChoiceVehicleTimeTable.old)
+                        //    refreshChoiceFollowIndexVehicle()
+                    }
+
                 }
-
-            }
-        })
+            }})
 
 
-        Api.getApi().getTimeTableTram(tripID,vehicleId, fun(response: Response<TimeTableData>)  {
-            viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId;
-            if (response.isSuccessful) {
-                val ChoiceVehicleTimeTable = response.body()!!
-                if(ChoiceVehicleTimeTable.actual.size>0 || ChoiceVehicleTimeTable.old.size>0) {
-                    ChoiceVehicleTimeTable.old.addAll(ChoiceVehicleTimeTable.actual)
-                    adapterListTimeTable?.changeDataset(ChoiceVehicleTimeTable.old)
-                    refreshChoiceFollowIndexVehicle()
-                   viewModel.actualShowVehicleId.value=vehicles[choiceIndex].vehicleId;
-                }
+            Api.getApi()
+                .getTimeTableTram(tripID, vehicleId, fun(response: Response<TimeTableData>) {
+                    var activity=getActivity()
+                    if(activity!=null&&isAdded()){
+                    viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId;
+                    if (response.isSuccessful) {
+                        val ChoiceVehicleTimeTable = response.body()!!
+                        if (ChoiceVehicleTimeTable.actual.size > 0 || ChoiceVehicleTimeTable.old.size > 0) {
+                            ChoiceVehicleTimeTable.old.addAll(ChoiceVehicleTimeTable.actual)
+                            adapterListTimeTable?.changeDataset(ChoiceVehicleTimeTable.old)
+                            refreshChoiceFollowIndexVehicle()
+                            viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId;
+                        }
 
-            }
-        })
+                    }
+                }})
+
+
+        }catch (exp:IllegalStateException){
+
+        }
     }
     fun refreshTimeTable(){
         refreshTimeTableAfterDownloadDataRunable = object : Runnable {
@@ -477,6 +517,7 @@ class DetailsFragment : Fragment() {
         result.putString(DIRECTION_LINE_BUNDLE_KEY,lastVehicleStopName )
         requireActivity().supportFragmentManager.setFragmentResult(REQUEST_KEY_FRAGMENT, result)
     }
+
 
     override fun onStart() {
         super.onStart()

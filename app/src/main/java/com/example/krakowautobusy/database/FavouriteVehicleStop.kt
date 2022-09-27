@@ -92,7 +92,7 @@ class FavouriteVehicleStop :FavouriteVehicleStopInterface {
         val queryIsVehicleStopFavourite="SELECT * FROM ${TableName.FAVOURITE_VEHICLE_STOP.nameTable} JOIN ${TableName.VEHICLE_STOP.nameTable}" +
                 " ON ${VehicleStopTable.ID_VEHICLE_STOP.nameColumn}=${FavouriteVehicleStops.ID_VEHICLE_STOP.nameColumn} WHERE "
 
-        val filterCondition = "${VehicleStopTable.NAME .nameColumn}=${nameVehicleStop}"
+        val filterCondition = "${VehicleStopTable.NAME .nameColumn}='${nameVehicleStop}'"
 
         val cursor = db.rawQuery(queryIsVehicleStopFavourite+filterCondition,null)
 
@@ -101,9 +101,11 @@ class FavouriteVehicleStop :FavouriteVehicleStopInterface {
 
         return if(cursor.count> TABLE_NO_ELEMENT){
             cursor.close()
+            Log.e("kursor","prawda")
             true
         }else {
             cursor.close()
+            Log.e("kursor","falsz")
             false
         }
     }

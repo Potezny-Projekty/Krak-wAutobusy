@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.krakowautobusy.R
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.databinding.FragmentVehicleStopDetailsBinding
 import com.example.krakowautobusy.ui.vehiclestop.AdapterListViewDepatures
@@ -84,8 +85,21 @@ class VehicleStopDetails : Fragment() {
     }
 
 
+/*
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!
+    !!!!UWAGA
+    UWAGA
+    Te metody co z serca usuwają i dodają
+    do ulubionych nie działają dobrze
+    bo prawdopodobniej przez to
+    ze kilka przystanków nazywa sie tak
+    samo. Po poprawcę nazw trzeba to sprawdzić
 
 
+
+
+ */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -104,6 +118,25 @@ class VehicleStopDetails : Fragment() {
         binding.backArrowDetailsMenu.setOnClickListener {
             mainHandler.removeCallbacks(timerRefreshDepartureList)
             findNavController().popBackStack()
+        }
+
+        binding.heartIcon.setOnClickListener {
+            if(Api.getApi().isVehicleStopFavourite(binding.lineNumberTop.text.toString())){
+                binding.heartIcon.setImageResource(R.drawable.ic_gray_hert_icon);
+                Api.getApi().removeVehicleStopFromFavourite(binding.lineNumberTop.text.toString())
+            }else{
+                binding.heartIcon.setImageResource(R.drawable.red_heart_icon);
+                Api.getApi().addVehicleStopToFavorite(binding.lineNumberTop.text.toString())
+            }
+
+        }
+
+        if(Api.getApi().isVehicleStopFavourite(binding.lineNumberTop.text.toString())){
+            binding.heartIcon.setImageResource(R.drawable.red_heart_icon);
+         //   Api.getApi().removeVehicleStopFromFavourite(binding.lineNumberTop.text.toString())
+        }else{
+            binding.heartIcon.setImageResource(R.drawable.ic_gray_hert_icon);
+          //  Api.getApi().addVehicleStopToFavorite(binding.lineNumberTop.text.toString())
         }
 
 

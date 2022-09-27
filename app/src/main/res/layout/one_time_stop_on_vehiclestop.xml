@@ -3,8 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:divider="@null"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
+    android:paddingTop="11dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:paddingBottom="11dp"
+    android:background="@drawable/shadowall"
+
 
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -71,11 +75,11 @@
     <ImageView
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:src="@color/red"
+
         android:id="@+id/statusicon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/nameLineDirection"
-       android:layout_marginTop="3dp"
+       android:layout_marginTop="5dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"/>
 

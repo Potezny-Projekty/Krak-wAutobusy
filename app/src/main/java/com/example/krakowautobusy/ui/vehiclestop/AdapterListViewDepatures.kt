@@ -103,6 +103,12 @@ class AdapterListViewDepatures (data: ArrayList<Depart>, context: Context) :
         }
             viewHolder.nameLineDirection!!.text=dataModel.direction
     }
+
+      if(dataModel.plannedTime!=dataModel.actualTime){
+          viewHolder.iconStatus!!.setBackgroundResource(R.drawable.red_circle)
+      }else{
+          viewHolder.iconStatus!!.setBackgroundResource(R.drawable.green_circle)
+      }
      /*   viewHolder.sequenceNumber!!.text="%-3s".format( dataModel.stop_seq_num .toString())
         viewHolder.nameBusStop!!.text=dataModel.stop.name
         if(dataModel.stop.name.length>30){
