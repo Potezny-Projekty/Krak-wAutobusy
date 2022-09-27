@@ -69,7 +69,7 @@ class CreateMapFragment : Fragment() {
         //enableLocalization()
         mapController.createLocationMarker(userLocation, drawables)
         mapController.createAllBusStopsMarker(busStopPosition)
-        switchBetweenBusStopsAndVehicle(viewModel.showBusStops.value!!)
+        //switchBetweenBusStopsAndVehicle(viewModel.showBusStops.value!!)
 
         viewModel.setMyLocation.observe(viewLifecycleOwner, Observer {
             if (it) {
@@ -89,6 +89,7 @@ class CreateMapFragment : Fragment() {
         mapController.loadMarkerIntoMap(actualPositionFavouriteVehicle)
 
         viewModel.isFavourit.observe(viewLifecycleOwner, Observer {
+            Log.i("switchBetweenBusStopsAndVehicle", it.toString())
             if (viewModel.showBusStops.value!!) {
                 busStopPositionOrFavouriteBusStopPosition.hiddenAllBusStops(map)
                 switchBetweenFavourtieAndStandardMap(it)
