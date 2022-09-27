@@ -69,7 +69,7 @@ class CreateMapFragment : Fragment() {
         //enableLocalization()
         mapController.createLocationMarker(userLocation, drawables)
         mapController.createAllBusStopsMarker(busStopPosition)
-        switchBetweenBusStopsAndVehicle(viewModel.showBusStops.value!!)
+        //switchBetweenBusStopsAndVehicle(viewModel.showBusStops.value!!)
 
         viewModel.setMyLocation.observe(viewLifecycleOwner, Observer {
             if (it) {
@@ -89,27 +89,17 @@ class CreateMapFragment : Fragment() {
         mapController.loadMarkerIntoMap(actualPositionFavouriteVehicle)
 
         viewModel.isFavourit.observe(viewLifecycleOwner, Observer {
+            Log.i("switchBetweenBusStopsAndVehicle", it.toString())
             if (viewModel.showBusStops.value!!) {
                 busStopPositionOrFavouriteBusStopPosition.hiddenAllBusStops(map)
-                if (it) {
-                    busStopPositionOrFavouriteBusStopPosition = busStopPositionFavourite
-                    actualPositionAllOrFavouriteVehicle = actualPositionFavouriteVehicle
-                } else {
-                    busStopPositionOrFavouriteBusStopPosition = busStopPosition
-                    actualPositionAllOrFavouriteVehicle = actualPositionVehicles
-                }
+                switchBetweenFavourtieAndStandardMap(it)
                 busStopPositionOrFavouriteBusStopPosition.showAllBusStops(map)
             } else {
                 mapController.removeCallback()
                 actualPositionAllOrFavouriteVehicle.hiddenMarkers(map)
                 actualPositionAllOrFavouriteVehicle.removeTrackedVehicle()
-                if (it) {
-                    busStopPositionOrFavouriteBusStopPosition = busStopPositionFavourite
-                    actualPositionAllOrFavouriteVehicle = actualPositionFavouriteVehicle
-                } else {
-                    busStopPositionOrFavouriteBusStopPosition = busStopPosition
-                    actualPositionAllOrFavouriteVehicle = actualPositionVehicles
-                }
+
+                switchBetweenFavourtieAndStandardMap(it);
                /* mapController.showAllBus(actualPositionAllOrFavouriteVehicle)
                 mapController.showAllTram(actualPositionAllOrFavouriteVehicle)*/
                 actualPositionAllOrFavouriteVehicle.showMarkers(map)
@@ -205,6 +195,16 @@ class CreateMapFragment : Fragment() {
             mapController.startShowVehicle(actualPositionAllOrFavouriteVehicle)
             mapController.removeShowingBusStops(busStopPositionOrFavouriteBusStopPosition)
             mapController.showAllVehicleMarker(actualPositionAllOrFavouriteVehicle)
+        }
+    }
+
+    private fun switchBetweenFavourtieAndStandardMap(isFavourite : Boolean) {
+        if (isFavourite) {
+            busStopPositionOrFavouriteBusStopPosition = busStopPositionFavourite
+            actualPositionAllOrFavouriteVehicle = actualPositionFavouriteVehicle
+        } else {
+            busStopPositionOrFavouriteBusStopPosition = busStopPosition
+            actualPositionAllOrFavouriteVehicle = actualPositionVehicles
         }
     }
 }

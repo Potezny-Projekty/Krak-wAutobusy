@@ -16,7 +16,7 @@ import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow
 
 class BusStopMarkerClusterDetails(ctx: Context) : RadiusMarkerClusterer(ctx) {
     val icon : Drawable = AppCompatResources.getDrawable(ctx,
-        R.drawable.ic_bus_stop_cluster_details)!!
+        R.drawable.ic_cluster)!!
 
     override fun buildClusterMarker(cluster: StaticCluster?, mapView: MapView?): Marker {
         val marker = Marker(mapView)

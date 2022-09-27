@@ -17,13 +17,15 @@ import com.example.krakowautobusy.ui.vehiclestop.Bundle_Vehicle_Stop
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.FolderOverlay
+import org.osmdroid.views.overlay.Marker
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 
-open class BusStopPosition(private val busStopIconDrawable : Drawable,private val navView: View) {
+open class BusStopPosition(private val busStopIconDrawable : Drawable) {
 
     private var busStopMarkers: RadiusMarkerClusterer? = null
+    private var trackedBusStops : Marker? = null
 
 
     open fun createAllBusStopsMarkers(map : MapView) {
@@ -44,15 +46,21 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable,private va
         marker.position = ConvertUnits.convertToGeoPoint(vehicleStopData.latitude,
             vehicleStopData.longitude)
 
-        /*marker.setOnMarkerClickListener( { a, b ->
-            Log.e("blad","blad")
+        marker.setOnMarkerClickListener { marker, mapView ->
+            trackedBusStops = marker
+            marker.showInfoWindow()
+            true
+        }
+
+        marker.infoWindow.view.setOnClickListener({
+/*
             val bundle = bundleOf(
                 Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
-                        marker.busStop.idVehicleStop,
+                        selectedItem.idVehicleStop.toString(),
                 Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
-                        marker.busStop.name,
+                        selectedItem.name,
                 Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
-                        marker.busStop.idStopPoint
+                        selectedItem.idStopPoint.toString()
 
             )
             //bundle
@@ -91,11 +99,9 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable,private va
 
 
 
+            */
 
-
-
-
-
+        })
 
         marker.icon = busStopIconDrawable
         marker.title = vehicleStopData.name
@@ -110,6 +116,7 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable,private va
 
     open fun hiddenAllBusStops(map : MapView) {
         map.overlays.remove(busStopMarkers)
+        trackedBusStops?.closeInfoWindow()
         map.invalidate()
     }
 

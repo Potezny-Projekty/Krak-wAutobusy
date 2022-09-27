@@ -7,8 +7,10 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import androidx.core.graphics.drawable.toDrawable
+import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Polyline
 
 class VehicleMarker(mapView: MapView?, val vehicle : Vehicle) : Marker(mapView) {
     var isMirror : Boolean = false
@@ -17,6 +19,7 @@ class VehicleMarker(mapView: MapView?, val vehicle : Vehicle) : Marker(mapView) 
     var vehicleIconMirror : Drawable = icon
     var vehicleTrackedIcon : Drawable = icon
     var vehicleTrackedIconMirror : Drawable = icon
+    var pathVehicle = ArrayList<GeoPoint>()
     private val textSize = 24f
 
     fun mirrorMarkerIcon(icon : Drawable, number : String) : Drawable {
@@ -150,5 +153,12 @@ class VehicleMarker(mapView: MapView?, val vehicle : Vehicle) : Marker(mapView) 
                isTracked = false
            }
        }
+    }
+
+    fun drawPathVehicle(actualPositionVehicles: ActualPositionVehicles,
+                        map : MapView) {
+        if (isTracked && pathVehicle.isNotEmpty()) {
+            actualPositionVehicles.drawPathVehicleOnMap(map, this, pathVehicle)
+        }
     }
 }
