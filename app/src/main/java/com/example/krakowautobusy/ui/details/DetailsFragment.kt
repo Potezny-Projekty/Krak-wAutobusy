@@ -159,9 +159,36 @@ class DetailsFragment : Fragment() {
         binding.heartIcon.setOnClickListener {
             if(Api.getApi().isLineFavourite(numberLine)){
                 Api.getApi().removeLinesFromFavourites(numberLine)
+
+
+                binding.heartIcon!!.animate()
+                    .scaleX(0.8f).setDuration(400).start()
+
+                binding.heartIcon!!.animate()
+                    .scaleY(0.8f).setDuration(400).withEndAction {
+                        binding.heartIcon.animate().scaleX(1.0f).setDuration(400).start()
+                        binding.heartIcon.animate().scaleY(1.0f).setDuration(400).start()
+
+
+                    }
+
+
                 binding.heartIcon.setImageResource(R.drawable.ic_gray_hert_icon);
 
             }else {
+
+                binding.heartIcon!!.animate()
+                    .scaleX(1.2f).setDuration(400).start()
+
+                binding.heartIcon!!.animate()
+                    .scaleY(1.2f).setDuration(400).withEndAction {
+                        binding.heartIcon.animate().scaleX(1.0f).setDuration(400).start()
+                        binding.heartIcon.animate().scaleY(1.0f).setDuration(400).withEndAction {
+
+                        }
+                    }
+
+
                 binding.heartIcon.setImageResource(R.drawable.red_heart_icon);
                 Api.getApi().addLineToFavourite(numberLine)
             }

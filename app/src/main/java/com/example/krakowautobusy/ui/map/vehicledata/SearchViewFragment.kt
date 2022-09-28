@@ -304,6 +304,9 @@ class SearchViewFragment : Fragment() {
         showApplicationNavBar()
         hideKeyboard()
 
+        binding.root.setBackgroundColor(Color.WHITE)
+        binding.root.background.alpha=1
+
         binding.searchEditText.clearFocus()
         changeSearchIconToActiveSearchIcon()
 

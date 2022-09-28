@@ -5,6 +5,7 @@ import android.app.Activity
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
@@ -38,7 +39,7 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
        busStopMarkers!!.setRadius(busStopMarkerCollectionRadiusForClustering)
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility", "ResourceAsColor")
     protected fun createBusStopMarker(map : MapView,
                                       vehicleStopData: VehicleStopData) : BusStopMarker {
         Log.e("blad","blad2")
@@ -52,6 +53,7 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
             true
         }
 
+        marker.infoWindow.view.background=AppCompatResources.getDrawable(map.context,R.drawable.shadow)
         marker.infoWindow.view.setOnClickListener({
 /*
             val bundle = bundleOf(
@@ -70,36 +72,39 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
 
             true})*/
 
-        marker.infoWindow.view.setOnTouchListener {x,y->
-            Log.e("blad","blad")
-            val bundle = bundleOf(
-                Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
-                        marker.busStop.idVehicleStop,
-                Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
-                        marker.busStop.name,
-                Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
-                        marker.busStop.idStopPoint
-
-            )
-            //bundle
-
-
-            Navigation.findNavController(x)
-                .navigate(R.id.actionnavigatedetailesstop, bundle);
-
-
-            true
-        }
+            marker.infoWindow.view.setOnTouchListener { x, y ->
 
 
 
+                Log.e("blad", "blad")
+                val bundle = bundleOf(
+                    Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
+                            marker.busStop.idVehicleStop,
+                    Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
+                            marker.busStop.name,
+                    Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
+                            marker.busStop.idStopPoint
+
+                )
+                //bundle
 
 
+                Navigation.findNavController(x)
+                    .navigate(R.id.actionnavigatedetailesstop, bundle);
+
+
+                true
+            }
 
 
 
 
-            */
+
+
+
+
+
+
 
         })
 

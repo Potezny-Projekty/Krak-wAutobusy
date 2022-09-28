@@ -136,9 +136,21 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
         Log.e("ojej",dataModel.idStopPoint.toString()+"/"+dataModel.idShort)
         if(dataModel.isFavourite){
             viewHolder.isFavourite!!.setImageResource(R.drawable.red_heart_icon)
+
+
+
+
+
+
+
+
         }else{
             viewHolder.isFavourite!!.setImageResource(R.drawable.ic_gray_hert_icon)
+
+
+
         }
+
 
 
         /*if(dataModel.typeVehicle== VehicleType.BUS){
@@ -172,6 +184,60 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
         Log.e("kurwap","Odpalam event"+(x==null))
         funRefresh=x
     }
+
+
+    private fun findIndexClickedIconFavouriteElem(name:String,isFavourite:Boolean){
+
+            for(i in 0 until dataSet.size){
+                if(dataSet[i].name==name){
+                    Log.e("kosmos",i.toString()+"")
+
+                    var elem=    listView?.let { getView(i,null, it) }
+
+                    if (elem != null) {
+                        Log.e("kosmos",i.toString()+"ANIMUJE")
+                        var a=   elem.findViewById(R.id.heartIconVehicleStop) as ImageView
+
+
+                        // Log.e("kosmos",a.text.toString()+" :D")
+                        if(isFavourite){
+                            a!!.animate()
+                                .scaleX(1.2f).setDuration(400).start()
+
+                            a!!.animate()
+                                .scaleY(1.2f).setDuration(400).withEndAction {
+                                    a.animate().scaleX(1.0f).setDuration(400).start()
+                                    a.animate().scaleY(1.0f).setDuration(400).withEndAction {
+                                   //     funRefresh?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
+
+                                    }
+                                }
+                        }else{
+
+                            a!!.animate()
+                                .scaleX(0.8f).setDuration(400).start()
+
+                            a!!.animate()
+                                .scaleY(0.8f).setDuration(400).withEndAction {
+                                    a.animate().scaleX(1.0f).setDuration(400).start()
+                                    a.animate().scaleY(1.0f).setDuration(400).withEndAction {
+                                      //  funRefresh?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
+
+                                    }
+                                }
+
+
+                        }
+
+
+                    }
+
+                }
+
+            }
+
+    }
+
     private fun addOnClickListenerToFavoriteIcon(viewHolder:ViewHolder,lineData: VehicleStopData){
         viewHolder.isFavourite?.setOnClickListener {
             Log.e("kurwa","JEGO MAĆ 3"+lineData.idVehicleStop)
@@ -179,17 +245,29 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
 
 
             lineData.isFavourite=!lineData.isFavourite
-            var x=   fillViewData(viewHolder,lineData)
-
-
+      //      var x=   fillViewData(viewHolder,lineData)
 
 
 
             if(lineData.isFavourite) {
+                viewHolder.isFavourite!!.setImageResource(R.drawable.red_heart_icon)
+             //   findIndexClickedIconFavouriteElem(lineData.name,!lineData.isFavourite)
               //  findIndexClickIcon(lineData.numberLine.toInt(),true)
               //  Api.getApi().addLineToFavourite(lineData.numberLine.toInt())
                 Log.e("kurwap","...]"+lineData.idVehicleStop.toString())
                 Api.getApi().addVehicleStopToFavoriteById(lineData.idVehicleStop.toString())
+                Log.e("xddd","work2")
+                it!!.animate()
+                    .scaleX(1.2f).setDuration(400).start()
+
+                it!!.animate()
+                    .scaleY(1.2f).setDuration(400).withEndAction {
+                        viewHolder.isFavourite!!!!.animate().scaleX(1.0f).setDuration(400).start()
+                        viewHolder.isFavourite!!!!.animate().scaleY(1.0f).setDuration(400).withEndAction {
+                            Log.e("xddd","work290")
+                            pp()
+                        }
+                    }
 
 
                 /*it!!.animate()
@@ -206,11 +284,26 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
 
                 Log.e("kurwap","...KURWA22")
             }else{
+                viewHolder.isFavourite!!.setImageResource(R.drawable.ic_gray_hert_icon)
+
+                Log.e("xddd","work3")
+             //   findIndexClickedIconFavouriteElem(lineData.name,!lineData.isFavourite)
              //   findIndexClickIcon(lineData.numberLine.toInt(),false)
               //  Api.getApi().removeLinesFromFavourites(lineData.numberLine.toInt())
 
                 Log.e("kurwap","...KURWA23")
                 Api.getApi().removeVehicleStopFromFavouriteById(lineData.idVehicleStop.toString())
+
+                it!!.animate()
+                    .scaleX(0.8f).setDuration(400).start()
+
+                it!!.animate()
+                    .scaleY(0.8f).setDuration(400).withEndAction {
+                        it!!.animate().scaleX(1.0f).setDuration(400).start()
+                      it!!.animate().scaleY(1.0f).setDuration(400).withEndAction {
+                          pp()
+                        }
+                    }
 /*
 
 
@@ -228,7 +321,7 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
             }
          //  notifyDataSetChanged()
             Log.e("kurwap","Before:"+(funRefresh==null))
-            pp()
+
 
          //   funRefresh?.let { it1 -> it1() }
 
@@ -247,8 +340,14 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
             viewHolder = ViewHolder()
             val inflater = LayoutInflater.from(context)
             convertView = inflater.inflate(R.layout.one_favourite_vehiclestop, parent, false)
+
+
+
             fillViewHolderReferenceView(viewHolder,convertView)
             convertView.tag = viewHolder
+
+
+
         } else {
             viewHolder = convertView.tag as ViewHolder
 
@@ -258,8 +357,57 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
 
         lastPosition = position
 
+
+
+
+
+
+
+
+
+
+
+
         fillViewData(viewHolder,dataModel)
         addOnClickListenerToFavoriteIcon(viewHolder,dataModel)
+
+
+      /*  viewHolder.isFavourite!!.setOnClickListener {
+            if(dataModel.isFavourite) {
+                viewHolder.isFavourite!!.setImageResource(R.drawable.ic_gray_hert_icon)
+                it!!.animate()
+                    .scaleX(0.8f).setDuration(400).start()
+
+                it!!.animate()
+                    .scaleY(0.8f).setDuration(400).withEndAction {
+                        it!!.animate().scaleX(1.0f).setDuration(400).start()
+                        it!!.animate().scaleY(1.0f).setDuration(400).withEndAction {
+
+                        }
+                    }
+
+                Api.getApi().removeVehicleStopFromFavouriteById(dataModel.idVehicleStop.toString())
+            }else{
+
+                viewHolder.isFavourite!!.setImageResource(R.drawable.red_heart_icon)
+                it!!.animate()
+                    .scaleX(1.2f).setDuration(400).start()
+
+                it!!.animate()
+                    .scaleY(1.2f).setDuration(400).withEndAction {
+                        it!!.animate().scaleX(1.0f).setDuration(400).start()
+                        it!!.animate().scaleY(1.0f).setDuration(400).withEndAction {
+
+                        }
+                    }
+                Api.getApi().addVehicleStopToFavoriteById(dataModel.idVehicleStop.toString())
+            }
+
+
+        }*/
+
+
+
 
 
         return convertView!!

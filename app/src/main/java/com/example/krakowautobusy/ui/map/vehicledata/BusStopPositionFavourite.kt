@@ -8,7 +8,7 @@ import org.osmdroid.views.overlay.FolderOverlay
 import org.osmdroid.views.overlay.Overlay
 
 class BusStopPositionFavourite(busStopIconDrawable: Drawable,view: View) :
-    BusStopPosition(busStopIconDrawable,view) {
+    BusStopPosition(busStopIconDrawable) {
         private val busStops : FolderOverlay = FolderOverlay()
 
     override fun createAllBusStopsMarkers(map: MapView) {

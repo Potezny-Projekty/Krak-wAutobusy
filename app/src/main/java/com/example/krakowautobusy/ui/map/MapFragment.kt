@@ -145,15 +145,36 @@ class MapFragment : Fragment() {
     }
 
     private fun setIconbusStopButtonButton(button: ExtendedFloatingActionButton) {
+
+        val colorGreen = "#32CD32"
         val iconBus = AppCompatResources
             .getDrawable(requireContext(), R.drawable.bus_icon)!!
         val iconBusStop = AppCompatResources
             .getDrawable(requireContext(), R.drawable.ic_bus_stop)!!
+
+
+        button.iconTint=ColorStateList.valueOf(Color.parseColor(colorGreen))
+
+
         if (viewModel.showBusStops.value!!) {
             button.icon = iconBus
         } else {
             button.icon = iconBusStop
         }
+
+        /*
+
+           val colorGray = "#FF757575"
+        val colorGreen = "#32CD32"
+        if (viewModel.isFavourit.value!!) {
+            button.iconTint =
+                ColorStateList.valueOf(Color.parseColor(colorGreen))
+        } else {
+            button.iconTint =
+                ColorStateList.valueOf(Color.parseColor(colorGray))
+        }
+
+         */
     }
 
     override fun onStart() {

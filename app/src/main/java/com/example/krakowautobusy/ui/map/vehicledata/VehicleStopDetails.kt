@@ -122,9 +122,36 @@ class VehicleStopDetails : Fragment() {
 
         binding.heartIcon.setOnClickListener {
             if(Api.getApi().isVehicleStopFavourite(binding.lineNumberTop.text.toString())){
+
+
+                binding.heartIcon!!.animate()
+                    .scaleX(0.8f).setDuration(400).start()
+
+                binding.heartIcon!!.animate()
+                    .scaleY(0.8f).setDuration(400).withEndAction {
+                        binding.heartIcon.animate().scaleX(1.0f).setDuration(400).start()
+                        binding.heartIcon.animate().scaleY(1.0f).setDuration(400).withEndAction {
+
+                        }
+                    }
+
+
+
                 binding.heartIcon.setImageResource(R.drawable.ic_gray_hert_icon);
                 Api.getApi().removeVehicleStopFromFavourite(binding.lineNumberTop.text.toString())
             }else{
+
+                binding.heartIcon!!.animate()
+                    .scaleX(1.2f).setDuration(400).start()
+
+                binding.heartIcon!!.animate()
+                    .scaleY(1.2f).setDuration(400).withEndAction {
+                        binding.heartIcon.animate().scaleX(1.0f).setDuration(400).start()
+                        binding.heartIcon.animate().scaleY(1.0f).setDuration(400).withEndAction {
+
+                        }
+                    }
+
                 binding.heartIcon.setImageResource(R.drawable.red_heart_icon);
                 Api.getApi().addVehicleStopToFavorite(binding.lineNumberTop.text.toString())
             }

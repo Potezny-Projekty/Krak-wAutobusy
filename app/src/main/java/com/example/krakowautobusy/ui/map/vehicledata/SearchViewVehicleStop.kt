@@ -203,7 +203,7 @@ class SearchViewVehicleStop : Fragment() {
         val ALFA_BACGROUND_WHEN_SHOW_SEARCH_VIEW_PERCENTAGE=40
         hideApplicationNavBar()
         binding.root.setBackgroundColor(Color.GRAY)
-        binding.root.background.alpha=ALFA_BACGROUND_WHEN_SHOW_SEARCH_VIEW_PERCENTAGE
+       binding.root.background.alpha=ALFA_BACGROUND_WHEN_SHOW_SEARCH_VIEW_PERCENTAGE
         //  binding.allSearchPane.alpha=0.9f
 
 
@@ -317,6 +317,9 @@ class SearchViewVehicleStop : Fragment() {
         binding.searchEditText.clearFocus()
         changeSearchIconToActiveSearchIcon()
 
+        binding.root.setBackgroundColor(Color.WHITE)
+       binding.root.background.alpha=1
+
 
         val animationSet = AnimatorSet()
         animationSet.playTogether(AnimationSearchView.  scaleYAnimationScaleDown,AnimationSearchView.   scaleXAnimationScaleDown)
@@ -377,8 +380,8 @@ class SearchViewVehicleStop : Fragment() {
       //  }else{
 
             if(textFromSearchInput.length>MINIMUM_CHAR_TO_START_SEARCHING_MATCH_LINE){
-                matchLines=getMatchAnyVehicleStopLineFromDatabase(textFromSearchInput)
-                matchLines= matchLines.filter { it.name.contains(textFromSearchInput) } as ArrayList<VehicleStopData>
+                matchLines=getMatchAnyVehicleStopLineFromDatabase(textFromSearchInput.lowercase())
+                matchLines= matchLines.filter { it.name.lowercase().contains(textFromSearchInput.lowercase()) } as ArrayList<VehicleStopData>
             }
        // }
         return matchLines

@@ -89,6 +89,8 @@ class FavouriteVehicleStop : Fragment() {
         addOnClickListenerToVehicleStop()
         val root: View = binding.root
 
+        binding.textFavourite.paint?.isUnderlineText = true
+
         return root
     }
 

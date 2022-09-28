@@ -47,6 +47,7 @@
         style="@style/FloatingButtonGrey"
         app:shapeAppearanceOverlay="@drawable/ic_bus_stop"
         android:contentDescription="@string/showBusStops"
+
         app:icon="@drawable/ic_bus_stop"
         app:layout_constraintBottom_toTopOf="@id/Map_showAllVehiclesOrFavorite"
         app:layout_constraintEnd_toEndOf="parent" />

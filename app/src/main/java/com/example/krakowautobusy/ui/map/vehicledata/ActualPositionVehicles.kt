@@ -379,8 +379,14 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     ) {
 
         if(pathPoints.size>0 && marker.icon!=null){
-        removeTrackedVehicle()
-        trackingVehicle = marker
+
+            if(trackingVehicle!=marker) {
+                removeTrackedVehicle()
+            }else{
+                removeTrackedVehicle2()
+            }
+
+                trackingVehicle = marker
         iconVehicleBeforeTracking = marker.icon
         marker.switchedBetweenTrackingAndStandardIcon()
         val firstElement = 0
@@ -526,6 +532,16 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             trackingVehicle!!.switchedBetweenTrackingAndStandardIcon()
 
             trackingVehicle?.infoWindow?.close()
+            trackedRoute.actualPoints.clear()
+            traveledRoute.actualPoints.clear()
+        }
+    }
+
+    fun removeTrackedVehicle2() {
+        if (trackingVehicle != null) {
+       //     trackingVehicle!!.switchedBetweenTrackingAndStandardIcon()
+
+          //  trackingVehicle?.infoWindow?.close()
             trackedRoute.actualPoints.clear()
             traveledRoute.actualPoints.clear()
         }
