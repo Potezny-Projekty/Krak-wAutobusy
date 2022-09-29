@@ -26,10 +26,11 @@
             android:configChanges="uiMode"
             android:exported="false"
             android:windowSoftInputMode="adjustPan|adjustResize|stateVisible"
+            android:screenOrientation="locked"
             />
         <activity
             android:name=".ui.loadingPage.LoadingPageActivity"
-
+            android:screenOrientation="locked"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

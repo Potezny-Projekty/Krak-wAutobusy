@@ -45,7 +45,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
 
     companion object{
-        public val actualVehicleIdClick = MutableLiveData<String>().apply {
+        val actualVehicleIdClick = MutableLiveData<String>().apply {
             value = ""
         }
     }
@@ -229,21 +229,21 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             val markerToast = MarkerToast(map)
             markerToast.view.setOnTouchListener { v, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
-                    val mapFragment = map.findFragment<Fragment>()
+                    //val mapFragment = map.findFragment<Fragment>()
                     val bundle = bundleOf(
                         BundleChoiceVehicle.LINE_NUMBER.nameBundleObject to
-                                vehicle.name.toString().split(' ')[0].trim().toInt(),
+                                vehicle.name.split(' ')[0].trim().toInt(),
                         BundleChoiceVehicle.FIRST_STOP_VEHICLE_NAME.nameBundleObject
                                 to "",
                         BundleChoiceVehicle.LAST_VEHICLE_STOP_NAME.nameBundleObject to
-                                vehicle.name.toString().substringAfter(" ").toString(),
+                                vehicle.name.substringAfter(" "),
                         "tripId" to vehicle.tripId
 
 
                     )
 
                     map.findNavController()
-                        .navigate(R.id.action_navigation_map_to_detailsFragment, bundle);
+                        .navigate(R.id.action_navigation_map_to_detailsFragment, bundle)
                 }
                 true
             }
@@ -301,8 +301,8 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
   var actualShow:String=""
     var x=false
-    public fun colorOnMapActualTimeTableVehicle(vehicleId:String,map:MapView){
-       if(actualShow!=vehicleId.toString()) {
+    fun colorOnMapActualTimeTableVehicle(vehicleId:String,map:MapView){
+       if(actualShow!=vehicleId) {
             val marker = markers[vehicleId]
 
          //   for (x in markers) {
@@ -378,17 +378,15 @@ open class ActualPositionVehicles(var drawables: Drawables) {
                                 pathPoints : ArrayList<GeoPoint>
     ) {
 
-        if(pathPoints.size>0 && marker.icon!=null){
-
-            if(trackingVehicle!=marker) {
+        if(pathPoints.size > 0 && marker.icon != null){
+            if  (marker != trackingVehicle) {
                 removeTrackedVehicle()
-            }else{
-                removeTrackedVehicle2()
-            }
-
                 trackingVehicle = marker
-        iconVehicleBeforeTracking = marker.icon
-        marker.switchedBetweenTrackingAndStandardIcon()
+                iconVehicleBeforeTracking = marker.icon
+                marker.switchedBetweenTrackingAndStandardIcon()
+            } else {
+                removeTrackedPathVehicle()
+            }
         val firstElement = 0
         var isRedLine = true
         var lastAddedPoint = pathPoints[firstElement]
@@ -511,8 +509,8 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
 
     fun addPolylineIntoMap(map: MapView) {
-        val firstElement = 0;
-        val secondElement = 1;
+        val firstElement = 0
+        val secondElement = 1
         map.overlays.add(firstElement, trackedRoute)
         map.overlays.add(secondElement ,traveledRoute)
     }
@@ -530,20 +528,13 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     fun removeTrackedVehicle() {
         if (trackingVehicle != null) {
             trackingVehicle!!.switchedBetweenTrackingAndStandardIcon()
-
             trackingVehicle?.infoWindow?.close()
-            trackedRoute.actualPoints.clear()
-            traveledRoute.actualPoints.clear()
+            removeTrackedPathVehicle()
         }
     }
 
-    fun removeTrackedVehicle2() {
-        if (trackingVehicle != null) {
-       //     trackingVehicle!!.switchedBetweenTrackingAndStandardIcon()
-
-          //  trackingVehicle?.infoWindow?.close()
-            trackedRoute.actualPoints.clear()
-            traveledRoute.actualPoints.clear()
-        }
+    private fun removeTrackedPathVehicle() {
+        trackedRoute.actualPoints.clear()
+        traveledRoute.actualPoints.clear()
     }
 }

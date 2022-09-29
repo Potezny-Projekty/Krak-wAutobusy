@@ -1,10 +1,6 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
 import com.example.krakowautobusy.R
@@ -25,6 +21,16 @@ class BusStopMarkerClusterDetails(ctx: Context) : RadiusMarkerClusterer(ctx) {
         marker.setAnchor(mAnchorU, mAnchorV)
         marker.icon = icon
         return marker
+    }
+
+    override fun zoomOnCluster(mapView: MapView?, cluster: StaticCluster?) {
+        var bb = cluster!!.boundingBox
+        if (bb.latNorth == bb.latSouth && bb.lonEast == bb.lonWest) {
+            mapView!!.setExpectedCenter(bb.centerWithDateLine)
+        } else {
+            bb = bb.increaseByScale(10f)
+            mapView!!.zoomToBoundingBox(bb, true)
+        }
     }
 
 }
