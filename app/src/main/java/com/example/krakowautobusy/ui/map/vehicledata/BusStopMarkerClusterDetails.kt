@@ -28,7 +28,7 @@ class BusStopMarkerClusterDetails(ctx: Context) : RadiusMarkerClusterer(ctx) {
         if (bb.latNorth == bb.latSouth && bb.lonEast == bb.lonWest) {
             mapView!!.setExpectedCenter(bb.centerWithDateLine)
         } else {
-            bb = bb.increaseByScale(13f)
+            bb = bb.increaseByScale(10f)
             mapView!!.zoomToBoundingBox(bb, true)
         }
     }
