@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.os.bundleOf
@@ -72,8 +73,24 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
 
             true})*/
 
-            marker.infoWindow.view.setOnTouchListener { x, y ->
 
+
+
+
+
+
+
+
+
+
+
+
+        })
+
+
+        marker.infoWindow.view.setOnTouchListener { x, event ->
+
+            if(event.action==MotionEvent.ACTION_DOWN) {
 
 
                 Log.e("blad", "blad")
@@ -91,22 +108,10 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
 
                 Navigation.findNavController(x)
                     .navigate(R.id.actionnavigatedetailesstop, bundle);
-
-
-                true
             }
 
-
-
-
-
-
-
-
-
-
-
-        })
+            true
+        }
 
         marker.icon = busStopIconDrawable
         marker.title = vehicleStopData.name

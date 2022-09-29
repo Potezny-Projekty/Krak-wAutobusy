@@ -71,6 +71,7 @@
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/ic_speech_bubble.xml" value="0.5165" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/icon.xml" value="0.5165" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/location_icon.xml" value="0.5165" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/main_icon.xml" value="0.355" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/red_heart_icon.xml" value="0.28" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/rysunek_1_strzalk.xml" value="0.28" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/shadow.xml" value="0.28" />
@@ -128,8 +129,6 @@
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/icon.xml" value="0.1" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/location_icon.xml" value="0.1" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/location_icon_gray.xml" value="0.1" />
-        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/main_icon.xml" value="0.1" />
-        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/activity_loading_page.xml" value="0.22" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/activity_main.xml" value="0.16259057971014493" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/activity_marker_toast.xml" value="0.33" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/fragment_details.xml" value="0.49654218533886585" />
