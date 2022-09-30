@@ -83,26 +83,26 @@ class CreateMapFragment : Fragment() {
 
         viewModel.showBusStops.observe(viewLifecycleOwner, Observer {
             switchBetweenBusStopsAndVehicle(it)
+            Log.i("MAPVIEWMODELCHECK", "showBusStops")
         })
 
         mapController.loadMarkerIntoMap(actualPositionVehicles)
         mapController.loadMarkerIntoMap(actualPositionFavouriteVehicle)
 
         viewModel.isFavourit.observe(viewLifecycleOwner, Observer {
-            Log.i("switchBetweenBusStopsAndVehicle", it.toString())
+            Log.i("MAPVIEWMODELCHECK", "ISFAVORITE")
             if (viewModel.showBusStops.value!!) {
-                busStopPositionOrFavouriteBusStopPosition.hiddenAllBusStops(map)
+                mapController.removeShowingBusStops(busStopPositionOrFavouriteBusStopPosition)
                 switchBetweenFavourtieAndStandardMap(it)
-                busStopPositionOrFavouriteBusStopPosition.showAllBusStops(map)
+                mapController.showAllBusStops(busStopPositionOrFavouriteBusStopPosition)
             } else {
                 mapController.removeCallback()
-                actualPositionAllOrFavouriteVehicle.hiddenMarkers(map)
-                actualPositionAllOrFavouriteVehicle.removeTrackedVehicle()
+                mapController.removeShowingAllVehicles(actualPositionAllOrFavouriteVehicle)
+                mapController.removeTrackedVehicle(actualPositionAllOrFavouriteVehicle)
 
                 switchBetweenFavourtieAndStandardMap(it);
-               /* mapController.showAllBus(actualPositionAllOrFavouriteVehicle)
-                mapController.showAllTram(actualPositionAllOrFavouriteVehicle)*/
-                actualPositionAllOrFavouriteVehicle.showMarkers(map)
+
+                mapController.showAllVehicleMarker(actualPositionAllOrFavouriteVehicle)
                 mapController.startShowVehicle(actualPositionAllOrFavouriteVehicle)
             }
         })
@@ -185,6 +185,7 @@ class CreateMapFragment : Fragment() {
     }
 
     private fun switchBetweenBusStopsAndVehicle(isBusStops : Boolean) {
+        Log.i("switchBetweenBusStopsAndVehicle", isBusStops.toString())
         if (isBusStops) {
             mapController.removeCallback()
             mapController.removeShowingAllVehicles(actualPositionAllOrFavouriteVehicle)

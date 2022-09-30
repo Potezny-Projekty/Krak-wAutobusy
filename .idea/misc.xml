@@ -128,15 +128,16 @@
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/location_icon.xml" value="0.1" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/location_icon_gray.xml" value="0.1" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/main_icon.xml" value="0.1" />
+        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/drawable/no_internet_icon.xml" value="0.1" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/activity_loading_page.xml" value="0.22" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/activity_main.xml" value="0.16259057971014493" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/activity_marker_toast.xml" value="0.33" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/fragment_details.xml" value="0.49654218533886585" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/fragment_favorite.xml" value="0.16259057971014493" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/fragment_map.xml" value="0.1" />
-        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/fragment_no_internet.xml" value="0.1" />
+        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/fragment_no_internet.xml" value="0.25" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/line_info_with_directions_bar.xml" value="0.16259057971014493" />
-        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/map_activity.xml" value="0.1" />
+        <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/layout/map_activity.xml" value="0.2" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/mipmap-anydpi-v26/ic_cluster_bus_stop.xml" value="0.1" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
         <entry key="..\:/Users/Damian/AndroidStudioProjects/Krak-wAutobusy3/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
