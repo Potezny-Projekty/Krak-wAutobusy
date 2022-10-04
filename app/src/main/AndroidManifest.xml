@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.krakowautobusy" >
+    package="com.krak.krakowautobusy" >
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -21,14 +21,14 @@
         tools:targetApi="m"
        >
         <activity
-            android:name=".MainActivity"
+            android:name="com.krak.krakowautobusy.MainActivity"
             android:configChanges="uiMode"
             android:exported="false"
             android:windowSoftInputMode="adjustPan|adjustResize|stateVisible"
             android:screenOrientation="locked"
             />
         <activity
-            android:name=".ui.loadingPage.LoadingPageActivity"
+            android:name="com.krak.krakowautobusy.ui.loadingPage.LoadingPageActivity"
             android:screenOrientation="locked"
             android:exported="true">
             <intent-filter>

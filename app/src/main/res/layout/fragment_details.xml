@@ -23,7 +23,7 @@
 
         <fragment
             android:id="@+id/details_view_map"
-            android:name="com.example.krakowautobusy.ui.map.CreateDetailsMapFragment"
+            android:name="com.krak.krakowautobusy.ui.map.CreateDetailsMapFragment"
             android:layout_width="match_parent"
 
             android:layout_height="360dp"

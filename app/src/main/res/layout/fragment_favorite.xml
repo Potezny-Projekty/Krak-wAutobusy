@@ -47,6 +47,7 @@
         android:id="@+id/nolinefavouriteinfo"
         app:layout_constraintBottom_toBottomOf="parent"
         android:orientation="vertical"
+        android:layout_marginTop="30dp"
         app:layout_constraintTop_toBottomOf="@+id/textFavourite"
         android:layout_height="wrap_content">
 
@@ -59,13 +60,14 @@
             android:layout_marginRight="20dp"
             android:textStyle="italic"
             android:paddingLeft="20dp"
+            android:textSize="25dp"
             android:paddingRight="20dp"
             android:paddingTop="50dp"
             android:textColor="@color/main_green"
             android:paddingBottom="80dp"
 
 
-            android:background="@drawable/shadow"
+
             app:layout_constraintTop_toBottomOf="@+id/textFavourite"
             android:text="Brak ulubionych lini \n dodaj linię do \n ulubionych"
             android:textAlignment="center"
@@ -101,7 +103,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_height="match_parent"
-        class="com.example.krakowautobusy.ui.map.vehicledata.SearchViewFragment"
+        class="com.krak.krakowautobusy.ui.map.vehicledata.SearchViewFragment"
         tools:layout="@layout/fragment_search_view"></fragment>
 
 

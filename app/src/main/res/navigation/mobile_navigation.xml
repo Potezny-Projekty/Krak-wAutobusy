@@ -8,7 +8,7 @@
 
     <fragment
             android:id="@+id/navigation_no_internet"
-            android:name="com.example.krakowautobusy.ui.noInternet.NoInternetFragment"
+            android:name="com.krak.krakowautobusy.ui.noInternet.NoInternetFragment"
             android:label="fragment_no_internet"
             tools:layout="@layout/fragment_no_internet" >
         <action
@@ -19,7 +19,7 @@
         app:startDestination="@id/navigation_map">
         <fragment
             android:id="@+id/search_view"
-            android:name="com.example.krakowautobusy.ui.map.vehicledata.SearchViewFragment"
+            android:name="com.krak.krakowautobusy.ui.map.vehicledata.SearchViewFragment"
             android:label="SearchView">
             <action
                 android:id="@+id/action_search_view_to_navigation_details"
@@ -31,12 +31,12 @@
         </fragment>
         <fragment
             android:id="@+id/navigation_details"
-            android:name="com.example.krakowautobusy.ui.details.DetailsFragment"
+            android:name="com.krak.krakowautobusy.ui.details.DetailsFragment"
 
             android:label="DetailsFragment" />
         <fragment
             android:id="@+id/navigation_map"
-            android:name="com.example.krakowautobusy.ui.map.MapFragment"
+            android:name="com.krak.krakowautobusy.ui.map.MapFragment"
             android:label="@string/title_map"
             tools:layout="@layout/fragment_map">
             <action
@@ -62,7 +62,7 @@
         </fragment>
         <fragment
             android:id="@+id/navigation_favorite"
-            android:name="com.example.krakowautobusy.ui.favourite.FavoriteFragment"
+            android:name="com.krak.krakowautobusy.ui.favourite.FavoriteFragment"
             android:label="@string/title_favorite"
             tools:layout="@layout/fragment_favorite">
 
@@ -83,7 +83,7 @@
 
         <fragment
             android:id="@+id/navigation_favoritevehiclestop"
-            android:name="com.example.krakowautobusy.ui.vehiclestop.FavouriteVehicleStop"
+            android:name="com.krak.krakowautobusy.ui.vehiclestop.FavouriteVehicleStop"
             android:label="Ulubione przystanki"
             tools:layout="@layout/fragment_favourite_vehicle_stop">
 
@@ -104,7 +104,7 @@
 
         <fragment
             android:id="@+id/navigation_detailed_lines"
-            android:name="com.example.krakowautobusy.ui.map.vehicledata.VehicleStopDetails"
+            android:name="com.krak.krakowautobusy.ui.map.vehicledata.VehicleStopDetails"
             android:label="Szczegóły przystanku"
             tools:layout="@layout/fragment_vehicle_stop_details">
 
@@ -122,7 +122,7 @@
 
         <fragment
             android:id="@+id/navigation_loading_page"
-            android:name="com.example.krakowautobusy.ui.loadingPage.LoadingPageActivity"
+            android:name="com.krak.krakowautobusy.ui.loadingPage.LoadingPageActivity"
             android:label="fragment_loading_page"
             tools:layout="@layout/activity_loading_page" />
         <action

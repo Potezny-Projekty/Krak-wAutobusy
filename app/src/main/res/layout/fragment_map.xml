@@ -25,7 +25,7 @@
         android:layout_height="match_parent"
         android:id="@+id/mapFragment"
         tools:context=".MainActivity"
-        android:name="com.example.krakowautobusy.ui.map.CreateMapFragment" />
+        android:name="com.krak.krakowautobusy.ui.map.CreateMapFragment" />
 
 
 
@@ -37,7 +37,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_height="match_parent"
-        class="com.example.krakowautobusy.ui.map.vehicledata.SearchViewFragment"
+        class="com.krak.krakowautobusy.ui.map.vehicledata.SearchViewFragment"
         tools:layout="@layout/fragment_search_view">
     </fragment>
 
