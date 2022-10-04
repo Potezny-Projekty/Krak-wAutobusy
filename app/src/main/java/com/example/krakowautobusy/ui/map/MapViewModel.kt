@@ -24,7 +24,6 @@ class MapViewModel : ViewModel() {
     val showBusStops: LiveData<Boolean> get() = mutableShowBusStops
 
     fun isShowBusStops() {
-        mutableIsFavourit.value = mutableIsFavourit.value
         mutableShowBusStops.value = mutableShowBusStops.value == false
     }
 

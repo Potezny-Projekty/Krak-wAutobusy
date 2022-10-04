@@ -1,6 +1,7 @@
 package com.example.krakowautobusy.ui.map.vehicledata
 
 import android.util.Log
+import android.widget.Toast
 import com.example.krakowautobusy.api.Api
 import com.example.krakowautobusy.ui.map.Drawables
 import org.osmdroid.views.MapView
@@ -14,25 +15,32 @@ class ActualPositionFavouriteVehicle(drawables: Drawables) : ActualPositionVehic
          Log.i("ACTUALPOSITOO", "FAVOURITE")
          val listOfAllVehicle = allVehicles.vehicles
          val favouriteVehicles = Api.getApi().getAllFavouriteLine()
-         listOfAllVehicle
-            .filter { !it.isDeleted }
-            .forEach {
-               if (markers.containsKey(it.id)) {
-                  val drawVehicleMarker = markers[it.id]!!
-                  updateMarkerPosition(drawVehicleMarker, it, map)
-               } else {
-                  val firstElement = 0
-                  val lineNumber = it.name.split(" ")[firstElement].toIntOrNull()
-                  if (lineNumber != null) {
-                     favouriteVehicles.forEach { favouriteLineData ->
-                        if (favouriteLineData.numberLine == lineNumber) {
-                           markers[it.id] = drawMarkerVehiclesOnMap(it, map)
-                           return
+         if (favouriteVehicles.isEmpty()) {
+            val informationAboutFavourite =
+               "Musisz dodać ulubione pojazdy, aby je wyświetlić"
+            Toast.makeText(map.context,
+               informationAboutFavourite, Toast.LENGTH_LONG).show()
+         } else {
+            listOfAllVehicle
+               .filter { !it.isDeleted }
+               .forEach {
+                  if (markers.containsKey(it.id)) {
+                     val drawVehicleMarker = markers[it.id]!!
+                     updateMarkerPosition(drawVehicleMarker, it, map)
+                  } else {
+                     val firstElement = 0
+                     val lineNumber = it.name.split(" ")[firstElement].toIntOrNull()
+                     if (lineNumber != null) {
+                        favouriteVehicles.forEach { favouriteLineData ->
+                           if (favouriteLineData.numberLine == lineNumber) {
+                              markers[it.id] = drawMarkerVehiclesOnMap(it, map)
+                              return
+                           }
                         }
                      }
                   }
                }
-            }
+         }
       }catch (exp:Exception){
 
       }
