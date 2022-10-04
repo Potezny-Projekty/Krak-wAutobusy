@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
@@ -34,6 +35,19 @@ class SearchViewFragment : Fragment() {
 
     private   var refreshH: RefreshHandler? = null;
 
+    private   var actionShowKeyboard: RefreshHandler? = null;
+    private   var actionHidekeyboard: RefreshHandler? = null;
+
+
+
+    public fun setActionWhenShowKeyboard(action:RefreshHandler){
+            actionShowKeyboard=action
+    }
+
+
+    public fun setActionWhenHideKeyboard(action:RefreshHandler){
+        actionHidekeyboard=action
+    }
 
     private lateinit var   adapter :AdapterListSearchPanel;
 
@@ -66,10 +80,19 @@ class SearchViewFragment : Fragment() {
 
     private fun showListSearchViewAnimation(){
         AnimationSearchView.showListSearchViewAnimation(binding.allSearchPane)
+        Log.e("kiedy","teraz pokaz")
+        actionShowKeyboard?.let { it()
+
+            Log.e("kiedy","teraz pokaz2")
+        }
     }
 
     private fun hideListSearchViewAnimation(){
         AnimationSearchView.hideListSearchViewAnimation(binding.allSearchPane)
+        Log.e("kiedy","teraz CHowaj")
+        actionHidekeyboard?.let { it()
+            Log.e("kiedy","teraz CHowaj2")
+        }
     }
 
 
@@ -141,6 +164,8 @@ class SearchViewFragment : Fragment() {
     private fun Context.hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+
+
     }
 
     private fun Fragment.showKeyboard() {

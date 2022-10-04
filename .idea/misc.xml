@@ -76,6 +76,7 @@
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/rysunek_1_strzalk.xml" value="0.28" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/shadow.xml" value="0.28" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/shadowall.xml" value="0.28" />
+        <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/snippetgroupvehiclestop.xml" value="0.3635" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/squere_small_radius.xml" value="0.28" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/squre_small_radius_thin.xml" value="0.5435" />
         <entry key="..\:/KrakowAutobusy/Krak-wAutobusy/app/src/main/res/drawable/yellowcircle.xml" value="0.5435" />
@@ -144,7 +145,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

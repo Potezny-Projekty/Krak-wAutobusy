@@ -34,9 +34,67 @@
         app:layout_constraintBottom_toTopOf="@id/listfavouriteLine"
         android:layout_height="wrap_content"></TextView>
 
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/nolinefavouriteinfo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/textFavourite"
+        android:layout_height="wrap_content">
+
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textStyle="italic"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="50dp"
+            android:textColor="@color/main_green"
+            android:paddingBottom="80dp"
+
+
+            android:background="@drawable/shadow"
+            app:layout_constraintTop_toBottomOf="@+id/textFavourite"
+            android:text="Brak ulubionych lini \n dodaj linię do \n ulubionych"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"></TextView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:paddingTop="0dp"
+            android:layout_gravity="center"
+            android:translationY="-55dp"
+
+
+
+            android:src="@drawable/red_heart_icon"
+
+            android:layout_height="wrap_content"></ImageView>
+
+
+    </LinearLayout>
+
+
+
+
+
+
     <fragment
         android:id="@+id/detailFragment"
         android:layout_width="0dp"
+
 
         android:layout_weight="2"
         app:layout_constraintLeft_toLeftOf="parent"

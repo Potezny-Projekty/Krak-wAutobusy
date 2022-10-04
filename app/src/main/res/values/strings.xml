@@ -2,7 +2,7 @@
 
     <!--app_name do zmiany? -->
 
-    <string name="app_name">KrakowAutobusy</string>
+    <string name="app_name">Kraków Autobusy</string>
     <string name="title_map">Mapa</string>
     <string name="title_favorite">Ulubione</string>
     <string name="showAllRoadsOrFavorite">Pokaż ulubione/wszystkie pojazdy</string>

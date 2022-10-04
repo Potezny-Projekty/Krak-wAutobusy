@@ -69,6 +69,20 @@ class FavoriteFragment : Fragment() {
             Log.e("kurwa","JEGO MAĆ2")
             setDatasetAdapter()
         }
+
+        xx.setActionWhenHideKeyboard {
+
+            var x=Api.getApi().getAllLine()
+            var xx=x.filter( { s -> s.isFavourite }
+            )
+            if(xx.size==0){
+            binding.nolinefavouriteinfo.visibility=View.VISIBLE
+        }}
+
+
+        xx.setActionWhenShowKeyboard {
+            binding.nolinefavouriteinfo.visibility=View.GONE
+        }
         //adapter.setRefresh {
          //   Log.e("kurwa","JEGO MAĆ2")
         //    setDatasetAdapter()
@@ -104,6 +118,13 @@ class FavoriteFragment : Fragment() {
         )
 
         Log.e("ilex","("+xx.size )
+
+        if(xx.size==0){
+            binding.nolinefavouriteinfo.visibility=View.VISIBLE
+        }else{
+            binding.nolinefavouriteinfo.visibility=View.GONE
+        }
+
 
         adapter.changeDataset(xx as ArrayList<LineData>)
         adapter.notifyDataSetChanged()

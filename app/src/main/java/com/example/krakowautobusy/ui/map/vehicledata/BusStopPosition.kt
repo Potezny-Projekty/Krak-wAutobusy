@@ -54,7 +54,7 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
             true
         }
 
-        marker.infoWindow.view.background=AppCompatResources.getDrawable(map.context,R.drawable.shadow)
+        marker.infoWindow.view.background=AppCompatResources.getDrawable(map.context,R.drawable.snippetgroupvehiclestop)
         marker.infoWindow.view.setOnClickListener({
 /*
             val bundle = bundleOf(
