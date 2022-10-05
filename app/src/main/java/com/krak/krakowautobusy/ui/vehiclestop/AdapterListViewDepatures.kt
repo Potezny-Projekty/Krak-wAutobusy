@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.krak.krakowautobusy.R
 import com.krak.krakowautobusy.networkttss.Depart
@@ -41,6 +42,7 @@ class AdapterListViewDepatures (data: ArrayList<Depart>, context: Context) :
         var nameLineDirection: TextView?=null
         var timeDeparture: TextView?=null
         var iconStatus: ImageView?=null
+        var lineNumberBox:LinearLayout?=null
 
 
 
@@ -71,6 +73,7 @@ class AdapterListViewDepatures (data: ArrayList<Depart>, context: Context) :
         viewHolder.nameLineDirection=view.findViewById(R.id.nameLineDirection)
         viewHolder.timeDeparture=view.findViewById(R.id.timeDeparture)
         viewHolder.iconStatus=view.findViewById(R.id.statusicon)
+        viewHolder.lineNumberBox=view.findViewById(R.id.lineNumberBox)
         Log.e("ojej","1."+(viewHolder.lineNumber==null))
         Log.e("ojej","2."+(viewHolder.nameLineDirection==null))
         Log.e("ojej","3."+(viewHolder.timeDeparture==null))
@@ -90,6 +93,12 @@ class AdapterListViewDepatures (data: ArrayList<Depart>, context: Context) :
     if(dataModel.plannedTime!=null) {
         viewHolder.lineNumber!!.text = dataModel.patternText
 
+        if(dataModel.patternText.length<3){
+            viewHolder.lineNumberBox!!.setBackgroundResource(R.drawable.round_rect_shape_train)
+        }else{
+            viewHolder.lineNumberBox!!.setBackgroundResource(R.drawable.round_rect_shape_bus)
+        }
+
         if(dataModel.actualTime!=null){
             viewHolder.timeDeparture!!.text = dataModel.plannedTime+" ("+dataModel.actualTime+")"
         }else {
@@ -98,7 +107,7 @@ class AdapterListViewDepatures (data: ArrayList<Depart>, context: Context) :
             viewHolder.nameLineDirection!!.text=dataModel.direction
     }
 
-      if(dataModel.plannedTime!=dataModel.actualTime){
+      if(dataModel.plannedTime!=dataModel.actualTime && (dataModel.actualTime!=null)){
           viewHolder.iconStatus!!.setBackgroundResource(R.drawable.red_circle)
       }else{
           viewHolder.iconStatus!!.setBackgroundResource(R.drawable.green_circle)

@@ -479,7 +479,10 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     }
 
     protected fun drawNumberOnIcon(icon: Drawable, number: String, rotation: Float): Drawable {
-        val textSize = 24f
+        //val textSize = 24f
+
+
+        val textSize = 15f * drawables.context.resources.displayMetrics.density
         val copyIcon = icon.mutate()
         val paint = Paint()
         val factoryMoveHeightText = 2
