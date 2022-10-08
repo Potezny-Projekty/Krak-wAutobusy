@@ -7,13 +7,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import com.krak.krakowautobusy.BundleChoiceVehicle
 import com.krak.krakowautobusy.R
 import com.krak.krakowautobusy.api.Api
 import com.krak.krakowautobusy.databinding.FragmentVehicleStopDetailsBinding
 import com.krak.krakowautobusy.ui.vehiclestop.AdapterListViewDepatures
 import com.krak.krakowautobusy.ui.vehiclestop.Bundle_Vehicle_Stop
+import java.lang.Exception
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -58,34 +65,31 @@ class VehicleStopDetails : Fragment() {
         timerRefreshDepartureList = object : Runnable {
             override fun run() {
 
-
-
+                Log.e("ojej","Rozmiar:"+idStopPoint)
                 Api.getApi().getBusDepartures(idStopPoint
                 ) { response ->
-                    Log.e("ojejo","Rozmiar:"+response.body()!!.actual.size)
+                    Log.e("ojej","Rozmiar:"+response.body()!!.actual.size)
                     //  for(x in response.body()!!.actual){
                     //     Log.e("ojej",x.plannedTime.toString())
                     //  }
-                  //  adapter= AdapterListViewDepatures(response.body()!!.actual,requireContext())
-                    adapter!!.changeDataset(response.body()!!.actual)
-                    binding.listdetailed.adapter=adapter
+                    try {
+                        adapter = AdapterListViewDepatures(response.body()!!.actual, requireContext())
+                        adapter!!.changeDataset(response.body()!!.actual)
+                        binding.listdetailed.adapter = adapter
 
-                    if(response.body()!!.actual.size==0) {
-                        binding.ifwehavedata.visibility=View.VISIBLE
-                    }else{
-                        binding.ifwehavedata.visibility=View.GONE
+
+
+                        if (response.body()!!.actual.size == 0) {
+                            binding.ifwehavedata.visibility = View.VISIBLE
+                        } else {
+                            binding.ifwehavedata.visibility = View.GONE
+                        }
+
+                    }catch (x:Exception){
+
                     }
 
-
                 }
-
-                if(adapter==null){
-                    binding.ifwehavedata.visibility=View.VISIBLE
-                }else{
-                    binding.ifwehavedata.visibility=View.GONE
-                }
-
-
 
 
                 mainHandler.postDelayed(this,TIMER_REFRESH_DEPARTURE_LIST )
@@ -121,7 +125,7 @@ class VehicleStopDetails : Fragment() {
         val root: View = binding.root
         fillViewDataFromBundle()
         addDeparturesToListView(requireArguments().getString(Bundle_Vehicle_Stop.ID_STOP_POINT .nameBundle).toString())
-       idStopPoint=Bundle_Vehicle_Stop.ID_STOP_POINT .nameBundle
+       idStopPoint=requireArguments().getString(Bundle_Vehicle_Stop.ID_STOP_POINT .nameBundle).toString()
         Log.e("aax",":"+idStopPoint)
 
         refreshListDepeartures()
@@ -180,6 +184,42 @@ class VehicleStopDetails : Fragment() {
 
 
 
+    val current = LocalDateTime.now()
+
+    val formatter2 = DateTimeFormatter.ofPattern("EEEE")
+    val formatted2 = current.format(formatter2)
+    binding.ca.text=formatted2;
+    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+    val formatted = current.format(formatter)
+
+    binding.vfg.text=formatted;
+
+
+
+
+
+
+    binding.listdetailed.setOnItemClickListener { _, view, _, _ ->
+        val bundle = bundleOf(
+            BundleChoiceVehicle.LINE_NUMBER.nameBundleObject to
+                view.findViewById<TextView>(R.id.lineNumber).text.toString().trim().toInt(),
+            BundleChoiceVehicle.FIRST_STOP_VEHICLE_NAME.nameBundleObject
+                    to "",
+            BundleChoiceVehicle.LAST_VEHICLE_STOP_NAME.nameBundleObject to
+                    view.findViewById<TextView>(R.id.nameLineDirection).text.toString()
+
+        )
+
+        Navigation.findNavController(view).navigate(R.id.action_vehicle_details_departures_to_details_line,bundle);
+    }
+
+
+
+
+
+
+
+
         return root
     }
 
@@ -211,16 +251,21 @@ class VehicleStopDetails : Fragment() {
           //  for(x in response.body()!!.actual){
            //     Log.e("ojej",x.plannedTime.toString())
           //  }
-            adapter= AdapterListViewDepatures(response.body()!!.actual,requireContext())
-            adapter!!.changeDataset(response.body()!!.actual)
-           binding.listdetailed.adapter=adapter
+            try {
+                adapter = AdapterListViewDepatures(response.body()!!.actual, requireContext())
+                adapter!!.changeDataset(response.body()!!.actual)
+                binding.listdetailed.adapter = adapter
 
 
 
-            if(response.body()!!.actual.size==0) {
-                binding.ifwehavedata.visibility=View.VISIBLE
-            }else{
-                binding.ifwehavedata.visibility=View.GONE
+                if (response.body()!!.actual.size == 0) {
+                    binding.ifwehavedata.visibility = View.VISIBLE
+                } else {
+                    binding.ifwehavedata.visibility = View.GONE
+                }
+
+            }catch (x:Exception){
+
             }
 
         }
@@ -240,7 +285,24 @@ class VehicleStopDetails : Fragment() {
 
     }
 
+/*
 
+
+       val bundle = bundleOf(
+                    BundleChoiceVehicle.LINE_NUMBER.nameBundleObject to
+                            vehicle.name.split(' ')[0].trim().toInt(),
+                    BundleChoiceVehicle.FIRST_STOP_VEHICLE_NAME.nameBundleObject
+                            to "",
+                    BundleChoiceVehicle.LAST_VEHICLE_STOP_NAME.nameBundleObject to
+                            vehicle.name.substringAfter(" "),
+                    "tripId" to vehicle.tripId
+
+
+                )
+
+                map.findNavController()
+                    .navigate(R.id.action_navigation_map_to_detailsFragment, bundle)
+ */
 
 
 

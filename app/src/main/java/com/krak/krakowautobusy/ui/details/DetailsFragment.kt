@@ -10,11 +10,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.krak.krakowautobusy.BundleChoiceVehicle
 import com.krak.krakowautobusy.R
@@ -25,6 +28,7 @@ import com.krak.krakowautobusy.ui.map.AdapterTimeTableListView
 import com.krak.krakowautobusy.ui.map.DetailsMapViewModel
 import com.krak.krakowautobusy.ui.map.vehicledata.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.krak.krakowautobusy.ui.vehiclestop.Bundle_Vehicle_Stop
 import kotlinx.coroutines.*
 import retrofit2.Response
 import java.lang.Exception
@@ -462,7 +466,7 @@ class DetailsFragment : Fragment() {
 
 
 
-
+    var x=0;
 
     fun refreshTimeTableDataSet(){
 
@@ -512,6 +516,13 @@ class DetailsFragment : Fragment() {
                     }
                 }})
 
+            x+=1;
+            if(adapterListTimeTable!!.count==0 &&x>1){
+                binding.titlex.visibility=View.GONE
+            }else{
+                binding.titlex.visibility=View.VISIBLE
+            }
+
 
         }catch (exp:IllegalStateException){
 
@@ -555,6 +566,28 @@ class DetailsFragment : Fragment() {
 
         addAdapterToListViewTimeTable()
         refreshDataTimeTable()
+
+
+        binding.listTimeTable.setOnItemClickListener { _, view, _, _ ->
+
+
+            val bundle = bundleOf(
+                Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
+                       "",
+                Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
+                        view.findViewById<TextView>(R.id.nameStopBus).text.toString(),
+                Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
+                        ""
+
+            )
+            //bundle
+            Navigation.findNavController(view).navigate(R.id.action_navigate_to_details_vehiclestopa,bundle);
+
+
+
+
+
+        }
 
     }
 

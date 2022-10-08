@@ -125,9 +125,11 @@ class FavouriteVehicleStop : Fragment() {
             var x=Api.getApi().getAllLine()
             var xx=x.filter( { s -> s.isFavourite }
             )
-            if(xx.size==0){
+            if(xx.size!=0){
                 binding.vehiclesnolinefavourite.visibility=View.VISIBLE
-            }}
+            }
+
+        }
 
 
         xx.setActionWhenShowKeyboard {

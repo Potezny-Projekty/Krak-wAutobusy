@@ -33,7 +33,15 @@
             android:id="@+id/navigation_details"
             android:name="com.krak.krakowautobusy.ui.details.DetailsFragment"
 
-            android:label="DetailsFragment" />
+            android:label="DetailsFragment" >
+
+            <action
+
+                android:id="@+id/action_navigate_to_details_vehiclestopa"
+                app:destination="@id/navigation_detailed_lines" />
+
+
+        </fragment>
         <fragment
             android:id="@+id/navigation_map"
             android:name="com.krak.krakowautobusy.ui.map.MapFragment"
@@ -115,6 +123,14 @@
         </fragment>
 
 
+        <fragment
+            android:id="@+id/xx"
+            android:name="com.krak.krakowautobusy.ui.map.vehicledata.VehicleStopDetails"
+            android:label="fragment_details"
+            tools:layout="@layout/fragment_vehicle_stop_details" />
+        <action
+            android:id="@+id/action_vehicle_details_departures_to_details_line"
+            app:destination="@id/navigation_details" />
 
 
 

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.MotionEvent
+import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
@@ -47,45 +48,21 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
         }
 
         marker.infoWindow.view.background=AppCompatResources.getDrawable(map.context,R.drawable.snippetgroupvehiclestop)
-        marker.infoWindow.view.setOnClickListener({
-/*
-            val bundle = bundleOf(
-                Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
-                        selectedItem.idVehicleStop.toString(),
-                Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
-                        selectedItem.name,
-                Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
-                        selectedItem.idStopPoint.toString()
 
-            )
-            //bundle
-            Navigation.findNavController(navView)
-                .navigate(R.id.actionnavigatedetailesstop, bundle);
-
-
-            true})*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-        })
 
 
         marker.infoWindow.view.setOnTouchListener { x, event ->
+           // var x=x.findViewById<TextView>(R.id.title);
+
+          // Log.e("danee","kUrwa"+x.text)
 
             if(event.action==MotionEvent.ACTION_DOWN) {
+                Log.e("danee", "idV " + marker.busStop.idVehicleStop)
+                Log.e("danee", "Nam " + vehicleStopData.name)
+                Log.e("danee", "idS " + marker.busStop.idStopPoint)
+                Log.e("danee", "idS " + marker.title)
 
-
-                Log.e("blad", "blad")
+                Log.e("blad", "blad88")
                 val bundle = bundleOf(
                     Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
                             marker.busStop.idVehicleStop,
@@ -96,6 +73,7 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
 
                 )
                 //bundle
+
 
 
                 Navigation.findNavController(x)
