@@ -13,7 +13,8 @@
             tools:layout="@layout/fragment_no_internet" >
         <action
             android:id="@+id/action_navigation_no_internet_to_navigation_map"
-            app:destination="@id/navigation6" />
+            app:destination="@id/navigation6"
+            app:popUpToInclusive="true" />
     </fragment>
     <navigation android:id="@+id/navigation6"
         app:startDestination="@id/navigation_map">
@@ -143,7 +144,8 @@
             tools:layout="@layout/activity_loading_page" />
         <action
             android:id="@+id/action_global_navigation_no_internet"
-            app:destination="@id/navigation_no_internet" />
+            app:destination="@id/navigation_no_internet"
+            app:popUpToInclusive="true" />
     </navigation>
 
 

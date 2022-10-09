@@ -11,7 +11,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 
-class VehicleMarker(mapView: MapView?, val vehicle : Vehicle) : Marker(mapView) {
+class VehicleMarker(mapView: MapView, val vehicle : Vehicle) : Marker(mapView) {
     var isMirror : Boolean = false
     var isTracked : Boolean = false
     var vehicleIcon : Drawable = icon
@@ -19,7 +19,11 @@ class VehicleMarker(mapView: MapView?, val vehicle : Vehicle) : Marker(mapView) 
     var vehicleTrackedIcon : Drawable = icon
     var vehicleTrackedIconMirror : Drawable = icon
     var pathVehicle = ArrayList<GeoPoint>()
-    private val textSize = 24f
+    private val textSize : Float
+
+    init {
+        textSize = 8f * mapView.context.resources.displayMetrics.density
+    }
 
     fun mirrorMarkerIcon(icon : Drawable, number : String) : Drawable {
         val copyIcon = icon.mutate()

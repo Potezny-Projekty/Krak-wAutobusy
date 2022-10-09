@@ -480,10 +480,9 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
     protected fun drawNumberOnIcon(icon: Drawable, number: String, rotation: Float): Drawable {
         //val textSize = 24f
-
-
-        val textSize = 15f * drawables.context.resources.displayMetrics.density
         val copyIcon = icon.mutate()
+        val textSize = ((copyIcon.intrinsicHeight + copyIcon.intrinsicWidth) ).toFloat()
+        Log.i("TEXTSIZE", textSize.toString())
         val paint = Paint()
         val factoryMoveHeightText = 2
         val factoryMoveWidthText = 3.3
@@ -491,8 +490,11 @@ open class ActualPositionVehicles(var drawables: Drawables) {
         val startPositionYText = ((copyIcon.intrinsicWidth / factoryMoveWidthText)).toFloat()
         val rotateCanvasToVerticle = -90f
         paint.color = Color.BLACK
-        paint.textSize = textSize
+        paint.textSize = 5f
         paint.textAlign = Paint.Align.CENTER
+        paint.isFakeBoldText = true
+        paint.textAlign = Paint.Align.CENTER
+        paint.isAntiAlias = true
         val bitmap = Bitmap.createBitmap(
             copyIcon.intrinsicWidth,
             copyIcon.intrinsicHeight,
