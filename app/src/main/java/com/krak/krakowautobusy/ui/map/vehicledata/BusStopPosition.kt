@@ -4,10 +4,14 @@ import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.MotionEvent
+import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
+import com.google.android.material.textview.MaterialTextView
+import com.krak.krakowautobusy.BusStopInfoWindow
 import com.krak.krakowautobusy.R
 import com.krak.krakowautobusy.api.Api
 import com.krak.krakowautobusy.database.VehicleStopData
@@ -15,6 +19,8 @@ import com.krak.krakowautobusy.ui.vehiclestop.Bundle_Vehicle_Stop
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.infowindow.BasicInfoWindow
+import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow
 
 
 open class BusStopPosition(private val busStopIconDrawable : Drawable) {
@@ -37,6 +43,12 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
     protected fun createBusStopMarker(map : MapView,
                                       vehicleStopData: VehicleStopData) : BusStopMarker {
         Log.e("blad","blad2")
+
+     //  val markerToast = BusStopInfoWindow(map, vehicleStopData.name)
+
+           // val markerToast=
+
+
          val marker = BusStopMarker(map, vehicleStopData)
         marker.position = ConvertUnits.convertToGeoPoint(vehicleStopData.latitude,
             vehicleStopData.longitude)
@@ -47,11 +59,77 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
             true
         }
 
-        marker.infoWindow.view.background=AppCompatResources.getDrawable(map.context,R.drawable.snippetgroupvehiclestop)
 
+      //  marker.infoWindow = markerToast
+        marker.infoWindow.view.background= AppCompatResources.getDrawable(map.context,R.drawable.snippetgroupvehiclestop)
 
 
         marker.infoWindow.view.setOnTouchListener { x, event ->
+
+          var name=""
+            var count =x as ViewGroup
+
+            for (i in 0..count.childCount){
+                var ve=x.getChildAt(i)
+                if(ve is TextView){
+                    Log.e("jajo","mamcie"+i+"  "+(ve as TextView).text)
+
+                }
+                if(ve is LinearLayout){
+                    var cc=ve.childCount
+                    for (i in 0..cc) {
+                        var va=ve.getChildAt(i)
+                        if(va is TextView){
+                            Log.e("jajo","mamcie va"+i+"  "+(va as TextView).text)
+
+                        }
+                        if(va!=null){
+                            Log.e("jajo","2 "+ve.javaClass.name)
+                        }
+
+                        if(va is LinearLayout){
+                            var qw=va.childCount
+                            for (i in 0..qw) {
+                                var qq=va.getChildAt(i)
+                                if(qq is TextView){
+                                    Log.e("jajo","mamcie va9"+i+"  "+(qq as TextView).text)
+                                    if((qq as TextView).text.toString()!=""){
+                                        name= (qq as TextView).text as String
+
+
+                                    }
+
+
+
+
+                                    Log.e("jajo","wyniczek"+name)
+
+
+                                }
+
+                                if(qq is com.google.android.material.textview.MaterialTextView){
+                                    Log.e("jajo","mamcie va9"+i+"  "+(qq as MaterialTextView).text)
+                                }
+                                if(qq!=null){
+                                    Log.e("jajo",qq.javaClass.name)
+                                }}
+                        }
+
+                    }
+                    }
+
+                if(ve!=null){
+                    Log.e("jajo",ve.javaClass.name)
+                }
+
+
+                }
+
+
+
+
+
+
            // var x=x.findViewById<TextView>(R.id.title);
 
           // Log.e("danee","kUrwa"+x.text)
@@ -65,11 +143,11 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
                 Log.e("blad", "blad88")
                 val bundle = bundleOf(
                     Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
-                            marker.busStop.idVehicleStop,
+                            "",
                     Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
-                            marker.busStop.name,
+                            name,
                     Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
-                            marker.busStop.idStopPoint
+                           ""
 
                 )
                 //bundle
