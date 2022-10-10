@@ -93,6 +93,8 @@ class SearchViewVehicleStop : Fragment() {
         actionShowKeyboard?.let { it()
 
             Log.e("kiedy","teraz pokaz2")
+
+
         }
     }
 
@@ -242,6 +244,8 @@ class SearchViewVehicleStop : Fragment() {
         val animationSet = AnimatorSet()
         animationSet.playTogether(AnimationSearchView .scaleYAnimationScaleDown, AnimationSearchView. scaleXAnimationScaleDown,AnimationSearchView.rotateAnimation)
         animationSet.start()
+
+
     }
 
     private fun actionWhenSearchPanelClickIcon(){

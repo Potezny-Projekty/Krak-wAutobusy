@@ -12,9 +12,5 @@ interface LineInteerface {
     fun getInfoAboutLinePatternFirstOrLastStopName(db: SQLiteDatabase,patternVehicleStopName:String):ArrayList<LineData>
     fun getVehicleStopsLine(db: SQLiteDatabase,idLine:Int):ArrayList<SequenceVehicleStopData>
     fun getAllLineWithAnyVehicleStopFitPattern(db:SQLiteDatabase, nameVehicleStop:String):ArrayList<LineData>
-
-
-
-
     fun getAllLine(db: SQLiteDatabase): ArrayList<LineData>
 }

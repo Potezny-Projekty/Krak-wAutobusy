@@ -5,6 +5,10 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import com.krak.krakowautobusy.api.Api
 
+
+const val FIRST_COLUMN_RETURN=0
+const val FIRST_DIRECTION_POS=0
+const val SECOND_DIRECTION_POS=1
 class FavouriteLine:FavouriteLineInterface {
 
     private fun checkTypeVehicleByNumber(numberVehicle:Int):VehicleType{
@@ -22,14 +26,8 @@ class FavouriteLine:FavouriteLineInterface {
     ): FavouriteLineData {
 
         val vehicleType = checkTypeVehicleByNumber(cursor.getInt(LineTable.ID_VEHICLE.indexColumn))
-
         val firstStopName= Api.getApi().getNameVehicleStopByID(cursor.getInt(LineTable.FIRST_STOP_ID.indexColumn))
-     //   Log.e("testbaza",";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
-     //   Log.e("testbaza",cursor.getInt(LineTable.FIRST_STOP_ID.indexColumn).toString()+";")
-     //   Log.e("testbaza",cursor.getInt(LineTable.LAST_STOP_ID.indexColumn).toString()+";")
-       // Log.e("testbaza",";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
         val lastStopName=Api.getApi().getNameVehicleStopByID(cursor.getInt(LineTable.LAST_STOP_ID.indexColumn))
-
         return   FavouriteLineData(
             cursor.getInt(LineTable.ID_LINE.indexColumn),
             cursor.getInt(LineTable.NUMBER_LINE.indexColumn),
@@ -39,8 +37,6 @@ class FavouriteLine:FavouriteLineInterface {
         )
 
     }
-
-
 
 
 
@@ -54,10 +50,12 @@ class FavouriteLine:FavouriteLineInterface {
       }
     }
 
+
+    /**
+     * Add line to favourite for two direction in one line. This is buisness goal
+     */
     override fun addLineToFavorite(db: SQLiteDatabase, numberLine: Int) {
-        val FIRST_COLUMN_RETURN=0
-        val FIRST_DIRECTION_POS=0
-        val SECOND_DIRECTION_POS=1
+
         if(!isLineFavourite(db,numberLine)){
             val linesIdBothDirection = arrayListOf<Int>()
 
@@ -84,8 +82,6 @@ class FavouriteLine:FavouriteLineInterface {
             }
             cursor.close()
 
-       //     Log.e("bazatest",linesIdBothDirection[FIRST_DIRECTION_POS].toString()+" ..")
-       //     Log.e("bazatest",linesIdBothDirection[SECOND_DIRECTION_POS].toString()+ "..")
             addLineToFavouriteById(db,linesIdBothDirection[FIRST_DIRECTION_POS])
             addLineToFavouriteById(db,linesIdBothDirection[SECOND_DIRECTION_POS])
         }
@@ -94,10 +90,7 @@ class FavouriteLine:FavouriteLineInterface {
     }
 
     override fun removeLineFromFavourite(db: SQLiteDatabase, numberLine: Int) {
-        var linesIdBothDirection  = arrayListOf<Int>()
-        val FIRST_COLUMN_RETURN=0
-        val FIRST_DIRECTION_POS=0
-        val SECOND_DIRECTION_POS=1
+        val linesIdBothDirection  = arrayListOf<Int>()
 
         val columnReturns = arrayOf(
             LineTable.ID_LINE.nameColumn
@@ -126,7 +119,7 @@ class FavouriteLine:FavouriteLineInterface {
 
     }
 
-    fun removeLineFromFavouriteById(db:SQLiteDatabase, idLine: Int) {
+    private fun removeLineFromFavouriteById(db:SQLiteDatabase, idLine: Int) {
 
         val removeCondition = "${FavouriteLineTable.ID_LINE.nameColumn}=?"
 
@@ -160,10 +153,7 @@ class FavouriteLine:FavouriteLineInterface {
                 " ON ${LineTable.ID_LINE.nameColumn}=FavouriteLine.${FavouriteLineTable.ID_LINE.nameColumn} WHERE "
 
         val filterCondition = "${LineTable.NUMBER_LINE.nameColumn}=${numberLine}"
-
         val cursor = db.rawQuery(queryIsLineFavourite+filterCondition,null)
-
-
 
 
         return if(cursor.count> TABLE_NO_ELEMENT){
@@ -180,7 +170,7 @@ class FavouriteLine:FavouriteLineInterface {
     }
 
 
-   fun isLineFavouriteById(db: SQLiteDatabase, idLine: Long):Boolean {
+   private fun isLineFavouriteById(db: SQLiteDatabase, idLine: Long):Boolean {
         val columnReturns = arrayOf(
            FavouriteLineTable.ID_FAVOURITE_LINE.nameColumn,FavouriteLineTable.ID_LINE.nameColumn
         )

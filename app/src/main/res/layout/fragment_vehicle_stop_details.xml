@@ -261,7 +261,9 @@
             android:paddingRight="20dp"
             android:paddingTop="50dp"
             android:textColor="@color/main_green"
-            android:paddingBottom="80dp"
+
+            android:paddingBottom="110dp"
+
 
 
 

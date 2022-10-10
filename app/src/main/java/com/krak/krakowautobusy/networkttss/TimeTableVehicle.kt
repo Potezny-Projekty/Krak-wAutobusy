@@ -41,8 +41,6 @@ class TimeTableVehicle :TimeTableVehicleInterface {
                 }
             }
 
-
-
             override fun onFailure(call: Call<TimeTableData>, t: Throwable) {
 
             }
@@ -56,17 +54,11 @@ class TimeTableVehicle :TimeTableVehicleInterface {
             Callback<TimeTableData> {
             override fun onResponse(call: Call<TimeTableData>, response: Response<TimeTableData>) {
 
-                //if(response!=null && response.isSuccessful){
-
                 if(response.body()!=null && response.isSuccessful) {
                     callbackResponse(response)
                 }
 
-                //}
-
-
             }
-
 
 
             override fun onFailure(call: Call<TimeTableData>, t: Throwable) {

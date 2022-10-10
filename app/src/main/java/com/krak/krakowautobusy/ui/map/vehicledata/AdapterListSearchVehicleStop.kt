@@ -251,7 +251,7 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
              //   findIndexClickedIconFavouriteElem(lineData.name,!lineData.isFavourite)
               //  findIndexClickIcon(lineData.numberLine.toInt(),true)
               //  Api.getApi().addLineToFavourite(lineData.numberLine.toInt())
-                Log.e("kurwap","...]"+lineData.idVehicleStop.toString())
+                Log.e("sprawdzilosc","...]"+lineData.idVehicleStop.toString())
                 Api.getApi().addVehicleStopToFavoriteById(lineData.idVehicleStop.toString())
                 Log.e("xddd","work2")
                 it!!.animate()

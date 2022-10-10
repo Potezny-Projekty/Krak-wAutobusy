@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.krak.krakowautobusy.R
 import com.krak.krakowautobusy.api.Api
 import com.krak.krakowautobusy.database.LineData
@@ -44,6 +45,8 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
         var isFavouriteIcon:ImageView?=null
         var busStopViaRoute:TextView?=null
         var idLine:Int?=null
+        var circleRed:ImageView?=null
+        var circleGreen:ImageView?=null
         var iconVehicleStopViaRoute:ImageView?=null
 
     }
@@ -77,10 +80,12 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
         viewHolder.stopBusStation=view.findViewById(R.id.lastBusStopTextField)
         viewHolder.busStopViaRoute=view.findViewById(R.id.busStopViaRoute)
         viewHolder.iconVehicleStopViaRoute=view.findViewById(R.id.iconVehicleStopViaRoute)
+        viewHolder.circleGreen=view.findViewById(R.id.circleGreen)
+        viewHolder.circleRed=view.findViewById(R.id.circleRed)
     }
 
 
-    private fun ifUserWriteNumberShowMiddleVehicleStopIfNotHideMiddleField(vehicleStopViaPotential:String, viewHolder: ViewHolder):ViewHolder{
+    private fun ifUserWriteNumberShowMiddleVehicleStopIfNotHideMiddleField(vehicleStopViaPotential:String, viewHolder: ViewHolder,isShowVS:Boolean):ViewHolder{
         if(vehicleStopViaPotential.isNotEmpty()){
             viewHolder.busStopViaRoute?.visibility =View.VISIBLE
             viewHolder.iconVehicleStopViaRoute?.visibility =View.VISIBLE
@@ -88,6 +93,10 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
         }else{
             viewHolder.busStopViaRoute?.visibility =View.GONE
             viewHolder.iconVehicleStopViaRoute?.visibility =View.GONE
+        }
+
+        if(isShowVS){
+            viewHolder.busStopViaRoute?.visibility =View.VISIBLE
         }
         return viewHolder
     }
@@ -170,8 +179,32 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
         viewHolder.idLine=dataModel.numberLine.toInt()
 
 
+        var isShowVehicleStop=false;
+      if(dataModel.nameBusStop.length!=0){
+         // viewHolder.startBusStation!!.text=dataModel.nameBusStop
 
-     return   ifUserWriteNumberShowMiddleVehicleStopIfNotHideMiddleField(dataModel.busStopViaRoute,viewHolder);
+
+          viewHolder.lineNumberBox!!.setBackgroundResource(R.drawable.ic_bus_stop)
+         viewHolder.lineNumberBox!!.scaleX=0.8f
+         viewHolder.lineNumberBox!!.scaleY=0.8f
+          viewHolder.lineNumber!!.text=""
+          viewHolder.busStopViaRoute?.visibility =View.VISIBLE
+          viewHolder.busStopViaRoute!!.text=dataModel.nameBusStop
+          viewHolder.circleRed!!.visibility=View.GONE
+          viewHolder.circleGreen!!.visibility=View.GONE
+          isShowVehicleStop=true;
+         // viewHolder.iconVehicleStopViaRoute?.visibility =View.VISIBLE
+
+      }else{
+          viewHolder.circleRed!!.visibility=View.VISIBLE
+          viewHolder.circleGreen!!.visibility=View.VISIBLE
+          viewHolder.lineNumberBox!!.scaleX=1.0f
+          viewHolder.lineNumberBox!!.scaleY=1.0f
+      }
+
+
+
+     return   ifUserWriteNumberShowMiddleVehicleStopIfNotHideMiddleField(dataModel.busStopViaRoute,viewHolder,isShowVehicleStop);
 
 
 
@@ -198,10 +231,17 @@ Log.e("kurwa","JEGO MAĆ 3")
 
 
             if(lineData.isFavourite) {
-                findIndexClickIcon(lineData.numberLine.toInt(),true)
-                Api.getApi().addLineToFavourite(lineData.numberLine.toInt())
+
+                if (viewHolder.lineNumberBox!!.background.constantState == context.resources.getDrawable(R.drawable.ic_bus_stop).constantState) {
+                    Api.getApi().addVehicleStopToFavorite(lineData.nameBusStop)
+
+                }else {
 
 
+                    findIndexClickIcon(lineData.numberLine.toInt(), true)
+                    Api.getApi().addLineToFavourite(lineData.numberLine.toInt())
+
+                }
                 it!!.animate()
                     .scaleX(1.2f).setDuration(400).start()
 
@@ -216,10 +256,16 @@ Log.e("kurwa","JEGO MAĆ 3")
 
 
             }else{
-                findIndexClickIcon(lineData.numberLine.toInt(),false)
-                Api.getApi().removeLinesFromFavourites(lineData.numberLine.toInt())
 
+                if (viewHolder.lineNumberBox!!.background.constantState == context.resources.getDrawable(R.drawable.ic_bus_stop).constantState) {
+                    Api.getApi().removeVehicleStopFromFavourite(lineData.nameBusStop)
 
+                }else {
+
+                    findIndexClickIcon(lineData.numberLine.toInt(), false)
+                    Api.getApi().removeLinesFromFavourites(lineData.numberLine.toInt())
+
+                }
 
 
 

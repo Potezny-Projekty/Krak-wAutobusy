@@ -44,4 +44,8 @@
     <string name="openstreetmap_license">© autorzy OpenStreetMap</string>
 
 
+
+    <string name="textLineNumber">Linia numer</string>
+
+
 </resources>

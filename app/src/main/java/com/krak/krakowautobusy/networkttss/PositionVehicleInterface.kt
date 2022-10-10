@@ -8,7 +8,6 @@ interface PositionVehicleInterface {
     fun getBusPosition(lastUpdate:Long, callbackResponse: (Response<AllVehicles>) -> Unit): Unit
     fun getAllVehiclePosition()
     fun getTramPosition(lastUpdate:Long, callbackResponse: (Response<AllVehicles>) -> Unit): Unit
-
     fun getTramPath(idVehicle:String, callbackResponse: (Response<JsonObject>) -> Unit): Unit
     fun getBusPath(idVehicle:String, callbackResponse: (Response<JsonObject>) -> Unit): Unit
 }

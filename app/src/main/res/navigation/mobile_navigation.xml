@@ -13,7 +13,9 @@
             tools:layout="@layout/fragment_no_internet" >
         <action
             android:id="@+id/action_navigation_no_internet_to_navigation_map"
-            app:destination="@id/navigation6" />
+            app:destination="@id/navigation6"
+            app:popUpTo="@id/navigation_no_internet"
+            app:popUpToInclusive="true" />
     </fragment>
     <navigation android:id="@+id/navigation6"
         app:startDestination="@id/navigation_map">
@@ -66,6 +68,9 @@
             <action
                 android:id="@+id/actionnavigatedetailesstop"
                 app:destination="@id/navigation_detailed_lines" />
+
+            <action android:id="@+id/actionfrommaptodetailedstop"
+                app:destination="@+id/xx"></action>
 
         </fragment>
         <fragment
@@ -143,7 +148,21 @@
             tools:layout="@layout/activity_loading_page" />
         <action
             android:id="@+id/action_global_navigation_no_internet"
+            app:destination="@id/navigation_no_internet"
+            app:popUpTo="@id/navigation_map"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_global_navigation_no_internet2"
             app:destination="@id/navigation_no_internet" />
+        <action
+            android:id="@+id/action_global_navigation_no_internet3"
+            app:destination="@id/navigation_no_internet"
+            app:popUpTo="@id/navigation_map" />
+        <action
+            android:id="@+id/action_global_navigation_no_internet4"
+            app:destination="@id/navigation_no_internet"
+            app:popUpTo="@id/navigation6"
+            app:popUpToInclusive="true" />
     </navigation>
 
 

@@ -3,25 +3,30 @@ package com.krak.krakowautobusy.ui.map.vehicledata
 import android.animation.*
 import android.app.Activity
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.animation.doOnEnd
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.krak.krakowautobusy.BundleChoiceVehicle
 import com.krak.krakowautobusy.R
 import com.krak.krakowautobusy.api.Api
 import com.krak.krakowautobusy.database.LineData
 import com.krak.krakowautobusy.databinding.FragmentSearchViewBinding
+import com.krak.krakowautobusy.ui.vehiclestop.Bundle_Vehicle_Stop
 
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class SearchViewFragment : Fragment() {
     private var _binding: FragmentSearchViewBinding? = null
@@ -99,6 +104,38 @@ class SearchViewFragment : Fragment() {
 
     fun addOnClickListenerToLineOnList(){
         binding.searchList.setOnItemClickListener { _, view, _, _ ->
+
+            var icon=view.findViewById<LinearLayout>(R.id.lineNumberBox).background
+
+           // val bitmap: Bitmap = icon.toBitmap()
+          //  val bitmap2: Bitmap = requireContext().resources.getDrawable(R.drawable.ic_bus_stop).toBitmap()
+
+            if (icon.constantState == requireContext().resources.getDrawable(R.drawable.ic_bus_stop).constantState) {
+                Log.e("sprawdzilosc","to samo")
+
+
+                val bundle = bundleOf(
+                    Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
+                            "",
+                    Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
+                            view.findViewById<TextView>(R.id.busStopViaRoute).text,
+                    Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
+                            ""
+
+                )
+                //bundle
+
+
+
+                Navigation.findNavController(view)
+                    .navigate(R.id.actionnavigatedetailesstop, bundle);
+
+
+
+
+            }else{
+
+
             val bundle = bundleOf(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject to
                     view.findViewById<TextView>(R.id.lineNumber).text.toString().trim().toInt(),
                 BundleChoiceVehicle.FIRST_STOP_VEHICLE_NAME.nameBundleObject
@@ -109,7 +146,7 @@ class SearchViewFragment : Fragment() {
                 )
 
             Navigation.findNavController(view).navigate(R.id.action_navigation_map_to_detailsFragment,bundle);
-        }
+        }}
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -375,6 +412,11 @@ class SearchViewFragment : Fragment() {
         return Api.getApi().getInfoAboutLinePatternAnyVehicleStop(patternVehicleStop);
     }
 
+    private fun getMatchVehicleStopName(namevehicleStop:String):ArrayList<LineData>{
+     //   getAllVehicleStopAsLineData
+        return Api.getApi().getAllVehicleStopAsLineData(namevehicleStop)
+    }
+
 
     private fun ifWriteNumberLine(patternSerchTextWriteByUser:String):Boolean{
         if(patternSerchTextWriteByUser.toIntOrNull()!=null){
@@ -396,6 +438,8 @@ class SearchViewFragment : Fragment() {
                 matchLines=getMatchAnyVehicleStopLineFromDatabase(textFromSearchInput)
             }
         }
+
+        matchLines.addAll(Api.getApi().getAllVehicleStopAsLineData(textFromSearchInput))
         return matchLines
 
     }

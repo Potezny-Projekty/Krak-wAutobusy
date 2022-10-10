@@ -8,26 +8,26 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 
+
+
+
+
+
 class Database(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
-
-    val TABLE_LINE = "lineTable"
-    val KEY_ID = "id"
-    val KEY_NUMBER_LINE = "lineNumber"
-    val KEY_LAST_BUS_STOP = "lastBusStopName"
-    val KEY_FIRST_BUS_STOP = "firstBusStopName"
-
 
 
 
     companion object {
-        val NAME_DATABASE_IN_ASSETS_FOLDER="manu"
-        val NAME_DATABASE_OUTPUT="busDatabase"
-        val KILO_BYTE=1024
-        val ZERO_SIZE=0
-        val COPY_WRITE_POSITION=0
-        val DATABASE_VERSION = 1
-        val DATABASE_NAME = "busDatabase"
+
+        private const  val NAME_DATABASE_IN_ASSETS_FOLDER="manu"
+        private const val NAME_DATABASE_OUTPUT="busDatabase"
+        private const val KILO_BYTE=1024
+        private const val ZERO_SIZE=0
+        private const val COPY_WRITE_POSITION=0
+        const val DATABASE_VERSION = 1
+        const val DATABASE_NAME = "busDatabase"
+
 
         private fun copyFileDatabaseFromAssetsToDatabaseFolder(context: Context){
 
@@ -48,7 +48,7 @@ class Database(context: Context) :
 
         }
 
-        private fun doesDatabaseExist(context: Context, dbName: String): Boolean {
+        private fun isDatabaseExist(context: Context, dbName: String): Boolean {
             val dbFile = context.getDatabasePath(dbName)
             return dbFile.exists()
         }
@@ -56,7 +56,7 @@ class Database(context: Context) :
         private  fun importdb( context: Context) {
 
             try {
-                if(!doesDatabaseExist(context,NAME_DATABASE_OUTPUT)){
+                if(!isDatabaseExist(context,NAME_DATABASE_OUTPUT)){
                     copyFileDatabaseFromAssetsToDatabaseFolder(context)
                 }
 
@@ -64,9 +64,6 @@ class Database(context: Context) :
                 e.printStackTrace()
             }
         }
-
-
-
 
         private var instance: Database? = null
 

@@ -6,18 +6,20 @@ import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import com.krak.krakowautobusy.api.Api
 
+
+const val ID_VEHICLE_STOP_COL = "idVehicleStop"
+const val NAME_COL = "name"
+const val LONGITUDE_COL = "longtitude"
+const val LATITUDE_COL = "lattitude"
+const val ID_SHORT_COL = "idShort"
+const val VEHICLE_TYPE_COL = "vehicleType"
+const val ID_STOP_POINT_COL = "idStopPoint"
+const val TABLE_VEHICLE_STOP = "VehicleStop"
+
+val COLUMN_VEHICLE_STOP_TABLE_NUMBER = LinkedHashMap<String, Int>()
+
+
 class FavouriteVehicleStop :FavouriteVehicleStopInterface {
-
-    val ID_VEHICLE_STOP_COL = "idVehicleStop"
-    val NAME_COL = "name"
-    val LONGITUDE_COL = "longtitude"
-    val LATITUDE_COL = "lattitude"
-    val ID_SHORT_COL = "idShort"
-    val VEHICLE_TYPE_COL = "vehicleType"
-    val ID_STOP_POINT_COL = "idStopPoint"
-    val TABLE_VEHICLE_STOP = "VehicleStop"
-
-    val COLUMN_VEHICLE_STOP_TABLE_NUMBER = LinkedHashMap<String, Int>()
 
     init {
         COLUMN_VEHICLE_STOP_TABLE_NUMBER[ID_VEHICLE_STOP_COL] = 0
@@ -30,7 +32,7 @@ class FavouriteVehicleStop :FavouriteVehicleStopInterface {
     }
 
 
-    public  fun returnVehicleStopPointFromCursor(
+    private fun returnVehicleStopPointFromCursor(
         cursor: Cursor,
         vehicleType: VehicleType
     ): VehicleStopData {
@@ -44,18 +46,10 @@ class FavouriteVehicleStop :FavouriteVehicleStopInterface {
             cursor.getInt(COLUMN_VEHICLE_STOP_TABLE_NUMBER[ID_SHORT_COL]!!),
             vehicleType,
             cursor.getInt(COLUMN_VEHICLE_STOP_TABLE_NUMBER[ID_STOP_POINT_COL]!!),
-            if(cursor.getString(0)==null) false else true
+            cursor.getString(0) != null
         )
 
     }
-
-
-
-
-
-
-
-
 
 
     override fun getAllFavouriteVehicleStop(db: SQLiteDatabase): ArrayList<VehicleStopData> {
@@ -70,7 +64,7 @@ class FavouriteVehicleStop :FavouriteVehicleStopInterface {
                 + TableName.FAVOURITE_VEHICLE_STOP.nameTable+".IdVehicleStop",null
         )
 
-        //val cursor = db.query(TABLE_VEHICLE_STOP, columnReturns, null, null, null, null, null, null)
+
         if (cursor!!.moveToFirst()) {
             do {
                 val vehicleTypeStop: VehicleStopData =
@@ -97,15 +91,13 @@ class FavouriteVehicleStop :FavouriteVehicleStopInterface {
         val cursor = db.rawQuery(queryIsVehicleStopFavourite+filterCondition,null)
 
 
-
-
         return if(cursor.count> TABLE_NO_ELEMENT){
             cursor.close()
-            Log.e("kursor","prawda")
+
             true
         }else {
             cursor.close()
-            Log.e("kursor","falsz")
+
             false
         }
     }
@@ -113,12 +105,8 @@ class FavouriteVehicleStop :FavouriteVehicleStopInterface {
     override fun addVehicleStopToFavorite(db: SQLiteDatabase, nameVehicleStop: String) {
 
         val idVehicleStopsAboutName=Api.getApi().getVehicleStopIdByName(nameVehicleStop) //Api.getApi().getV
-
         if(!isVehicleStopFavouriteById(db, idVehicleStopsAboutName)){
-            val vehicleStop = ContentValues().apply {
-                put(FavouriteVehicleStops.ID_VEHICLE_STOP .nameColumn,idVehicleStopsAboutName)
-            }
-            db.insert(TableName.FAVOURITE_LINE.nameTable,null,vehicleStop)
+            addVehicleStopToFavoriteById(db,idVehicleStopsAboutName)
         }
     }
 
@@ -133,11 +121,7 @@ class FavouriteVehicleStop :FavouriteVehicleStopInterface {
                 " ON ${VehicleStopTable.ID_VEHICLE_STOP.nameColumn}=${FavouriteVehicleStops.ID_VEHICLE_STOP.nameColumn} WHERE "
 
         val filterCondition = "${VehicleStopTable.ID_VEHICLE_STOP.nameColumn}=${IdVehicleStop}"
-        Log.e("vvvv",queryIsVehicleStopFavourite+filterCondition)
         val cursor = db.rawQuery(queryIsVehicleStopFavourite+filterCondition,null)
-
-
-
 
         return if(cursor.count> TABLE_NO_ELEMENT){
             cursor.close()
@@ -151,23 +135,17 @@ class FavouriteVehicleStop :FavouriteVehicleStopInterface {
     override fun addVehicleStopToFavoriteById(db: SQLiteDatabase, IdVehicleStop: String) {
         if(!isVehicleStopFavouriteById(db, IdVehicleStop)){
             val vehicleStop = ContentValues().apply {
-                put( "IdVehicleStop",IdVehicleStop)
+                put( ID_VEHICLE_STOP_COL,IdVehicleStop)
             }
             db.insert(TableName.FAVOURITE_VEHICLE_STOP.nameTable,null,vehicleStop)
         }
-        Log.e("kurwap","Insert")
+
     }
 
     override fun removeVehicleStopFromFavouriteById(db: SQLiteDatabase, IdVehicleStop: String) {
         val removeCondition = "${FavouriteVehicleStops.ID_VEHICLE_STOP .nameColumn}=?"
-        Log.e("kurwap","Delete from FavouriteVehicleStop where idVehicleStop="+IdVehicleStop)
-      //  db.rawQuery("Delete from FavouriteVehicleStop where IdVehicleStop="+IdVehicleStop,null)
-
         db.delete(TableName.FAVOURITE_VEHICLE_STOP.nameTable,  removeCondition, arrayOf( IdVehicleStop))
 
-// val removeCondition = "${FavouriteLineTable.ID_LINE.nameColumn}=?"
-//
-//        db.delete(TableName.FAVOURITE_LINE.nameTable,  removeCondition, arrayOf( idLine.toString()))
     }
 
 }

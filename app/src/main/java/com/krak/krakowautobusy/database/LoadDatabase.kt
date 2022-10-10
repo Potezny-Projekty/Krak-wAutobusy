@@ -6,13 +6,18 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 
-class LoadDatabase(context: Context) {
-    val NAME_DATABASE_IN_ASSETS_FOLDER="manu"
-    val NAME_DATABASE_OUTPUT="busDatabase"
-    val KILO_BYTE=1024
-    val ZERO_SIZE=0
-    val COPY_WRITE_POSITION=0
 
+const val NAME_DATABASE_IN_ASSETS_FOLDER="manu"
+const val NAME_DATABASE_OUTPUT="busDatabase"
+const val KILO_BYTE=1024
+const val ZERO_SIZE=0
+const val COPY_WRITE_POSITION=0
+
+
+/**
+ * Propably this class is double functionally Database class
+ */
+class LoadDatabase(context: Context) {
 
     init {
         importdb(context)

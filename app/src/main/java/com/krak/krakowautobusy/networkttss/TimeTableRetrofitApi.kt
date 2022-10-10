@@ -5,8 +5,6 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface TimeTableRetrofitApi {
-    ///internetservice/services/tripInfo/tripPassages
-
 
     @GET("services/tripInfo/tripPassages")
     fun getTimeTableVehicles(@Query("tripId") lastUpdate : String,

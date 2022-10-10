@@ -2,47 +2,48 @@ package com.krak.krakowautobusy.database
 
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
+import java.lang.IllegalStateException
 
 class VehicleStop:VehicleStopInterface {
 
-    val ID_VEHICLE_STOP_COL = "idVehicleStop"
-    val NAME_COL = "name"
-    val LONGITUDE_COL = "longtitude"
-    val LATITUDE_COL = "lattitude"
-    val ID_SHORT_COL = "idShort"
-    val VEHICLE_TYPE_COL = "vehicleType"
-    val ID_STOP_POINT_COL = "idStopPoint"
-    val TABLE_VEHICLE_STOP = "VehicleStop"
-
-    val COLUMN_VEHICLE_STOP_TABLE_NUMBER = LinkedHashMap<String, Int>()
+    private val idVehicleStopCol = "idVehicleStop"
+    private val nameCol = "name"
+    private val longitudeCol = "longtitude"
+    private val latitudeCol = "lattitude"
+    private val idShortCol = "idShort"
+    private val vehicleTypeCol = "vehicleType"
+    private val idStopPointCol = "idStopPoint"
+    private val tableVehicleStopCol = "VehicleStop"
+    private val isFavouriteCol="isFavourite"
+    private val columnVehicleStopTableNumber = LinkedHashMap<String, Int>()
 
     init {
-        COLUMN_VEHICLE_STOP_TABLE_NUMBER[ID_VEHICLE_STOP_COL] = 0
-        COLUMN_VEHICLE_STOP_TABLE_NUMBER[NAME_COL] = 1
-        COLUMN_VEHICLE_STOP_TABLE_NUMBER[LONGITUDE_COL] = 2
-        COLUMN_VEHICLE_STOP_TABLE_NUMBER[LATITUDE_COL] = 3
-        COLUMN_VEHICLE_STOP_TABLE_NUMBER[ID_SHORT_COL] = 4
-        COLUMN_VEHICLE_STOP_TABLE_NUMBER[VEHICLE_TYPE_COL] = 5
-        COLUMN_VEHICLE_STOP_TABLE_NUMBER[ID_STOP_POINT_COL] = 6
+        columnVehicleStopTableNumber[idVehicleStopCol] = 0
+        columnVehicleStopTableNumber[nameCol] = 1
+        columnVehicleStopTableNumber[longitudeCol] = 2
+        columnVehicleStopTableNumber[latitudeCol] = 3
+        columnVehicleStopTableNumber[idShortCol] = 4
+        columnVehicleStopTableNumber[vehicleTypeCol] = 5
+        columnVehicleStopTableNumber[idStopPointCol] = 6
+        columnVehicleStopTableNumber[isFavouriteCol] = 7
     }
 
 
-  public  fun returnVehicleStopPointFromCursor(
+    private fun returnVehicleStopPointFromCursor(
         cursor: Cursor,
         vehicleType: VehicleType
     ): VehicleStopData {
 
-        Log.e("ope",cursor.getLong(COLUMN_VEHICLE_STOP_TABLE_NUMBER[ID_VEHICLE_STOP_COL]!!).toString())
+
          return   VehicleStopData(
-                cursor.getLong(COLUMN_VEHICLE_STOP_TABLE_NUMBER[ID_VEHICLE_STOP_COL]!!),
-                cursor.getString(COLUMN_VEHICLE_STOP_TABLE_NUMBER[NAME_COL]!!).toString(),
-                cursor.getLong(COLUMN_VEHICLE_STOP_TABLE_NUMBER[LONGITUDE_COL]!!),
-                cursor.getLong(COLUMN_VEHICLE_STOP_TABLE_NUMBER[LATITUDE_COL]!!),
-                cursor.getInt(COLUMN_VEHICLE_STOP_TABLE_NUMBER[ID_SHORT_COL]!!),
+                cursor.getLong(columnVehicleStopTableNumber[idVehicleStopCol]!!),
+                cursor.getString(columnVehicleStopTableNumber[nameCol]!!).toString(),
+                cursor.getLong(columnVehicleStopTableNumber[longitudeCol]!!),
+                cursor.getLong(columnVehicleStopTableNumber[latitudeCol]!!),
+                cursor.getInt(columnVehicleStopTableNumber[idShortCol]!!),
                 vehicleType,
-                cursor.getInt(COLUMN_VEHICLE_STOP_TABLE_NUMBER[ID_STOP_POINT_COL]!!),
-                if(cursor.getString(7)==null) false else true
+                cursor.getInt(columnVehicleStopTableNumber[idStopPointCol]!!),
+             cursor.getString(columnVehicleStopTableNumber[isFavouriteCol]!!) != null
             )
 
     }
@@ -52,27 +53,19 @@ class VehicleStop:VehicleStopInterface {
         db: SQLiteDatabase,
         id: Long
     ): VehicleStopData {
-        var busStop = arrayListOf<VehicleStopData>()
+        val busStop = arrayListOf<VehicleStopData>()
 
-
-        val columnReturns = arrayOf(
-            ID_VEHICLE_STOP_COL, NAME_COL, LONGITUDE_COL,
-            LATITUDE_COL, ID_SHORT_COL, VEHICLE_TYPE_COL, ID_STOP_POINT_COL
-        )
-        val filterCondition = "${ID_STOP_POINT_COL}=?"
-
-
-        val cursor=  db.rawQuery("SELECT  VehicleStop."+ID_VEHICLE_STOP_COL+","+ NAME_COL+","+ LONGITUDE_COL+"," +
-                LATITUDE_COL+","+ ID_SHORT_COL+","+ VEHICLE_TYPE_COL+","+ ID_STOP_POINT_COL+",FavouriteVehicleStop.IdVehicleStop"+
-                " FROM "+TABLE_VEHICLE_STOP+" LEFT OUTER JOIN "+TableName.FAVOURITE_VEHICLE_STOP.nameTable+" ON "+
-                TABLE_VEHICLE_STOP+".idVehicleStop="
-                + TableName.FAVOURITE_VEHICLE_STOP.nameTable+".IdVehicleStop Where "+"${ID_STOP_POINT_COL}="+id.toString(),null
+        val cursor=  db.rawQuery("SELECT  VehicleStop."+idVehicleStopCol+","+ nameCol+","+ longitudeCol+"," +
+                latitudeCol+","+ idShortCol+","+ vehicleTypeCol+","+ idStopPointCol+",FavouriteVehicleStop.IdVehicleStop"+
+                " FROM "+tableVehicleStopCol+" LEFT OUTER JOIN "+TableName.FAVOURITE_VEHICLE_STOP.nameTable+" ON "+
+                tableVehicleStopCol+".idVehicleStop="
+                + TableName.FAVOURITE_VEHICLE_STOP.nameTable+".IdVehicleStop Where "+"${idStopPointCol}="+id.toString(),null
         )
 
         if (cursor!!.moveToFirst()) {
 
                 val findVehicleStopType: VehicleStopData =
-                    if (COLUMN_VEHICLE_STOP_TABLE_NUMBER[VEHICLE_TYPE_COL]?.let { cursor.getInt(it) } == VehicleType.BUS.number) {
+                    if (columnVehicleStopTableNumber[vehicleTypeCol]?.let { cursor.getInt(it) } == VehicleType.BUS.number) {
                         returnVehicleStopPointFromCursor(cursor,VehicleType.BUS)
                     } else {
                         returnVehicleStopPointFromCursor(cursor,VehicleType.TRAM)
@@ -82,42 +75,56 @@ class VehicleStop:VehicleStopInterface {
         }
         cursor.close()
 
-        if(busStop.size>0){
-            return busStop[0]
-        }else{//źle to jest formalnie
-            return VehicleStopData(-1,"Brak",0,0,0,VehicleType.BUS,0,false);
+        return if(busStop.size>0){
+            busStop[0]
+        }else{
+            throw IllegalStateException("This state can't exist")
         }
-
 
     }
 
 
+
+    override fun getAllVehicleStopAsLineData(db:SQLiteDatabase,name:String):ArrayList<LineData>{
+        val finalLineData:ArrayList<LineData> = ArrayList()
+        val allvehicles=getAllVehicleStop(db)
+        val defaultNumericValue=0L
+        val defaultStringValue=""
+        for(x in allvehicles){
+            if(x.name.lowercase().contains(name.lowercase())) {
+                finalLineData.add(
+                    LineData(
+                        defaultNumericValue,
+                        defaultNumericValue,
+                        defaultNumericValue,
+                        defaultNumericValue,
+                        VehicleType.BUS,
+                        defaultStringValue,
+                        defaultStringValue,
+                        x.isFavourite,
+                        defaultStringValue,
+                        x.name
+                    )
+                )
+            }
+            }
+        return finalLineData
+    }
+
     override fun getAllVehicleStop(db: SQLiteDatabase): ArrayList<VehicleStopData> {
         val allVehicleStop = arrayListOf<VehicleStopData>()
 
-        val columnReturns = arrayOf(
-            ID_VEHICLE_STOP_COL, NAME_COL, LONGITUDE_COL,
-            LATITUDE_COL, ID_SHORT_COL, VEHICLE_TYPE_COL, ID_STOP_POINT_COL
-        )
-
-        val cursor=  db.rawQuery("SELECT  VehicleStop."+ID_VEHICLE_STOP_COL+","+ NAME_COL+","+ LONGITUDE_COL+"," +
-                            LATITUDE_COL+","+ ID_SHORT_COL+","+ VEHICLE_TYPE_COL+","+ ID_STOP_POINT_COL+",FavouriteVehicleStop.IdVehicleStop"+
-                " FROM "+TABLE_VEHICLE_STOP+" LEFT OUTER JOIN "+TableName.FAVOURITE_VEHICLE_STOP.nameTable+" ON "+
-                TABLE_VEHICLE_STOP+".idVehicleStop="
+        val cursor=  db.rawQuery("SELECT  VehicleStop."+idVehicleStopCol+","+ nameCol+","+ longitudeCol+"," +
+                            latitudeCol+","+ idShortCol+","+ vehicleTypeCol+","+ idStopPointCol+",FavouriteVehicleStop.IdVehicleStop"+
+                " FROM "+tableVehicleStopCol+" LEFT OUTER JOIN "+TableName.FAVOURITE_VEHICLE_STOP.nameTable+" ON "+
+                tableVehicleStopCol+".idVehicleStop="
                 + TableName.FAVOURITE_VEHICLE_STOP.nameTable+".IdVehicleStop",null
         )
 
-
-
-
-
-
-
-        //val cursor = db.query(TABLE_VEHICLE_STOP, columnReturns, null, null, null, null, null, null)
         if (cursor!!.moveToFirst()) {
             do {
                 val vehicleTypeStop: VehicleStopData =
-                    if (COLUMN_VEHICLE_STOP_TABLE_NUMBER[VEHICLE_TYPE_COL]?.let { cursor.getInt(it) } == VehicleType.BUS.number) {
+                    if (columnVehicleStopTableNumber[vehicleTypeCol]?.let { cursor.getInt(it) } == VehicleType.BUS.number) {
                         returnVehicleStopPointFromCursor(cursor,VehicleType.BUS)
                     } else {
                         returnVehicleStopPointFromCursor(cursor,VehicleType.TRAM)
@@ -131,17 +138,19 @@ class VehicleStop:VehicleStopInterface {
         return allVehicleStop
     }
 
+
+    /**
+     * This method possible implemented in future
+     * @suppress no implemented
+     */
     override fun getAllVehicleStopLine(db: SQLiteDatabase): ArrayList<VehicleStopData> {
-
-
-
         TODO("Not yet implemented")
     }
 
     override fun findNameBusStopById(db: SQLiteDatabase, idStop: Int): String {
         val columnReturns = arrayOf(VehicleStopTable.NAME.nameColumn)
-        val FIRST_COLUMN_RETURN=0
-        val RETURN_NOTHING=""
+        val firstColumnReturn=0
+        val returnNothingDefault=""
 
         val filterCondition = "${VehicleStopTable.ID_STOP_POINT.nameColumn}=?"
 
@@ -157,16 +166,17 @@ class VehicleStop:VehicleStopInterface {
         )
         if (cursor!!.moveToFirst()) {
 
-            return   cursor.getString(FIRST_COLUMN_RETURN)
+            return   cursor.getString(firstColumnReturn)
         }
-        return RETURN_NOTHING
+
+        cursor.close()
+        return returnNothingDefault
     }
 
     override fun getVehicleStopIdByName(db: SQLiteDatabase, nameVehicleStop: String): String {
-        val columnReturns = arrayOf(VehicleStopTable.ID_STOP_POINT.nameColumn)
-        val FIRST_COLUMN_RETURN=0
-        val RETURN_NOTHING=""
-
+        val columnReturns = arrayOf(VehicleStopTable.ID_VEHICLE_STOP.nameColumn)
+        val firstColumnReturn=0
+        val returnNothingDefault=""
         val filterCondition = "${VehicleStopTable.NAME.nameColumn}=?"
 
         val cursor = db.query(
@@ -181,8 +191,10 @@ class VehicleStop:VehicleStopInterface {
         )
         if (cursor!!.moveToFirst()) {
 
-            return   cursor.getString(FIRST_COLUMN_RETURN)
+            return   cursor.getString(firstColumnReturn)
         }
-        return RETURN_NOTHING
+
+        cursor.close()
+        return returnNothingDefault
     }
 }

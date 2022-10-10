@@ -3,6 +3,7 @@ package com.krak.krakowautobusy.ui.details
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -35,34 +37,33 @@ import java.lang.Exception
 import java.lang.IllegalStateException
 import java.lang.Runnable
 
+data class IdVehicle(val tripId:String,val vehicleId:String,val direction:String)
+
+
+private const val DELAY_FIRST_REFRESH_TIME_TABLE_AFTER_DOWNLOAD_ALL_LINES_WITH_NUMBER_DATA_MS=1500L
+private const val REFRESH_TIME_TABLE_AFTER_DOWNLOAD_DATA_ALL_LINES_WITH_NUMBER_MS=5000L
+private const val DELAY_CHANGE_VEHICLE_FOLLOW_FOR_UPDATE_DATA_MS=300L
+private const val DELAY_REFRESH_ALL_VEHICLE_MS=15000L
 
 class DetailsFragment : Fragment() {
 
-
-    data class IdVehicle(val tripId:String,val vehicleId:String,val direction:String)
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
-    private val DEFAULT_VEHICLE_NUMBER=0;
-    private val NUMBER_LINE_TOP_TEXT_FORMAT="Linia numer "//to ze stringów brać trzeba xD Kurwa Mać JA pierdole
-    private  var lineNumber:Int=DEFAULT_VEHICLE_NUMBER;
+    private val defaultVehicleNumber=0
+    private val numberLineTopTextFormat=resources.getString(R.string.textLineNumber)
+    private  var lineNumber:Int=defaultVehicleNumber
     private var firstVehicleStopName=""
     private var lastVehicleStopName=""
-    private val LINE_NUMBER_BUNDLE_NAME="lineNumber"
+    private val lineNumberBundleName="lineNumber"
     private val mapViewModel: DetailsMapViewModel by viewModels()
     private var adapterListTimeTable:AdapterTimeTableListView?=null
     private lateinit var refreshTimeTableAfterDownloadDataRunable:Runnable
     private lateinit var refreshListVehicleRunnable: Runnable
-    val DELAY_FIRST_REFRESH_TIME_TABLE_AFTER_DOWNLOAD_ALL_LINES_WITH_NUMBER_DATA_MS=1500L
-    val REFRESH_TIME_TABLE_AFTER_DOWNLOAD_DATA_ALL_LINES_WITH_NUMBER_MS=5000L
-    val DELAY_CHANGE_VEHICLE_FOLLOW_FOR_UPDATE_DATA_MS=300L
-    val DELAY_REFRESH_ALL_VEHICLE_MS=15000L
+
 
     val mainHandler = Handler(Looper.getMainLooper())
-    var vehicles:ArrayList<IdVehicle> = ArrayList<IdVehicle>()
+    private var vehicles:ArrayList<IdVehicle> = ArrayList()
     var choiceIndex:Int=0
-    //var actualBus:ArrayList<StatusData>=ArrayList<StatusData>()
-
-
 
     private var vehicleNameFromMaps:String?=null
     private var tripIdFromMaps:String?=null
@@ -71,67 +72,73 @@ class DetailsFragment : Fragment() {
         var numberLine:Int = 0
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
-        //messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));//to obczaj
 
 
-            if(arguments!=null) {
-                if(requireArguments().size()>1){
+    private fun readArgumentsAndProvideDataForMap(){
+        if(arguments!=null) {
+            if(requireArguments().size()>1){
+                messageForMapFragment(requireArguments().getInt(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject))
+                vehicleNameFromMaps=requireArguments().getInt(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject).toString()
+                tripIdFromMaps=requireArguments().getString("tripId").toString()
 
-                  //  Log.e("szczegoly",":D"+requireArguments().getInt(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject)+" / "+ arguments!!.size())
-                    messageForMapFragment(requireArguments().getInt(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject))
-                    vehicleNameFromMaps=requireArguments().getInt(BundleChoiceVehicle.LINE_NUMBER.nameBundleObject).toString()
-                    tripIdFromMaps=requireArguments().getString("tripId").toString()
-
-
-                  //  vehicleIdFromMaps=requireArguments().getString("vehicleId").toString()
-                }else {
-                    messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));//to obczaj
-                }
-
-
+            }else {
+                messageForMapFragment(requireArguments().getInt(lineNumberBundleName));//to obczaj
             }
 
-        setFragmentResultListener("details") { requestKey, bundle ->
-            vehicleNameFromMaps = bundle.getString("vehicle")
-            vehicleNameFromMaps?.let { Log.e("szczegoly", it) }
-            tripIdFromMaps=bundle.getString("tripId")
-            vehicleIdFromMaps=bundle.getString("vehicleId")
-            messageForMapFragment(vehicleNameFromMaps!!.toInt());//to obczaj
-           // messageForMapFragment(vehicleNameFromMaps!!.toInt());//to obczaj
 
-            // Do something with the result
-            // Log.i("TTTTTTT", vehicleName.toString())
         }
+    }
 
-        val colorGray = "#FF757575"
-        val colorGreen = "#32CD32"
 
+    private fun addFragmentResultListener(){
+        val requestKeyName="details"
+        val bundleVehicleNameKey="vehicle"
+        val bundleTripIdKey="tripId"
+        val bundleVehicleIdKey="vehicleId"
+
+
+        setFragmentResultListener(requestKeyName) { _, bundle ->
+            vehicleNameFromMaps = bundle.getString(bundleVehicleNameKey)
+            tripIdFromMaps=bundle.getString(bundleTripIdKey)
+            vehicleIdFromMaps=bundle.getString(bundleVehicleIdKey)
+            messageForMapFragment(vehicleNameFromMaps!!.toInt())
+        }
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun addOnClickNavigationButton(){
         binding.locationfab.setOnClickListener{
             mapViewModel.isSetLocation()
             if (mapViewModel.setMyLocation.value!!) {
                 binding.locationfab.iconTint =
-                    ColorStateList.valueOf(Color.parseColor(colorGreen))
+                    ColorStateList.valueOf(resources.getColor(R.color.detailsFragmentColorGreen,null))
             } else {
                 binding.locationfab.iconTint =
-                    ColorStateList.valueOf(Color.parseColor(colorGray))
+                    ColorStateList.valueOf(resources.getColor(R.color.detailsFragmentColorGray,null))
             }
-            it.setBackgroundColor(Color.rgb(224,224,224))
+
+            it.setBackgroundColor(resources.getColor(R.color.animFloatingButtonColor,null))
+
+            val animIncreaseButtonFactory=1.05f
+            val animDurationMS=300L
+            val defaultSize=1.0f
+            val defaultColor=Color.WHITE
+
+
             it.animate()
-                .scaleX(1.05f).scaleY(1.05f).setDuration(300).withEndAction {
-                    it.animate().scaleX(1.0f).scaleY(1.0f).start()
-                    it.setBackgroundColor(Color.WHITE)
+                .scaleX(animIncreaseButtonFactory).scaleY(animIncreaseButtonFactory).setDuration(animDurationMS).withEndAction {
+                    it.animate().scaleX(defaultSize).scaleY(defaultSize).start()
+                    it.setBackgroundColor(defaultColor)
                 }.start()
         }
+    }
 
+
+    private fun addChangeActualVehicleFollowObserver(){
         val nameObserver = Observer<String> { newName ->
-            Log.e("ez",newName)
 
-            for(i in 0..vehicles.size-1){
+            for(i in 0 until vehicles.size){
                 if(vehicles[i].vehicleId==newName){
                     tripID = vehicles[i].tripId
                     vehicleId = vehicles[i].vehicleId
@@ -140,12 +147,29 @@ class DetailsFragment : Fragment() {
             }
 
 
-
         }
 
         ActualPositionVehicles.actualVehicleIdClick.observe(viewLifecycleOwner,nameObserver
 
         )
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
+
+        readArgumentsAndProvideDataForMap()
+        addFragmentResultListener()
+        addOnClickNavigationButton()
+        addChangeActualVehicleFollowObserver()
+
+
+
+
 
 
         binding.backArrowDetailsMenu.setOnClickListener {
@@ -560,7 +584,7 @@ class DetailsFragment : Fragment() {
         fillViewsDataFromBundle()
 
         if(arguments!=null && requireArguments().size()>0) {
-            messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
+            messageForMapFragment(requireArguments().getInt(lineNumberBundleName));
         }
 
 
@@ -641,7 +665,7 @@ class DetailsFragment : Fragment() {
 
 
     fun fillViewsDataFromBundle(){
-        binding.lineNumberTop.text= "$NUMBER_LINE_TOP_TEXT_FORMAT$lineNumber"
+        binding.lineNumberTop.text= "$numberLineTopTextFormat$lineNumber"
         binding.details.lineNumberDetailed.text="$lineNumber"
         numberLine =lineNumber
         binding.details.currentlyFollowingFirstBusStopData.text="$firstVehicleStopName"

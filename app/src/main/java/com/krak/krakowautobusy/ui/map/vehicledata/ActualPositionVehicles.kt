@@ -9,9 +9,13 @@ import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.MotionEvent
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.krak.krakowautobusy.BundleChoiceVehicle
 import com.krak.krakowautobusy.R
@@ -19,10 +23,13 @@ import com.krak.krakowautobusy.api.Api
 import com.krak.krakowautobusy.database.SequenceVehicleStopData
 import com.krak.krakowautobusy.ui.map.Drawables
 import com.google.gson.JsonObject
+import com.krak.krakowautobusy.database.VehicleStopData
+import com.krak.krakowautobusy.ui.vehiclestop.Bundle_Vehicle_Stop
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
+import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow
 import retrofit2.Response
 import kotlin.collections.set
 
@@ -175,6 +182,38 @@ open class ActualPositionVehicles(var drawables: Drawables) {
         busStopMarkers.setRadius(busStopMarkerCollectionRadiusForClustering)
         for (x in poz) {
             val xx = createMarker(map, x.nameVehicleStop)
+           var xxa=BusStopMarker(map, VehicleStopData(0,x.nameVehicleStop,x.longitude,x.latitude,0,com.krak.krakowautobusy.database.VehicleType.BUS,x.idStopPoint,false))
+
+            xxa.infoWindow.view.setOnTouchListener { x, event ->
+
+                x as ViewGroup
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    var name=(((x.getChildAt(1) as LinearLayout).getChildAt(0) as LinearLayout) .getChildAt(0) as TextView).text.toString()
+                    //val mapFragment = map.findFragment<Fragment>()
+                    val bundle = bundleOf(
+                        Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
+                                "",
+                        Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
+                                name,
+                        Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
+                                ""
+
+                    )
+                    //bundle
+
+
+
+                    Navigation.findNavController(x)
+                        .navigate(R.id.actionnavigatedetailesstop, bundle);
+                }
+                true
+            }
+
+
+
+
+
+
             val locationPoint =
                 ConvertUnits.convertToGeoPoint(x.longitude, x.latitude)
 
@@ -483,6 +522,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
 
         val textSize = 15f * drawables.context.resources.displayMetrics.density
+       // Log.e("")
         val copyIcon = icon.mutate()
         val paint = Paint()
         val factoryMoveHeightText = 2

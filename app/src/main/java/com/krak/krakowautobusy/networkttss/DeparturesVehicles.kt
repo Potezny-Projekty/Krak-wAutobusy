@@ -6,15 +6,14 @@ import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 class DeparturesVehicles:DeparturesVehicleInterface {
-
     private val busHelperInstance = getInstanceRetrofit(VehicleType.BUS).create<ActualDeparturesRetrofitApi>()
     private val tramHelperInstance = getInstanceRetrofit(VehicleType.TRAM).create<ActualDeparturesRetrofitApi>()
+    private val typeVehicleStopAction="deprature"
     private  fun getInstanceRetrofit(busOrTram: VehicleType): Retrofit {
         return Retrofit.Builder().baseUrl(busOrTram.baseUrlTtss)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-
 
 
     override fun getBusVehicleDepart(
@@ -37,18 +36,13 @@ class DeparturesVehicles:DeparturesVehicleInterface {
 
 
     private fun generateGetBusVehicleDepart(idStopPoint: String, retrofitAp:ActualDeparturesRetrofitApi, callbackResponse: (Response<Departures>) -> Unit){
-        return retrofitAp.getDepratures(idStopPoint,"deprature").enqueue(object:
+        return retrofitAp.getDepratures(idStopPoint,typeVehicleStopAction).enqueue(object:
             Callback<Departures> {
             override fun onResponse(call: Call<Departures>, response: Response<Departures>) {
-
-
-                Log.e("ojej",call.request().url().toString())
                 if(response.body()!=null && response.isSuccessful) {
                     callbackResponse(response)
                 }
             }
-
-
 
             override fun onFailure(call: Call<Departures>, t: Throwable) {
 
@@ -59,34 +53,21 @@ class DeparturesVehicles:DeparturesVehicleInterface {
 
 
     private fun generateGetTramVehicleDepart(idStopPoint: String, retrofitAp:ActualDeparturesRetrofitApi, callbackResponse: (Response<Departures>) -> Unit){
-        return retrofitAp.getDepratures(idStopPoint,"deprature").enqueue(object:
+        return retrofitAp.getDepratures(idStopPoint,typeVehicleStopAction).enqueue(object:
             Callback<Departures> {
             override fun onResponse(call: Call<Departures>, response: Response<Departures>) {
-
-                //if(response!=null && response.isSuccessful){
 
                 if(response.body()!=null && response.isSuccessful) {
                     callbackResponse(response)
                 }
 
-                //}
-
-
             }
-
-
 
             override fun onFailure(call: Call<Departures>, t: Throwable) {
 
             }
         })
     }
-
-
-
-
-
-
 
 
 }

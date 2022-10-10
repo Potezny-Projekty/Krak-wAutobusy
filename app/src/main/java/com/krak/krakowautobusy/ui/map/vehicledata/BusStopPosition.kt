@@ -21,6 +21,7 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.infowindow.BasicInfoWindow
 import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow
+import org.w3c.dom.Text
 
 
 open class BusStopPosition(private val busStopIconDrawable : Drawable) {
@@ -66,52 +67,56 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
 
         marker.infoWindow.view.setOnTouchListener { x, event ->
 
-          var name=""
-            var count =x as ViewGroup
 
-            for (i in 0..count.childCount){
+        //  var name=""
+            var count =x as ViewGroup
+            var name=(((x.getChildAt(1) as LinearLayout).getChildAt(0) as LinearLayout) .getChildAt(0) as TextView).text.toString()
+           /* Log.e("jajo","wyniczek:"+namexx)
+                for (i in 0..count.childCount){
                 var ve=x.getChildAt(i)
                 if(ve is TextView){
-                    Log.e("jajo","mamcie"+i+"  "+(ve as TextView).text)
+                //    Log.e("jajo","mamcie"+i+"  "+(ve as TextView).text)
 
                 }
                 if(ve is LinearLayout){
+                    Log.e("jajo","level1[ "+i)
                     var cc=ve.childCount
                     for (i in 0..cc) {
                         var va=ve.getChildAt(i)
                         if(va is TextView){
-                            Log.e("jajo","mamcie va"+i+"  "+(va as TextView).text)
+                          //  Log.e("jajo","mamcie va"+i+"  "+(va as TextView).text)
 
                         }
                         if(va!=null){
-                            Log.e("jajo","2 "+ve.javaClass.name)
+                         //   Log.e("jajo","2 "+ve.javaClass.name)
                         }
 
                         if(va is LinearLayout){
+                            Log.e("jajo","level2[ "+i)
                             var qw=va.childCount
                             for (i in 0..qw) {
                                 var qq=va.getChildAt(i)
                                 if(qq is TextView){
-                                    Log.e("jajo","mamcie va9"+i+"  "+(qq as TextView).text)
+                                //    Log.e("jajo","mamcie va9"+i+"  "+(qq as TextView).text)
                                     if((qq as TextView).text.toString()!=""){
                                         name= (qq as TextView).text as String
 
-
+                                        Log.e("jajo","level3[ "+i)
                                     }
 
 
 
 
-                                    Log.e("jajo","wyniczek"+name)
+                                  //  Log.e("jajo","wyniczek"+name)
 
 
                                 }
 
                                 if(qq is com.google.android.material.textview.MaterialTextView){
-                                    Log.e("jajo","mamcie va9"+i+"  "+(qq as MaterialTextView).text)
+                               //     Log.e("jajo","mamcie va9"+i+"  "+(qq as MaterialTextView).text)
                                 }
                                 if(qq!=null){
-                                    Log.e("jajo",qq.javaClass.name)
+                              //      Log.e("jajo",qq.javaClass.name)
                                 }}
                         }
 
@@ -124,7 +129,7 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
 
 
                 }
-
+*/
 
 
 

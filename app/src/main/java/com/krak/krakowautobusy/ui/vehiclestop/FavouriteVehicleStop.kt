@@ -121,11 +121,15 @@ class FavouriteVehicleStop : Fragment() {
 
 
         xx.setActionWhenHideKeyboard {
-
-            var x=Api.getApi().getAllLine()
+            Log.e("sprawdzilosc","Chowam Klawiature")
+            Log.e("klawa","pchowam")
+            var x=Api.getApi().getAllFavouriteVehicleStop()
             var xx=x.filter( { s -> s.isFavourite }
             )
             if(xx.size!=0){
+                binding.vehiclesnolinefavourite.visibility=View.GONE
+            }else{
+                Log.e("sprawdzilosc","Pustka")
                 binding.vehiclesnolinefavourite.visibility=View.VISIBLE
             }
 
@@ -133,13 +137,19 @@ class FavouriteVehicleStop : Fragment() {
 
 
         xx.setActionWhenShowKeyboard {
-
-            var x=Api.getApi().getAllLine()
+            Log.e("klawa","pokazuje")
+            var x=Api.getApi().getAllFavouriteVehicleStop()
             var xx=x.filter( { s -> s.isFavourite }
             )
-            if(xx.size==0){
+
+            binding.vehiclesnolinefavourite.visibility=View.GONE
+          /*  if(xx.size==0){
+                binding.vehiclesnolinefavourite.visibility=View.VISIBLE
+            }else{
                 binding.vehiclesnolinefavourite.visibility=View.GONE
-            }}
+            }*/
+
+        }
 
 
     }

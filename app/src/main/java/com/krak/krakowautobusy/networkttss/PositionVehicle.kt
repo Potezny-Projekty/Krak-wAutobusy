@@ -21,8 +21,6 @@ class PositionVehicle:PositionVehicleInterface {
 
 
 
-
-
     private fun generateHelperPosition(lastUpdate: Long, retrofitAp:ActualPositionRetrofitApi, callbackResponse: (Response<AllVehicles>) -> Unit){
         return retrofitAp.getAllVehicleFromUrl(lastUpdate).enqueue(object:
             Callback<AllVehicles> {
@@ -45,7 +43,6 @@ class PositionVehicle:PositionVehicleInterface {
             }
 
 
-
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
 
             }
@@ -57,11 +54,16 @@ class PositionVehicle:PositionVehicleInterface {
     override fun getBusPosition(
         lastUpdate:Long,
         callbackResponse: (Response<AllVehicles>) -> Unit
-    ): Unit {
+    ) {
 
         return generateHelperPosition(lastUpdate,busHelperInstance,callbackResponse)
     }
 
+
+    /**
+     * This method possible implemented in future
+     * @suppress no implemented
+     */
     override fun getAllVehiclePosition() {
         TODO("Not yet implemented")
     }
@@ -69,7 +71,7 @@ class PositionVehicle:PositionVehicleInterface {
     override fun getTramPosition(
         lastUpdate:Long,
         callbackResponse: (Response<AllVehicles>) -> Unit
-    ): Unit {
+    ) {
 
          return generateHelperPosition(lastUpdate,tramHelperInstance,callbackResponse)
     }

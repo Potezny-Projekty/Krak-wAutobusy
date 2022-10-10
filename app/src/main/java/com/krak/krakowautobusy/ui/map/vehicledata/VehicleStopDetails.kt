@@ -54,6 +54,7 @@ class VehicleStopDetails : Fragment() {
     private lateinit var timerRefreshDepartureList:Runnable
     private val TIMER_REFRESH_DEPARTURE_LIST=10500L
     private var idStopPoint:String=""
+    private var nameVehicleStop:String=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -65,34 +66,94 @@ class VehicleStopDetails : Fragment() {
         timerRefreshDepartureList = object : Runnable {
             override fun run() {
 
-                Log.e("ojej","Rozmiar:"+idStopPoint)
-                Api.getApi().getBusDepartures(idStopPoint
-                ) { response ->
-                    Log.e("ojej","Rozmiar:"+response.body()!!.actual.size)
-                    //  for(x in response.body()!!.actual){
-                    //     Log.e("ojej",x.plannedTime.toString())
-                    //  }
-                    try {
-                        adapter = AdapterListViewDepatures(response.body()!!.actual, requireContext())
-                        adapter!!.changeDataset(response.body()!!.actual)
-                        binding.listdetailed.adapter = adapter
+                Log.e("klawa","Rozmiar:"+nameVehicleStop)
+                Log.e("Klawa","R"+idStopPoint.length)
+                Log.e("klawa",Api.getApi().getVehicleStopIdByName(nameVehicleStop))
+
+                if(idStopPoint.length==0){
+                    Api.getApi().getBusDepartures(Api.getApi().getVehicleStopIdByName(nameVehicleStop)
+                    ){
+                            response ->
+                        Log.e("klawa","Rozmiar:"+response.body()!!.actual.size)
+                        //  for(x in response.body()!!.actual){
+                        //     Log.e("ojej",x.plannedTime.toString())
+                        //  }
+                        try {
+                            adapter = AdapterListViewDepatures(response.body()!!.actual, requireContext())
+                            adapter!!.changeDataset(response.body()!!.actual)
+                            binding.listdetailed.adapter = adapter
 
 
 
-                        if (response.body()!!.actual.size == 0) {
-                            binding.ifwehavedata.visibility = View.VISIBLE
-                        } else {
-                            binding.ifwehavedata.visibility = View.GONE
+                            if (response.body()!!.actual.size == 0) {
+                                binding.ifwehavedata.visibility = View.VISIBLE
+                            } else {
+                                binding.ifwehavedata.visibility = View.GONE
+                            }
+
+
+
+
+                            /*if( adapter==null ||adapter!!.count==0){
+                                binding.textnofavourite.visibility=View.VISIBLE
+                            }else{
+                                binding.textnofavourite.visibility=View.GONE
+                            }*/
+
+                        }catch (x:Exception){
+
                         }
-
-                    }catch (x:Exception){
 
                     }
 
+                }else {
+
+                    Api.getApi().getBusDepartures(
+                        idStopPoint
+                    ) { response ->
+                        Log.e("ojej", "Rozmiar:" + response.body()!!.actual.size)
+                        //  for(x in response.body()!!.actual){
+                        //     Log.e("ojej",x.plannedTime.toString())
+                        //  }
+                        try {
+                            adapter =
+                                AdapterListViewDepatures(response.body()!!.actual, requireContext())
+                            adapter!!.changeDataset(response.body()!!.actual)
+                            binding.listdetailed.adapter = adapter
+
+
+
+                            if (response.body()!!.actual.size == 0) {
+                                binding.ifwehavedata.visibility = View.VISIBLE
+                            } else {
+                                binding.ifwehavedata.visibility = View.GONE
+                            }
+
+
+                            /*if( adapter==null ||adapter!!.count==0){
+                            binding.textnofavourite.visibility=View.VISIBLE
+                        }else{
+                            binding.textnofavourite.visibility=View.GONE
+                        }*/
+
+                        } catch (x: Exception) {
+
+                        }
+
+                    }
+                }
+
+                if (adapter == null || adapter!!
+                        .count==0) {
+                            Log.e("sprawdzilosc","Mamy zero")
+                    binding.ifwehavedata.visibility = View.VISIBLE
+                } else {
+                    binding.ifwehavedata.visibility = View.GONE
                 }
 
 
                 mainHandler.postDelayed(this,TIMER_REFRESH_DEPARTURE_LIST )
+
 
             }
         }
@@ -126,6 +187,9 @@ class VehicleStopDetails : Fragment() {
         fillViewDataFromBundle()
         addDeparturesToListView(requireArguments().getString(Bundle_Vehicle_Stop.ID_STOP_POINT .nameBundle).toString())
        idStopPoint=requireArguments().getString(Bundle_Vehicle_Stop.ID_STOP_POINT .nameBundle).toString()
+     nameVehicleStop=requireArguments().getString(Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle).toString()
+
+
         Log.e("aax",":"+idStopPoint)
 
         refreshListDepeartures()

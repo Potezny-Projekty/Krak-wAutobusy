@@ -2,13 +2,19 @@ package com.krak.krakowautobusy.database
 
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
 import com.krak.krakowautobusy.api.Api
+
+
+const val SEQUENCE_NUMBER_COL=0
+const val NAME_VEHICLE_STOP_COL=1
+const val LONGITUDE_COLS=2
+const val LATITUDE_COLS=3
+const val IDSTOP_POINT_COL=4
 
 class Line:LineInteerface {
 
 
-    fun returnLineFromCursor(
+    private fun returnLineFromCursor(
         cursor: Cursor,
         vehicleType: VehicleType,stopName:String=""
     ): LineData {
@@ -29,19 +35,14 @@ class Line:LineInteerface {
     }
 
 
-
-    fun returnVehicleStopSequenceFromCursor(
+    private fun returnVehicleStopSequenceFromCursor(
         cursor: Cursor
-
     ): SequenceVehicleStopData {
-
-
-
         return   SequenceVehicleStopData(
-            cursor.getInt(0),cursor.getString(1),cursor.getLong(2),cursor.getLong(3),cursor.getInt(4)
+            cursor.getInt(SEQUENCE_NUMBER_COL),cursor.getString(NAME_VEHICLE_STOP_COL),
+            cursor.getLong(LONGITUDE_COLS),cursor.getLong(LATITUDE_COLS),cursor.getInt(IDSTOP_POINT_COL)
 
         )
-
     }
 
 
@@ -59,16 +60,13 @@ class Line:LineInteerface {
         )
 
 
-       val baseQuery="SELECT "+columnReturns.joinToString(",")+" from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=Line.lastStop where  "
-
-
+        val baseQuery="SELECT "+columnReturns.joinToString(",")+" from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=Line.lastStop where  "
         val filterCondition = "${LineTable.NUMBER_LINE.nameColumn}=${numberLine} and  ${LineTable.LAST_STOP_ID.nameColumn}=(SELECT Line.lastStop from Line join VehicleStop on VehicleStop.idStopPoint=Line.lastStop where VehicleStop.name like \"%${lastStopName}%\" )"
-// arrayOf(numberLine.toString(),lastStopId.toString())
+
 
         val cursor = db.rawQuery(baseQuery+filterCondition, null
         )
 
-        Log.e("hmm",baseQuery+filterCondition)
         var findVehicleStopType: LineData? =null
         if (cursor!!.moveToFirst()) {
 
@@ -85,8 +83,6 @@ class Line:LineInteerface {
         return  findVehicleStopType!!
 
 
-
-
     }
 
     override fun getInfoAboutLineConcretDirectionId(
@@ -94,8 +90,6 @@ class Line:LineInteerface {
         numberLine: Long,
         lastStopId: Long
     ): LineData {
-
-
 
         val columnReturns = arrayOf(
             LineTable.ID_LINE.nameColumn,LineTable.NUMBER_LINE.nameColumn,
@@ -126,20 +120,32 @@ class Line:LineInteerface {
                     returnLineFromCursor(cursor,VehicleType.TRAM)
                 }
 
-
         }
         cursor.close()
         return  findVehicleStopType!!
     }
 
+
+    /**
+     * This method possible implemented in future
+     * @suppress no implemented
+     */
     override fun getInfoAboutLinesAnyDirection(db: SQLiteDatabase, numberLine: Long): ArrayList<LineData> {
-        TODO("Not yet implemented Kurwa ")
+        TODO("Not yet implemented")
     }
 
+    /**
+     * This method possible implemented in future
+     * @suppress no implemented
+     */
     override fun getInfoAllLine(db: SQLiteDatabase): ArrayList<LineData> {
         TODO("Not yet implemented")
     }
 
+    /**
+     * This method possible implemented in future
+     * @suppress no implemented
+     */
     override fun getInfoAboutLinePatternName(db: SQLiteDatabase, patternName: String): ArrayList<LineData> {
         TODO("Not yet implemented")
     }
@@ -167,7 +173,7 @@ class Line:LineInteerface {
         )
 
         val lineDataMatchToPattern= arrayListOf<LineData>()
-        var findVehicleStopType: LineData? =null
+        var findVehicleStopType: LineData?
         if (cursor!!.moveToFirst()) {
             do {
 
@@ -185,9 +191,13 @@ class Line:LineInteerface {
 
         }
         cursor.close()
-        return  lineDataMatchToPattern!!
+        return  lineDataMatchToPattern
     }
 
+    /**
+     * This method possible implemented in future
+     * @suppress no implemented
+     */
     override fun getInfoAboutLinePatternFirstOrLastStopName(
         db: SQLiteDatabase,
         patternVehicleStopName: String
@@ -195,125 +205,90 @@ class Line:LineInteerface {
         TODO("Not yet implemented")
     }
 
-    override fun getVehicleStopsLine(db: SQLiteDatabase, numberLine: Int): ArrayList<SequenceVehicleStopData> {
-        val baseQuery="select DISTINCT VehicleStopSequence.sequenceNumber,VehicleStop.name,VehicleStop.lattitude,VehicleStop.longtitude,VehicleStop.idShort from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=VehicleStopSequence.idVehicleStop where Line.numberLine=${numberLine} order by sequenceNumber"
+    override fun getVehicleStopsLine(db: SQLiteDatabase, idLine: Int): ArrayList<SequenceVehicleStopData> {
+        val baseQuery="select DISTINCT VehicleStopSequence.sequenceNumber,VehicleStop.name,VehicleStop.lattitude,VehicleStop.longtitude,VehicleStop.idShort from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=VehicleStopSequence.idVehicleStop where Line.numberLine=${idLine} order by sequenceNumber"
 
-
-        // val filterCondition = "${LineTable.NUMBER_LINE.nameColumn}=${numberLine} and  ${LineTable.LAST_STOP_ID.nameColumn}=(SELECT Line.lastStop from Line join VehicleStop on VehicleStop.idStopPoint=Line.lastStop where VehicleStop.name like \"%${lastStopName}%\" )"
-// arrayOf(numberLine.toString(),lastStopId.toString())
-        Log.e("searchV",baseQuery+" ||||||||||||")
-        val cursor = db.rawQuery(baseQuery/*+filterCondition*/, null
+        val cursor = db.rawQuery(baseQuery, null
         )
 
-        // Log.e("hmm",baseQuery+filterCondition)
-        var linedatas:ArrayList<SequenceVehicleStopData> = ArrayList()
+        val linedatas:ArrayList<SequenceVehicleStopData> = ArrayList()
 
         if (cursor!!.moveToFirst()) {
 
             do {
                 var vehicleSeq:SequenceVehicleStopData
-
-
                     vehicleSeq=  returnVehicleStopSequenceFromCursor(cursor)
-linedatas.add(vehicleSeq)
+                    linedatas.add(vehicleSeq)
 
 
-            }while(cursor!!.moveToNext())
+            }while(cursor.moveToNext())
 
         }
         cursor.close()
-        return  linedatas!!;
+        return  linedatas
     }
-
-
 
 
     override fun getAllLine(db: SQLiteDatabase): ArrayList<LineData> {
 
-        val columnReturns = arrayOf(
-            LineTable.ID_LINE.nameColumn,LineTable.NUMBER_LINE.nameColumn,
-            LineTable.FIRST_STOP_ID.nameColumn,LineTable.LAST_STOP_ID.nameColumn,
-            LineTable.ID_VEHICLE.nameColumn
+        val baseQuery="SELECT    Line.idLine,  Line.numberLine,Line.firstStop,Line.lastStop,Line.idVehicle from Line join FavouriteLine on FavouriteLine.idLine=Line.idLine "
+
+        val cursor = db.rawQuery(baseQuery, null
         )
 
+        val linedatas:ArrayList<LineData> = ArrayList()
 
-        val baseQuery="SELECT    Line.idLine,  Line.numberLine,Line.firstStop,Line.lastStop,Line.idVehicle from Line join FavouriteLine on FavouriteLine.idLine=Line.idLine ";
-
-
-        // val filterCondition = "${LineTable.NUMBER_LINE.nameColumn}=${numberLine} and  ${LineTable.LAST_STOP_ID.nameColumn}=(SELECT Line.lastStop from Line join VehicleStop on VehicleStop.idStopPoint=Line.lastStop where VehicleStop.name like \"%${lastStopName}%\" )"
-// arrayOf(numberLine.toString(),lastStopId.toString())
-        Log.e("searchV",baseQuery+" ||||||||||||")
-        val cursor = db.rawQuery(baseQuery/*+filterCondition*/, null
-        )
-
-        // Log.e("hmm",baseQuery+filterCondition)
-        var linedatas:ArrayList<LineData> = ArrayList()
-        var findVehicleStopType: LineData? =null
         if (cursor!!.moveToFirst()) {
 
             do {
                 var lineData:LineData
 
-                if(cursor.getInt(4)==VehicleType.BUS.number){
-                    lineData= returnLineFromCursor(cursor,VehicleType.BUS)
+                lineData = if(cursor.getInt(4)==VehicleType.BUS.number){
+                    returnLineFromCursor(cursor,VehicleType.BUS)
                 }else{
-                    lineData=  returnLineFromCursor(cursor,VehicleType.TRAM)
+                    returnLineFromCursor(cursor,VehicleType.TRAM)
                 }
-                linedatas.add(lineData);
+                linedatas.add(lineData)
 
 
-            }while(cursor!!.moveToNext())
+            }while(cursor.moveToNext())
 
         }
         cursor.close()
-        return  linedatas!!;
+        return  linedatas
 
-        //SELECT DISTINCT Line.numberLine,Line.firstStop,Line.lastStop from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=VehicleStopSequence.idVehicleStop where name like "Sło%"
+
     }
-
-
 
 
     override fun getAllLineWithAnyVehicleStopFitPattern(db: SQLiteDatabase, nameVehicleStop: String): ArrayList<LineData> {
 
-        val columnReturns = arrayOf(
-            LineTable.ID_LINE.nameColumn,LineTable.NUMBER_LINE.nameColumn,
-            LineTable.FIRST_STOP_ID.nameColumn,LineTable.LAST_STOP_ID.nameColumn,
-            LineTable.ID_VEHICLE.nameColumn
+        val baseQuery="SELECT  Line.idLine,Line.numberLine,Line.firstStop,Line.lastStop,VehicleStop.vehicleType, VehicleStop.name from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=VehicleStopSequence.idVehicleStop where lower(name) like \"${nameVehicleStop.lowercase()}%\""
+
+        val cursor = db.rawQuery(baseQuery, null
         )
 
 
-        val baseQuery="SELECT  Line.idLine,Line.numberLine,Line.firstStop,Line.lastStop,VehicleStop.vehicleType, VehicleStop.name from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=VehicleStopSequence.idVehicleStop where lower(name) like \"${nameVehicleStop.toString().lowercase()}%\"";
+        val linedatas:ArrayList<LineData> = ArrayList()
 
-
-       // val filterCondition = "${LineTable.NUMBER_LINE.nameColumn}=${numberLine} and  ${LineTable.LAST_STOP_ID.nameColumn}=(SELECT Line.lastStop from Line join VehicleStop on VehicleStop.idStopPoint=Line.lastStop where VehicleStop.name like \"%${lastStopName}%\" )"
-// arrayOf(numberLine.toString(),lastStopId.toString())
-        Log.e("searchV",baseQuery+" ||||||||||||")
-        val cursor = db.rawQuery(baseQuery/*+filterCondition*/, null
-        )
-
-       // Log.e("hmm",baseQuery+filterCondition)
-        var linedatas:ArrayList<LineData> = ArrayList()
-        var findVehicleStopType: LineData? =null
         if (cursor!!.moveToFirst()) {
 
             do {
                 var lineData:LineData
 
-                if(cursor.getInt(4)==VehicleType.BUS.number){
-                   lineData= returnLineFromCursor(cursor,VehicleType.BUS,cursor.getString(5))
+                lineData = if(cursor.getInt(4)==VehicleType.BUS.number){
+                    returnLineFromCursor(cursor,VehicleType.BUS,cursor.getString(5))
                 }else{
-                    lineData=  returnLineFromCursor(cursor,VehicleType.TRAM,cursor.getString(5))
+                    returnLineFromCursor(cursor,VehicleType.TRAM,cursor.getString(5))
                 }
-                linedatas.add(lineData);
+                linedatas.add(lineData)
 
 
-            }while(cursor!!.moveToNext())
+            }while(cursor.moveToNext())
 
         }
         cursor.close()
-        return  linedatas!!;
+        return  linedatas
 
-        //SELECT DISTINCT Line.numberLine,Line.firstStop,Line.lastStop from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=VehicleStopSequence.idVehicleStop where name like "Sło%"
     }
 }
