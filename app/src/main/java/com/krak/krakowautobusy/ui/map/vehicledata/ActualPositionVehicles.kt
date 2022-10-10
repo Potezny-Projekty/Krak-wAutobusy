@@ -278,6 +278,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             markerTracing.showInfoWindow()
             drawPathVehicle(vehicle.id, vehicle.category, mapView, marker)
         }
+
         return marker
 
 
