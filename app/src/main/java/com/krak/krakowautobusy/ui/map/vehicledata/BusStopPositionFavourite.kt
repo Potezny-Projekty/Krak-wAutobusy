@@ -40,5 +40,7 @@ class BusStopPositionFavourite(busStopIconDrawable: Drawable) :
         map.invalidate()
     }
 
-
+    override fun hiddenCheckedInfoWindow() {
+        busStops.closeAllInfoWindows()
+    }
 }

@@ -178,4 +178,8 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
         map.invalidate()
     }
 
+    open fun hiddenCheckedInfoWindow() {
+        trackedBusStops?.closeInfoWindow()
+    }
+
 }

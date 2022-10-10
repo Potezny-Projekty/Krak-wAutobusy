@@ -17,9 +17,10 @@ import androidx.lifecycle.Observer
 import com.krak.krakowautobusy.BuildConfig
 import com.krak.krakowautobusy.databinding.MapActivityBinding
 import com.krak.krakowautobusy.ui.map.vehicledata.*
+import kotlinx.coroutines.internal.AtomicOp
 import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
-
+import java.util.concurrent.atomic.AtomicReference
 
 
 private const val TAG = "CreateMapFragment"
@@ -66,6 +67,10 @@ class CreateMapFragment : Fragment() {
         //setupDrawables()
         enableBroadcastReceiver()
         //enableLocalization()
+
+
+        mapController.addMapClickListener(actualPositionVehicles, actualPositionFavouriteVehicle,
+            busStopPosition, busStopPositionFavourite)
         mapController.createLocationMarker(userLocation, drawables)
         mapController.createAllBusStopsMarker(busStopPosition)
         //switchBetweenBusStopsAndVehicle(viewModel.showBusStops.value!!)

@@ -76,6 +76,7 @@ class CreateDetailsMapFragment : Fragment() {
         setActualCHoiceBusToColor()
         mapController.loadingIcon(actualPositionVehicles)
         mapController.createLocationMarker(userLocation, drawables)
+        mapController.addMapClickListener(actualPositionVehicles)
 
 
         viewModel.setMyLocation.observe(viewLifecycleOwner, Observer {

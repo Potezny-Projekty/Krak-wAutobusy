@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.krak.krakowautobusy.api.Api
 import com.krak.krakowautobusy.ui.map.vehicledata.*
+import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.events.MapListener
 import org.osmdroid.events.ScrollEvent
 import org.osmdroid.events.ZoomEvent
@@ -16,6 +17,7 @@ import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Marker
 import retrofit2.Response
 
@@ -218,4 +220,40 @@ class MapController(private var map: MapView, private var context: Context) {
         actualPositionVehicle.lodaIconIntoMap()
     }
 
+    fun addMapClickListener(actualPositionVehicles: ActualPositionVehicles,
+                            actualPositionFavouriteVehicle: ActualPositionFavouriteVehicle,
+                            busStopPosition: BusStopPosition,
+                            busStopPositionFavourite: BusStopPositionFavourite)  {
+        map.overlays.add(MapEventsOverlay(object : MapEventsReceiver {
+            override fun singleTapConfirmedHelper(p: GeoPoint): Boolean {
+                Log.i("MAPCLICK", busStopPosition.toString())
+                actualPositionFavouriteVehicle.removeTrackedVehicle()
+                actualPositionFavouriteVehicle.setNullOnTrackedVehicle()
+                actualPositionVehicles.removeTrackedVehicle()
+                actualPositionVehicles.setNullOnTrackedVehicle()
+                busStopPosition.hiddenCheckedInfoWindow()
+                busStopPositionFavourite.hiddenCheckedInfoWindow()
+                return false
+            }
+
+            override fun longPressHelper(p: GeoPoint): Boolean {
+                return false
+            }
+        }))
+    }
+
+    fun addMapClickListener(actualPositionVehicles: ActualPositionVehicles)  {
+        map.overlays.add(MapEventsOverlay(object : MapEventsReceiver {
+            override fun singleTapConfirmedHelper(p: GeoPoint): Boolean {
+                Log.i("MAPCLICK", "WORK")
+                actualPositionVehicles.removeTrackedVehicle()
+                actualPositionVehicles.setNullOnTrackedVehicle()
+                return false
+            }
+
+            override fun longPressHelper(p: GeoPoint): Boolean {
+                return false
+            }
+        }))
+    }
 }

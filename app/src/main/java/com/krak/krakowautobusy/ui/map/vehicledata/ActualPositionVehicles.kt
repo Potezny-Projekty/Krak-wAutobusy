@@ -13,14 +13,16 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
+import com.google.gson.JsonObject
 import com.krak.krakowautobusy.BundleChoiceVehicle
 import com.krak.krakowautobusy.R
 import com.krak.krakowautobusy.api.Api
 import com.krak.krakowautobusy.database.SequenceVehicleStopData
 import com.krak.krakowautobusy.ui.map.Drawables
-import com.google.gson.JsonObject
+import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 import retrofit2.Response
@@ -562,5 +564,9 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     private fun removeTrackedPathVehicle() {
         trackedRoute.actualPoints.clear()
         traveledRoute.actualPoints.clear()
+    }
+
+    fun setNullOnTrackedVehicle() {
+        trackingVehicle = null
     }
 }
