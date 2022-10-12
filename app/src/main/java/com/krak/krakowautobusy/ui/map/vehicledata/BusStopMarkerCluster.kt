@@ -16,12 +16,10 @@ import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow
 
 class BusStopMarkerCluster(ctx: Context) : RadiusMarkerClusterer(ctx) {
-    private val mDensityDpi = ctx.resources.displayMetrics.densityDpi;
+    private val mDensityDpi = ctx.resources.displayMetrics.densityDpi
 
 
     init {
-       // val clusterIconD: Drawable = AppCompatResources.getDrawable(ctx,
-        //    R.drawable.cluster_icon_bus_stop)!!
          val clusterIconD: Drawable = AppCompatResources.getDrawable(ctx,
              R.drawable.cluster)!!
         val clusterIcon = (clusterIconD as BitmapDrawable).bitmap
@@ -41,16 +39,15 @@ class BusStopMarkerCluster(ctx: Context) : RadiusMarkerClusterer(ctx) {
             ), mClusterIcon.getScaledHeight(mDensityDpi), mClusterIcon.config
         )
         val iconCanvas = Canvas(finalIcon)
-        iconCanvas.drawBitmap(mClusterIcon, 0.0f, 0.0f, null as Paint?)
-        val text = "" + cluster!!.size
+        val zeroOffset=0f
+        iconCanvas.drawBitmap(mClusterIcon, zeroOffset, zeroOffset, null as Paint?)
+        val text = "" + cluster.size
         val textHeight = (mTextPaint.descent() + mTextPaint.ascent()).toInt()
-      //  iconCanvas.drawText(
-        //    text, mTextAnchorU * finalIcon.width.toFloat(), mTextAnchorV * finalIcon.height
-        //        .toFloat() + (textHeight / 2).toFloat(), mTextPaint
-       // )
+        val textScaleFactor=2.5f
+
          iconCanvas.drawText(
             text, mTextAnchorU * finalIcon.width.toFloat(), mTextAnchorV * finalIcon.height
-                .toFloat() - (textHeight * 2.5).toFloat(), mTextPaint
+                .toFloat() - (textHeight * textScaleFactor).toFloat(), mTextPaint
         )
         marker.icon = BitmapDrawable(mapView!!.context.resources, finalIcon)
         return marker

@@ -1,7 +1,6 @@
 package com.krak.krakowautobusy.ui.favourite
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,27 +23,19 @@ class FavoriteFragment : Fragment() {
     private var _binding: FragmentFavoriteBinding? = null
 
     private val binding get() = _binding!!
-    private lateinit var   adapter :AdapterListSearchPanel;
-    private lateinit var   adapter2 :AdapterListSearchPanel;
+    private lateinit var   adapter :AdapterListSearchPanel
 
-    private fun addAdapterToSearchLineListView(){
+
+    private fun addAdapterToSearchLineListViewAndSetRefresh(){
 
        binding.listfavouriteLine.adapter=adapter
 
         adapter.setRefresh {
-            var x=Api.getApi().getAllLine()
-            var xx=x.filter( { s -> s.isFavourite }
-            )
-
-
-            Log.e("ilex",""+xx.size )
-
            setDatasetAdapter()
-
         }
     }
 
-    fun addOnClickListenerToLineOnList(){
+    private fun addOnClickListenerToLineOnList(){
         binding.listfavouriteLine.setOnItemClickListener { _, view, _, _ ->
             val bundle = bundleOf(
                 BundleChoiceVehicle.LINE_NUMBER.nameBundleObject to
@@ -56,79 +47,54 @@ class FavoriteFragment : Fragment() {
 
             )
 
-            Navigation.findNavController(view).navigate(R.id.action_navigation_favourite_to_detailsFragment,bundle);
+            Navigation.findNavController(view).navigate(R.id.action_navigation_favourite_to_detailsFragment,bundle)
         }
     }
 
 
 
-    private fun KURWA(){
+    private fun hideOrShowNoFavouriteLineText(){
 
-        var xx= childFragmentManager.findFragmentById(R.id.detailFragment) as SearchViewFragment
-        xx.setRefreshFun {
-            Log.e("kurwa","JEGO MAĆ2")
+        val searchView= childFragmentManager.findFragmentById(R.id.detailFragment) as SearchViewFragment
+        searchView.setRefreshFun {
             setDatasetAdapter()
         }
 
-        xx.setActionWhenHideKeyboard {
+        searchView.setActionWhenHideKeyboard {
 
-            var x=Api.getApi().getAllLine()
-            var xx=x.filter( { s -> s.isFavourite }
-            )
-            if(xx.size==0){
-            binding.nolinefavouriteinfo.visibility=View.VISIBLE
-        }}
+            val allLine=Api.getApi().getAllLine()
+            val favouriteLine=allLine.filter { s -> s.isFavourite }
+            if(favouriteLine.isEmpty()){
+                binding.nolinefavouriteinfo.visibility=View.VISIBLE
+            }
+        }
 
-
-        xx.setActionWhenShowKeyboard {
+        searchView.setActionWhenShowKeyboard {
             binding.nolinefavouriteinfo.visibility=View.GONE
         }
-        //adapter.setRefresh {
-         //   Log.e("kurwa","JEGO MAĆ2")
-        //    setDatasetAdapter()
-      //  }
 
-      //  adapter.setFunRefresh2 {
-      //      Log.e("kurwa","JEGO MAĆ2")
-      //      setDatasetAdapter()
-     //   }
-
-    //    xx.getAdapter().setRefresh {
-    //       Log.e("kurwa","JEGO MAĆ2")
-   //         setDatasetAdapter()
-    //    }
-
-    //    xx.setRefreshFun {
-    //        Log.e("kurwa","JEGO MAĆ")
-    //        setDatasetAdapter()
-    //    }
-     // var x=  requireFragmentManager().findFragmentById(R.id.detailFragment) as SearchViewFragment?
-    //    x!!.setRefreshFun {
-      //      setDatasetAdapter()
-       // }
     }
 
     private fun setDatasetAdapter(){
 
+        val allLines=Api.getApi().getAllLine()
+        val favouriteLines=allLines.filter { s -> s.isFavourite }
 
-     //   adapter2= AdapterListSearchPanel(arrayListOf<LineData>(),requireContext())
-     //   binding.listfavouriteLine.adapter=adapter
-        var x=Api.getApi().getAllLine()
-       var xx=x.filter( { s -> s.isFavourite }
-        )
-
-        Log.e("ilex","("+xx.size )
-
-        if(xx.size==0){
+        if(favouriteLines.isEmpty()){
             binding.nolinefavouriteinfo.visibility=View.VISIBLE
         }else{
             binding.nolinefavouriteinfo.visibility=View.GONE
         }
 
-
-        adapter.changeDataset(xx as ArrayList<LineData>)
+        adapter.changeDataset(favouriteLines as ArrayList<LineData>)
         adapter.notifyDataSetChanged()
 
+    }
+
+
+
+    private fun underLineTextFavourite(){
+        binding.textFavourite.paint?.isUnderlineText = true
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -136,18 +102,16 @@ class FavoriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View{
         favoriteViewModel =
-            ViewModelProvider(this).get(FavoriteViewModel::class.java)
+            ViewModelProvider(this)[FavoriteViewModel::class.java]
 
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        adapter= AdapterListSearchPanel(arrayListOf<LineData>(),requireContext())
-        KURWA()
-        addAdapterToSearchLineListView()
+        adapter= AdapterListSearchPanel(arrayListOf(),requireContext())
+        hideOrShowNoFavouriteLineText()
+        addAdapterToSearchLineListViewAndSetRefresh()
         setDatasetAdapter()
         addOnClickListenerToLineOnList()
-
-
-        binding.textFavourite.paint?.isUnderlineText = true
+        underLineTextFavourite()
 
         return root
     }

@@ -23,7 +23,6 @@ class LocationProviderChangedReceiver(private var map: MapView,
                 isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
-                Log.i("UserLocation", "Location Providers changed, is GPS Enabled: $isGpsEnabled")
 
                 if (isGpsEnabled || isNetworkEnabled) {
                     userLocation.getLocationUpdates(map)

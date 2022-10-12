@@ -135,7 +135,7 @@ class MapController(private var map: MapView, private var context: Context) {
             if (response.isSuccessful) {
                 val allTram = response.body()!!
                 actualPositionTram.lastUpdateTram = allTram.lastUpdate
-                actualPositionTram.showAllVehicle(map, allTram)
+                actualPositionTram.showFavouriteVehicles(map, allTram)
             }
         })
     }
@@ -146,7 +146,7 @@ class MapController(private var map: MapView, private var context: Context) {
                 if (response.isSuccessful && response.body() != null) {
                     val allBus = response.body()!!
                     actualPositionBus.lastUpdateBus = allBus.lastUpdate
-                    actualPositionBus.showAllVehicle(map, allBus)
+                    actualPositionBus.showFavouriteVehicles(map, allBus)
                 }
             }
         )

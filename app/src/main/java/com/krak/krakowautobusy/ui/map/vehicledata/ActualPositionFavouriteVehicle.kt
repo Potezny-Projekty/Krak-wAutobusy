@@ -1,7 +1,7 @@
 package com.krak.krakowautobusy.ui.map.vehicledata
-
-import android.util.Log
+import android.content.res.Resources
 import android.widget.Toast
+import com.krak.krakowautobusy.R
 import com.krak.krakowautobusy.api.Api
 import com.krak.krakowautobusy.ui.map.Drawables
 import org.osmdroid.views.MapView
@@ -9,17 +9,15 @@ import org.osmdroid.views.MapView
 class ActualPositionFavouriteVehicle(drawables: Drawables) : ActualPositionVehicles(drawables) {
 
 
-   override fun showAllVehicle(map: MapView, allVehicles: AllVehicles) {
-
+   override fun showFavouriteVehicles(map: MapView, allVehicles: AllVehicles) {
+      val space=" "
       try {
-         Log.i("ACTUALPOSITOO", "FAVOURITE")
          val listOfAllVehicle = allVehicles.vehicles
          val favouriteVehicles = Api.getApi().getAllFavouriteLine()
          if (favouriteVehicles.isEmpty()) {
-            val informationAboutFavourite =
-               "Musisz dodać ulubione pojazdy, aby je wyświetlić"
-            Toast.makeText(map.context,
-               informationAboutFavourite, Toast.LENGTH_LONG).show()
+            val informationAboutFavourite =Resources.getSystem().getString(R.string.infoNoFavouriteVehicles)
+
+            Toast.makeText(map.context, informationAboutFavourite, Toast.LENGTH_LONG).show()
          } else {
             listOfAllVehicle
                .filter { !it.isDeleted }
@@ -29,7 +27,7 @@ class ActualPositionFavouriteVehicle(drawables: Drawables) : ActualPositionVehic
                      updateMarkerPosition(drawVehicleMarker, it, map)
                   } else {
                      val firstElement = 0
-                     val lineNumber = it.name.split(" ")[firstElement].toIntOrNull()
+                     val lineNumber = it.name.split(space)[firstElement].toIntOrNull()
                      if (lineNumber != null) {
                         favouriteVehicles.forEach { favouriteLineData ->
                            if (favouriteLineData.numberLine == lineNumber) {

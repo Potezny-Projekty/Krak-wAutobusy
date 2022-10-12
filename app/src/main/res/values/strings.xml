@@ -43,6 +43,9 @@
     <string name="showBusStops">Wyswietl przystanki</string>
     <string name="openstreetmap_license">© autorzy OpenStreetMap</string>
 
+    <string name="infoNoFavouriteVehicles">Musisz dodać ulubione pojazdy, aby je wyświetlić</string>
+    <string name="infoNoFavouriteVehicleStop">Musisz dodać ulubione przystanki, aby je wyświetlić</string>
+
 
 
     <string name="textLineNumber">Linia numer</string>

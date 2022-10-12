@@ -22,11 +22,9 @@ class LoadingPageActivity : AppCompatActivity() {
     }
     private fun hideAppTitleBar() {
         supportActionBar?.hide()
-
-
-
-
     }
+
+    private val delayRunAppSecond=2L
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onStart() {
@@ -37,7 +35,7 @@ class LoadingPageActivity : AppCompatActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             startActivity(intent)
-        }, 3, TimeUnit.SECONDS)
+        }, delayRunAppSecond, TimeUnit.SECONDS)
         }
 
 }

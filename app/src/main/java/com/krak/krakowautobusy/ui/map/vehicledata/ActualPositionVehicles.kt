@@ -7,7 +7,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -29,7 +28,6 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
-import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow
 import retrofit2.Response
 import kotlin.collections.set
 
@@ -38,15 +36,15 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     var lastUpdateBus: Long = 0
     var lastUpdateTram: Long = 0
     protected var markers = mutableMapOf<String, VehicleMarker>()
-    protected var trackedRoute: Polyline
-    protected var traveledRoute: Polyline
+    private var trackedRoute: Polyline
+    private var traveledRoute: Polyline
     private val fullAngle = 360F
     private var enabled = true
-    protected var trackingVehicle: VehicleMarker? = null
-    protected lateinit var iconVehicleBeforeTracking: Drawable
-    val tramDrawable: VehicleDrawables
-    val busDrawable: VehicleDrawables
-    val NO_ELEMENT = 0
+    private var trackingVehicle: VehicleMarker? = null
+    private lateinit var iconVehicleBeforeTracking: Drawable
+    private val tramDrawable: VehicleDrawables
+    private val busDrawable: VehicleDrawables
+    private val noElem = 0
 
 
     companion object {
@@ -77,10 +75,10 @@ open class ActualPositionVehicles(var drawables: Drawables) {
         this.enabled = enabled
     }
 
-    open fun showAllVehicle(map: MapView, allVehicles: AllVehicles) {
+    open fun showFavouriteVehicles(map: MapView, allVehicles: AllVehicles) {
 
         try {
-            Log.i("ACTUALPOSITOO", "ALL VEHICLE")
+
             val listOfAllVehicle = allVehicles.vehicles
             listOfAllVehicle
                 .filter { !it.isDeleted }
@@ -93,7 +91,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
                         markers[it.id] = drawMarkerVehiclesOnMap(it, map)
                     }
                 }
-            Log.i("POZYCJA", "TO Nie sa ulubione ULUBIONE")
+
 
         } catch (exp: Exception) {
 
@@ -101,25 +99,24 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     }
 
 
-    fun showVehiclesAboutNumberLine(map: MapView, allVehicles: AllVehicles, numberLine: String) {
+    private fun showVehiclesAboutNumberLine(map: MapView, allVehicles: AllVehicles, numberLine: String) {
+        val regexNumber=  "[^0-9]".toRegex()
+        val emptyString=""
         try {
             val listOfAllVehicle = allVehicles.vehicles
             listOfAllVehicle
                 .filter {
                     !it.isDeleted && it.name.startsWith(numberLine) && it.name.replace(
-                        "[^0-9]".toRegex(),
-                        ""
+                     regexNumber ,
+                        emptyString
                     ).length == numberLine.length
                 }
                 .forEach {
                     if (markers.containsKey(it.id)) {
 
-                        markers[it.id]!!.setOnMarkerClickListener { markerTracing, mapView ->
-                            // drawMarkerVehiclesOnMap(it,mapView)
+                        markers[it.id]!!.setOnMarkerClickListener { _, mapView ->
                             colorOnMapActualTimeTableVehicle(it.id, mapView)
                             actualVehicleIdClick.value = it.id
-
-
                             true
                         }
 
@@ -138,15 +135,12 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     }
 
     protected fun updateMarkerPosition(marker: VehicleMarker, vehicle: Vehicle, map: MapView) {
-        if (vehicle.path.size > NO_ELEMENT) {
+        if (vehicle.path.size > noElem) {
             val lastPosition = ConvertUnits.convertToGeoPoint(
                 vehicle.path[vehicle.path.size - 1].y2,
                 vehicle.path[vehicle.path.size - 1].x2
             )
-            Log.i(
-                "VEHICLEPOSITION",
-                "last position :${lastPosition}, marker Position ${marker.position}"
-            )
+
             if (lastPosition != marker.position) {
                 MarkerAnimation.animateMarkerToHC(
                     map,
@@ -156,91 +150,72 @@ open class ActualPositionVehicles(var drawables: Drawables) {
                     traveledRoute
                 )
             }
-        } else {
-            /* val points = ArrayList<GeoPoint>()
-             points.add(marker.position)
-             points.add(ConvertUnits
-                 .convertToGeoPoint(vehicle.latitude,
-                     vehicle.longitude))
-             val road = roadManager.getRoad(points)
-             val path = road.mRouteHigh
-             MarkerAnimation.animateMarkerToHC(
-                 map,
-                 marker,
-                 path,
-                 GeoPointInterpolator.Linear(),
-                 traveledRoute
-             )
-             marker.rotation = fullAngle - vehicle.heading*/
         }
     }
 
 
-    fun drawAllVehiclesStopLineOnMap(poz: ArrayList<SequenceVehicleStopData>, map: MapView) {
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun addClickSnippetVehicleStopToMoveVehicleStopDetails(vehicleStopMarker: BusStopMarker){
+        val defaultValue=""
+        vehicleStopMarker.infoWindow.view.setOnTouchListener { viewSnippet, event ->
+
+
+            viewSnippet as ViewGroup
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                val nameVehicleStop=(((viewSnippet.getChildAt(1) as LinearLayout).getChildAt(0) as LinearLayout) .getChildAt(0) as TextView).text.toString()
+
+                val bundle = bundleOf(
+                    Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
+                            defaultValue,
+                    Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
+                            nameVehicleStop,
+                    Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
+                            defaultValue
+
+                )
+
+
+                Navigation.findNavController(viewSnippet)
+                    .navigate(R.id.actionnavigatedetailesstop, bundle)
+            }
+            true
+        }
+    }
+
+    fun drawAllVehiclesStopForLinesOnMap(vehicleStops: ArrayList<SequenceVehicleStopData>, map: MapView) {
         val busStopMarkers = BusStopMarkerClusterDetails(map.context)
         val busStopMarkerCollectionRadiusForClustering = 60
+        val defaultValue=0L
         busStopMarkers.setRadius(busStopMarkerCollectionRadiusForClustering)
-        for (x in poz) {
-            val xx = createMarker(map, x.nameVehicleStop)
-           var xxa=BusStopMarker(map, VehicleStopData(0,x.nameVehicleStop,x.longitude,x.latitude,0,com.krak.krakowautobusy.database.VehicleType.BUS,x.idStopPoint,false))
+        for (vehStop in vehicleStops) {
+            val marker = createMarker(map, vehStop.nameVehicleStop)
+            val vehicleStopMarker=BusStopMarker(map, VehicleStopData(defaultValue,vehStop.nameVehicleStop,vehStop.longitude,vehStop.latitude,
+                defaultValue.toInt(),com.krak.krakowautobusy.database.VehicleType.BUS,vehStop.idStopPoint,false))
 
-            xxa.infoWindow.view.setOnTouchListener { x, event ->
-
-                x as ViewGroup
-                if (event.action == MotionEvent.ACTION_DOWN) {
-                    var name=(((x.getChildAt(1) as LinearLayout).getChildAt(0) as LinearLayout) .getChildAt(0) as TextView).text.toString()
-                    //val mapFragment = map.findFragment<Fragment>()
-                    val bundle = bundleOf(
-                        Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
-                                "",
-                        Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
-                                name,
-                        Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
-                                ""
-
-                    )
-                    //bundle
-
-
-
-                    Navigation.findNavController(x)
-                        .navigate(R.id.actionnavigatedetailesstop, bundle);
-                }
-                true
-            }
-
-
-
-
-
+            addClickSnippetVehicleStopToMoveVehicleStopDetails(vehicleStopMarker)
 
             val locationPoint =
-                ConvertUnits.convertToGeoPoint(x.longitude, x.latitude)
+                ConvertUnits.convertToGeoPoint(vehStop.longitude, vehStop.latitude)
 
-            Log.e(
-                "details",
-                "Rysuje" + x.nameVehicleStop + " " + locationPoint.latitude + " " + locationPoint.longitude
-            )
-
-            xx.position = locationPoint
-            busStopMarkers.add(xx)
+            marker.position = locationPoint
+            busStopMarkers.add(marker)
         }
         map.overlays.add(busStopMarkers)
         map.invalidate()
     }
 
-    fun createMarker(map: MapView, namevehicleStop: String): Marker {
+    private fun createMarker(map: MapView, namevehicleStop: String): Marker {
         val marker = Marker(map)
-        //val ut=Utilities(getCo)
 
         marker.icon = drawables.vehicleStopIcon
-        marker.id = "xD"
+        marker.id = ".."
         marker.title = namevehicleStop
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
         return marker
     }
 
-    protected fun fillMarkerData(
+    private fun fillMarkerData(
         marker: VehicleMarker, icons: VehicleDrawables,
         typeVehicle: String, title: String
     ) {
@@ -263,26 +238,22 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     }
 
 
+
     @SuppressLint("ClickableViewAccessibility")
-    protected fun drawMarkerVehiclesOnMap(vehicle: Vehicle, map: MapView): VehicleMarker {
-
-
-        val locationPoint =
-            ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude)
-        val marker = VehicleMarker(map, vehicle)
-        val markerToast = MarkerToast(map)
-        markerToast.view.setOnTouchListener { v, event ->
+    private fun setClickSnippetVehicleMarkerToMoveToVehicleDetails(markerToast:MarkerToast, vehicle: Vehicle, map: MapView){
+        val defaultValue=""
+        val space=" "
+        val bundleKeyTripId="tripId"
+        markerToast.view.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                //val mapFragment = map.findFragment<Fragment>()
                 val bundle = bundleOf(
                     BundleChoiceVehicle.LINE_NUMBER.nameBundleObject to
-                            vehicle.name.split(' ')[0].trim().toInt(),
+                            vehicle.name.split(space)[0].trim().toInt(),
                     BundleChoiceVehicle.FIRST_STOP_VEHICLE_NAME.nameBundleObject
-                            to "",
+                            to defaultValue,
                     BundleChoiceVehicle.LAST_VEHICLE_STOP_NAME.nameBundleObject to
-                            vehicle.name.substringAfter(" "),
-                    "tripId" to vehicle.tripId
-
+                            vehicle.name.substringAfter(space),
+                    bundleKeyTripId to vehicle.tripId
 
                 )
 
@@ -291,6 +262,18 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             }
             true
         }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    protected fun drawMarkerVehiclesOnMap(vehicle: Vehicle, map: MapView): VehicleMarker {
+
+
+        val locationPoint =
+            ConvertUnits.convertToGeoPoint(vehicle.latitude, vehicle.longitude)
+        val marker = VehicleMarker(map, vehicle)
+        val markerToast = MarkerToast(map)
+
+        setClickSnippetVehicleMarkerToMoveToVehicleDetails(markerToast,vehicle,map)
 
 
         marker.setInfoWindowAnchor(Marker.ANCHOR_TOP, Marker.ANCHOR_CENTER)
@@ -320,7 +303,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
     }
 
-    protected fun drawMarkerVehiclesOnMapAboutNumberLine(
+    private fun drawMarkerVehiclesOnMapAboutNumberLine(
         vehicle: Vehicle,
         map: MapView
     ): VehicleMarker {
@@ -341,67 +324,53 @@ open class ActualPositionVehicles(var drawables: Drawables) {
         }
 
         map.overlays.add(marker)
-        marker.setOnMarkerClickListener { markerTracing, mapView ->
-            true
-        }
+
 
         return marker
     }
 
-    var actualShow: String = ""
-    var x = false
+    private var actualShowVehicleID: String = ""
+    private var isFirstRun = false
     fun colorOnMapActualTimeTableVehicle(vehicleId: String, map: MapView) {
-        if (actualShow != vehicleId) {
+        if (actualShowVehicleID != vehicleId) {
             val marker = markers[vehicleId]
 
-            //   for (x in markers) {
-            //      Log.e("qweqwe2", x.key + " ")
-            //     }
-
-            if (!x) {
-                x = true
+            if (!isFirstRun) {
+                isFirstRun = true
                 addPolylineIntoMap(map)
             }
 
-            //   Log.e("qweqwe", "Jestem")
-            //   Log.e("qweqwe", vehicleId.toString())
             if (marker != null) {
                 drawPathVehicle(vehicleId, "tram", map, marker)
                 drawPathVehicle(vehicleId, "BUS", map, marker)
 
-
-            } //else {
-            //    Log.e("qweqwe", "Jestem NULL")
-            //  }
-
-            actualShow = vehicleId
+            }
+            actualShowVehicleID = vehicleId
         }
 
     }
 
 
-    protected fun analisePathVehicleResponse(
+    private fun analisePathVehicleResponse(
         response: Response<JsonObject>,
         map: MapView,
         marker: VehicleMarker
     ) {
-        val FIRST_RESPONSE_ELEM = 0
-        val PATH = "paths"
-        val WAY_POINT = "wayPoints"
-        val LATITUDE = "lat"
-        val LONGITUDE = "lon"
+        val firstResponseElem = 0
+        val path = "paths"
+        val wayPoint = "wayPoints"
+        val latitude = "lat"
+        val longitude = "lon"
 
-
-        Log.i("ERRORR2", response.raw().toString())
         val geoPoints = ArrayList<GeoPoint>()
         val jsonObjectValue = response.body()
-        jsonObjectValue?.getAsJsonArray(PATH)?.get(FIRST_RESPONSE_ELEM)
-            ?.asJsonObject?.getAsJsonArray(WAY_POINT)
+        jsonObjectValue?.getAsJsonArray(path)?.get(firstResponseElem)
+            ?.asJsonObject?.getAsJsonArray(wayPoint)
             ?.forEach {
                 geoPoints.add(
                     ConvertUnits.convertToGeoPoint(
-                        it.asJsonObject[LATITUDE].asLong,
-                        it.asJsonObject[LONGITUDE].asLong
+                        it.asJsonObject[latitude].asLong,
+                        it.asJsonObject[longitude].asLong
                     )
                 )
             }
@@ -409,7 +378,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
         drawPathVehicleOnMap(map, marker, geoPoints)
     }
 
-    protected fun drawPathVehicle(
+    private fun drawPathVehicle(
         idVehicle: String,
         type: String,
         map: MapView,
@@ -466,34 +435,30 @@ open class ActualPositionVehicles(var drawables: Drawables) {
         }
     }
 
-    protected fun createTrackedPolyline(): Polyline {
-        val routeColor = "#39DD00"
+    private fun createTrackedPolyline(): Polyline {
+        val routeColor = Resources.getSystem().getColor(R.color.routeColor)
         val width = 10.0f
         val trackedRoute = Polyline()
         trackedRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
         trackedRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
-        trackedRoute.outlinePaint.color = Color.parseColor(routeColor)
+        trackedRoute.outlinePaint.color = routeColor
         trackedRoute.outlinePaint.strokeWidth = width
         trackedRoute.isGeodesic = true
         return trackedRoute
     }
 
-    protected fun createTraveledPolyline(): Polyline {
-        val colorTraveledRoute = "#FF0000"
+    private fun createTraveledPolyline(): Polyline {
+        val colorTraveledRoute = Resources.getSystem().getColor(R.color.traveledColorRoute)
         val width = 10.0f
         val traveledRoute = Polyline()
         traveledRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
         traveledRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
-        traveledRoute.outlinePaint.color = Color.parseColor(colorTraveledRoute)
+        traveledRoute.outlinePaint.color = colorTraveledRoute
         traveledRoute.outlinePaint.strokeWidth = width
         traveledRoute.isGeodesic = true
         return traveledRoute
     }
 
-    //to niżej dodać
-    fun checkIsResponseExist() {
-
-    }
 
     fun showNumberLine(map: MapView, numberLine: String) {
         Api.getApi().getBusPosition(lastUpdateBus,
@@ -502,7 +467,6 @@ open class ActualPositionVehicles(var drawables: Drawables) {
                     val allBus = response.body()!!
                     lastUpdateBus = allBus.lastUpdate
                     showVehiclesAboutNumberLine(map, response.body()!!, numberLine)
-                    Log.i("ERRORR2", allBus.toString())
                 }
             }
         )
@@ -517,12 +481,10 @@ open class ActualPositionVehicles(var drawables: Drawables) {
         })
     }
 
-    protected fun drawNumberOnIcon(icon: Drawable, number: String, rotation: Float): Drawable {
-        //val textSize = 24f
-
+    private fun drawNumberOnIcon(icon: Drawable, number: String): Drawable {
 
         val textSize = 15f * drawables.context.resources.displayMetrics.density
-       // Log.e("")
+
         val copyIcon = icon.mutate()
         val paint = Paint()
         val factoryMoveHeightText = 2
@@ -549,7 +511,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
             number, startPositionXText,
             startPositionYText, paint
         )
-        Log.i("ROTATION", rotation.toString())
+
         copyIcon.setBounds(0, 0, canvas.width, canvas.height)
         return bitmap.toDrawable(Resources.getSystem())
 
@@ -558,16 +520,16 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     fun lodaIconIntoMap() {
         val lineNumber = "10"
         //Drawables Bus
-        drawNumberOnIcon(drawables.busIconTrackingDrawable, lineNumber, 0f)
-        drawNumberOnIcon(drawables.busIconTrackingMirrorDrawable, lineNumber, 0f)
-        drawNumberOnIcon(drawables.busIconMirrorDrawable, lineNumber, 0f)
-        drawNumberOnIcon(drawables.busIconDrawable, lineNumber, 0f)
+        drawNumberOnIcon(drawables.busIconTrackingDrawable, lineNumber)
+        drawNumberOnIcon(drawables.busIconTrackingMirrorDrawable, lineNumber)
+        drawNumberOnIcon(drawables.busIconMirrorDrawable, lineNumber)
+        drawNumberOnIcon(drawables.busIconDrawable, lineNumber)
 
         //Drawables Tram
-        drawNumberOnIcon(drawables.tramIconTrackingDrawable, lineNumber, 0f)
-        drawNumberOnIcon(drawables.tramIconTrackingMirrorDrawable, lineNumber, 0f)
-        drawNumberOnIcon(drawables.tramIconMirrorDrawable, lineNumber, 0f)
-        drawNumberOnIcon(drawables.tramIconDrawable, lineNumber, 0f)
+        drawNumberOnIcon(drawables.tramIconTrackingDrawable, lineNumber)
+        drawNumberOnIcon(drawables.tramIconTrackingMirrorDrawable, lineNumber)
+        drawNumberOnIcon(drawables.tramIconMirrorDrawable, lineNumber)
+        drawNumberOnIcon(drawables.tramIconDrawable, lineNumber)
     }
 
 
@@ -584,7 +546,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     }
 
     open fun showMarkers(map: MapView) {
-        Log.i("ACTUALPOSITION", "WORK")
+
         map.overlays.addAll(markers.values)
         map.invalidate()
     }

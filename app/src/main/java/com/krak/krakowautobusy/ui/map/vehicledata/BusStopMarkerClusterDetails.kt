@@ -24,11 +24,12 @@ class BusStopMarkerClusterDetails(ctx: Context) : RadiusMarkerClusterer(ctx) {
     }
 
     override fun zoomOnCluster(mapView: MapView?, cluster: StaticCluster?) {
+        val scaleFactor=10f
         var bb = cluster!!.boundingBox
         if (bb.latNorth == bb.latSouth && bb.lonEast == bb.lonWest) {
             mapView!!.setExpectedCenter(bb.centerWithDateLine)
         } else {
-            bb = bb.increaseByScale(10f)
+            bb = bb.increaseByScale(scaleFactor)
             mapView!!.zoomToBoundingBox(bb, true)
         }
     }

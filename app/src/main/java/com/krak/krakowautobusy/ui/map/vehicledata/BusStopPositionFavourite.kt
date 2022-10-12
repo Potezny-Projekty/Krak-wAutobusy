@@ -1,7 +1,9 @@
 package com.krak.krakowautobusy.ui.map.vehicledata
 
+import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.widget.Toast
+import com.krak.krakowautobusy.R
 import com.krak.krakowautobusy.api.Api
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.FolderOverlay
@@ -17,7 +19,7 @@ class BusStopPositionFavourite(busStopIconDrawable: Drawable) :
 
         if (busStopData.isEmpty()) {
             val informationAboutFavourite =
-                "Musisz dodać ulubione przystanki, aby je wyświetlić"
+                Resources.getSystem().getString(R.string.infoNoFavouriteVehicleStop)
             Toast.makeText(map.context,
                 informationAboutFavourite, Toast.LENGTH_LONG).show()
 

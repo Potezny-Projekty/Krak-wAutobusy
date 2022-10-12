@@ -24,7 +24,7 @@ object MarkerAnimation {
         val valueAnimator = ValueAnimator()
         var pathIterator = 0
         val fullAngle = 360F
-        //val sumOfDistancePath = endPoint.sumOf(PathVehicle::length)
+
         valueAnimator.addUpdateListener { animation ->
 
             val startPosition = marker.position
@@ -37,8 +37,7 @@ object MarkerAnimation {
 
                 try{
                     polyline.addPoint(startPosition)
-                    //traveled.actualPoints.removeAll(polyline.actualPoints)
-                  //  marker.infoWindow.view.invalidate()
+
                 }catch (exp:Exception){
 
                 }
@@ -55,12 +54,12 @@ object MarkerAnimation {
         }
 
         valueAnimator.setFloatValues(START_ANIMATION_RANGE, END_ANIMATION_RANGE)
-        //Empty array
+
         if (endPoint.size == 0) {
             valueAnimator.duration = DURATION_ANIMATION
         } else {
             valueAnimator.duration = DURATION_ANIMATION / endPoint.size
-               // (endPoint[pathIterator].length / sumOfDistancePath).roundToLong() //DURATION_ANIMATION / endPoint.size
+
         }
         val lastPositionElement = endPoint.size - 1
         valueAnimator.repeatCount = lastPositionElement
@@ -69,85 +68,6 @@ object MarkerAnimation {
         return valueAnimator
     }
 
-    fun animateMarkerToHC(
-        map: MapView,
-        marker: VehicleMarker,
-        endPoint: List<GeoPoint>,
-        GeoPointInterpolator: GeoPointInterpolator,
-        polyline: Polyline,
-    ): ValueAnimator {
 
-        val valueAnimator = ValueAnimator()
-        var pathIterator = 0
-        val fullAngle = 360F
-        //val sumOfDistancePath = endPoint.sumOf(PathVehicle::length)
-        valueAnimator.addUpdateListener { animation ->
 
-            val startPosition = marker.position
-            val fraction = animation.animatedFraction
-            val end = endPoint[pathIterator]
-            val newPosition: GeoPoint =
-                GeoPointInterpolator.interpolate(fraction, startPosition, end)
-            if (marker.icon == marker.vehicleTrackedIcon || marker.icon == marker.vehicleTrackedIconMirror) {
-
-                try{
-                    polyline.addPoint(startPosition)
-                    //traveled.actualPoints.removeAll(polyline.actualPoints)
-                    //  marker.infoWindow.view.invalidate()
-                }catch (exp:Exception){
-
-                }
-
-            }
-            marker.changeMarkerIcon()
-            marker.position = newPosition
-            map.invalidate()
-
-        }
-        valueAnimator.doOnRepeat {
-            pathIterator++
-        }
-
-        valueAnimator.setFloatValues(START_ANIMATION_RANGE, END_ANIMATION_RANGE)
-        //Empty array
-        if (endPoint.size == 0) {
-            valueAnimator.duration = DURATION_ANIMATION
-        } else {
-            valueAnimator.duration = DURATION_ANIMATION / endPoint.size
-            // (endPoint[pathIterator].length / sumOfDistancePath).roundToLong() //DURATION_ANIMATION / endPoint.size
-        }
-        val lastPositionElement = endPoint.size - 1
-        valueAnimator.repeatCount = lastPositionElement
-        valueAnimator.start()
-
-        return valueAnimator
-    }
-
-    fun animateMarkerToHCLinear(
-        map: MapView,
-        marker: Marker,
-        endPoint: GeoPoint,
-        GeoPointInterpolator: GeoPointInterpolator,
-        polyline: Polyline
-    ): ValueAnimator {
-        val valueAnimator = ValueAnimator()
-        valueAnimator.addUpdateListener { animation ->
-            val startPosition = marker.position
-            val fraction = animation.animatedFraction
-            val newPosition: GeoPoint =
-                GeoPointInterpolator.interpolate(fraction, startPosition, endPoint)
-            marker.position = newPosition
-            if (marker.id == VehicleType.TRAM_FOCUSED.type
-                || marker.id == VehicleType.BUS_FOCUSED.type) {
-                polyline.addPoint(startPosition)
-            }
-            map.invalidate()
-        }
-        valueAnimator.setFloatValues(START_ANIMATION_RANGE, END_ANIMATION_RANGE)
-        valueAnimator.duration = DURATION_ANIMATION
-
-        valueAnimator.start()
-
-        return valueAnimator
-    }
 }

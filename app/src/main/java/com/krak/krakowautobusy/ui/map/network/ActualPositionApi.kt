@@ -7,6 +7,8 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
+
+@Deprecated("Propably no usage. New class in package inner network ttss ")
 interface ActualPositionApi {
     @FormUrlEncoded
     @POST("geoserviceDispatcher/services/vehicleinfo/vehicles")

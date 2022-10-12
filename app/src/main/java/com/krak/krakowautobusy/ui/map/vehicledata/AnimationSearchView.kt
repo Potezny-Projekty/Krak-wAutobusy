@@ -7,78 +7,49 @@ import android.view.animation.AccelerateDecelerateInterpolator
 class AnimationSearchView {
     companion object {
 
-        val ANIM_DURATION_MS=800L
-        public fun  showListSearchViewAnimation(view: View) {
+        private const val animDurationMs=800L
+        fun  showListSearchViewAnimation(view: View) {
                 view.pivotX = 0f
                 view.pivotY = 0f
 
                 view.animate()
                     .scaleY(1f)
-                    .setInterpolator(AccelerateDecelerateInterpolator()).duration = ANIM_DURATION_MS
-                /*     searchList!!.visibility = View.VISIBLE
-
-                     val anim = ValueAnimator.ofInt(searchList.getMeasuredHeight(), -100)
-                     anim.addUpdateListener { valueAnimator ->
-                         val `val` = valueAnimator.animatedValue as Int
-                         val layoutParams: ViewGroup.LayoutParams = searchList.getLayoutParams()
-                         layoutParams.height = `val`
-                         searchList.setLayoutParams(layoutParams)
-                     }
-                     anim.duration = 800
-                     anim.start()
-
-             */
-
-                //   searchList!!.visibility = View.VISIBLE
-                //  searchList.setAlpha(0.0f);
-
-
-                //  searchList.animate()
-                //       .translationY(searchList.getHeight().toFloat())
-                //       .alpha(1.0f)
-                //       .start()
+                    .setInterpolator(AccelerateDecelerateInterpolator()).duration = animDurationMs
 
 
         }
 
 
 
-        public fun hideListSearchViewAnimation(view: View){
+       fun hideListSearchViewAnimation(view: View){
 
-            view.pivotX = 0f;
+            view.pivotX = 0f
             view.pivotY = 0f
 
             view.animate()
                 .scaleY(0f).withEndAction {
                     view.visibility = View.GONE
                 }
-                .setInterpolator(AccelerateDecelerateInterpolator()).duration = ANIM_DURATION_MS
+                .setInterpolator(AccelerateDecelerateInterpolator()).duration = animDurationMs
 
-/*
-        val view=binding.allSearchPane
-        view!!.animate()
-            .translationY(0f)
-            .alpha(0.0f)
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    super.onAnimationEnd(animation)
-                    view!!.visibility = View.GONE
-                }
-            })*/
         }
 
-        public lateinit var rotateAnimation:ObjectAnimator
-        public lateinit var rotateAnimationReverse:ObjectAnimator
+         lateinit var rotateAnimation:ObjectAnimator
+         lateinit var rotateAnimationReverse:ObjectAnimator
 
-        public fun preparedRotateIconSearchAnimation(searchIcon:View){
-           // val searchIcon=binding.searchIcon
-            val animatorRotateIcon = ObjectAnimator.ofFloat(searchIcon, View.ROTATION, -180f, 0f)
-            animatorRotateIcon.duration = ANIM_DURATION_MS
+
+         private const val rotateMinusAnim=-180f
+         private const val rotateBaseAnim=0f
+         private const val rotatePlusAnim=180f
+
+         fun preparedRotateIconSearchAnimation(searchIcon:View){
+
+            val animatorRotateIcon = ObjectAnimator.ofFloat(searchIcon, View.ROTATION, rotateMinusAnim, rotateBaseAnim)
+            animatorRotateIcon.duration = animDurationMs
             rotateAnimation=animatorRotateIcon
 
-           // return animatorRotateIcon
-            val animatorRotateIconReverse = ObjectAnimator.ofFloat(searchIcon, View.ROTATION, 180f, 0f)
-            animatorRotateIconReverse.duration = ANIM_DURATION_MS
+            val animatorRotateIconReverse = ObjectAnimator.ofFloat(searchIcon, View.ROTATION, rotatePlusAnim, rotateBaseAnim)
+            animatorRotateIconReverse.duration = animDurationMs
             rotateAnimationReverse=animatorRotateIconReverse
 
 
@@ -86,40 +57,34 @@ class AnimationSearchView {
 
 
 
+         lateinit var scaleXAnimationScaleUo:ObjectAnimator
+         lateinit var scaleYAnimationScaleUp:ObjectAnimator
 
-        public lateinit var scaleXAnimationScaleUo:ObjectAnimator
-        public lateinit var scaleYAnimationScaleUp:ObjectAnimator
+         lateinit var scaleXAnimationScaleDown:ObjectAnimator
+         lateinit var scaleYAnimationScaleDown:ObjectAnimator
+         private const val animScaleZero=0f
+         private const val animScaleUp=1.5f
 
-        public lateinit var scaleXAnimationScaleDown:ObjectAnimator
-        public lateinit var scaleYAnimationScaleDown:ObjectAnimator
-        public fun prepareResizeIconSearchAnimation(searchIcon: View){
-           // val searchIcon=binding.searchIcon
-            val scaleY = ObjectAnimator.ofFloat(searchIcon, "scaleY", 0f, 1.5f)
-            val scaleX = ObjectAnimator.ofFloat(searchIcon, "scaleX", 0f, 1.5f)
-            scaleX.duration=ANIM_DURATION_MS
-            scaleY.duration=ANIM_DURATION_MS
+         fun prepareResizeIconSearchAnimation(searchIcon: View){
+
+            val scaleY = ObjectAnimator.ofFloat(searchIcon, "scaleY", animScaleZero, animScaleUp)
+            val scaleX = ObjectAnimator.ofFloat(searchIcon, "scaleX", animScaleZero, animScaleUp)
+            scaleX.duration=animDurationMs
+            scaleY.duration=animDurationMs
 
             scaleXAnimationScaleUo=scaleX
             scaleYAnimationScaleUp=scaleY
 
 
-            val scaleYDown = ObjectAnimator.ofFloat(searchIcon, "scaleY", 1.5f, 0f)
-            val scaleXDown = ObjectAnimator.ofFloat(searchIcon, "scaleX", 1.5f, 0f)
-            scaleXDown.duration=ANIM_DURATION_MS
-            scaleYDown.duration=ANIM_DURATION_MS
+            val scaleYDown = ObjectAnimator.ofFloat(searchIcon, "scaleY", animScaleUp, animScaleZero)
+            val scaleXDown = ObjectAnimator.ofFloat(searchIcon, "scaleX", animScaleUp, animScaleZero)
+            scaleXDown.duration=animDurationMs
+            scaleYDown.duration=animDurationMs
             scaleXAnimationScaleDown=scaleXDown
             scaleYAnimationScaleDown=scaleYDown
 
 
         }
-
-
-
-
-
-
-
-
 
 
 

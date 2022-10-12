@@ -119,7 +119,7 @@ class CreateDetailsMapFragment : Fragment() {
                 val result = bundle.getInt(BUNDLE_NUMBER_LINE_KEY)
                 val direction = bundle.getString("direction")
                 var lineData = Api.getApi().getVehicleStopLines(result);
-                actualPositionVehicles.drawAllVehiclesStopLineOnMap(lineData, map);
+                actualPositionVehicles.drawAllVehiclesStopForLinesOnMap(lineData, map);
 
                 if (direction != null) {
                   //  showTimeTableLine(result.toString(),direction)

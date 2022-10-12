@@ -1,13 +1,11 @@
 package com.krak.krakowautobusy.ui.details
 
-import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,8 +36,6 @@ import java.lang.IllegalStateException
 import java.lang.Runnable
 
 data class IdVehicle(val tripId:String,val vehicleId:String,val direction:String)
-
-
 private const val DELAY_FIRST_REFRESH_TIME_TABLE_AFTER_DOWNLOAD_ALL_LINES_WITH_NUMBER_DATA_MS=1500L
 private const val REFRESH_TIME_TABLE_AFTER_DOWNLOAD_DATA_ALL_LINES_WITH_NUMBER_MS=5000L
 private const val DELAY_CHANGE_VEHICLE_FOLLOW_FOR_UPDATE_DATA_MS=300L
@@ -82,7 +78,7 @@ class DetailsFragment : Fragment() {
                 tripIdFromMaps=requireArguments().getString("tripId").toString()
 
             }else {
-                messageForMapFragment(requireArguments().getInt(lineNumberBundleName));//to obczaj
+                messageForMapFragment(requireArguments().getInt(lineNumberBundleName))
             }
 
 
@@ -155,6 +151,72 @@ class DetailsFragment : Fragment() {
     }
 
 
+    
+    
+    private fun  addBackActionToArrow(){
+        binding.backArrowDetailsMenu.setOnClickListener {
+            mainHandler.removeCallbacks(refreshListVehicleRunnable)
+            mainHandler.removeCallbacks(refreshTimeTableAfterDownloadDataRunable)
+            findNavController().popBackStack()
+        }
+
+    }
+    
+    
+    private fun addToFavouriteAfterClickHeart(){
+        val animScaleDownFactory=0.8f
+        val normalScaleFactor=1f
+        val animDurationMS=400L
+        
+        val animScaleUpFactory=1.2f
+
+        binding.heartIcon.setOnClickListener {
+            if(Api.getApi().isLineFavourite(numberLine)){
+                Api.getApi().removeLinesFromFavourites(numberLine)
+                
+                binding.heartIcon.animate()
+                    .scaleX(animScaleDownFactory).setDuration(animDurationMS).start()
+
+                binding.heartIcon.animate()
+                    .scaleY(animScaleDownFactory).setDuration(animDurationMS).withEndAction {
+                        binding.heartIcon.animate().scaleX(normalScaleFactor).setDuration(animDurationMS).start()
+                        binding.heartIcon.animate().scaleY(normalScaleFactor).setDuration(animDurationMS).start()
+                        
+                    }
+                
+                binding.heartIcon.setImageResource(R.drawable.ic_gray_hert_icon)
+
+            }else {
+
+                binding.heartIcon.animate()
+                    .scaleX(animScaleUpFactory).setDuration(animDurationMS).start()
+
+                binding.heartIcon.animate()
+                    .scaleY(animScaleUpFactory).setDuration(animDurationMS).withEndAction {
+                        binding.heartIcon.animate().scaleX(normalScaleFactor).setDuration(animDurationMS).start()
+                        binding.heartIcon.animate().scaleY(normalScaleFactor).setDuration(animDurationMS).withEndAction {
+
+                        }
+                    }
+
+
+                binding.heartIcon.setImageResource(R.drawable.red_heart_icon)
+                Api.getApi().addLineToFavourite(numberLine)
+            }
+        }
+    }
+    
+    
+    
+    private fun readIsLineFavouriteAndSetIcon(){
+        if(Api.getApi().isLineFavourite(numberLine)){
+            binding.heartIcon.setImageResource(R.drawable.red_heart_icon)
+        }else {
+            binding.heartIcon.setImageResource(R.drawable.ic_gray_hert_icon)
+        }
+        
+    }
+    
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -166,213 +228,140 @@ class DetailsFragment : Fragment() {
         addFragmentResultListener()
         addOnClickNavigationButton()
         addChangeActualVehicleFollowObserver()
-
-
-
-
-
-
-        binding.backArrowDetailsMenu.setOnClickListener {
-            mainHandler.removeCallbacks(refreshListVehicleRunnable)
-            mainHandler.removeCallbacks(refreshTimeTableAfterDownloadDataRunable)
-            findNavController().popBackStack()
-        }
-
-
-
-        binding.heartIcon.setOnClickListener {
-            if(Api.getApi().isLineFavourite(numberLine)){
-                Api.getApi().removeLinesFromFavourites(numberLine)
-
-
-                binding.heartIcon!!.animate()
-                    .scaleX(0.8f).setDuration(400).start()
-
-                binding.heartIcon!!.animate()
-                    .scaleY(0.8f).setDuration(400).withEndAction {
-                        binding.heartIcon.animate().scaleX(1.0f).setDuration(400).start()
-                        binding.heartIcon.animate().scaleY(1.0f).setDuration(400).start()
-
-
-                    }
-
-
-                binding.heartIcon.setImageResource(R.drawable.ic_gray_hert_icon);
-
-            }else {
-
-                binding.heartIcon!!.animate()
-                    .scaleX(1.2f).setDuration(400).start()
-
-                binding.heartIcon!!.animate()
-                    .scaleY(1.2f).setDuration(400).withEndAction {
-                        binding.heartIcon.animate().scaleX(1.0f).setDuration(400).start()
-                        binding.heartIcon.animate().scaleY(1.0f).setDuration(400).withEndAction {
-
-                        }
-                    }
-
-
-                binding.heartIcon.setImageResource(R.drawable.red_heart_icon);
-                Api.getApi().addLineToFavourite(numberLine)
-            }
-        }
-
-
-        if(Api.getApi().isLineFavourite(numberLine)){
-
-            binding.heartIcon.setImageResource(R.drawable.red_heart_icon);
-
-        }else {
-            binding.heartIcon.setImageResource(R.drawable.ic_gray_hert_icon);
-
-        }
-
-        // messageForMapFragment(requireArguments().getInt(LINE_NUMBER_BUNDLE_NAME));
+        addBackActionToArrow()
+        addToFavouriteAfterClickHeart()
+        readIsLineFavouriteAndSetIcon()
+        
         return binding.root
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
 
-    }
-
-
-
-
-    fun updateAllVehicleBaseData(baseDataVeh:ArrayList<IdVehicle>) = runBlocking {
-        if(baseDataVeh.size>0) {
+    private fun updateDataTimeTableAndVehiclesPositionEvery(baseDataVeh:ArrayList<IdVehicle>) = runBlocking {
+        val zeroElem=0
+        if(baseDataVeh.size>zeroElem) {
             vehicles = baseDataVeh
         }
-        Log.e("kk","Aktualizacja"+vehicles.size)
-        refreshTimeTable()//hmm
-        withContext(Dispatchers.Default) {
-
-
-        }
+        refreshTimeTable()
         refreshChoiceFollowIndexVehicle()
     }
 
-    var tripID:String="";
-    var vehicleId:String="";
+    private var tripID:String=""
+    private var vehicleId:String=""
 
-    val NO_ELEM=0
-    val DEFAULT_CHOICE_VEHICLE_INDEX=0
-    fun refreshChoiceFollowIndexVehicle()= runBlocking {
+    private val noElem=0
+    private val defaultChoiceVehicleIndex=0
+    
+    private fun setTripIdAndVehicleToActualTrack(){
+        tripID = vehicles[choiceIndex].tripId
+        vehicleId = vehicles[choiceIndex].vehicleId
+    }
+    
+    private fun refreshChoiceFollowIndexVehicle()= runBlocking {
 
-        if(vehicles.size>NO_ELEM) {
+        if(vehicles.size>noElem) {
             if(choiceIndex>vehicles.size-1){
-                choiceIndex=DEFAULT_CHOICE_VEHICLE_INDEX
-                Log.e("kk","Kurwa default")
+                choiceIndex=defaultChoiceVehicleIndex
             }
-            tripID = vehicles[choiceIndex].tripId
-            vehicleId = vehicles[choiceIndex].vehicleId
-            Log.e("kk","UPDate"+tripID+"/"+vehicleId+"?"+choiceIndex)
+            setTripIdAndVehicleToActualTrack()
         }
-
-
-        withContext(Dispatchers.Default) {
-
-        }
-
-
-
+        
     }
 
 
     private val viewModel: ActualTimeTableShowData by activityViewModels()
 
-    fun changeIndexChoiceVehicleFollow()= runBlocking {
+    private fun changeIndexChoiceVehicleFollowToNext()= runBlocking {
 
-        choiceIndex+=1;
-        Log.e("kk","Indeks:"+choiceIndex+" size "+vehicles.size)
+        choiceIndex+=1
+     
         if(choiceIndex>=vehicles.size){
-            choiceIndex=DEFAULT_CHOICE_VEHICLE_INDEX
+            choiceIndex=defaultChoiceVehicleIndex
         }
 
         refreshChoiceFollowIndexVehicle()
-
-
-      //  mainHandler.removeCallbacks(refreshListVehicleRunnable)
         mainHandler.removeCallbacks(refreshTimeTableAfterDownloadDataRunable)
-      //  mainHandler.post { refreshListVehicleRunnable }
         mainHandler.postDelayed(refreshTimeTableAfterDownloadDataRunable,DELAY_CHANGE_VEHICLE_FOLLOW_FOR_UPDATE_DATA_MS)
-        withContext(Dispatchers.Default) {
-
-
-
-         //   Log.e("KURWICA",vehicles[0].tripId)
-
-
-        }
 
         if(vehicles.size>0) {
-            viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId;
+            viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId
         }
-
-
-        //<ci-1
-
+        
         if(vehicles.size>choiceIndex) {
-//        Log.e("qweqwe","Wyb"+vehicles[choiceIndex].vehicleId)
-            viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId;
+            viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId
         }
     }
 
 
 
-    fun setFirstVehicleAndLastInViews(actualDirection:String){
-        Log.e("kurwa2",actualDirection)
-        binding.details.currentlyFollowingFirstBusStopData.text="$firstVehicleStopName"
-        binding.details.currentlyFollowingLastBusStopData.text="$lastVehicleStopName"
-
-        Log.e("kurwa2",actualDirection+" / "+firstVehicleStopName)
-
-        if(actualDirection.trim().replace(" ","").contains(firstVehicleStopName.trim().replace(" ",""))){
-            Log.e("kurwa2","TRUE")
-            binding.details.currentlyFollowingFirstBusStopData.text="$lastVehicleStopName"
-            binding.details.currentlyFollowingLastBusStopData.text="$firstVehicleStopName"
+    private fun setFirstAndLastVehicleStopInView(actualDirection:String){
+       val space=" "
+       val nospace="" 
+        
+        binding.details.currentlyFollowingFirstBusStopData.text= firstVehicleStopName
+        binding.details.currentlyFollowingLastBusStopData.text= lastVehicleStopName
+        
+        if(actualDirection.trim().replace(space,nospace).contains(firstVehicleStopName.trim().replace(space,nospace))){
+            binding.details.currentlyFollowingFirstBusStopData.text= lastVehicleStopName
+            binding.details.currentlyFollowingLastBusStopData.text= firstVehicleStopName
         }else{
-            Log.e("kurwa2","FAOSE")
-            binding.details.currentlyFollowingFirstBusStopData.text="$firstVehicleStopName"
-            binding.details.currentlyFollowingLastBusStopData.text="$lastVehicleStopName"
+            binding.details.currentlyFollowingFirstBusStopData.text= firstVehicleStopName
+            binding.details.currentlyFollowingLastBusStopData.text= lastVehicleStopName
         }
     }
 
+    
+    
+    private fun findSelectionVehicle(){
+        if(vehicleNameFromMaps!=null){
+            if(vehicles.size>0){
+                for (i in 0 until vehicles.size) {
+                    if(vehicles[i].tripId == tripIdFromMaps)
+                    {
+                        choiceIndex=i
+                        break
+                    }
+                }
+                vehicleNameFromMaps=null
+            }}
+    }
 
-    //Kierunek się nie zgadza xD
-    fun downloadBusDataAndFilterFitToActualNumberChoice(nameLine: String,direction: String){
-        var e_=0L
-        var listBaseDataVehiclesWithSpecificNumberLine:ArrayList<IdVehicle> = ArrayList<IdVehicle>()
-        Api.getApi().getBusPosition(e_,
+
+
+    
+    fun downloadVehicleDataAndSetDirectionInView(nameLine: String, direction: String){
+        var lastUpdateNumber=0L
+        val listBaseDataVehiclesWithSpecificNumberLine:ArrayList<IdVehicle> = ArrayList()
+        
+        Api.getApi().getBusPosition(lastUpdateNumber,
             fun(response: Response<AllVehicles>) {
                 if (response.isSuccessful && response.body() != null ) {
-                    Log.e("kk","wczesny update")
+                 
                     val allBus = response.body()!!
-                    e_ = allBus.lastUpdate
-
+                    lastUpdateNumber = allBus.lastUpdate
                     for(x in allBus.vehicles){
-
                         if(x.name.contains(nameLine.trim()+" "+direction.trim())) {
-
                             listBaseDataVehiclesWithSpecificNumberLine.add(IdVehicle(x.tripId, x.id,x.name))
                         }
                     }
-                    Log.e("kurwa9","1:"+listBaseDataVehiclesWithSpecificNumberLine.size)
+                    
 
+                    val sortedBusWithSpecificNumberLine = listBaseDataVehiclesWithSpecificNumberLine.sortedWith(compareBy { it.tripId.toLong() })
 
-                    var sortedBusWithSpecificNumberLine = listBaseDataVehiclesWithSpecificNumberLine.sortedWith(compareBy { it.tripId.toLong() })
-
-                    var fitNumberButNotDirection:ArrayList<IdVehicle> = ArrayList<IdVehicle>()
+                    val fitNumberButNotDirection:ArrayList<IdVehicle> = ArrayList()
+                    
+                    
+                    val numberRegex="[^0-9]".toRegex()
+                    val emptyText=""
                     for(x in allBus.vehicles){
-                        Log.e("kurwa7",x.name.replace("[^0-9]".toRegex(), "")+" vs "+nameLine+"   = "+x.name.replace("[^0-9]".toRegex(), "").contains(nameLine.trim()))
-                        //if(x.name.replace("[^0-9]".toRegex(), "").contains(nameLine.trim()) and (!x.name.contains(direction.trim())) and (nameLine.trim().length==x.name.replace("[^0-9]".toRegex(), "").length))
-                        if(x.name.replace("[^0-9]".toRegex(), "").contains(nameLine.trim()) and (!x.name.contains(direction.trim())) and (nameLine.trim().length==x.name.replace("[^0-9]".toRegex(), "").length)) {
+                    
+                        if(x.name.replace(numberRegex, emptyText).contains(nameLine.trim()) and (!x.name.contains(direction.trim()))
+                            and (nameLine.trim().length==x.name.replace(numberRegex, emptyText).length)) {
+                                
                             fitNumberButNotDirection.add(IdVehicle(x.tripId, x.id,x.name))
                         }
                     }
-                    var listVehicleFitNumberButNotDirection=fitNumberButNotDirection.sortedWith(compareBy { it.tripId.toLong() })
-                    Log.e("kurwa9","2:"+listVehicleFitNumberButNotDirection.size)
+                    val listVehicleFitNumberButNotDirection=fitNumberButNotDirection.sortedWith(compareBy { it.tripId.toLong() })
+                    
                     if(sortedBusWithSpecificNumberLine.isNotEmpty() || listVehicleFitNumberButNotDirection.isNotEmpty()){
                         listBaseDataVehiclesWithSpecificNumberLine.clear()
                         listBaseDataVehiclesWithSpecificNumberLine.addAll(sortedBusWithSpecificNumberLine)
@@ -380,109 +369,72 @@ class DetailsFragment : Fragment() {
                     }
 
 
-                    Log.e("kk","Specyficzny : "+listBaseDataVehiclesWithSpecificNumberLine.size)
-
                 }
-                updateAllVehicleBaseData(listBaseDataVehiclesWithSpecificNumberLine)
+                updateDataTimeTableAndVehiclesPositionEvery(listBaseDataVehiclesWithSpecificNumberLine)
                 refreshChoiceFollowIndexVehicle()
             }
         )
 
-
-        if(vehicleNameFromMaps!=null){
-
-            Log.e("szczegoly"," "+vehicles.size)
-            if(vehicles.size>0){
-            for (i in 0..vehicles.size-1) {
-                if(vehicles[i].tripId.equals(tripIdFromMaps)) //dodaj tez drugie autobusy czy tramwaje
-                {
-                    Log.e("szczegoly"," dd"+vehicles[i].direction)
-                //    lastVehicleStopName= vehicles[i].direction;
-                    choiceIndex=i;
-                    break;
-                }
-            }
-            vehicleNameFromMaps=null
-        }}
+            findSelectionVehicle()
+       
     }
 
     fun downloadTramDataAndFilterFitToActualNumberChoice(nameLine: String,direction: String){
-        var e_=0L
-        var listBaseDataVehiclesWithSpecificNumberLine:ArrayList<IdVehicle> = ArrayList<IdVehicle>()
-        Api.getApi().getTramPosition(e_,
+        var lastUpdateNumber=0L
+        val numberRegex="[^0-9]".toRegex()
+        val emptyText=""
+        val listBaseDataVehiclesWithSpecificNumberLine:ArrayList<IdVehicle> = ArrayList()
+        Api.getApi().getTramPosition(lastUpdateNumber,
             fun(response: Response<AllVehicles>) {
                 if (response.isSuccessful && response.body() != null ) {
-
                     val allBus = response.body()!!
-                    e_ = allBus.lastUpdate
+                    val space=" "
+                    lastUpdateNumber = allBus.lastUpdate
 
                     for(x in allBus.vehicles){
-                        if(x.name.contains(nameLine.trim()+" "+direction.trim())) {
+                        if(x.name.contains(nameLine.trim()+space+direction.trim())) {
                             listBaseDataVehiclesWithSpecificNumberLine.add(IdVehicle(x.tripId, x.id,x.name))
                         }
                     }
 
-                    Log.e("kurwa10","1:"+listBaseDataVehiclesWithSpecificNumberLine.size)
-                    var sortedTramWithSpecificNumberLine = listBaseDataVehiclesWithSpecificNumberLine.sortedWith(compareBy { it.tripId.toLong() })
+                    
+                    val sortedTramWithSpecificNumberLine = listBaseDataVehiclesWithSpecificNumberLine.sortedWith(compareBy { it.tripId.toLong() })
 
-                    var fitNumberButNotDirection:ArrayList<IdVehicle> = ArrayList<IdVehicle>()
+                    val fitNumberButNotDirection:ArrayList<IdVehicle> = ArrayList()
                     for(x in allBus.vehicles){
-                        Log.e("kurwa6",x.name.replace("[^0-9]".toRegex(), "")+" vs "+nameLine+"   = "+x.name.replace("[^0-9]".toRegex(), "").contains(nameLine.trim())+"          &&   "
-                        +nameLine.trim().length+" vs "+x.name.replace("[^0-9]".toRegex(), "").length+ "  =  "+
-                                (nameLine.trim().length==x.name.replace("[^0-9]".toRegex(), "").length).toString()
-
-                        )
-                        //string.replace("[^0-9]".toRegex(), "")
-                        Log.e("kurwa5",x.name.replace("[^0-9]".toRegex(), "")+":"+nameLine.trim()+"         |  "+
-                                (!x.name.contains(direction.trim()))+"       |        "+nameLine.trim().length+"/"+x.name.replace("[^0-9]".toRegex(), "").length
-                        )
-                        if(x.name.replace("[^0-9]".toRegex(), "").contains(nameLine.trim())
+                        if(x.name.replace(numberRegex, emptyText).contains(nameLine.trim())
                             and (!x.name.contains(direction.trim()))
-                            and (nameLine.trim().length==x.name.replace("[^0-9]".toRegex(), "").length)) {
-                            Log.e("kurwa6","PASUJEeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-
+                            and (nameLine.trim().length==x.name.replace(numberRegex, emptyText).length)) {
                             fitNumberButNotDirection.add(IdVehicle(x.tripId, x.id,x.name))
                         }
                     }
-                    var listVehicleFitNumberButNotDirection=fitNumberButNotDirection.sortedWith(compareBy { it.tripId.toLong() })
-                    Log.e("kurwa10","1:"+listVehicleFitNumberButNotDirection.size)
+
+                    val listVehicleFitNumberButNotDirection=fitNumberButNotDirection.sortedWith(compareBy { it.tripId.toLong() })
+
                     if(sortedTramWithSpecificNumberLine.isNotEmpty() || listVehicleFitNumberButNotDirection.isNotEmpty()){
                         listBaseDataVehiclesWithSpecificNumberLine.clear()
                         listBaseDataVehiclesWithSpecificNumberLine.addAll(sortedTramWithSpecificNumberLine)
                         listBaseDataVehiclesWithSpecificNumberLine.addAll(listVehicleFitNumberButNotDirection)
                     }
 
-
                 }
-                updateAllVehicleBaseData(listBaseDataVehiclesWithSpecificNumberLine)
+                updateDataTimeTableAndVehiclesPositionEvery(listBaseDataVehiclesWithSpecificNumberLine)
             }
         )
 
+        findSelectionVehicle()
 
-        if(vehicleNameFromMaps!=null){
-            if(vehicles.size>0) {
-                for (i in 0..vehicles.size-1) {
-                    if (vehicles[i].tripId.equals(tripIdFromMaps)) //dodaj tez drugie autobusy czy tramwaje
-                    {
-                        lastVehicleStopName= vehicles[i].direction;
-                       // binding.details.currentlyFollowingFirstBusStopData.text="$firstVehicleStopName"
-                       // binding.details.currentlyFollowingLastBusStopData.text="$lastVehicleStopName"
-                        choiceIndex = i;
-                        break;
-                    }
-                }
-                vehicleNameFromMaps = null
-            }        }
+
+
     }
 
-    fun refreshAllVehiclesBaseData(nameLine:String, direction:String){
+    private fun refreshAllVehiclesBaseData(nameLine:String, direction:String){
         refreshListVehicleRunnable = object : Runnable {
             override fun run() {
-                downloadBusDataAndFilterFitToActualNumberChoice(nameLine,direction)
+                downloadVehicleDataAndSetDirectionInView(nameLine,direction)
                 downloadTramDataAndFilterFitToActualNumberChoice(nameLine,direction)
                 mainHandler.postDelayed(this, DELAY_REFRESH_ALL_VEHICLE_MS)
             }
-
 
         }
         mainHandler.post(refreshListVehicleRunnable)
@@ -490,33 +442,27 @@ class DetailsFragment : Fragment() {
 
 
 
-    var x=0;
+    private var isReadRequestResponse=0
 
     fun refreshTimeTableDataSet(){
 
         try {
-            //   refreshChoiceFollowIndexVehicle()
             Api.getApi().getTimeTableBus(tripID, vehicleId, fun(response: Response<TimeTableData>) {
 
-                var activity=getActivity()
-                if(activity!=null&&isAdded()){
-                    // ur code here
+                val activity= activity
+                if(activity!=null&& isAdded){
 
+                viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId
 
-                viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId;
-                Log.e("akt", "Ponrano" + tripID + "/ " + vehicleId)
-                Log.e("akt", response.body().toString())
                 if (response.isSuccessful) {
-                    val ChoiceVehicleTimeTable = response.body()!!
-                    Log.e("akt", "Ponrano2")
-                    if (ChoiceVehicleTimeTable.actual.size > 0 || ChoiceVehicleTimeTable.old.size > 0) {
-                        Log.e("akt", "Ponrano3")
-                        ChoiceVehicleTimeTable.old.addAll(ChoiceVehicleTimeTable.actual)
+                    val choiceVehicleTimeTable = response.body()!!
+
+                    if (choiceVehicleTimeTable.actual.size > 0 || choiceVehicleTimeTable.old.size > 0) {
+
+                        choiceVehicleTimeTable.old.addAll(choiceVehicleTimeTable.actual)
                         refreshChoiceFollowIndexVehicle()
-                        Log.e("akt", (adapterListTimeTable == null).toString())
-                        Log.e("akt", ChoiceVehicleTimeTable.old.size.toString())
-                        adapterListTimeTable?.changeDataset(ChoiceVehicleTimeTable.old)
-                        //    refreshChoiceFollowIndexVehicle()
+                        adapterListTimeTable?.changeDataset(choiceVehicleTimeTable.old)
+
                     }
 
                 }
@@ -525,23 +471,23 @@ class DetailsFragment : Fragment() {
 
             Api.getApi()
                 .getTimeTableTram(tripID, vehicleId, fun(response: Response<TimeTableData>) {
-                    var activity=getActivity()
-                    if(activity!=null&&isAdded()){
-                    viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId;
+                    val activity= activity
+                    if(activity!=null&& isAdded){
+                    viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId
                     if (response.isSuccessful) {
-                        val ChoiceVehicleTimeTable = response.body()!!
-                        if (ChoiceVehicleTimeTable.actual.size > 0 || ChoiceVehicleTimeTable.old.size > 0) {
-                            ChoiceVehicleTimeTable.old.addAll(ChoiceVehicleTimeTable.actual)
-                            adapterListTimeTable?.changeDataset(ChoiceVehicleTimeTable.old)
+                        val choiceVehicleTimeTable = response.body()!!
+                        if (choiceVehicleTimeTable.actual.size > 0 || choiceVehicleTimeTable.old.size > 0) {
+                            choiceVehicleTimeTable.old.addAll(choiceVehicleTimeTable.actual)
+                            adapterListTimeTable?.changeDataset(choiceVehicleTimeTable.old)
                             refreshChoiceFollowIndexVehicle()
-                            viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId;
+                            viewModel.actualShowVehicleId.value = vehicles[choiceIndex].vehicleId
                         }
 
                     }
                 }})
 
-            x+=1;
-            if(adapterListTimeTable!!.count==0 &&x>1){
+            isReadRequestResponse+=1
+            if(adapterListTimeTable!!.count==0 &&isReadRequestResponse>1){
                 binding.titlex.visibility=View.GONE
             }else{
                 binding.titlex.visibility=View.VISIBLE
@@ -552,7 +498,7 @@ class DetailsFragment : Fragment() {
 
         }
     }
-    fun refreshTimeTable(){
+    private fun refreshTimeTable(){
         refreshTimeTableAfterDownloadDataRunable = object : Runnable {
             override fun run() {
                 refreshTimeTableDataSet()
@@ -565,72 +511,69 @@ class DetailsFragment : Fragment() {
 
 
 
-    fun messageForMapFragment(numberLine:Int){
-        val NUMBER_LINE_BUNDLE_KEY="bundleKey"
-        val DIRECTION_LINE_BUNDLE_KEY="direction"
-        val REQUEST_KEY_FRAGMENT="requestKey"
+    private fun messageForMapFragment(numberLine:Int){
+        val numberLineFromBundleKey="bundleKey"
+        val directionLineBundleKey="direction"
+        val requestKeyBundleFragment="requestKey"
 
         val result = Bundle()
-        result.putInt(NUMBER_LINE_BUNDLE_KEY,numberLine )
-        result.putString(DIRECTION_LINE_BUNDLE_KEY,lastVehicleStopName )
-        requireActivity().supportFragmentManager.setFragmentResult(REQUEST_KEY_FRAGMENT, result)
+        result.putInt(numberLineFromBundleKey,numberLine )
+        result.putString(directionLineBundleKey,lastVehicleStopName )
+        requireActivity().supportFragmentManager.setFragmentResult(requestKeyBundleFragment, result)
     }
 
+
+    private fun readArguments(){
+        if(arguments!=null && requireArguments().size()>0) {
+            messageForMapFragment(requireArguments().getInt(lineNumberBundleName))
+        }
+    }
+
+
+    private fun addOnClickTimeTableToMoveVehicleStopDetailsView(){
+        binding.listTimeTable.setOnItemClickListener { _, view, _, _ ->
+            val defaultValue=""
+
+            val bundle = bundleOf(
+                Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
+                        defaultValue,
+                Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
+                        view.findViewById<TextView>(R.id.nameStopBus).text.toString(),
+                Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
+                        defaultValue
+            )
+
+            Navigation.findNavController(view).navigate(R.id.action_navigate_to_details_vehiclestopa,bundle)
+
+        }
+    }
 
     override fun onStart() {
         super.onStart()
         uncheckedAllNavMenuOption()
         getDataFromIntent()
         fillViewsDataFromBundle()
-
-        if(arguments!=null && requireArguments().size()>0) {
-            messageForMapFragment(requireArguments().getInt(lineNumberBundleName));
-        }
-
-
+        readArguments()
         addAdapterToListViewTimeTable()
         refreshDataTimeTable()
-
-
-        binding.listTimeTable.setOnItemClickListener { _, view, _, _ ->
-
-
-            val bundle = bundleOf(
-                Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
-                       "",
-                Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
-                        view.findViewById<TextView>(R.id.nameStopBus).text.toString(),
-                Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
-                        ""
-
-            )
-            //bundle
-            Navigation.findNavController(view).navigate(R.id.action_navigate_to_details_vehiclestopa,bundle);
-
-
-
-
-
-        }
+        addOnClickTimeTableToMoveVehicleStopDetailsView()
 
     }
 
 
-    fun addAdapterToListViewTimeTable(){
+    private fun addAdapterToListViewTimeTable(){
         adapterListTimeTable=AdapterTimeTableListView(ArrayList<StatusData>(),requireContext())
         binding.listTimeTable.adapter=adapterListTimeTable
     }
 
-    fun refreshDataTimeTable(){
+    private fun refreshDataTimeTable(){
         refreshAllVehiclesBaseData(numberLine.toString(),lastVehicleStopName)
         refreshTimeTable()
-//        viewModel.actualShowVehicleId.value=vehicles[choiceIndex].vehicleId;
     }
 
 
 
-    fun getDataFromIntent(){
-
+    private fun getDataFromIntent(){
 
         if(arguments!=null && requireArguments().size()>0) {
             lineNumber =
@@ -643,15 +586,8 @@ class DetailsFragment : Fragment() {
                 arguments?.getString(BundleChoiceVehicle.LAST_VEHICLE_STOP_NAME.nameBundleObject)
                     .toString()
 
-            if(firstVehicleStopName.length==0){
+            if(firstVehicleStopName.isEmpty()){
                 try {
-                    Log.e(
-                        "kurwa3",
-                        Api.getApi().getInfoAboutLineConcretDirectionLastStopName(
-                            lineNumber,
-                            lastVehicleStopName
-                        ).lastStopName
-                    )
                     firstVehicleStopName = Api.getApi()
                         .getInfoAboutLineConcretDirectionLastStopName(
                             lineNumber,
@@ -664,21 +600,19 @@ class DetailsFragment : Fragment() {
     }
 
 
-    fun fillViewsDataFromBundle(){
+    private fun fillViewsDataFromBundle(){
         binding.lineNumberTop.text= "$numberLineTopTextFormat$lineNumber"
         binding.details.lineNumberDetailed.text="$lineNumber"
         numberLine =lineNumber
-        binding.details.currentlyFollowingFirstBusStopData.text="$firstVehicleStopName"
-        binding.details.currentlyFollowingLastBusStopData.text="$lastVehicleStopName"
+        binding.details.currentlyFollowingFirstBusStopData.text= firstVehicleStopName
+        binding.details.currentlyFollowingLastBusStopData.text= lastVehicleStopName
 
         binding.details.changeDirectionButton.setOnClickListener {
 
-
-            Log.e("kk","qw")
-               changeIndexChoiceVehicleFollow()
+               changeIndexChoiceVehicleFollowToNext()
                if(vehicles.size>choiceIndex){
 
-               setFirstVehicleAndLastInViews(vehicles[choiceIndex].direction)
+               setFirstAndLastVehicleStopInView(vehicles[choiceIndex].direction)
         }
 
         }
@@ -687,11 +621,12 @@ class DetailsFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-          mainHandler.removeCallbacks(refreshListVehicleRunnable)
+
+        mainHandler.removeCallbacks(refreshListVehicleRunnable)
         mainHandler.removeCallbacks(refreshTimeTableAfterDownloadDataRunable)
     }
 
-    fun uncheckedAllNavMenuOption() {
+    private fun uncheckedAllNavMenuOption() {
         val navView: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
         navView.menu.setGroupCheckable(0, true, false)
         for (i in 0 until navView.menu.size()) {

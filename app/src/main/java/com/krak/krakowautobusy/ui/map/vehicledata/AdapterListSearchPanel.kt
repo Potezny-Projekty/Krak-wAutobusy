@@ -2,12 +2,10 @@
 package com.krak.krakowautobusy.ui.map.vehicledata
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.krak.krakowautobusy.R
 import com.krak.krakowautobusy.api.Api
 import com.krak.krakowautobusy.database.LineData
@@ -17,7 +15,7 @@ import com.krak.krakowautobusy.database.VehicleType
 typealias FunWithoutParamToVoid = () -> Unit
 class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
     ArrayAdapter<LineData>(context, R.layout.search_result_field_bus,
-    data as ArrayList<LineData>
+    data
     ), View.OnClickListener {
     private var dataSet: ArrayList<LineData>
     var mContext: Context
@@ -56,8 +54,8 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
     }
 
     private var lastPosition = -1
-    private  var  funRefresh: FunWithoutParamToVoid? = null
-    private  var  funRefresh2: FunWithoutParamToVoid? = null
+    private  var  funRefreshData: FunWithoutParamToVoid? = null
+    private  var  funRefreshDataTwo: FunWithoutParamToVoid? = null
 
     init {
         dataSet = data
@@ -102,61 +100,70 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
     }
 
 
+
+    private fun runAnimAddDeleteFromFavourite (isFavourite:Boolean,heartIcon:ImageView){
+        val animScaleUpFactor=1.2f
+        val animNormalScaleFactor=1.0f
+        val animScaleDownFactor=0.8f
+        val animDurationInMs=400L
+
+        if(isFavourite){
+            heartIcon.animate()
+                .scaleX(animScaleUpFactor).setDuration(animDurationInMs).start()
+
+            heartIcon.animate()
+                .scaleY(animScaleUpFactor).setDuration(animDurationInMs).withEndAction {
+                    heartIcon.animate().scaleX(animNormalScaleFactor).setDuration(animDurationInMs).start()
+                    heartIcon.animate().scaleY(animNormalScaleFactor).setDuration(animDurationInMs).withEndAction {
+                        funRefreshData?.let { it1 -> it1();  }
+                        funRefreshDataTwo?.let { it1 -> it1();  }
+                    }
+                }
+        }else{
+
+            heartIcon.animate()
+                .scaleX(animScaleDownFactor).setDuration(animDurationInMs).start()
+
+            heartIcon.animate()
+                .scaleY(animScaleDownFactor).setDuration(animDurationInMs).withEndAction {
+                    heartIcon.animate().scaleX(animNormalScaleFactor).setDuration(animDurationInMs).start()
+                    heartIcon.animate().scaleY(animNormalScaleFactor).setDuration(animDurationInMs).withEndAction {
+                        funRefreshData?.let { it1 -> it1();  }
+                        funRefreshDataTwo?.let { it1 -> it1();  }
+                    }
+                }
+
+
+        }
+
+
+    }
+
+
     private fun findIndexClickIcon(numberLine:Int,isFavourite:Boolean){
+        val defaultText=""
+
+
         for(i in 0 until dataSet.size){
             if(dataSet[i].numberLine==numberLine.toLong()){
-                Log.e("kosmos",i.toString()+"")
 
-            var elem=    listView?.let { getView(i,null, it) }
+                val view=    listView?.let { getView(i,null, it) }
 
-                if (elem != null) {
-                    Log.e("kosmos",i.toString()+"ANIMUJE")
-                 var a=   elem.findViewById(R.id.heartIcon) as ImageView
+                if (view != null) {
 
-                    var aa=elem.findViewById(R.id.lineNumber) as TextView?
-                    aa?.text="KURWA"
-                // Log.e("kosmos",a.text.toString()+" :D")
-                if(isFavourite){
-                        a!!.animate()
-                            .scaleX(1.2f).setDuration(400).start()
+                 val heartIcon=   view.findViewById(R.id.heartIcon) as ImageView
+                 val lineNumberView=view.findViewById(R.id.lineNumber) as TextView?
+                 lineNumberView?.text=defaultText
 
-                        a!!.animate()
-                            .scaleY(1.2f).setDuration(400).withEndAction {
-                                a.animate().scaleX(1.0f).setDuration(400).start()
-                                a.animate().scaleY(1.0f).setDuration(400).withEndAction {
-                                    funRefresh?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
-                                    funRefresh2?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
-                                }
-                            }
-                    }else{
-
-                        a!!.animate()
-                            .scaleX(0.8f).setDuration(400).start()
-
-                        a!!.animate()
-                            .scaleY(0.8f).setDuration(400).withEndAction {
-                                a.animate().scaleX(1.0f).setDuration(400).start()
-                                a.animate().scaleY(1.0f).setDuration(400).withEndAction {
-                                    funRefresh?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
-                                    funRefresh2?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
-                                }
-                            }
-
-
-                    }
-
-
-                }
+                 runAnimAddDeleteFromFavourite(isFavourite,heartIcon)
 
             }
 
         }
-    }
+    }}
 
     private fun fillViewData(viewHolder: ViewHolder, dataModel:LineData):ViewHolder{
         viewHolder.lineNumber!!.text= dataModel.numberLine .toString()
-
-
 
 
         if(dataModel.isFavourite){
@@ -173,62 +180,53 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
         }
 
 
-
         viewHolder.startBusStation!!.text= dataModel.firstStopName
         viewHolder.stopBusStation!!.text= dataModel.lastStopName
         viewHolder.idLine=dataModel.numberLine.toInt()
 
+        var isShowVehicleStop=false
 
-        var isShowVehicleStop=false;
-      if(dataModel.nameBusStop.length!=0){
-         // viewHolder.startBusStation!!.text=dataModel.nameBusStop
-
+        val scaleDecreaseImage=0.8f
+        val scaleNormalImage=1f
+        if(dataModel.nameBusStop.isNotEmpty()){
 
           viewHolder.lineNumberBox!!.setBackgroundResource(R.drawable.ic_bus_stop)
-         viewHolder.lineNumberBox!!.scaleX=0.8f
-         viewHolder.lineNumberBox!!.scaleY=0.8f
+          viewHolder.lineNumberBox!!.scaleX=scaleDecreaseImage
+          viewHolder.lineNumberBox!!.scaleY=scaleDecreaseImage
           viewHolder.lineNumber!!.text=""
           viewHolder.busStopViaRoute?.visibility =View.VISIBLE
           viewHolder.busStopViaRoute!!.text=dataModel.nameBusStop
           viewHolder.circleRed!!.visibility=View.GONE
           viewHolder.circleGreen!!.visibility=View.GONE
-          isShowVehicleStop=true;
-         // viewHolder.iconVehicleStopViaRoute?.visibility =View.VISIBLE
+          isShowVehicleStop=true
+
 
       }else{
           viewHolder.circleRed!!.visibility=View.VISIBLE
           viewHolder.circleGreen!!.visibility=View.VISIBLE
-          viewHolder.lineNumberBox!!.scaleX=1.0f
-          viewHolder.lineNumberBox!!.scaleY=1.0f
+          viewHolder.lineNumberBox!!.scaleX=scaleNormalImage
+          viewHolder.lineNumberBox!!.scaleY=scaleNormalImage
       }
 
 
-
-     return   ifUserWriteNumberShowMiddleVehicleStopIfNotHideMiddleField(dataModel.busStopViaRoute,viewHolder,isShowVehicleStop);
-
-
-
+     return   ifUserWriteNumberShowMiddleVehicleStopIfNotHideMiddleField(dataModel.busStopViaRoute,viewHolder,isShowVehicleStop)
 
 
     }
 
 
- public fun setFunRefresh2(x:FunWithoutParamToVoid){
-     funRefresh2=x
- }
-    public fun setRefresh(x:FunWithoutParamToVoid){
-        funRefresh=x
+
+     fun setRefresh(x:FunWithoutParamToVoid){
+        funRefreshData=x
     }
     private fun addOnClickListenerToFavoriteIcon(viewHolder:ViewHolder,lineData: LineData){
+        val animScaleUpFactor=1.2f
+        val animNormalScaleFactor=1.0f
+        val animScaleDownFactor=0.8f
+        val animDurationInMs=400L
         viewHolder.isFavouriteIcon?.setOnClickListener {
-Log.e("kurwa","JEGO MAĆ 3")
 
             lineData.isFavourite=!lineData.isFavourite
-           var x=   fillViewData(viewHolder,lineData)
-
-
-
-
 
             if(lineData.isFavourite) {
 
@@ -237,20 +235,19 @@ Log.e("kurwa","JEGO MAĆ 3")
 
                 }else {
 
-
                     findIndexClickIcon(lineData.numberLine.toInt(), true)
                     Api.getApi().addLineToFavourite(lineData.numberLine.toInt())
 
                 }
-                it!!.animate()
-                    .scaleX(1.2f).setDuration(400).start()
+                it.animate()
+                    .scaleX(animScaleUpFactor).setDuration(animDurationInMs).start()
 
-                it!!.animate()
-                    .scaleY(1.2f).setDuration(400).withEndAction {
-                        it.animate().scaleX(1.0f).setDuration(400).start()
-                        it.animate().scaleY(1.0f).setDuration(400).withEndAction {
-                            funRefresh?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
-                            funRefresh2?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
+                it.animate()
+                    .scaleY(animScaleUpFactor).setDuration(animDurationInMs).withEndAction {
+                        it.animate().scaleX(animNormalScaleFactor).setDuration(animDurationInMs).start()
+                        it.animate().scaleY(animNormalScaleFactor).setDuration(animDurationInMs).withEndAction {
+                            funRefreshData?.let { it1 -> it1();  }
+                            funRefreshDataTwo?.let { it1 -> it1();  }
                         }
                     }
 
@@ -268,20 +265,19 @@ Log.e("kurwa","JEGO MAĆ 3")
                 }
 
 
-
                 it!!.animate()
-                    .scaleX(0.8f).setDuration(400).start()
+                    .scaleX(animScaleDownFactor).setDuration(animDurationInMs).start()
 
-                it!!.animate()
-                    .scaleY(0.8f).setDuration(400).withEndAction {
-                        it.animate().scaleX(1.0f).setDuration(400).start()
-                        it.animate().scaleY(1.0f).setDuration(400).withEndAction {
-                            funRefresh?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
-                            funRefresh2?.let { it1 -> it1(); Log.e("Kurwa", "wołam") }
+                it.animate()
+                    .scaleY(animScaleDownFactor).setDuration(animDurationInMs).withEndAction {
+                        it.animate().scaleX(animNormalScaleFactor).setDuration(animDurationInMs).start()
+                        it.animate().scaleY(animNormalScaleFactor).setDuration(animDurationInMs).withEndAction {
+                            funRefreshData?.let { it1 -> it1();  }
+                            funRefreshDataTwo?.let { it1 -> it1();  }
                         }
                     }
             }
-            Log.e("kurwa","...KURWA")
+
 
 
         }
@@ -305,7 +301,6 @@ Log.e("kurwa","JEGO MAĆ 3")
             viewHolder = convertView.tag as ViewHolder
 
         }
-
 
 
         lastPosition = position
