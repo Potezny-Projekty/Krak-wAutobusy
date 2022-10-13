@@ -5,7 +5,6 @@ import android.content.IntentFilter
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.krak.krakowautobusy.BuildConfig
 import com.krak.krakowautobusy.databinding.MapActivityBinding
+import com.krak.krakowautobusy.ui.location.LocationProviderChangedReceiver
+import com.krak.krakowautobusy.ui.location.UserLocation
 import com.krak.krakowautobusy.ui.map.vehicledata.*
+import com.krak.krakowautobusy.ui.position.ActualPositionFavouriteVehicle
+import com.krak.krakowautobusy.ui.position.ActualPositionVehicles
+import com.krak.krakowautobusy.ui.position.BusStopPosition
+import com.krak.krakowautobusy.ui.position.BusStopPositionFavourite
+import com.krak.krakowautobusy.ui.utility.Drawables
 import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
 

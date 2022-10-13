@@ -21,7 +21,7 @@
         app:startDestination="@id/navigation_map">
         <fragment
             android:id="@+id/search_view"
-            android:name="com.krak.krakowautobusy.ui.map.vehicledata.SearchViewFragment"
+            android:name="com.krak.krakowautobusy.ui.search.SearchViewFragment"
             android:label="SearchView">
             <action
                 android:id="@+id/action_search_view_to_navigation_details"
@@ -33,7 +33,7 @@
         </fragment>
         <fragment
             android:id="@+id/navigation_details"
-            android:name="com.krak.krakowautobusy.ui.details.DetailsFragment"
+            android:name="com.krak.krakowautobusy.ui.detailsline.DetailsFragment"
 
             android:label="DetailsFragment" >
 
@@ -96,7 +96,7 @@
 
         <fragment
             android:id="@+id/navigation_favoritevehiclestop"
-            android:name="com.krak.krakowautobusy.ui.vehiclestop.FavouriteVehicleStop"
+            android:name="com.krak.krakowautobusy.ui.detailsvehiclestop.FavouriteVehicleStop"
             android:label="Ulubione przystanki"
             tools:layout="@layout/fragment_favourite_vehicle_stop">
 

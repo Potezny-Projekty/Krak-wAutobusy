@@ -6,7 +6,7 @@
     android:padding="16dp"
     android:orientation="vertical"
     android:layout_gravity="bottom"
-    tools:context=".ui.map.vehicledata.SearchViewVehicleStop">
+    tools:context=".ui.search.SearchViewVehicleStop">
 
     <!-- TODO: Update blank fragment layout -->
 

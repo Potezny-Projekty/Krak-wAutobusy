@@ -14,8 +14,8 @@ import com.krak.krakowautobusy.R
 import com.krak.krakowautobusy.api.Api
 import com.krak.krakowautobusy.database.LineData
 import com.krak.krakowautobusy.databinding.FragmentFavoriteBinding
-import com.krak.krakowautobusy.ui.map.vehicledata.AdapterListSearchPanel
-import com.krak.krakowautobusy.ui.map.vehicledata.SearchViewFragment
+import com.krak.krakowautobusy.ui.search.AdapterListSearchPanel
+import com.krak.krakowautobusy.ui.search.SearchViewFragment
 
 class FavoriteFragment : Fragment() {
 
@@ -23,7 +23,7 @@ class FavoriteFragment : Fragment() {
     private var _binding: FragmentFavoriteBinding? = null
 
     private val binding get() = _binding!!
-    private lateinit var   adapter :AdapterListSearchPanel
+    private lateinit var   adapter : AdapterListSearchPanel
 
 
     private fun addAdapterToSearchLineListViewAndSetRefresh(){
