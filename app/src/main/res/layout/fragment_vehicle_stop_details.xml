@@ -80,15 +80,15 @@
         android:id="@+id/cas"
         android:layout_marginLeft="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vfg"
-        android:text="Czasy odjazdów"
+        app:layout_constraintTop_toBottomOf="@id/full_day_view"
+        android:text="@string/timeDeparturesRename"
         android:layout_height="wrap_content"></TextView>
 
 
 
     <TextView
         android:layout_width="wrap_content"
-        android:text="Czasy Odjazdów"
+        android:text="timeDeparturesNames"
         app:layout_constraintStart_toStartOf="parent"
 
         android:layout_marginTop="26dp"
@@ -105,7 +105,7 @@
     <TextClock
         android:layout_width="200dp"
         android:text="17:22"
-        app:layout_constraintBottom_toTopOf="@id/ca"
+        app:layout_constraintBottom_toTopOf="@id/full_name_day_view"
         android:padding="5dp"
         android:layout_marginBottom="5dp"
         android:textAlignment="center"
@@ -130,7 +130,7 @@
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="100dp"
-        android:id="@+id/ca"
+        android:id="@+id/full_name_day_view"
         android:background="@drawable/shadowall"
         android:textColor="#000000"
         android:layout_height="wrap_content"></TextView>
@@ -138,8 +138,8 @@
         android:layout_width="200dp"
         android:text="17.11.2022"
         android:textStyle="bold"
-        android:id="@+id/vfg"
-        app:layout_constraintTop_toBottomOf="@id/ca"
+        android:id="@+id/full_day_view"
+        app:layout_constraintTop_toBottomOf="@id/full_name_day_view"
         android:padding="5dp"
         android:layout_marginLeft="5dp"
         android:textAlignment="center"

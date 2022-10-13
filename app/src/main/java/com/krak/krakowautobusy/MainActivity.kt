@@ -25,18 +25,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    fun show() {
+    private fun setStrictMode() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-
         StrictMode.setThreadPolicy(policy)
-        // w listBusMasz
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Api.buildApi(applicationContext)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        show()
+        setStrictMode()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -46,7 +45,6 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.main_fragment)
 
 
-        //removes navBar from noInternetFragment and loadingPageFragment
         navController.addOnDestinationChangedListener { _, nd: NavDestination, _ ->
             if (nd.id == R.id.navigation_no_internet || nd.id == R.id.navigation_loading_page) {
                 navView.visibility = View.GONE
@@ -56,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        // menu should be considered as top level destinations.
+
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_map, R.id.navigation_favorite,R.id.navigation_favoritevehiclestop
@@ -65,13 +63,9 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
         hideAppTitleBar()
-        val api= Api.getApi()
 
-        for(x in api.getInfoAboutLinePatternNumber(5)){
-                 Log.e("testbaza",x.firstStopName.  toString()+"/"+x.lastStopName+"/"+x.numberLine)
-               }
+
         checkConnectWithInternet(navController)
 
     }
@@ -83,7 +77,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun checkConnectWithInternet(
+    private fun checkConnectWithInternet(
         navController: NavController
     ) {
         val connectivityManager =
@@ -95,12 +89,12 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         val networkCallback = object : ConnectivityManager.NetworkCallback() {
-            // network is available for use
+
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
-                Log.i("INTERNET", "onAvailable")
+
                 runOnUiThread {
-                    Log.i("DESTINATION", navController.currentDestination.toString())
+
                     val currentDestination = navController.currentDestination!!
                     if (currentDestination.id == R.id.navigation_no_internet) {
                         navController.navigate(R.id.action_navigation_no_internet_to_navigation_map)
@@ -108,19 +102,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            // lost network connection
             override fun onLost(network: Network) {
                 super.onLost(network)
-                Log.i("INTERNET", "onLost")
+
                 runOnUiThread{
                     navController.navigate(R.id.action_global_navigation_no_internet)
                 }
             }
 
-            override fun onUnavailable() {
-                super.onUnavailable()
-                Log.i("INTERNET", "onUnavailable")
-            }
+
 
         }
 

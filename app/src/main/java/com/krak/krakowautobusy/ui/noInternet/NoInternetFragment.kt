@@ -17,7 +17,6 @@ class NoInternetFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentNoInternetBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        return root
+        return binding.root
     }
 }

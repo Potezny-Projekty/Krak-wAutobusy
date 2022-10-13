@@ -24,7 +24,6 @@ class AdapterListViewDepatures (data: ArrayList<Depart>, context: Context) :
 
     private var listView: ViewGroup?=null
 
-
     override fun getCount(): Int {
         return dataSet.size
     }
@@ -45,11 +44,9 @@ class AdapterListViewDepatures (data: ArrayList<Depart>, context: Context) :
         var lineNumberBox:LinearLayout?=null
 
 
-
     }
 
     override fun onClick(v: View) {
-
     }
 
     private var lastPosition = -1
@@ -74,10 +71,6 @@ class AdapterListViewDepatures (data: ArrayList<Depart>, context: Context) :
         viewHolder.timeDeparture=view.findViewById(R.id.timeDeparture)
         viewHolder.iconStatus=view.findViewById(R.id.statusicon)
         viewHolder.lineNumberBox=view.findViewById(R.id.lineNumberBox)
-        Log.e("ojej","1."+(viewHolder.lineNumber==null))
-        Log.e("ojej","2."+(viewHolder.nameLineDirection==null))
-        Log.e("ojej","3."+(viewHolder.timeDeparture==null))
-        Log.e("ojej","4."+(viewHolder.iconStatus==null))
 
     }
 
@@ -89,8 +82,6 @@ class AdapterListViewDepatures (data: ArrayList<Depart>, context: Context) :
 
     private fun fillViewData(viewHolder: ViewHolder, dataModel: Depart):ViewHolder{
 
-    Log.e("ojej","a'"+(viewHolder.lineNumber==null) )
-    if(dataModel.plannedTime!=null) {
         viewHolder.lineNumber!!.text = dataModel.patternText
 
         if(dataModel.patternText.length<3){
@@ -104,64 +95,13 @@ class AdapterListViewDepatures (data: ArrayList<Depart>, context: Context) :
         }else {
             viewHolder.timeDeparture!!.text = dataModel.plannedTime
         }
-            viewHolder.nameLineDirection!!.text=dataModel.direction
-    }
+        viewHolder.nameLineDirection!!.text=dataModel.direction
 
-      if(dataModel.plannedTime!=dataModel.actualTime && (dataModel.actualTime!=null)){
+        if(dataModel.plannedTime!=dataModel.actualTime && (dataModel.actualTime!=null)){
           viewHolder.iconStatus!!.setBackgroundResource(R.drawable.red_circle)
       }else{
           viewHolder.iconStatus!!.setBackgroundResource(R.drawable.green_circle)
       }
-     /*   viewHolder.sequenceNumber!!.text="%-3s".format( dataModel.stop_seq_num .toString())
-        viewHolder.nameBusStop!!.text=dataModel.stop.name
-        if(dataModel.stop.name.length>30){
-            viewHolder.nameBusStop!!.text=dataModel.stop.name.substring(0,30)+"..."
-        }
-        viewHolder.timeBusStop!!.text=dataModel.actualTime
-        Log.e("bananek","|"+dataModel.status+"|")
-        if(dataModel.status .equals ("PREDICTED")){
-            viewHolder.iconStatus!!.setBackgroundResource(R.drawable.green_circle)
-            var x=(Html.fromHtml("<font color=orange>(+" + 7 + ")</font>"+   viewHolder.timeBusStop!!.text));
-
-            // val actualLocalTime=LocalDateTime.now()
-            //val localTime=LocalDateTime.parse(viewHolder.timeBusStop!!.text)
-            // Duration.between(actualLocalTime, localTime).toMillis();
-
-            val hours= (Calendar.getInstance().getTime().hours)- viewHolder.timeBusStop!!.text.split(":")[0].toInt()
-            val minutes=  viewHolder.timeBusStop!!.text.split(":")[1].toInt()- Calendar.getInstance().getTime().minutes
-
-            Log.e("czas",
-                Calendar.getInstance().getTime().hours.toString()+" / "+ Calendar.getInstance().getTime().minutes.toString())
-            var diff=0
-            if(hours!=0) {
-                diff = (hours * 60) - minutes
-                diff = Math.abs(diff)
-            }else{
-                diff=minutes
-            }
-
-
-            //   val localDateTime = LocalDateTime.parse(viewHolder.timeBusStop!!.text.toString())
-
-
-            val phoneCodeColor = ContextCompat.getColor(context, R.color.clear_btn_color)
-            val text = SpannableStringBuilder()
-                .color(Color.GRAY) { append("%-6s".format("(+"+(diff)+") ")) }.color(Color.BLACK){append(viewHolder.timeBusStop!!.text)}
-
-
-
-
-            viewHolder.timeBusStop!!.text=text
-        }else if(dataModel.status .equals( "DEPARTED")){
-            viewHolder.iconStatus!!.setBackgroundResource(R.drawable.red_circle)
-            Log.e("bananek","|KURWA"+"|")
-        }else{
-            viewHolder.iconStatus!!.setBackgroundResource(R.drawable.yellowcircle)
-        }*/
-
-
-
-
 
 
         return viewHolder
@@ -171,13 +111,9 @@ class AdapterListViewDepatures (data: ArrayList<Depart>, context: Context) :
 
 
 
-    private fun addOnClickListenerToFavoriteIcon(viewHolder:ViewHolder,lineData: StopData){
-
-    }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
-        //     if (convertView != null) return convertView;
         listView=parent
         var convertView: View? = convertView
 
@@ -197,11 +133,10 @@ class AdapterListViewDepatures (data: ArrayList<Depart>, context: Context) :
         }
 
 
-
         lastPosition = position
 
         fillViewData(viewHolder,dataModel)
-        //  addOnClickListenerToFavoriteIcon(viewHolder,dataModel)
+
 
 
         return convertView!!

@@ -1,7 +1,6 @@
 package com.krak.krakowautobusy.ui.map
 
 import android.content.Context
-import android.graphics.*
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
 import com.krak.krakowautobusy.R
@@ -31,11 +30,11 @@ class Drawables(var context: Context) {
     lateinit var resizedBusIconTracking: Drawable
     lateinit var resizedTramIconTracking: Drawable
 
-    private var BUS_STOP_ICON_SIZE_MULTIPLIER = 0.33f
+    private var busStopIconSizeMultiplier = 0.33f
 
     fun resizeIcons(drawables: Drawables, utilities: Utilities, zoomLevel: Int) {
         utilities.setZoomLevel(zoomLevel)
-        drawables.resizedBusStopIcon = utilities.resizeDrawable(drawables.busStopIconDrawable,BUS_STOP_ICON_SIZE_MULTIPLIER)
+        drawables.resizedBusStopIcon = utilities.resizeDrawable(drawables.busStopIconDrawable,busStopIconSizeMultiplier)
         drawables.resizedBusIcon = utilities.resizeDrawable(drawables.busIconDrawable)
         drawables.resizedTramIcon = utilities.resizeDrawable(drawables.tramIconDrawable)
         drawables.resizedUserLocationIcon = utilities.resizeDrawable(drawables.userLocationIconDrawable)

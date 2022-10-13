@@ -21,7 +21,7 @@ class VehicleMarker(mapView: MapView?, val vehicle : Vehicle) : Marker(mapView) 
     var pathVehicle = ArrayList<GeoPoint>()
     private val textSize = 24f
 
-    fun mirrorMarkerIcon(icon : Drawable, number : String) : Drawable {
+    private fun mirrorMarkerIcon(icon : Drawable, number : String) : Drawable {
         val copyIcon = icon.mutate()
         val paint = Paint()
         val factoryMoveHeightText = 2

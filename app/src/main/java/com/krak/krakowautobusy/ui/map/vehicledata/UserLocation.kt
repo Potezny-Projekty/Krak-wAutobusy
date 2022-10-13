@@ -15,7 +15,6 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -28,12 +27,12 @@ private const val TAG = "UserLocation"
 @SuppressLint("MissingPermission")
 @RequiresApi(Build.VERSION_CODES.M)
 class UserLocation(var activity: AppCompatActivity){
-    private val PERMISSION_ID = 42
-    private var REQUEST_CHECK_CODE: Int = 1
+    private val permisionID = 42
+    private var requestCheckCode: Int = 1
 
-    private val LOCATION_INTERVAL: Long = 1500// in ms
-    private val LOCATION_FASTEST_INTERVAL: Long = 3000 // in ms
-    private val SMALLEST_DISPLACEMENT = 5.0F // 1 - 1meter
+    private val locationInterval: Long = 1500// in ms
+    private val locationFastenInterval: Long = 3000 // in ms
+    private val smallestDisplacement = 5.0F // 1 - 1meter
     private val priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
@@ -46,23 +45,15 @@ class UserLocation(var activity: AppCompatActivity){
     var locationMarker : Marker? = null
 
 
-     //fun a(){
-     //    requestPermissions()
-    //     requestLocation()
-    //   }
-
     fun getLocationUpdates(map: MapView) {
-
-        Log.i(TAG, "Permission status: " + checkPermissions())
-        Log.i(TAG, "Location status: " + isLocationEnabled())
         if (checkPermissions()) {
             if (isLocationEnabled()) {
                 fusedLocationProviderClient =
                     LocationServices.getFusedLocationProviderClient(activity)
                 locationRequest = LocationRequest()
-                locationRequest!!.interval = LOCATION_INTERVAL
-                locationRequest!!.fastestInterval = LOCATION_FASTEST_INTERVAL
-                locationRequest!!.smallestDisplacement = SMALLEST_DISPLACEMENT
+                locationRequest!!.interval = locationInterval
+                locationRequest!!.fastestInterval = locationFastenInterval
+                locationRequest!!.smallestDisplacement = smallestDisplacement
                 locationRequest!!.priority = priority
                 locationCallback = object : LocationCallback() {
                     override fun onLocationResult(locationResult: LocationResult) {
@@ -72,8 +63,6 @@ class UserLocation(var activity: AppCompatActivity){
                                 locationResult.lastLocation
                             latitude = location.latitude
                             longtitude = location.longitude
-                            Log.i(TAG, "New pos from location ${location.latitude}")
-                            Log.i(TAG, "New pos from location ${location.longitude}")
                             updateLocationMarkerPosition(map)
                         }
                     }
@@ -97,8 +86,8 @@ class UserLocation(var activity: AppCompatActivity){
     private fun requestLocation() {
         val builder: LocationSettingsRequest.Builder
         val request = LocationRequest()
-            .setFastestInterval(LOCATION_FASTEST_INTERVAL)
-            .setInterval(LOCATION_INTERVAL)
+            .setFastestInterval(locationFastenInterval)
+            .setInterval(locationInterval)
             .setPriority(priority)
 
         builder = LocationSettingsRequest.Builder()
@@ -107,33 +96,31 @@ class UserLocation(var activity: AppCompatActivity){
         val result: Task<LocationSettingsResponse> =
             LocationServices.getSettingsClient(activity).checkLocationSettings(builder.build())
 
-        result.addOnCompleteListener(object : OnCompleteListener<LocationSettingsResponse> {
-            override fun onComplete(task: Task<LocationSettingsResponse>) {
-                try {
-                    task.getResult(ApiException::class.java)
-                } catch (e: ApiException) {
-                    when (e.statusCode) {
-                        LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
-                            try {
-                                val resolvableApiException: ResolvableApiException =
-                                    e as ResolvableApiException
-                                resolvableApiException.startResolutionForResult(
-                                    activity,
-                                    REQUEST_CHECK_CODE
-                                )
-                            } catch (ex: IntentSender.SendIntentException) {
-                                ex.printStackTrace()
-                            } catch (ex: ClassCastException) {
-                                ex.printStackTrace()
-                            }
+        result.addOnCompleteListener { task ->
+            try {
+                task.getResult(ApiException::class.java)
+            } catch (e: ApiException) {
+                when (e.statusCode) {
+                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
+                        try {
+                            val resolvableApiException: ResolvableApiException =
+                                e as ResolvableApiException
+                            resolvableApiException.startResolutionForResult(
+                                activity,
+                                requestCheckCode
+                            )
+                        } catch (ex: IntentSender.SendIntentException) {
+                            ex.printStackTrace()
+                        } catch (ex: ClassCastException) {
+                            ex.printStackTrace()
                         }
-                        LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
-                            Log.i(TAG, "Settings change unavailable")
-                        }
+                    }
+                    LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
+                        Log.i(TAG, "Settings change unavailable")
                     }
                 }
             }
-        })
+        }
     }
 
     private fun checkPermissions(): Boolean {
@@ -158,14 +145,13 @@ class UserLocation(var activity: AppCompatActivity){
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ),
-            PERMISSION_ID
+            permisionID
         )
     }
 
     fun createLocationMarker(map: MapView, locationMarkerDrawable: Drawable) {
         val marker = Marker(map)
         val locationPoint = GeoPoint(latitude, longtitude)
-        Log.i(TAG, "Drawing initial marker, pos: $latitude, $longtitude")
         marker.icon = locationMarkerDrawable
         marker.title = "Twoja pozycja"
         marker.id = "location"
@@ -175,20 +161,16 @@ class UserLocation(var activity: AppCompatActivity){
     }
 
     fun updateLocationMarkerPosition(map: MapView) {
-        Log.i(TAG, "Position update Called")
+
         val locationPoint = GeoPoint(latitude, longtitude)
         for ((index) in map.overlays.withIndex()) {
             if (map.overlays[index] is Marker && (map.overlays[index] as Marker).id == "location") {
                 if ((map.overlays[index] as Marker).position == locationPoint) {
-                    Log.i(TAG, "Position hasnt changed since last update")
+
                 } else {
                     (map.overlays[index] as Marker).position = locationPoint
                     map.controller.setCenter(locationPoint)
                     map.invalidate()
-                    Log.i(
-                        TAG,
-                        "Updated marker position: " + (map.overlays[index] as Marker).position.toString()
-                    )
                 }
             }
         }

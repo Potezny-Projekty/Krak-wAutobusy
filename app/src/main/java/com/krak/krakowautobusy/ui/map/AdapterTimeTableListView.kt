@@ -23,7 +23,7 @@ import kotlin.collections.ArrayList
 
 class AdapterTimeTableListView (data: ArrayList<StatusData>, context: Context) :
     ArrayAdapter<StatusData>(context, R.layout.search_result_field_bus,
-        data as ArrayList<StatusData>
+        data
     ), View.OnClickListener {
     private var dataSet: ArrayList<StatusData>
     var mContext: Context
@@ -49,8 +49,6 @@ class AdapterTimeTableListView (data: ArrayList<StatusData>, context: Context) :
         var timeBusStop:TextView?=null
         var iconStatus:ImageView?=null
 
-
-
     }
 
     override fun onClick(v: View) {
@@ -58,7 +56,6 @@ class AdapterTimeTableListView (data: ArrayList<StatusData>, context: Context) :
     }
 
     private var lastPosition = -1
-
 
     init {
         dataSet = data
@@ -85,75 +82,58 @@ class AdapterTimeTableListView (data: ArrayList<StatusData>, context: Context) :
 
 
 
-
-
-
     private fun fillViewData(viewHolder: ViewHolder, dataModel: StatusData):ViewHolder{
-        viewHolder.sequenceNumber!!.text="%-3s".format( dataModel.stop_seq_num .toString())
+
+        val maxCharactersStopName=30
+        val statusPredictedName="PREDICTED"
+        val statusDepartName="DEPARTED"
+        val minutesInHour=60
+
+        viewHolder.sequenceNumber!!.text="%-3s".format( dataModel.stop_seq_num )
         viewHolder.nameBusStop!!.text=dataModel.stop.name
-        if(dataModel.stop.name.length>30){
+        if(dataModel.stop.name.length>maxCharactersStopName){
             viewHolder.nameBusStop!!.text=dataModel.stop.name.substring(0,30)+"..."
         }
         viewHolder.timeBusStop!!.text=dataModel.actualTime
-        Log.e("bananek","|"+dataModel.status+"|")
-        if(dataModel.status .equals ("PREDICTED")){
-            viewHolder.iconStatus!!.setBackgroundResource(R.drawable.green_circle)
-            var x=(Html.fromHtml("<font color=orange>(+" + 7 + ")</font>"+   viewHolder.timeBusStop!!.text));
 
-           // val actualLocalTime=LocalDateTime.now()
-            //val localTime=LocalDateTime.parse(viewHolder.timeBusStop!!.text)
-           // Duration.between(actualLocalTime, localTime).toMillis();
+        when (dataModel.status) {
+            statusPredictedName -> {
+                viewHolder.iconStatus!!.setBackgroundResource(R.drawable.green_circle)
 
-           val hours= (Calendar.getInstance().getTime().hours)- viewHolder.timeBusStop!!.text.split(":")[0].toInt()
-           val minutes=  viewHolder.timeBusStop!!.text.split(":")[1].toInt()-Calendar.getInstance().getTime().minutes
+                val hours= (Calendar.getInstance().time.hours)- viewHolder.timeBusStop!!.text.split(":")[0].toInt()
+                val minutes=  viewHolder.timeBusStop!!.text.split(":")[1].toInt()-Calendar.getInstance().time.minutes
+                var diff=0
+                if(hours!=0) {
+                    diff = (hours * minutesInHour) - minutes
+                    diff = kotlin.math.abs(diff)
+                }else{
+                    diff=minutes
+                }
 
-            Log.e("czas",Calendar.getInstance().getTime().hours.toString()+" / "+Calendar.getInstance().getTime().minutes.toString())
-            var diff=0
-          if(hours!=0) {
-              diff = (hours * 60) - minutes
-              diff = abs(diff)
-          }else{
-               diff=minutes
-          }
+                val text = SpannableStringBuilder()
+                    .color(Color.GRAY) { append("%-6s".format("(+$diff) ")) }.color(Color.BLACK){append(viewHolder.timeBusStop!!.text)}
 
+                viewHolder.timeBusStop!!.text=text
+            }
+            statusDepartName -> {
+                viewHolder.iconStatus!!.setBackgroundResource(R.drawable.red_circle)
 
-            //   val localDateTime = LocalDateTime.parse(viewHolder.timeBusStop!!.text.toString())
-
-
-            val phoneCodeColor = ContextCompat.getColor(context, R.color.clear_btn_color)
-            val text = SpannableStringBuilder()
-                .color(Color.GRAY) { append("%-6s".format("(+"+(diff)+") ")) }.color(Color.BLACK){append(viewHolder.timeBusStop!!.text)}
-
-
-
-
-            viewHolder.timeBusStop!!.text=text
-        }else if(dataModel.status .equals( "DEPARTED")){
-            viewHolder.iconStatus!!.setBackgroundResource(R.drawable.red_circle)
-            Log.e("bananek","|KURWA"+"|")
-        }else{
-            viewHolder.iconStatus!!.setBackgroundResource(R.drawable.yellowcircle)
+            }
+            else -> {
+                viewHolder.iconStatus!!.setBackgroundResource(R.drawable.yellowcircle)
+            }
         }
 
 
-
-
-
-
-return viewHolder
+    return viewHolder
 
 
     }
 
 
-
-    private fun addOnClickListenerToFavoriteIcon(viewHolder:ViewHolder,lineData: StopData){
-
-    }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
-   //     if (convertView != null) return convertView;
         listView=parent
         var convertView: View? = convertView
 
@@ -173,11 +153,10 @@ return viewHolder
         }
 
 
-
         lastPosition = position
 
         fillViewData(viewHolder,dataModel)
-      //  addOnClickListenerToFavoriteIcon(viewHolder,dataModel)
+
 
 
         return convertView!!

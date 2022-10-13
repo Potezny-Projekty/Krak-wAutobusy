@@ -49,6 +49,16 @@
 
 
     <string name="textLineNumber">Linia numer</string>
+    <string name="appName">KRAKÓW AUTOBUSY</string>
+    <string name="mainDescriptApp">Śledź pozycję autobusów na żywo</string>
+    <string name="favouriteText">Ulubione</string>
+    <string name="favouriteVehicleStopText">Ulubione Przystanki</string>
+    <string name="findLineText">Znajdź linię</string>
+    <string name="timeDeparturesRename">Czasy odjazdów</string>
+    <string name="followingText">śledzisz</string>
+    <string name="changeVehicleText">Zmień pojazd</string>
+    <string name="lineMenuText">Linie</string>
+    <string name="VehicleStop">Przystanki</string>
 
 
 </resources>

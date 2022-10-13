@@ -4,19 +4,13 @@ import android.content.Context
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.krak.krakowautobusy.api.Api
 import com.krak.krakowautobusy.ui.map.vehicledata.*
-import org.osmdroid.events.MapListener
-import org.osmdroid.events.ScrollEvent
-import org.osmdroid.events.ZoomEvent
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.Marker
 import retrofit2.Response
 
 private const val TAG = "MapController"
@@ -24,12 +18,12 @@ private const val TAG = "MapController"
 @RequiresApi(Build.VERSION_CODES.M)
 class MapController(private var map: MapView, private var context: Context) {
 
-    private val STARTING_POINT1 = GeoPoint(50.3107434126593, 19.61671721450658)
-    private val STARTING_POINT2 = GeoPoint(49.88512598174506, 19.545556322799532)
-    private val STARTING_POINT3 = GeoPoint(50.32107434126593, 20.379321439500526)
-    private val STARTING_POINT4 = GeoPoint(49.87252834809176, 20.461999509306546)
+    private val startingPoint1 = GeoPoint(50.3107434126593, 19.61671721450658)
+    private val startingpoint2 = GeoPoint(49.88512598174506, 19.545556322799532)
+    private val startingPoint3 = GeoPoint(50.32107434126593, 20.379321439500526)
+    private val startingPoint4 = GeoPoint(49.87252834809176, 20.461999509306546)
 
-    private val RUNNABLE_DELAY: Long = 7000
+    private val runnableDelay: Long = 7000
 
     private val mapController = map.controller
     private lateinit var updateTextTask: Runnable
@@ -38,15 +32,9 @@ class MapController(private var map: MapView, private var context: Context) {
 
     init {
         map.setTileSource(TileSourceFactory.MAPNIK)
-
-        // hiding +- buttons used to change map zoom
         map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
-
-        // unlocking zoom
         map.setMultiTouchControls(true)
 
-        // setting map scope
-       // createMapScope(map)
     }
 
     fun setZoomLevels(minZoomLevel: Double, maxZoomLevel: Double, startingZoom: Double) {
@@ -64,70 +52,7 @@ class MapController(private var map: MapView, private var context: Context) {
         userLocation.createLocationMarker(map, drawables.userLocationIconDrawable)
     }
 
-    fun drawAllVehicles(actualPositionVehicles: ActualPositionVehicles) {
-        //actualPositionVehicles.lodaIconIntoMap()
-        //actualPositionVehicles.getActualPosition(map)
-    }
 
-
-    private fun createMapScope(map: MapView) {
-        val arrayList: ArrayList<GeoPoint> = ArrayList()
-        arrayList.add(STARTING_POINT1)
-        arrayList.add(STARTING_POINT2)
-        arrayList.add(STARTING_POINT3)
-        arrayList.add(STARTING_POINT4)
-
-        val boundingBox = BoundingBox.fromGeoPoints(arrayList)
-
-        map.setScrollableAreaLimitDouble(boundingBox)
-    }
-
-    fun onZoomChangeListener(drawables: Drawables, utilites: Utilities) {
-        var currentZoomLevel = map.zoomLevel
-        map.setMapListener(
-            object : MapListener {
-                override fun onZoom(e: ZoomEvent?): Boolean {
-                    Log.i(TAG, map.zoomLevel.toString())
-                    if (currentZoomLevel != map.zoomLevel) {
-                        drawables.resizeIcons(drawables, utilites, map.zoomLevel)
-                        for ((index) in map.overlays.withIndex()) {
-                            if (map.overlays[index] is Marker) {
-                                val marker = map.overlays[index] as Marker
-                                when ((map.overlays[index] as Marker).id) {
-                                    "busStop" -> {
-                                        marker.icon = drawables.resizedBusStopIcon
-                                    }
-                                    "bus" -> {
-                                        marker.icon = drawables.resizedBusIcon
-                                    }
-                                    "tram" -> {
-                                        marker.icon = drawables.resizedTramIcon
-                                    }
-                                    "location" -> {
-                                        marker.icon = drawables.resizedUserLocationIcon
-                                    }
-                                    "busFocused" -> {
-                                        marker.icon = drawables.resizedBusIconTracking
-                                    }
-                                    "tramFocused" -> {
-                                        marker.icon = drawables.resizedTramIconTracking
-                                    }
-                                }
-                                map.overlays[index] = marker
-                            }
-                        }
-                        map.invalidate()
-                        currentZoomLevel = map.zoomLevel
-                    }
-                    return true
-                }
-
-                override fun onScroll(e: ScrollEvent?): Boolean {
-                    return true
-                }
-            },
-        )
-    }
 
 
     fun showAllTram(actualPositionTram: ActualPositionVehicles) {
@@ -153,17 +78,14 @@ class MapController(private var map: MapView, private var context: Context) {
     }
 
     fun removeCallback() {
-        Log.i("CALLBACK", "REMOVE")
+
         mainHandler.removeCallbacks(updateTextTask)
     }
 
-    fun luchCallback() {
-        Log.i("CALLBACK", "LUNCH")
-        mainHandler.post(updateTextTask)
-    }
 
     fun addLocationMarkerToMap(userLocation: UserLocation) {
-        mapController.setZoom(15)
+        val zoomLevelWhenAddLocationIcon=15
+        mapController.setZoom(zoomLevelWhenAddLocationIcon)
         map.overlays.add(userLocation.locationMarker)
     }
 
@@ -201,12 +123,11 @@ class MapController(private var map: MapView, private var context: Context) {
     }
 
     fun startShowVehicle(actualPositionVehicle: ActualPositionVehicles) {
-
         updateTextTask = object : Runnable {
             override fun run() {
                 showAllBus(actualPositionVehicle)
                 showAllTram(actualPositionVehicle)
-                mainHandler.postDelayed(this, RUNNABLE_DELAY)
+                mainHandler.postDelayed(this, runnableDelay)
             }
         }
         mainHandler.post(updateTextTask)

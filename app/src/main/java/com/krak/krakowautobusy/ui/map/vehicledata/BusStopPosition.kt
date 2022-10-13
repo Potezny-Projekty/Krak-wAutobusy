@@ -11,7 +11,7 @@ import androidx.navigation.Navigation
 import com.krak.krakowautobusy.R
 import com.krak.krakowautobusy.api.Api
 import com.krak.krakowautobusy.database.VehicleStopData
-import com.krak.krakowautobusy.ui.vehiclestop.Bundle_Vehicle_Stop
+import com.krak.krakowautobusy.ui.vehiclestop.BundleVehicleStop
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
@@ -50,18 +50,18 @@ open class BusStopPosition(private val busStopIconDrawable : Drawable) {
             if(event.action==MotionEvent.ACTION_DOWN) {
 
                 val bundle = bundleOf(
-                    Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
+                    BundleVehicleStop.ID_VEHICLE_STOP.nameBundle to
                             defaultValue,
-                    Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
+                    BundleVehicleStop.NAME_VEHICLE_STOP.nameBundle to
                             name,
-                    Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
+                    BundleVehicleStop.ID_STOP_POINT.nameBundle to
                             defaultValue
 
                 )
 
 
                 Navigation.findNavController(x)
-                    .navigate(R.id.actionnavigatedetailesstop, bundle);
+                    .navigate(R.id.actionnavigatedetailesstop, bundle)
             }
 
             true

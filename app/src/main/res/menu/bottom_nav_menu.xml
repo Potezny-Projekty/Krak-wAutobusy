@@ -9,11 +9,11 @@
     <item
         android:id="@+id/navigation_favorite"
         android:icon="@drawable/bus_icon"
-        android:title="Linie" />
+        android:title="@string/lineMenuText" />
 
     <item
         android:id="@+id/navigation_favoritevehiclestop"
         android:icon="@drawable/ic_bus_stop"
-        android:title="Przystanki" />
+        android:title="@string/VehicleStop" />
 
 </menu>

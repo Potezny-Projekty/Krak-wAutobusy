@@ -22,7 +22,7 @@ import org.osmdroid.views.MapView
 
 
 
-private const val TAG = "CreateMapFragment"
+
 
 @Suppress("DEPRECATION")
 @RequiresApi(Build.VERSION_CODES.M)
@@ -41,15 +41,14 @@ class CreateMapFragment : Fragment() {
     private lateinit var utilities: Utilities
     private val viewModel: MapViewModel by activityViewModels()
 
-    private val MIN_ZOOM_LEVEL = 4.0
-    private val MAX_ZOOM_LEVEL = 20.0
-    private val CURRENT_ZOOM_LEVEL = 14.0
+    private val minZoomLevel = 4.0
+    private val maxZoomLevel = 20.0
+    private val currentZoomLevel = 14.0
 
-    private val STARTING_LATTITUDE = 50.06173293019267
-    private val STARTING_LONGTITUDE = 19.937894523426294
+    private val startingLatitude = 50.06173293019267
+    private val startingLongitude = 19.937894523426294
 
     private lateinit var mapController: MapController
-
 
 
     override fun onCreateView(
@@ -57,18 +56,16 @@ class CreateMapFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.i(TAG, "onCreateView")
+
         binding = MapActivityBinding.inflate(inflater, container, false)
         map = binding.mapView
         Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
         initialSetup()
         setupMapView()
-        //setupDrawables()
+
         enableBroadcastReceiver()
-        //enableLocalization()
         mapController.createLocationMarker(userLocation, drawables)
         mapController.createAllBusStopsMarker(busStopPosition)
-        //switchBetweenBusStopsAndVehicle(viewModel.showBusStops.value!!)
 
         viewModel.setMyLocation.observe(viewLifecycleOwner, Observer {
             if (it) {
@@ -82,14 +79,12 @@ class CreateMapFragment : Fragment() {
 
         viewModel.showBusStops.observe(viewLifecycleOwner, Observer {
             switchBetweenBusStopsAndVehicle(it)
-            Log.i("MAPVIEWMODELCHECK", "showBusStops")
         })
 
         mapController.loadMarkerIntoMap(actualPositionVehicles)
         mapController.loadMarkerIntoMap(actualPositionFavouriteVehicle)
 
         viewModel.isFavourit.observe(viewLifecycleOwner, Observer {
-            Log.i("MAPVIEWMODELCHECK", "ISFAVORITE")
             if (viewModel.showBusStops.value!!) {
                 mapController.removeShowingBusStops(busStopPositionOrFavouriteBusStopPosition)
                 switchBetweenFavourtieAndStandardMap(it)
@@ -99,7 +94,7 @@ class CreateMapFragment : Fragment() {
                 mapController.removeShowingAllVehicles(actualPositionAllOrFavouriteVehicle)
                 mapController.removeTrackedVehicle(actualPositionAllOrFavouriteVehicle)
 
-                switchBetweenFavourtieAndStandardMap(it);
+                switchBetweenFavourtieAndStandardMap(it)
 
                 mapController.showAllVehicleMarker(actualPositionAllOrFavouriteVehicle)
                 mapController.startShowVehicle(actualPositionAllOrFavouriteVehicle)
@@ -109,19 +104,12 @@ class CreateMapFragment : Fragment() {
     }
 
     private fun setupMapView() {
-        utilities.setZoomLevel(CURRENT_ZOOM_LEVEL.toInt())
+        utilities.setZoomLevel(currentZoomLevel.toInt())
 
-        mapController.setZoomLevels(MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL, CURRENT_ZOOM_LEVEL)
-       // mapController.onZoomChangeListener(drawables, utilities)
-        mapController.setStartingPoint(STARTING_LATTITUDE, STARTING_LONGTITUDE)
-        //mapController.drawLocationMarker(userLocation, drawables)
-        //mapController.drawTrackedRoute(actualPositionVehicles)
+        mapController.setZoomLevels(minZoomLevel, maxZoomLevel, currentZoomLevel)
+        mapController.setStartingPoint(startingLatitude, startingLongitude)
         mapController.startShowVehicle(actualPositionAllOrFavouriteVehicle)
 
-    }
-
-    private fun setupDrawables() {
-        drawables.resizeIcons(drawables, utilities, map.zoomLevel)
     }
 
     private fun initialSetup() {
@@ -160,13 +148,12 @@ class CreateMapFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.i(TAG, "onResumeCalled")
         map.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        Log.i(TAG, "onPauseCalled")
+
         userLocation.stopLocationUpdates()
         actualPositionAllOrFavouriteVehicle.setEnabled(false)
         map.onPause()
@@ -175,16 +162,12 @@ class CreateMapFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         mapController.removeCallback()
-        Log.i(TAG, "OnDestroyVewCalled")
+
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i(TAG, "OnDestroyCalled")
-    }
+
 
     private fun switchBetweenBusStopsAndVehicle(isBusStops : Boolean) {
-        Log.i("switchBetweenBusStopsAndVehicle", isBusStops.toString())
         if (isBusStops) {
             mapController.removeCallback()
             mapController.removeShowingAllVehicles(actualPositionAllOrFavouriteVehicle)

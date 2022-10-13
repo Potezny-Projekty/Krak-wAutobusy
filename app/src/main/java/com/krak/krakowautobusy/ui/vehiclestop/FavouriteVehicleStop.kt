@@ -70,11 +70,11 @@ class FavouriteVehicleStop : Fragment() {
 
 
             val bundle = bundleOf(
-                Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
+                BundleVehicleStop.ID_VEHICLE_STOP.nameBundle to
                         selectedItem.idVehicleStop.toString(),
-               Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
+               BundleVehicleStop.NAME_VEHICLE_STOP.nameBundle to
                        selectedItem.name,
-                Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
+                BundleVehicleStop.ID_STOP_POINT.nameBundle to
                         selectedItem.idStopPoint.toString()
 
             )

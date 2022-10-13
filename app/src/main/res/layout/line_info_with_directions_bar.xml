@@ -35,7 +35,7 @@
                 android:textSize="12sp" />
 
         <TextView
-                android:text="śledzisz"
+                android:text="@string/followingText"
                android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -166,7 +166,7 @@
     </GridLayout>
 
     <Button
-            android:text="Zmień pojazd"
+            android:text="@string/changeVehicleText"
             android:textSize="9sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

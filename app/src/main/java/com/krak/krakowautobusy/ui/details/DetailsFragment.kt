@@ -28,7 +28,7 @@ import com.krak.krakowautobusy.ui.map.AdapterTimeTableListView
 import com.krak.krakowautobusy.ui.map.DetailsMapViewModel
 import com.krak.krakowautobusy.ui.map.vehicledata.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.krak.krakowautobusy.ui.vehiclestop.Bundle_Vehicle_Stop
+import com.krak.krakowautobusy.ui.vehiclestop.BundleVehicleStop
 import kotlinx.coroutines.*
 import retrofit2.Response
 import java.lang.Exception
@@ -46,7 +46,7 @@ class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private val defaultVehicleNumber=0
-    private val numberLineTopTextFormat=resources.getString(R.string.textLineNumber)
+    private var numberLineTopTextFormat=""
     private  var lineNumber:Int=defaultVehicleNumber
     private var firstVehicleStopName=""
     private var lastVehicleStopName=""
@@ -224,6 +224,7 @@ class DetailsFragment : Fragment() {
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
 
+        numberLineTopTextFormat=resources.getString(R.string.textLineNumber)
         readArgumentsAndProvideDataForMap()
         addFragmentResultListener()
         addOnClickNavigationButton()
@@ -535,11 +536,11 @@ class DetailsFragment : Fragment() {
             val defaultValue=""
 
             val bundle = bundleOf(
-                Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
+                BundleVehicleStop.ID_VEHICLE_STOP.nameBundle to
                         defaultValue,
-                Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
+                BundleVehicleStop.NAME_VEHICLE_STOP.nameBundle to
                         view.findViewById<TextView>(R.id.nameStopBus).text.toString(),
-                Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
+                BundleVehicleStop.ID_STOP_POINT.nameBundle to
                         defaultValue
             )
 

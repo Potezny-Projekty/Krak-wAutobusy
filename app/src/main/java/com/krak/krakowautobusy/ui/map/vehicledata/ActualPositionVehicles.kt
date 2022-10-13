@@ -1,6 +1,7 @@
 package com.krak.krakowautobusy.ui.map.vehicledata
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -11,6 +12,7 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
@@ -23,7 +25,7 @@ import com.krak.krakowautobusy.database.SequenceVehicleStopData
 import com.krak.krakowautobusy.ui.map.Drawables
 import com.google.gson.JsonObject
 import com.krak.krakowautobusy.database.VehicleStopData
-import com.krak.krakowautobusy.ui.vehiclestop.Bundle_Vehicle_Stop
+import com.krak.krakowautobusy.ui.vehiclestop.BundleVehicleStop
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
@@ -166,11 +168,11 @@ open class ActualPositionVehicles(var drawables: Drawables) {
                 val nameVehicleStop=(((viewSnippet.getChildAt(1) as LinearLayout).getChildAt(0) as LinearLayout) .getChildAt(0) as TextView).text.toString()
 
                 val bundle = bundleOf(
-                    Bundle_Vehicle_Stop.ID_VEHICLE_STOP.nameBundle to
+                    BundleVehicleStop.ID_VEHICLE_STOP.nameBundle to
                             defaultValue,
-                    Bundle_Vehicle_Stop.NAME_VEHICLE_STOP.nameBundle to
+                    BundleVehicleStop.NAME_VEHICLE_STOP.nameBundle to
                             nameVehicleStop,
-                    Bundle_Vehicle_Stop.ID_STOP_POINT.nameBundle to
+                    BundleVehicleStop.ID_STOP_POINT.nameBundle to
                             defaultValue
 
                 )
@@ -436,24 +438,24 @@ open class ActualPositionVehicles(var drawables: Drawables) {
     }
 
     private fun createTrackedPolyline(): Polyline {
-        val routeColor = Resources.getSystem().getColor(R.color.routeColor)
+        val routeColor = "#39dd00"
         val width = 10.0f
         val trackedRoute = Polyline()
         trackedRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
         trackedRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
-        trackedRoute.outlinePaint.color = routeColor
+        trackedRoute.outlinePaint.color = Color.parseColor(routeColor)
         trackedRoute.outlinePaint.strokeWidth = width
         trackedRoute.isGeodesic = true
         return trackedRoute
     }
 
     private fun createTraveledPolyline(): Polyline {
-        val colorTraveledRoute = Resources.getSystem().getColor(R.color.traveledColorRoute)
+        val colorTraveledRoute = "#ff0000"
         val width = 10.0f
         val traveledRoute = Polyline()
         traveledRoute.outlinePaint.strokeCap = Paint.Cap.ROUND
         traveledRoute.outlinePaint.strokeJoin = Paint.Join.ROUND
-        traveledRoute.outlinePaint.color = colorTraveledRoute
+        traveledRoute.outlinePaint.color = Color.parseColor(colorTraveledRoute)
         traveledRoute.outlinePaint.strokeWidth = width
         traveledRoute.isGeodesic = true
         return traveledRoute

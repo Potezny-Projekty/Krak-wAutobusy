@@ -26,7 +26,9 @@ class Utilities(var context: Context) {
         this.currentZoomLevel = currentZoomLevel
     }
 
-    // unsecure conversion from float to int, in this case the lost value is irrelevant
+    /**
+     *   unsecure conversion from float to int, in this case the lost value is irrelevant
+     */
     fun resizeDrawable(icon: Drawable,multiplier : Float = DEFAULT_MULTIPLIER_VALUE): Drawable {
         val bitmap: Bitmap = getBitmapFromVectorDrawable(icon)!!
         val resized = Bitmap.createScaledBitmap(
@@ -50,7 +52,7 @@ class Utilities(var context: Context) {
         return bitmap
     }
 
-    fun setIconSize(zoomLevel: Int): Int {
+    private fun setIconSize(zoomLevel: Int): Int {
         var iconSize = ZOOM_LEVEL_14_ICON_SIZE
         when (zoomLevel) {
             13 -> {

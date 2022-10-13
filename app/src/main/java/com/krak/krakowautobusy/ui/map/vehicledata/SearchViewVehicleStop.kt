@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.view.inputmethod.InputMethodManager
@@ -17,15 +16,13 @@ import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import com.krak.krakowautobusy.R
 import com.krak.krakowautobusy.api.Api
-import com.krak.krakowautobusy.database.LineData
 import com.krak.krakowautobusy.database.VehicleStopData
 import com.krak.krakowautobusy.databinding.FragmentSearchViewVehicleStopBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+
 
 /**
  * A simple [Fragment] subclass.
@@ -37,14 +34,12 @@ class SearchViewVehicleStop : Fragment() {
     private var isShowKeyboard=false
     private  var bottomNavView: BottomNavigationView?=null
 
-    private var showAllOrFavoriteBusOnMap_FAB:com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton?=null
-    private var findMyLocationOnMap_FAB:com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton?=null
-    val ANIM_DURATION_MS=800L
-
-    private   var refreshH: RefreshHandler? = null;
+    private var showAllOrFavoriteBusOnMapFAB:com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton?=null
+    private var findMyLocationOnMapFAB:com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton?=null
 
 
-    private lateinit var   adapter :AdapterListSearchVehicleStop;
+    private   var refreshAction: RefreshHandler? = null
+    private lateinit var   adapter :AdapterListSearchVehicleStop
 
     private val binding get() = _binding!!
     override fun onCreateView(
@@ -53,29 +48,28 @@ class SearchViewVehicleStop : Fragment() {
     ): View {
         _binding = FragmentSearchViewVehicleStopBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         addAdapterToSearchLineListView()
         return root
     }
 
-    private   var actionShowKeyboard: RefreshHandler? = null;
-    private   var actionHidekeyboard: RefreshHandler? = null;
+    private   var actionShowKeyboard: RefreshHandler? = null
+    private   var actionHidekeyboard: RefreshHandler? = null
 
 
 
-    public fun setActionWhenShowKeyboard(action:RefreshHandler){
+     fun setActionWhenShowKeyboard(action:RefreshHandler){
         actionShowKeyboard=action
     }
 
 
-    public fun setActionWhenHideKeyboard(action:RefreshHandler){
+     fun setActionWhenHideKeyboard(action:RefreshHandler){
         actionHidekeyboard=action
     }
 
 
-    public fun setRefreshFun(zm:RefreshHandler ){
-        refreshH=zm
-        //  adapter.setRefresh(zm)
+     fun setRefreshFun(zm:RefreshHandler ){
+        refreshAction=zm
+
     }
 
     private fun addAdapterToSearchLineListView(){
@@ -89,37 +83,26 @@ class SearchViewVehicleStop : Fragment() {
 
     private fun showListSearchViewAnimation(){
         AnimationSearchView.showListSearchViewAnimation(binding.allSearchPane)
-
-        actionShowKeyboard?.let { it()
-
-            Log.e("kiedy","teraz pokaz2")
-
-
-        }
+        actionShowKeyboard?.let { it() }
     }
 
     private fun hideListSearchViewAnimation(){
         AnimationSearchView.hideListSearchViewAnimation(binding.allSearchPane)
 
-        actionHidekeyboard?.let { it()
-
-            Log.e("kiedy","teraz pokaz2")
-        }
+        actionHidekeyboard?.let { it() }
     }
 
 
 
-    fun addOnClickListenerToLineOnList(){
+    private fun addOnClickListenerToLineOnList(){
+        val nameVehicleBundleKeyName="nameVehicleStop"
         binding.searchList.setOnItemClickListener { _, view, _, _ ->
             val bundle = bundleOf(
-                "nameVehicleStop" to
+                nameVehicleBundleKeyName to
                     view.findViewById<TextView>(R.id.nameVehicleStop).text.toString().trim()
-
-
-
             )
 
-            Navigation.findNavController(view).navigate(R.id.action_navigate_to_details_vehiclestop,bundle);
+            Navigation.findNavController(view).navigate(R.id.action_navigate_to_details_vehiclestop,bundle)
         }
     }
 
@@ -139,9 +122,9 @@ class SearchViewVehicleStop : Fragment() {
 
     private fun getAccessToViewFromOtherFragmentOrActivity(){
         if(bottomNavView == null){
-            bottomNavView=requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
-            findMyLocationOnMap_FAB=requireActivity().findViewById<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>(R.id.locationfab)
-            showAllOrFavoriteBusOnMap_FAB=requireActivity().findViewById<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>(R.id.Map_showAllVehiclesOrFavorite)
+            bottomNavView=requireActivity().findViewById(R.id.nav_view)
+            findMyLocationOnMapFAB=requireActivity().findViewById(R.id.locationfab)
+            showAllOrFavoriteBusOnMapFAB=requireActivity().findViewById(R.id.Map_showAllVehiclesOrFavorite)
         }
 
     }
@@ -149,26 +132,20 @@ class SearchViewVehicleStop : Fragment() {
     private fun hideApplicationNavBar(){
         getAccessToViewFromOtherFragmentOrActivity()
         bottomNavView?.visibility=View.GONE
-        findMyLocationOnMap_FAB?.visibility=View.GONE
-        showAllOrFavoriteBusOnMap_FAB?.visibility=View.GONE
+        findMyLocationOnMapFAB?.visibility=View.GONE
+        showAllOrFavoriteBusOnMapFAB?.visibility=View.GONE
     }
 
     private fun showApplicationNavBar(){
         getAccessToViewFromOtherFragmentOrActivity()
         bottomNavView?.visibility=View.VISIBLE
-        findMyLocationOnMap_FAB?.visibility=View.VISIBLE
-        showAllOrFavoriteBusOnMap_FAB?.visibility=View.VISIBLE
+        findMyLocationOnMapFAB?.visibility=View.VISIBLE
+        showAllOrFavoriteBusOnMapFAB?.visibility=View.VISIBLE
     }
 
 
     private fun Fragment.hideKeyboard() {
         view?.let { activity?.hideKeyboard(it) }
-
-        //  if(refreshH!=null){
-        //      refreshH();
-        //  }
-
-        //refreshH?.let { it() }
 
     }
     private fun Context.hideKeyboard(view: View) {
@@ -187,16 +164,14 @@ class SearchViewVehicleStop : Fragment() {
 
 
     private fun changeSearchIconToActiveSearchIcon(){
-        //  val searchIcon=binding.searchIcon
+
         if(_binding!=null){
             binding.searchIcon.setImageResource(R.drawable.back_icon_green)
         }
-        //
+
     }
 
     private fun changeSearchIconToNoActiveSearchIcon(){
-//        val searchIcon=binding.searchIcon
-        //      searchIcon.setImageResource(R.drawable.ic_baseline_menu_24)
         if(_binding!=null){
             binding.searchIcon.setImageResource(R.drawable.ic_baseline_menu_24)
         }
@@ -224,13 +199,10 @@ class SearchViewVehicleStop : Fragment() {
 
     private fun runOpenSearchPanelAnimation(){
 
-        val ALFA_BACGROUND_WHEN_SHOW_SEARCH_VIEW_PERCENTAGE=40
+        val alfaShowPercentageWhenSearchPanelShow=40
         hideApplicationNavBar()
         binding.root.setBackgroundColor(Color.GRAY)
-       binding.root.background.alpha=ALFA_BACGROUND_WHEN_SHOW_SEARCH_VIEW_PERCENTAGE
-        //  binding.allSearchPane.alpha=0.9f
-
-
+        binding.root.background.alpha=alfaShowPercentageWhenSearchPanelShow
 
         AnimationSearchView.rotateAnimation.doOnEnd {
 
@@ -251,14 +223,11 @@ class SearchViewVehicleStop : Fragment() {
     private fun actionWhenSearchPanelClickIcon(){
         val searchIcon=binding.searchIcon
 
-
         searchIcon.setOnClickListener {
 
             if(isShowKeyboard){
                 hideKeyboard()
                 binding.searchEditText.clearFocus()
-
-                //  changeSearchIconToActiveSearchIcon()
 
             }else{
                 binding.searchEditText.requestFocus()
@@ -272,17 +241,12 @@ class SearchViewVehicleStop : Fragment() {
     override fun onStart() {
         super.onStart()
         addListenerToKeyboard()
-        Log.e("kurwap","c1")
 
         adapter.setRefresh {
-            Log.e("kurwap","1")
+
             adapter.changeDataset(getLineMatchToUserPattern())
             adapter.notifyDataSetChanged()
-
-
-            refreshH?.let { it() }
-
-
+            refreshAction?.let { it() }
 
         }
 
@@ -292,7 +256,7 @@ class SearchViewVehicleStop : Fragment() {
     private val keyboardLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
         val KEYBOARD_EXPECT_AREA=100
 
-        try{//to jest kurna zajebiste :D
+        try{
 
             val currentContentHeight: Int =
                 requireActivity().findViewById<View>(Window.ID_ANDROID_CONTENT).height
@@ -302,8 +266,6 @@ class SearchViewVehicleStop : Fragment() {
             } else if (currentContentHeight > mLastContentHeight + KEYBOARD_EXPECT_AREA) {
                 mLastContentHeight = currentContentHeight
                 isShowKeyboard=false
-
-
 
                 val editTxt=binding.searchEditText
                 editTxt.clearFocus()
@@ -319,7 +281,7 @@ class SearchViewVehicleStop : Fragment() {
     }
     private fun addListenerToKeyboard(){
         requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).viewTreeObserver.
-        addOnGlobalLayoutListener(keyboardLayoutListener);
+        addOnGlobalLayoutListener(keyboardLayoutListener)
 
     }
 
@@ -327,7 +289,6 @@ class SearchViewVehicleStop : Fragment() {
 
     private fun hideListOption(){
         hideListSearchViewAnimation()
-        //  binding.allSearchPane.visibility=View.GONE
     }
 
     private fun showListOption(){
@@ -344,7 +305,7 @@ class SearchViewVehicleStop : Fragment() {
         changeSearchIconToActiveSearchIcon()
 
         binding.root.setBackgroundColor(Color.WHITE)
-       binding.root.background.alpha=1
+        binding.root.background.alpha=1
 
 
         val animationSet = AnimatorSet()
@@ -353,7 +314,6 @@ class SearchViewVehicleStop : Fragment() {
 
 
         AnimationSearchView.    scaleYAnimationScaleDown.doOnEnd {
-            //  binding.allSearchPane.visibility=View.GONE
             val animationSetEnd= AnimatorSet()
             animationSetEnd.playTogether(AnimationSearchView.  scaleXAnimationScaleUo,AnimationSearchView.  scaleYAnimationScaleUp)
             animationSetEnd.start()
@@ -378,52 +338,29 @@ class SearchViewVehicleStop : Fragment() {
     }
 
 
-    private  fun getMatchNumberLineFromDatabase(numberLinePattern:String):ArrayList<LineData>{
-        //return Api.getApi().getVe
-        return Api.getApi().getInfoAboutLinePatternNumber(numberLinePattern.toInt());
-
-    }
 
     private fun getMatchAnyVehicleStopLineFromDatabase(patternVehicleStop:String):ArrayList<VehicleStopData>{
         return Api.getApi().getAllVehiclesStop()
     }
 
 
-    private fun ifWriteNumberLine(patternSerchTextWriteByUser:String):Boolean{
-        if(patternSerchTextWriteByUser.toIntOrNull()!=null){
-            return true
-        }
-        return false
-    }
-
 
     private fun getLineMatchToUserPattern():ArrayList<VehicleStopData>{
-        val MINIMUM_CHAR_TO_START_SEARCHING_MATCH_LINE=1
+        val minimumCHarToStartMatchLine=1
         val textFromSearchInput=binding.searchEditText.text.toString()
-        var matchLines:ArrayList<VehicleStopData> =ArrayList<VehicleStopData>()
-       // if(ifWriteNumberLine(textFromSearchInput)){
-          //  matchLines=getMatchNumberLineFromDatabase(textFromSearchInput)
-      //  }else{
+        var matchLines:ArrayList<VehicleStopData> =ArrayList()
 
-            if(textFromSearchInput.length>MINIMUM_CHAR_TO_START_SEARCHING_MATCH_LINE){
-                matchLines=getMatchAnyVehicleStopLineFromDatabase(textFromSearchInput.lowercase())
-                matchLines= matchLines.filter { it.name.lowercase().contains(textFromSearchInput.lowercase()) } as ArrayList<VehicleStopData>
-            }
-       // }
+       if(textFromSearchInput.length>minimumCHarToStartMatchLine){
+            matchLines=getMatchAnyVehicleStopLineFromDatabase(textFromSearchInput.lowercase())
+            matchLines= matchLines.filter { it.name.lowercase().contains(textFromSearchInput.lowercase()) } as ArrayList<VehicleStopData>
+       }
+
         return matchLines
 
     }
 
-    public fun getAdapter():AdapterListSearchVehicleStop{
-        return adapter;
-
-    }
 
     private fun changeDataSetAdapterLineMatchToUserText(){
-        // if(refreshH!=null){
-//
-        //     refreshH()
-        //  }
 
         adapter.changeDataset(getLineMatchToUserPattern())
         adapter.notifyDataSetChanged()
@@ -433,7 +370,7 @@ class SearchViewVehicleStop : Fragment() {
 
         binding.searchEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                try{//Sprawdź czy to jest konieczne aby dawać try
+                try{
                     changeDataSetAdapterLineMatchToUserText()
                 }
                 catch (_:Exception){
@@ -454,8 +391,9 @@ class SearchViewVehicleStop : Fragment() {
     private fun addCallbackToDeleteIconDeleteText(){
         val deleteIcon=binding.deleteUserWriteTextIcon
         val searchEditText=binding.searchEditText
+        val defaultValue=""
         deleteIcon.setOnClickListener {
-            searchEditText.setText(  "")
+            searchEditText.setText( defaultValue)
         }
     }
 
