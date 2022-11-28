@@ -117,7 +117,7 @@
 
         <fragment
             android:id="@+id/navigation_detailed_lines"
-            android:name="com.krak.krakowautobusy.ui.map.vehicledata.VehicleStopDetails"
+            android:name="com.krak.krakowautobusy.ui.detailsvehiclestop.VehicleStopDetails"
             android:label="Szczegóły przystanku"
             tools:layout="@layout/fragment_vehicle_stop_details">
 
@@ -130,7 +130,7 @@
 
         <fragment
             android:id="@+id/xx"
-            android:name="com.krak.krakowautobusy.ui.map.vehicledata.VehicleStopDetails"
+            android:name="com.krak.krakowautobusy.ui.detailsvehiclestop.VehicleStopDetails"
             android:label="fragment_details"
             tools:layout="@layout/fragment_vehicle_stop_details" />
         <action
