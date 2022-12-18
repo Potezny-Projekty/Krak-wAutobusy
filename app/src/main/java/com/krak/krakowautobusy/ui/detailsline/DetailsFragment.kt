@@ -600,7 +600,7 @@ class DetailsFragment : Fragment() {
 
 
     private fun fillViewsDataFromBundle(){
-        binding.lineNumberTop.text= "$numberLineTopTextFormat$lineNumber"
+        binding.lineNumberTop.text= numberLineTopTextFormat+" "+lineNumber
         binding.details.lineNumberDetailed.text="$lineNumber"
         numberLine =lineNumber
         binding.details.currentlyFollowingFirstBusStopData.text= firstVehicleStopName

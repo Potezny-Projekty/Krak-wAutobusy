@@ -44,6 +44,12 @@
 
 
         </fragment>
+
+        <fragment
+            android:id="@+id/detailesLine"
+            android:name="com.krak.krakowautobusy.ui.map.MapFragment"
+            android:label="@string/title_map"
+            tools:layout="@layout/fragment_map"></fragment>
         <fragment
             android:id="@+id/navigation_map"
             android:name="com.krak.krakowautobusy.ui.map.MapFragment"

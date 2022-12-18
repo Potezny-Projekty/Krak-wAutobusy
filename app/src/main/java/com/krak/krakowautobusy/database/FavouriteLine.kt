@@ -3,6 +3,7 @@ package com.krak.krakowautobusy.database
 import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import com.krak.krakowautobusy.api.Api
 
 
@@ -82,14 +83,21 @@ class FavouriteLine:FavouriteLineInterface {
             }
             cursor.close()
 
-            addLineToFavouriteById(db,linesIdBothDirection[FIRST_DIRECTION_POS])
-            addLineToFavouriteById(db,linesIdBothDirection[SECOND_DIRECTION_POS])
-        }
+
+            if(linesIdBothDirection.size>1) {
+                addLineToFavouriteById(db, linesIdBothDirection[FIRST_DIRECTION_POS])
+                addLineToFavouriteById(db, linesIdBothDirection[SECOND_DIRECTION_POS])
+            }
+            }
 
 
     }
 
     override fun removeLineFromFavourite(db: SQLiteDatabase, numberLine: Int) {
+
+
+        Log.e("favourite","Remove from favourite")
+
         val linesIdBothDirection  = arrayListOf<Int>()
 
         val columnReturns = arrayOf(

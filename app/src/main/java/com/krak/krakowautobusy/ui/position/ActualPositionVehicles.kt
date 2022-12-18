@@ -182,7 +182,7 @@ open class ActualPositionVehicles(var drawables: Drawables) {
 
 
                 Navigation.findNavController(viewSnippet)
-                    .navigate(R.id.actionnavigatedetailesstop, bundle)
+                    .navigate(R.id.action_navigate_to_details_vehiclestopa, bundle)
             }
             true
         }
