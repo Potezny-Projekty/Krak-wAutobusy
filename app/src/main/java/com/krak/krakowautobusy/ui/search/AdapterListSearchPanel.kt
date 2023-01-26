@@ -231,7 +231,7 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
             if(lineData.isFavourite) {
 
                 if (viewHolder.lineNumberBox!!.background.constantState == context.resources.getDrawable(R.drawable.ic_bus_stop).constantState) {
-                    Api.getApi().addVehicleStopToFavorite(lineData.nameBusStop)
+                    Api.getApi().addVehicleStopToFavorite(lineData.vehicleStopId)
 
                 }else {
 

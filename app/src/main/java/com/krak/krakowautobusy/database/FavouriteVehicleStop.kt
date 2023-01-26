@@ -110,6 +110,12 @@ class FavouriteVehicleStop :FavouriteVehicleStopInterface {
         }
     }
 
+    override fun addVehicleStopToFavorite(db: SQLiteDatabase, idVehicleStop: Long) {
+        if( !isVehicleStopFavouriteById(db, ""+idVehicleStop)){
+            addVehicleStopToFavoriteById(db,""+idVehicleStop)
+        }
+    }
+
     override fun removeVehicleStopFromFavourite(db: SQLiteDatabase, nameVehicleStop: String) {
 
         val idVehicleStop=Api.getApi().getVehicleStopIdByName(nameVehicleStop)

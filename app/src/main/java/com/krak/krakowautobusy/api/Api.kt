@@ -66,6 +66,9 @@ class Api private constructor(context: Context) {
     fun addVehicleStopToFavorite( nameVehicleStop: String){
         return favouritevehicleStopAcess.addVehicleStopToFavorite(database.writableDatabase,nameVehicleStop)
     }
+    fun addVehicleStopToFavorite( idVehicleStop: Long){
+        return favouritevehicleStopAcess.addVehicleStopToFavorite(database.writableDatabase,idVehicleStop)
+    }
 
     fun removeVehicleStopFromFavourite( nameVehicleStop: String){
         return favouritevehicleStopAcess.removeVehicleStopFromFavourite(database.writableDatabase,nameVehicleStop)

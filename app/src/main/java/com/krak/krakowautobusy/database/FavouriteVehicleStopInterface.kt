@@ -9,6 +9,8 @@ interface FavouriteVehicleStopInterface {
 
     fun addVehicleStopToFavorite(db: SQLiteDatabase, nameVehicleStop: String)
 
+    fun addVehicleStopToFavorite(db: SQLiteDatabase, idVehicleStop: Long)
+
     fun removeVehicleStopFromFavourite(db: SQLiteDatabase, nameVehicleStop: String)
 
 

@@ -103,7 +103,8 @@ class VehicleStop:VehicleStopInterface {
                         defaultStringValue,
                         x.isFavourite,
                         defaultStringValue,
-                        x.name
+                        x.name,
+                        x.idVehicleStop
                     )
                 )
             }
