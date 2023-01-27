@@ -175,7 +175,7 @@ class VehicleStop:VehicleStopInterface {
     }
 
     override fun getVehicleStopIdByName(db: SQLiteDatabase, nameVehicleStop: String): String {
-        val columnReturns = arrayOf(VehicleStopTable.ID_VEHICLE_STOP.nameColumn)
+        val columnReturns = arrayOf(VehicleStopTable.ID_STOP_POINT.nameColumn)
         val firstColumnReturn=0
         val returnNothingDefault=""
         val filterCondition = "${VehicleStopTable.NAME.nameColumn}=?"

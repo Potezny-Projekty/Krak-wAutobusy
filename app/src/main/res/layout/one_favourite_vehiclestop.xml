@@ -71,7 +71,7 @@
                 android:src="@drawable/ic_bus_stop"
                 android:paddingLeft="9dp"
                 android:paddingRight="9dp"
-
+                android:id="@+id/iconVehicleStop"
                 android:paddingTop="9dp"
                 android:paddingBottom="9dp"
                 android:layout_width="wrap_content"

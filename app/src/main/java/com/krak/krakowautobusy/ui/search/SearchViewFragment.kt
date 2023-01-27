@@ -99,7 +99,9 @@ class SearchViewFragment : Fragment() {
             val icon=view.findViewById<LinearLayout>(R.id.lineNumberBox).background
             val defaultValue=""
 
-            if (icon.constantState == requireContext().resources.getDrawable(R.drawable.ic_bus_stop).constantState) {
+          //  if()
+
+            if (view.findViewById<TextView>(R.id.lineNumber).text.toString().trim().length == 0) {
 
                 val bundle = bundleOf(
                     BundleVehicleStop.ID_VEHICLE_STOP.nameBundle to

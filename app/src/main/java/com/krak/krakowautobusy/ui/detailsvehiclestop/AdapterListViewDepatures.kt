@@ -32,6 +32,12 @@ class AdapterListViewDepatures (data: ArrayList<Depart>, context: Context) :
         notifyDataSetInvalidated()
     }
 
+    fun AddDataset(Linedata:ArrayList<Depart>){
+        dataSet.addAll(Linedata)
+        notifyDataSetChanged()
+        notifyDataSetInvalidated()
+    }
+
 
     private class ViewHolder {
         var lineNumber: TextView?=null

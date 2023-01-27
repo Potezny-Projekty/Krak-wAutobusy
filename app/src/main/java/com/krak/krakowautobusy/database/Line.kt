@@ -263,7 +263,7 @@ class Line:LineInteerface {
 
     override fun getAllLineWithAnyVehicleStopFitPattern(db: SQLiteDatabase, nameVehicleStop: String): ArrayList<LineData> {
 
-        val baseQuery="SELECT  Line.idLine,Line.numberLine,Line.firstStop,Line.lastStop,VehicleStop.vehicleType, VehicleStop.name,VehicleStop.id from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=VehicleStopSequence.idVehicleStop where lower(name) like \"${nameVehicleStop.lowercase()}%\""
+        val baseQuery="SELECT  Line.idLine,Line.numberLine,Line.firstStop,Line.lastStop,VehicleStop.vehicleType, VehicleStop.name from Line join VehicleStopSequence on VehicleStopSequence.idLine=Line.idLine join VehicleStop on VehicleStop.idStopPoint=VehicleStopSequence.idVehicleStop where lower(name) like \"${nameVehicleStop.lowercase()}%\""
 
         val cursor = db.rawQuery(baseQuery, null
         )

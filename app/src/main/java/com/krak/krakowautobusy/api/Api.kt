@@ -2,6 +2,7 @@ package com.krak.krakowautobusy.api
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import com.krak.krakowautobusy.database.*
 import com.krak.krakowautobusy.networkttss.*
 import com.krak.krakowautobusy.ui.map.vehicledata.AllVehicles
@@ -106,7 +107,10 @@ class Api private constructor(context: Context) {
    }
 
    fun getBusDepartures(idStopPoint:String,
-    combine:(Response<Departures>)->Unit){ departVehicleAccess.getBusVehicleDepart(idStopPoint,combine)
+    combine:(Response<Departures>)->Unit){
+       Log.e("id","xd:"+idStopPoint)
+
+       departVehicleAccess.getBusVehicleDepart(idStopPoint,combine)
    }
 
 

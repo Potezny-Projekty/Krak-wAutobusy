@@ -17,6 +17,7 @@ import com.krak.krakowautobusy.BundleChoiceVehicle
 import com.krak.krakowautobusy.R
 import com.krak.krakowautobusy.api.Api
 import com.krak.krakowautobusy.databinding.FragmentVehicleStopDetailsBinding
+import com.krak.krakowautobusy.networkttss.Depart
 import java.lang.Exception
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -55,12 +56,35 @@ class VehicleStopDetails : Fragment() {
             override fun run() {
 
 
+
                 if(idStopPoint.isEmpty()){
+                    var departe:ArrayList<Depart> = ArrayList()
                     Api.getApi().getBusDepartures(Api.getApi().getVehicleStopIdByName(nameVehicleStop)
                     ){ response ->
                         try {
                             adapter = AdapterListViewDepatures(response.body()!!.actual, requireContext())
                             adapter!!.changeDataset(response.body()!!.actual)
+                            departe.addAll(response.body()!!.actual)
+                            binding.listdetailed.adapter = adapter
+
+
+                            if (response.body()!!.actual.size == 0) {
+                                binding.ifwehavedata.visibility = View.VISIBLE
+                            } else {
+                                binding.ifwehavedata.visibility = View.GONE
+                            }
+
+                        }catch (x:Exception){
+
+                        }
+
+                    }
+
+                    Api.getApi().getTramDepartures(Api.getApi().getVehicleStopIdByName(nameVehicleStop)){ response ->
+                        try {
+                            adapter = AdapterListViewDepatures(response.body()!!.actual, requireContext())
+                            departe.addAll(response.body()!!.actual)
+                            adapter!!.changeDataset(departe)
                             binding.listdetailed.adapter = adapter
 
 
@@ -77,6 +101,7 @@ class VehicleStopDetails : Fragment() {
                     }
 
                 }else {
+                    var departe:ArrayList<Depart> = ArrayList()
 
                     Api.getApi().getBusDepartures(
                         idStopPoint
@@ -85,6 +110,7 @@ class VehicleStopDetails : Fragment() {
                         try {
                             adapter =
                                 AdapterListViewDepatures(response.body()!!.actual, requireContext())
+                            departe=response.body()!!.actual
                             adapter!!.changeDataset(response.body()!!.actual)
                             binding.listdetailed.adapter = adapter
 
@@ -95,6 +121,26 @@ class VehicleStopDetails : Fragment() {
                             }
 
                         } catch (x: Exception) {
+
+                        }
+
+                    }
+
+                    Api.getApi().getTramDepartures(Api.getApi().getVehicleStopIdByName(nameVehicleStop)){ response ->
+                        try {
+                            departe.addAll(response.body()!!.actual)
+                            adapter = AdapterListViewDepatures(response.body()!!.actual, requireContext())
+                            adapter!!.changeDataset(departe)
+                            binding.listdetailed.adapter = adapter
+
+
+                            if (response.body()!!.actual.size == 0) {
+                                binding.ifwehavedata.visibility = View.VISIBLE
+                            } else {
+                                binding.ifwehavedata.visibility = View.GONE
+                            }
+
+                        }catch (x:Exception){
 
                         }
 
@@ -171,7 +217,10 @@ class VehicleStopDetails : Fragment() {
 
 
                 binding.heartIcon.setImageResource(R.drawable.ic_gray_hert_icon)
-                Api.getApi().removeVehicleStopFromFavourite(binding.lineNumberTop.text.toString())
+
+              //  Api.getApi().removeVehicleStopFromFavouriteById(idStopPoint)
+
+               Api.getApi().removeVehicleStopFromFavourite(binding.lineNumberTop.text.toString())
             }else{
 
                 binding.heartIcon.animate()
@@ -186,6 +235,7 @@ class VehicleStopDetails : Fragment() {
                     }
 
                 binding.heartIcon.setImageResource(R.drawable.red_heart_icon)
+               // Api.getApi().addVehicleStopToFavorite(idStopPoint.toLong())
                 Api.getApi().addVehicleStopToFavorite(binding.lineNumberTop.text.toString())
             }
 

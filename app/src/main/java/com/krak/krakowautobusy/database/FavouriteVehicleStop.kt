@@ -111,6 +111,7 @@ class FavouriteVehicleStop :FavouriteVehicleStopInterface {
     }
 
     override fun addVehicleStopToFavorite(db: SQLiteDatabase, idVehicleStop: Long) {
+        addVehicleStopToFavoriteById(db,""+idVehicleStop)
         if( !isVehicleStopFavouriteById(db, ""+idVehicleStop)){
             addVehicleStopToFavoriteById(db,""+idVehicleStop)
         }

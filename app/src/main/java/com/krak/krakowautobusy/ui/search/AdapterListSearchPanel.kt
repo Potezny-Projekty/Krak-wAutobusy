@@ -2,6 +2,7 @@
 package com.krak.krakowautobusy.ui.search
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -230,7 +231,10 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
 
             if(lineData.isFavourite) {
 
-                if (viewHolder.lineNumberBox!!.background.constantState == context.resources.getDrawable(R.drawable.ic_bus_stop).constantState) {
+
+                //view.findViewById<TextView>(R.id.lineNumber).text.toString().trim().length == 0
+                if (viewHolder.lineNumber!!.text.toString().trim().length == 0) {
+                    Log.e("Kurwa","xD")
                     Api.getApi().addVehicleStopToFavorite(lineData.vehicleStopId)
 
                 }else {
