@@ -109,7 +109,7 @@ class SearchViewFragment : Fragment() {
                     BundleVehicleStop.NAME_VEHICLE_STOP.nameBundle to
                             view.findViewById<TextView>(R.id.busStopViaRoute).text,
                     BundleVehicleStop.ID_STOP_POINT.nameBundle to
-                            defaultValue
+                            view.findViewById<TextView>(R.id.lineNumber).tag.toString().trim()
 
                 )
 

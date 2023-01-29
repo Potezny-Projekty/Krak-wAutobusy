@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -532,6 +533,11 @@ class DetailsFragment : Fragment() {
     private fun addOnClickTimeTableToMoveVehicleStopDetailsView(){
         binding.listTimeTable.setOnItemClickListener { _, view, _, _ ->
             val defaultValue=""
+
+            val stopId=view.findViewById<TextView>(R.id.nameStopBus).tag.toString()
+            Log.e("KURWAX","d:"+stopId)
+            Log.e("KURWAX","c:"+Api.getApi().getVehicleStopIdById(stopId.toLong()))
+
 
             val bundle = bundleOf(
                 BundleVehicleStop.ID_VEHICLE_STOP.nameBundle to

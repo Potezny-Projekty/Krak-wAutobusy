@@ -112,6 +112,32 @@ class VehicleStop:VehicleStopInterface {
         return finalLineData
     }
 
+    override fun getVehicleStopIdById(db: SQLiteDatabase, id: Long): Int {
+        val columnReturns = arrayOf(VehicleStopTable.ID_STOP_POINT .nameColumn)
+        val firstColumnReturn=0
+        val returnNothingDefault=0
+
+        val filterCondition = "${VehicleStopTable.ID_VEHICLE_STOP .nameColumn}=?"
+
+        val cursor = db.query(
+            TableName.VEHICLE_STOP.nameTable,
+            columnReturns,
+            filterCondition,
+            arrayOf(id.toString()),
+            null,
+            null,
+            null,
+            null
+        )
+        if (cursor!!.moveToFirst()) {
+
+            return   cursor.getInt(firstColumnReturn)
+        }
+
+        cursor.close()
+        return returnNothingDefault
+    }
+
     override fun getAllVehicleStop(db: SQLiteDatabase): ArrayList<VehicleStopData> {
         val allVehicleStop = arrayListOf<VehicleStopData>()
 

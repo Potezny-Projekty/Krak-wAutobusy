@@ -51,6 +51,10 @@ class Api private constructor(context: Context) {
 
 
 
+    fun getVehicleStopIdById(id:Long):Int{
+        return vehicleStopAccess.getVehicleStopIdById(database.readableDatabase,id)
+    }
+
 
     fun getAllVehicleStopAsLineData(name:String):ArrayList<LineData>{
           return vehicleStopAccess.getAllVehicleStopAsLineData(database.readableDatabase,name)

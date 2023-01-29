@@ -165,7 +165,9 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
 
     private fun fillViewData(viewHolder: ViewHolder, dataModel:LineData): ViewHolder {
         viewHolder.lineNumber!!.text= dataModel.numberLine .toString()
-
+        viewHolder.lineNumber!!.tag = dataModel.vehicleStopId
+        Log.e("idStop","x:"+dataModel.vehicleStopId)
+    //   Log.e("idStop","x1:"+dataModel.idStopPoint)
 
         if(dataModel.isFavourite){
             viewHolder.isFavouriteIcon!!.setImageResource(R.drawable.red_heart_icon)
@@ -234,7 +236,7 @@ class AdapterListSearchPanel(data: ArrayList<LineData>, context: Context) :
 
                 //view.findViewById<TextView>(R.id.lineNumber).text.toString().trim().length == 0
                 if (viewHolder.lineNumber!!.text.toString().trim().length == 0) {
-                    Log.e("Kurwa","xD")
+
                     Api.getApi().addVehicleStopToFavorite(lineData.vehicleStopId)
 
                 }else {

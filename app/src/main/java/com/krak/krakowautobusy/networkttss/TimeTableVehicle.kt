@@ -1,5 +1,6 @@
 package com.krak.krakowautobusy.networkttss
 
+import android.util.Log
 import com.krak.krakowautobusy.database.VehicleType
 import com.krak.krakowautobusy.ui.map.vehicledata.TimeTableData
 import retrofit2.*
@@ -33,9 +34,13 @@ class TimeTableVehicle :TimeTableVehicleInterface {
 
 
     private fun generateGetBusVehicleTimeTable(idVehicle: String,idTrip:String, retrofitAp:TimeTableRetrofitApi, callbackResponse: (Response<TimeTableData>) -> Unit){
+
         return retrofitAp.getTimeTableVehicles(idTrip,idVehicle).enqueue(object:
             Callback<TimeTableData> {
             override fun onResponse(call: Call<TimeTableData>, response: Response<TimeTableData>) {
+
+                Log.e("idStop","["+ response.raw().request().url())
+
                 if(response.body()!=null && response.isSuccessful) {
                     callbackResponse(response)
                 }

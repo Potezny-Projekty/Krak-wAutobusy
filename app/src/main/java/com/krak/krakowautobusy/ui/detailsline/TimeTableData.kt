@@ -8,7 +8,7 @@ data class TimeTableData (val actual:ArrayList<StatusData>,val old:ArrayList<Sta
 data class AllTableTimeData(var data:ArrayList<StatusData>)
 
 @Serializable
-data class StopData (val name:String)
+data class StopData (val name:String,val id:Long)
 
 @Serializable
 data class StatusData (val actualTime:String,val status:String,val stop_seq_num:String,val stop:StopData)

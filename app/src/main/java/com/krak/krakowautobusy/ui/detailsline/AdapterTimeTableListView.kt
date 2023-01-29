@@ -86,6 +86,8 @@ class AdapterTimeTableListView (data: ArrayList<StatusData>, context: Context) :
 
         viewHolder.sequenceNumber!!.text="%-3s".format( dataModel.stop_seq_num )
         viewHolder.nameBusStop!!.text=dataModel.stop.name
+        viewHolder.nameBusStop!!.tag=dataModel.stop.id
+
         if(dataModel.stop.name.length>maxCharactersStopName){
             viewHolder.nameBusStop!!.text=dataModel.stop.name.substring(0,30)+"..."
         }

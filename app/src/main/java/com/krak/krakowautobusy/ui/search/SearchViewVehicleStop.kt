@@ -19,6 +19,7 @@ import com.krak.krakowautobusy.api.Api
 import com.krak.krakowautobusy.database.VehicleStopData
 import com.krak.krakowautobusy.databinding.FragmentSearchViewVehicleStopBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.krak.krakowautobusy.ui.detailsvehiclestop.BundleVehicleStop
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -99,7 +100,10 @@ class SearchViewVehicleStop : Fragment() {
         binding.searchList.setOnItemClickListener { _, view, _, _ ->
             val bundle = bundleOf(
                 nameVehicleBundleKeyName to
-                    view.findViewById<TextView>(R.id.nameVehicleStop).text.toString().trim()
+                    view.findViewById<TextView>(R.id.nameVehicleStop).text.toString().trim(),
+                BundleVehicleStop.ID_STOP_POINT.nameBundle to
+                        view.findViewById<TextView>(R.id.nameVehicleStop).tag.toString().trim()
+
             )
 
             Navigation.findNavController(view).navigate(R.id.action_navigate_to_details_vehiclestop,bundle)

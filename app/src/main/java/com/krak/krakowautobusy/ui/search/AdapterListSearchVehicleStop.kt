@@ -65,6 +65,7 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
         viewHolder.lineNumber = view.findViewById(R.id.nameVehicleStop)
         viewHolder.isFavourite=view.findViewById(R.id.heartIconVehicleStop)
 
+
     }
 
 
@@ -73,7 +74,9 @@ class AdapterListSearchVehicleStop(data: ArrayList<VehicleStopData>, context: Co
     private fun fillViewData(viewHolder: ViewHolder, dataModel: VehicleStopData): ViewHolder {
         viewHolder.lineNumber!!.text= dataModel.name
 
-        if(dataModel.isFavourite){
+        viewHolder.lineNumber!!.tag = dataModel.idStopPoint;
+
+            if(dataModel.isFavourite){
             viewHolder.isFavourite!!.setImageResource(R.drawable.red_heart_icon)
 
 

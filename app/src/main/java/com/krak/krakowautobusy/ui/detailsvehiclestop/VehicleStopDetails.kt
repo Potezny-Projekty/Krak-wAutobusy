@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -101,13 +102,16 @@ class VehicleStopDetails : Fragment() {
                     }
 
                 }else {
+                    Log.e("idStop","KURWA"+idStopPoint)
                     var departe:ArrayList<Depart> = ArrayList()
 
                     Api.getApi().getBusDepartures(
                         idStopPoint
                     ) { response ->
 
+
                         try {
+
                             adapter =
                                 AdapterListViewDepatures(response.body()!!.actual, requireContext())
                             departe=response.body()!!.actual
@@ -182,6 +186,7 @@ class VehicleStopDetails : Fragment() {
 
     private fun readDataFromBundle(){
         idStopPoint=requireArguments().getString(BundleVehicleStop.ID_STOP_POINT .nameBundle).toString()
+        Log.e("idStop",":"+idStopPoint)
         nameVehicleStop=requireArguments().getString(BundleVehicleStop.NAME_VEHICLE_STOP.nameBundle).toString()
     }
 
