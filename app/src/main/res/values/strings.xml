@@ -59,6 +59,8 @@
     <string name="changeVehicleText">Zmień pojazd</string>
     <string name="lineMenuText">Linie</string>
     <string name="VehicleStop">Przystanki</string>
+    <string name="expected_time">(*) Przewidywany czas odjazdu</string>
+    <string name="no_data_on_departures">Aktualnie nie \n posiadamy danych \n o odjazdach</string>
 
 
 </resources>

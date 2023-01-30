@@ -259,22 +259,6 @@ class VehicleStopDetails : Fragment() {
         }
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun setFormatDateAndTimeInViews(){
-        val fullDayNameFormat="EEEE"
-        val fullDateFormat="dd.MM.yyyy"
-        val current = LocalDateTime.now()
-        val formatter2 = DateTimeFormatter.ofPattern(fullDayNameFormat)
-        val formatted2 = current.format(formatter2)
-        binding.fullNameDayView.text=formatted2
-        val formatter = DateTimeFormatter.ofPattern(fullDateFormat)
-        val formatted = current.format(formatter)
-        binding.fullDayView.text=formatted
-    }
-
-
-
     private fun setOnClikListElemToMoveDetailedLine(){
         val defaultValue=""
 
@@ -308,7 +292,6 @@ class VehicleStopDetails : Fragment() {
         addActionBackArrow()
         addAnimAddAddRemoveFromfavouriteToHeartIcon()
         readIsVehicleStopFavouriteAndCheckOrNotIcon()
-        setFormatDateAndTimeInViews()
         setOnClikListElemToMoveDetailedLine()
 
         return root
