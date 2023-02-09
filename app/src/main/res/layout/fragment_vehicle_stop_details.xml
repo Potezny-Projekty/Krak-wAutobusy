@@ -54,6 +54,7 @@
             app:srcCompat="@drawable/ic_gray_hert_icon"
             android:id="@+id/heartIcon"
             android:layout_weight="1"
+            android:visibility="invisible"
 
             android:layout_marginTop="10dp"
             android:layout_marginBottom="7dp"

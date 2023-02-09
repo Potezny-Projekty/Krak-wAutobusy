@@ -197,12 +197,20 @@ class VehicleStopDetails : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     private fun readDataFromBundle(){
         idStopPoint=requireArguments().getString(BundleVehicleStop.ID_STOP_POINT .nameBundle).toString()
-        Log.e("idStop",":"+idStopPoint)
 
-       vehicleStopShowed = Api.getApi().getAllVehiclesStop().stream().filter{
-            s->s.idStopPoint==idStopPoint.toInt()
-        }.findAny()
+        Log.e("idKlucz",idStopPoint+"D2")
+        if(idStopPoint.length>0 && idStopPoint.length<10) {
 
+            vehicleStopShowed = Api.getApi().getAllVehiclesStop().stream().filter { s ->
+                s.idStopPoint == idStopPoint.toInt()
+            }.findAny()
+        }else{
+
+
+            vehicleStopShowed = Api.getApi().getAllVehiclesStop().stream().filter { s ->
+                s.idStopPoint == Api.getApi().getVehicleStopIdByName(nameVehicleStop).toInt()
+            }.findAny()
+        }
         nameVehicleStop=requireArguments().getString(BundleVehicleStop.NAME_VEHICLE_STOP.nameBundle).toString()
 
 
@@ -327,6 +335,7 @@ class VehicleStopDetails : Fragment() {
     }
 
     private fun addAdapter(idstopPoint:String){
+
 
         Api.getApi().getBusDepartures(idstopPoint
         ) { response ->

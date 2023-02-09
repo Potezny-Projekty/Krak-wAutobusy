@@ -102,8 +102,9 @@ class CreateVehicleStopDetailsMapFragment : Fragment() {
 
         handler.postDelayed(object : Runnable {
             override fun run() {
-                mapControllerGloval!!.addChoiceVehicleStopToMap()
-               // handler.postDelayed(this, delay.toLong())
+                try {
+                    mapControllerGloval!!.addChoiceVehicleStopToMap()
+                }catch (exp:Exception){}
             }
         }, delay.toLong())
 

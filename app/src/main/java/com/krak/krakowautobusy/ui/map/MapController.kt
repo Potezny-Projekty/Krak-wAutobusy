@@ -65,28 +65,33 @@ class MapController(private var map: MapView, private var context: Context) {
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun addChoiceVehicleStopToMap(){
+try {
+    var vehicleStopShowed = VehicleStopDetails.Companion.vehicleStopShowed
 
-        var vehicleStopShowed = VehicleStopDetails.Companion.vehicleStopShowed
+    if (vehicleStopShowed.isPresent) {
+        val locationPoint =
+            ConvertUnits.convertToGeoPoint(
+                vehicleStopShowed.get().latitude,
+                vehicleStopShowed.get().longitude
+            )
+        val marker = Marker(map)
+        marker.position = locationPoint
+        marker.setInfoWindowAnchor(Marker.ANCHOR_TOP, Marker.ANCHOR_CENTER)
 
-        if(vehicleStopShowed.isPresent){
-            val locationPoint =
-                ConvertUnits.convertToGeoPoint(vehicleStopShowed.get().latitude, vehicleStopShowed.get().longitude)
-            val marker = Marker(map)
-            marker.position = locationPoint
-            marker.setInfoWindowAnchor(Marker.ANCHOR_TOP, Marker.ANCHOR_CENTER)
-
-            marker.title = vehicleStopShowed.get().name
-            marker.icon = drawables.vehicleStopIcon
-            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-            map.overlays.add(marker)
-
-
-            mapController.setCenter(locationPoint)
-
-
-        }
+        marker.title = vehicleStopShowed.get().name
+        marker.icon = drawables.vehicleStopIcon
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+        map.overlays.add(marker)
 
 
+        mapController.setCenter(locationPoint)
+
+
+    }
+
+}catch (x:Exception){
+
+}
     }
 
 
