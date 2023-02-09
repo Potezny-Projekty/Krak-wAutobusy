@@ -17,11 +17,15 @@ import androidx.navigation.fragment.findNavController
 import com.krak.krakowautobusy.BundleChoiceVehicle
 import com.krak.krakowautobusy.R
 import com.krak.krakowautobusy.api.Api
+import com.krak.krakowautobusy.database.VehicleStopData
 import com.krak.krakowautobusy.databinding.FragmentVehicleStopDetailsBinding
 import com.krak.krakowautobusy.networkttss.Depart
+import com.krak.krakowautobusy.ui.map.CreateVehicleStopDetailsMapFragment
 import java.lang.Exception
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 private const val ARG_PARAM1 = "param1"
@@ -32,6 +36,13 @@ class VehicleStopDetails : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+
+
+    companion object{
+        @RequiresApi(Build.VERSION_CODES.N)
+        public var vehicleStopShowed: Optional<VehicleStopData> = Optional.empty<VehicleStopData>()
+    }
 
     private val binding get() = _binding!!
     private  var  adapter: AdapterListViewDepatures?=null
@@ -55,7 +66,6 @@ class VehicleStopDetails : Fragment() {
     private fun refreshListDepeartures(){
         timerRefreshDepartureList = object : Runnable {
             override fun run() {
-
 
 
                 if(idStopPoint.isEmpty()){
@@ -184,10 +194,19 @@ class VehicleStopDetails : Fragment() {
 
  */
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun readDataFromBundle(){
         idStopPoint=requireArguments().getString(BundleVehicleStop.ID_STOP_POINT .nameBundle).toString()
         Log.e("idStop",":"+idStopPoint)
+
+       vehicleStopShowed = Api.getApi().getAllVehiclesStop().stream().filter{
+            s->s.idStopPoint==idStopPoint.toInt()
+        }.findAny()
+
         nameVehicleStop=requireArguments().getString(BundleVehicleStop.NAME_VEHICLE_STOP.nameBundle).toString()
+
+
+
     }
 
     private fun addActionBackArrow(){

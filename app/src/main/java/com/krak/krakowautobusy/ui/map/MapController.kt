@@ -6,8 +6,13 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.RequiresApi
 import com.krak.krakowautobusy.api.Api
+import com.krak.krakowautobusy.database.VehicleStopData
+import com.krak.krakowautobusy.ui.detailsvehiclestop.VehicleStopDetails
+import com.krak.krakowautobusy.ui.location.ConvertUnits
 import com.krak.krakowautobusy.ui.location.UserLocation
 import com.krak.krakowautobusy.ui.map.vehicledata.*
+import com.krak.krakowautobusy.ui.markers.MarkerToast
+import com.krak.krakowautobusy.ui.markers.VehicleMarker
 import com.krak.krakowautobusy.ui.position.ActualPositionVehicles
 import com.krak.krakowautobusy.ui.position.BusStopPosition
 import com.krak.krakowautobusy.ui.utility.Drawables
@@ -15,6 +20,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 import retrofit2.Response
 
 private const val TAG = "MapController"
@@ -54,6 +60,33 @@ class MapController(private var map: MapView, private var context: Context) {
 
     fun createLocationMarker(userLocation: UserLocation, drawables: Drawables) {
         userLocation.createLocationMarker(map, drawables.userLocationIconDrawable)
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun addChoiceVehicleStopToMap(){
+
+        var vehicleStopShowed = VehicleStopDetails.Companion.vehicleStopShowed
+
+        if(vehicleStopShowed.isPresent){
+            val locationPoint =
+                ConvertUnits.convertToGeoPoint(vehicleStopShowed.get().latitude, vehicleStopShowed.get().longitude)
+            val marker = Marker(map)
+            marker.position = locationPoint
+            marker.setInfoWindowAnchor(Marker.ANCHOR_TOP, Marker.ANCHOR_CENTER)
+
+            marker.title = vehicleStopShowed.get().name
+            marker.icon = drawables.vehicleStopIcon
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+            map.overlays.add(marker)
+
+
+            mapController.setCenter(locationPoint)
+
+
+        }
+
+
     }
 
 

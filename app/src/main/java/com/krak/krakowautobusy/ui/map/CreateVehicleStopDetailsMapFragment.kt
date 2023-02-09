@@ -10,19 +10,16 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.fragment.app.activityViewModels
-
 import com.krak.krakowautobusy.BuildConfig
-import com.krak.krakowautobusy.api.Api
 import com.krak.krakowautobusy.databinding.MapActivityBinding
 import com.krak.krakowautobusy.ui.detailsline.ActualTimeTableShowData
 import com.krak.krakowautobusy.ui.detailsline.DetailsMapViewModel
 import com.krak.krakowautobusy.ui.location.UserLocation
-import com.krak.krakowautobusy.ui.position.ActualPositionVehicles
-
 import com.krak.krakowautobusy.ui.map.vehicledata.Utilities
+import com.krak.krakowautobusy.ui.position.ActualPositionVehicles
 import com.krak.krakowautobusy.ui.utility.Drawables
 import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
@@ -51,6 +48,7 @@ class CreateVehicleStopDetailsMapFragment : Fragment() {
     val mainHandler = Handler(Looper.getMainLooper())
     private val viewModel: DetailsMapViewModel by viewModels({requireParentFragment()})
     private val vieModelMy: ActualTimeTableShowData by activityViewModels()
+    private var mapControllerGloval :MapController? = null
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -73,6 +71,7 @@ class CreateVehicleStopDetailsMapFragment : Fragment() {
         actualPositionVehicles = ActualPositionVehicles(drawables)
         mapController.loadingIcon(actualPositionVehicles)
         mapController.createLocationMarker(userLocation, drawables)
+        mapControllerGloval = mapController
 
 
         viewModel.setMyLocation.observe(viewLifecycleOwner, Observer {
@@ -85,7 +84,29 @@ class CreateVehicleStopDetailsMapFragment : Fragment() {
             }
         })
 
+
+
+
+        drawVehicleStop()
+
         return binding.root
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun drawVehicleStop(){
+
+        val handler = Handler()
+        val delay = 2000 // 1000 milliseconds == 1 second
+
+
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                mapControllerGloval!!.addChoiceVehicleStopToMap()
+               // handler.postDelayed(this, delay.toLong())
+            }
+        }, delay.toLong())
+
     }
 
 
